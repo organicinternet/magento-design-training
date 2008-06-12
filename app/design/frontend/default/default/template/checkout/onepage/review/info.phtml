@@ -1,0 +1,47 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<table cellspacing="0" class="data-table" id="checkout-review-table">
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+            <th class="a-right"><?php echo $this->__('Price incl. Tax') ?></th>
+            <?php endif; ?>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+            <th class="a-right"><?php echo $this->__('Subtotal incl. Tax') ?></th>
+            <?php endif; ?>
+        </tr>
+    </thead>
+    <?php echo $this->getChildHtml('totals'); ?>
+    <tbody>
+    <?php foreach($this->getItems() as $_item): ?>
+        <?php echo $this->getItemHtml($_item)?>
+    <?php endforeach ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('checkout-review-table')</script>

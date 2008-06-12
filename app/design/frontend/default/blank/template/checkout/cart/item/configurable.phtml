@@ -1,0 +1,74 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_blank
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php $_item = $this->getItem()?>
+<tr>
+    <td>
+        <a href="<?php echo $this->getProductUrl() ?>">
+            <img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" width="75" />
+        </a>
+    </td>
+    <td class="attributes-col">
+        <p class="pname"><a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a></p>
+
+        <?php if ($_attributes = $this->getProductAttributes()) :?>
+        <ul class="super-product-attributes">
+            <?php foreach ($_attributes as $_attribute):?>
+            <li>
+                <strong><?php echo $_attribute['label']?>:</strong> <?php echo $_attribute['value']?>
+            </li>
+            <?php endforeach;?>
+        </ul>
+        <?php endif;?>
+
+        <?php if ($_options = $this->getProductOptions()):?>
+        <ul class="super-product-options">
+            <?php foreach ($_options as $_option):?>
+            <li><strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong> <?php echo $this->htmlEscape($_option['value']) ?></li>
+            <?php endforeach;?>
+        </ul>
+        <?php endif;?>
+
+        <?php if($_item->getMessage()): ?>
+        <div class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
+            * <?php echo $_item->getMessage() ?>
+        </div>
+        <?php endif; ?>
+    </td>
+    <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+    <td class="a-center">
+        <input type="checkbox" value="1" name="cart[<?php echo $_item->getId() ?>][wishlist]" />
+    </td>
+    <?php endif ?>
+    <td class="a-right">
+        <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?>
+    </td>
+    <td class="a-center">
+        <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" />
+    </td>
+    <td class="a-right">
+        <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?>
+    </td>
+    <td class="a-center">
+        <a href="<?php echo $this->getDeleteUrl() ?>">
+            <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" />
+        </a>
+    </td>
+</tr>

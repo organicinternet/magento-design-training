@@ -1,0 +1,107 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<div class="page-head">
+    <h3><?php echo $this->__('Shopping Cart') ?></h3>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+<table cellspacing="0" id="shopping-cart-table" class="data-table box-table shopping-cart">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+            <th class="a-center"><?php echo $this->__('Move to Wishlist') ?></th>
+            <?php endif ?>
+            <th class="a-right"><?php echo $this->__('Unit Price') ?><?php echo $this->getIncExcTax(false) ?></th>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?><?php echo $this->getIncExcTax(false) ?></th>
+            <th class="a-center"><?php echo $this->__('Remove') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="100" class="a-right">
+                <?php if($this->getContinueShoppingUrl()): ?>
+                    <a href="<?php echo $this->getContinueShoppingUrl() ?>" class="f-left"><?php echo $this->__('Continue Shopping') ?></a>
+                <?php endif; ?>
+                <input type="image" src="<?php echo $this->getSkinUrl('images/btn_update_qty.gif') ?>" alt="<?php echo $this->__('Update Shopping Cart') ?>"/>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <?php foreach($this->getItems() as $_item): ?>
+        <?php echo $this->getItemHtml($_item) ?>
+    <?php endforeach ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('shopping-cart-table')</script>
+</form>
+<br/>
+    <?php echo $this->getChildHtml('crosssell') ?>
+
+<div class="cart-collateral-block">
+    <div class="cart-collateral">
+    <?php echo $this->getChildHtml('coupon') ?>
+    <div class="divider"></div>
+    <?php echo $this->getChildHtml('shipping') ?>
+    </div>
+    <div class="cart-totals">
+        <table cellspacing="0" id="shoping-cart-totals-table">
+            <tfoot>
+            <?php foreach($this->getTotals() as $total): ?>
+                <?php if($total->getArea()=='footer'): ?>
+                <tr>
+                    <td><strong><?php echo $total->getTitle() ?></strong></td>
+                    <td class="nowrap"><strong><?php echo $this->helper('checkout')->formatPrice($total->getValue()) ?></strong></td>
+                </tr>
+                <?php endif ?>
+            <?php endforeach ?>
+            </tfoot>
+            <tbody>
+            <?php foreach($this->getTotals() as $total): ?>
+                <?php if(!$total->getArea()): ?>
+                <tr>
+                    <td style="<?php echo $total->getStyle() ?>"><?php echo $total->getTitle() ?></td>
+                    <td style="<?php echo $total->getStyle() ?>"><?php echo $this->helper('checkout')->formatPrice($total->getValue()) ?></td>
+                </tr>
+                <?php endif ?>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+        <script type="text/javascript">decorateTable('shoping-cart-totals-table')</script>
+        <div class="clear"></div>
+        <?php if(!$this->hasError()): ?>
+        <ul class="checkout-types">
+            <?php echo $this->getChildHtml('methods') ?>
+        </ul>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="clear"></div>

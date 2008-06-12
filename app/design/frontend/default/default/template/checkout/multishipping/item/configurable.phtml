@@ -1,0 +1,12 @@
+<a href="<?php echo $this->getProductUrl() ?>"><strong><?php echo $this->getProductName() ?></strong></a>
+<?php if ($_attributes = $this->getProductAttributes()) :?>
+<ul class="super-product-attributes">
+    <?php foreach ($_attributes as $_attribute):?>
+    <li>
+        <strong><?php echo $_attribute['label']?>:</strong> <?php echo $_attribute['value']?>
+    </li>
+    <?php endforeach;?>
+</ul>
+<?endif;?>
+
+<?php //echo $this->helper('checkout')->getQuoteItemProductDescription($_item) ?>

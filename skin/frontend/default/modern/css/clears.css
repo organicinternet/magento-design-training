@@ -1,0 +1,62 @@
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/****************************************************/
+/****************[ Mage_CSS_B Clears ]***************/
+/****************************************************/
+
+.page-head:after,
+.page-head-alt:after,
+.clear:after,
+.col2-set:after,
+.col3-set:after,
+.col4-set:after,
+.col2-alt-set:after,
+.header:after,
+.head:after,
+.head-alt:after,
+.head-alt2:after,
+.head-alt3:after,
+.box:after,
+#nav:after,
+.middle:after,
+.button-set:after,
+.actions:after,
+.legend:after,
+.ratings:after,
+.page-head:after,
+.page-head-alt:after,
+.search-bar:after,
+.sidebar li.item:after,
+.sidebar .content:after,
+.group-select li:after,
+.tabs:after,
+.cross-sell-block:after,
+.my-review-detail:after,
+.search-autocomplete li:after,
+.generic-product-list li:after,
+.account-nav li:after,
+.listing-type-list .listing-item:after {
+	content:".";
+	display:block;
+	clear:both;
+	height:0;
+	font-size:0;
+	line-height:0em;
+	visibility:hidden;
+	overflow:hidden;
+	}

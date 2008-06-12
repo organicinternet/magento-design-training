@@ -1,0 +1,68 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<div class="page-head-container">
+    <h2 class="page-head"><?php echo $this->htmlEscape($this->getHeader()) ?></h2>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if($this->getWishlist()->getSize()): ?>
+<form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+    <table cellspacing="0" width="100%" class="data-table" id="wishlist-table">
+    <col width="130" />
+    <col />
+    <col width="130" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Product') ?></th>
+            <th><?php echo $this->__('Comment') ?></th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($this->getWishlist() as $item): ?>
+        <tr>
+            <td>
+                <a class="product-image" href="<?php echo $item->getProductUrl() ?>">
+                    <img src="<?php echo $this->helper('catalog/image')->init($item, 'small_image')->resize(113); ?>" alt="<?php echo $this->htmlEscape($item->getName()) ?>" width="113" />
+                </a>
+                <h3 class="product-name"><a href="<?php echo $item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></h3>
+                <?php echo $this->getPriceHtml($item) ?>
+            </td>
+            <td><?php echo $this->getEscapedDescription($item) ?></td>
+            <td>
+                <?php if($item->isSaleable()): ?>
+                <a href="#" onclick="setLocation('<?php echo $this->helper('checkout/cart')->getAddUrl($item) ?>');return false;"><?php echo $this->__('Add to Cart') ?></a>
+                <?php endif;?><br />
+                <a href="#" onclick="setLocation('<?php echo $this->helper('wishlist')->getAddUrl($item) ?>');return false;"><?php echo $this->__('Add to Wishlist') ?></a>
+            </td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('wishlist-table')</script>
+    <?php if($this->isSaleable()):?>
+    <div class="buttons-container">
+        <button onclick="setLocation('<?php echo $this->getUrl('*/*/allcart', array('_current'=>true)) ?>')" class="form-button"  type="button"><span><?php echo $this->__('Add All to Cart') ?></span></button>&nbsp;
+    </div>
+    <?php endif;?>
+</form>
+<?php else: ?>
+    <p><?php echo $this->__('Wishlist is empty now.') ?></p>
+<?php endif ?>

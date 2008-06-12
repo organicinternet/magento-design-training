@@ -1,0 +1,50 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<div class="box">
+    <h3 class="box-head"><?php echo $this->__('Product Tags') ?></h3>
+    <?php if( $this->getCount() ): ?>
+    <h4><?php echo $this->__('Other people marked this product with these tags:') ?></h4>
+        <ul>
+            <?php $_iterator = 0; ?>
+            <?php foreach( $this->getTags() as $_tag ): ?>
+                <li<?php if( 1 == ++$_iterator && $this->getCount() != 1 ): ?> class="first"<?php elseif($_iterator == $this->getCount()): ?> class="last"<?php endif; ?>><a href="<?php echo $_tag->getTaggedProductsUrl() ?>"><?php echo $this->htmlEscape($_tag->getName()) ?></a> (<?php echo $_tag->getPopularity() ?>)</li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+<h3><?php echo $this->__('Add Your Tags:') ?></h3>
+    <form id="addTagForm" action="<?php echo $this->getFormAction(); ?>"  method="get">
+		<fieldset>
+			<input type="text" class="input-text required-entry" name="tagName" />
+        </fieldset>
+        <div class="buttons-container">
+			<button class="form-button" onclick="submitTagForm()"><span><?php echo $this->__('Add Tags') ?></span></button>
+		</div>	
+    </form>
+    <script type="text/javascript">
+        var addTagFormJs = new VarienForm('addTagForm');
+        function submitTagForm(){
+            if(addTagFormJs.validator.validate()) {
+                addTagFormJs.form.submit();
+            }
+        }
+    </script>
+    <p><small><?php echo $this->__("Use spaces to separate tags. Use single quotes (') for phrases.") ?></small></p>
+</div>
