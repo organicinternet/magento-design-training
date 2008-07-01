@@ -110,24 +110,10 @@ class Mage_Reports_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Re
     {
         $countSelect = clone $this->getSelect();
         $countSelect->reset();
-        $quoteItem = Mage::getResourceSingleton('sales/quote_item');
-        /* @var $quoteItem Mage_Sales_Model_Entity_Quote */
-        $productIdAttr = $quoteItem->getAttribute('product_id');
-        /* @var $productIdAttr Mage_Eav_Model_Entity_Attribute_Abstract */
-        $productIdAttrId = $productIdAttr->getAttributeId();
-        $productIdTableName = $productIdAttr->getBackend()->getTable();
-        $productIdFieldName = $productIdAttr->getBackend()->isStatic() ? 'product_id' : 'value';
 
-        $quote = Mage::getResourceSingleton('sales/quote');
-        /* @var $quote Mage_Sales_Model_Entity_Quote */
-        $isActiveAtrr = $quote->getAttribute('is_active');
-        /* @var $attrIsActive Mage_Eav_Model_Entity_Attribute_Abstract */
-        $isActiveTableName = $isActiveAtrr->getBackend()->getTable();
-        $isActiveFieldName = $isActiveAtrr->getBackend()->isStatic() ? 'is_active' : 'value';
-
-        $countSelect->from(array("quote_items" => $productIdTableName), "count(*)")
-            ->join(array('quotes' => $isActiveTableName),
-                'quotes.entity_id = quote_items.parent_id AND quotes.is_active = 1',
+        $countSelect->from(array("quote_items" => $this->getTable('sales/quote_item')), "count(*)")
+            ->join(array('quotes' => $this->getTable('sales/quote')),
+                'quotes.entity_id = quote_items.quote_id AND quotes.is_active = 1',
                 array())
             ->where("quote_items.product_id = e.entity_id");
 
@@ -140,30 +126,6 @@ class Mage_Reports_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Re
 
     public function addOrdersCount($from = '', $to = '')
     {
-//        $orderItem = Mage::getResourceSingleton('sales/order_item');
-//        /* @var $orderItem Mage_Sales_Model_Entity_Quote */
-//        $attr = $orderItem->getAttribute('product_id');
-//        /* @var $attr Mage_Eav_Model_Entity_Attribute_Abstract */
-//        $attrId = $attr->getAttributeId();
-//        $tableName = $attr->getBackend()->getTable();
-//        $fieldName = $attr->getBackend()->isStatic() ? 'product_id' : 'value';
-//
-//        $this->getSelect()
-//            ->joinLeft(array("order_items" => $tableName),
-//                "order_items.{$fieldName} = e.{$this->getProductEntityId()} and order_items.attribute_id = {$attrId}", array())
-//            ->from("", array("orders" => "count(`order_items2`.entity_id)"))
-//            ->group("e.{$this->getProductEntityId()}");
-//
-//        if ($from != '' && $to != '') {
-//            $dateFilter = " and order_items2.created_at BETWEEN '{$from}' AND '{$to}'";
-//        } else {
-//            $dateFilter = '';
-//        }
-//
-//        $this->getSelect()
-//            ->joinLeft(array("order_items2" => $orderItem->getEntityTable()),
-//                "order_items2.entity_id = order_items.entity_id".$dateFilter, array());
-//
         $this->getSelect()
             ->joinLeft(array("order_items" => $this->getTable('sales/order_item')),
                 "order_items.product_id = e.{$this->getProductEntityId()}", array())
@@ -185,21 +147,9 @@ class Mage_Reports_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Re
 
     public function addOrderedQty($from = '', $to = '')
     {
-//        $orderItem = Mage::getResourceSingleton('sales/order_item');
-//        /* @var $orderItem Mage_Sales_Model_Entity_Quote */
-//        $qtyOrderedAttr = $orderItem->getAttribute('qty_ordered');
-//        /* @var $qtyOrderedAttr Mage_Eav_Model_Entity_Attribute_Abstract */
-//        $qtyOrderedAttrId = $qtyOrderedAttr->getAttributeId();
-//        $qtyOrderedTableName = $qtyOrderedAttr->getBackend()->getTable();
-//        $qtyOrderedFieldName = $qtyOrderedAttr->getBackend()->isStatic() ? 'qty_ordered' : 'value';
         $qtyOrderedTableName = $this->getTable('sales/order_item');
         $qtyOrderedFieldName = 'qty_ordered';
 
-        //$productIdAttr = $orderItem->getAttribute('product_id');
-        /* @var $productIdAttr Mage_Eav_Model_Entity_Attribute_Abstract */
-        //$productIdAttrId = $productIdAttr->getAttributeId();
-        //$productIdTableName = $productIdAttr->getBackend()->getTable();
-        //$productIdFieldName = $productIdAttr->getBackend()->isStatic() ? 'product_id' : 'value';
         $productIdTableName = $this->getTable('sales/order_item');
         $productIdFieldName = 'product_id';
 
@@ -209,21 +159,6 @@ class Mage_Reports_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Re
             $dateFilter = "";
         }
 
-//        $this->getSelect()->reset()
-//            ->from(
-//                array('order_items2' => $qtyOrderedTableName),
-//                array('ordered_qty' => "sum(order_items2.{$qtyOrderedFieldName})"))
-//            ->joinInner(
-//                array('order_items' => $productIdTableName),
-//                "order_items.entity_id = order_items2.entity_id and order_items.attribute_id = {$productIdAttrId}",
-//                array())
-//            ->joinInner(array('e' => $this->getProductEntityTableName()),
-//                "e.entity_id = order_items.{$productIdFieldName} AND e.entity_type_id = {$this->getProductEntityTypeId()}")
-//            ->joinInner(array('order' => $this->getTable('sales/order_entity')),
-//                "order.entity_id = order_items.entity_id".$dateFilter, array())
-//            ->where("order_items2.attribute_id = {$qtyOrderedAttrId}")
-//            ->group('e.entity_id')
-//            ->having('ordered_qty > 0');
         $this->getSelect()->reset()
             ->from(
                 array('order_items2' => $qtyOrderedTableName),

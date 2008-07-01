@@ -202,5 +202,15 @@
                 <cookie_lifetime>3600</cookie_lifetime>
             </cookie>
         </web>
+
+        <admin>
+            <startup>
+                <page>dashboard</page>
+            </startup>
+            <url>
+                <use_custom>0</use_custom>
+                <custom></custom>
+            </url>
+        </admin>
     </default>
 </config>

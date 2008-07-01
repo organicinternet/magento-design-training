@@ -111,12 +111,12 @@ class Mage_Eway_Model_Shared extends Mage_Payment_Model_Method_Abstract
         $invoiceDesc = '';
         $lengs = 0;
         foreach ($this->getOrder()->getAllItems() as $item) {
-            if (strlen($invoiceDesc.$item->getName()) > 10000) {
+            if (Mage::helper('core/string')->strlen($invoiceDesc.$item->getName()) > 10000) {
                 break;
             }
             $invoiceDesc .= $item->getName() . ', ';
         }
-        $invoiceDesc = substr($invoiceDesc, 0, -2);
+        $invoiceDesc = Mage::helper('core/string')->substr($invoiceDesc, 0, -2);
 
         $address = clone $billing;
         $address->unsFirstname();

@@ -206,4 +206,23 @@ class Mage_Core_Model_Mysql4_Config extends Mage_Core_Model_Mysql4_Abstract
         }
         return $this;
     }
+
+    /**
+     * Delete config value
+     *
+     * @param string $path
+     * @param string $scope
+     * @param int $scopeId
+     * @return Mage_Core_Store_Mysql4_Config
+     */
+    public function deleteConfig($path, $scope, $scopeId)
+    {
+        $writeAdapter = $this->_getWriteAdapter();
+        $writeAdapter->delete($this->getMainTable(), array(
+            $writeAdapter->quoteInto('path=?', $path),
+            $writeAdapter->quoteInto('scope=?', $scope),
+            $writeAdapter->quoteInto('scope_id=?', $scopeId)
+        ));
+        return $this;
+    }
 }

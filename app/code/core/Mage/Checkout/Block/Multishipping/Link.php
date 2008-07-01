@@ -31,15 +31,20 @@ class Mage_Checkout_Block_Multishipping_Link extends Mage_Core_Block_Template
     {
         return $this->getUrl('checkout/multishipping', array('_secure'=>true));
     }
-
+    
+    public function getQuote()
+    {
+        return Mage::getSingleton('checkout/session')->getQuote();
+    }
+    
     public function _toHtml()
     {
         $maximunQty = (int)Mage::getStoreConfig('shipping/option/checkout_multiple_maximum_qty');
         if (Mage::getStoreConfig('shipping/option/checkout_multiple')
-            && !Mage::getSingleton('checkout/session')->getQuote()->hasItemsWithDecimalQty()
-            && Mage::getSingleton('checkout/session')->getQuote()->validateMinimumAmount()
-                && (Mage::getSingleton('checkout/session')->getQuote()->getItemsSummaryQty() - Mage::getSingleton('checkout/session')->getQuote()->getItemVirtualQty()) > 1
-                && Mage::getSingleton('checkout/session')->getQuote()->getItemsSummaryQty() <= $maximunQty) {
+            && !$this->getQuote()->hasItemsWithDecimalQty()
+            && $this->getQuote()->validateMinimumAmount()
+            && ($this->getQuote()->getItemsSummaryQty() - $this->getQuote()->getItemVirtualQty()) > 0
+            && $this->getQuote()->getItemsSummaryQty() <= $maximunQty) {
             return parent::_toHtml();
         }
 

@@ -34,6 +34,9 @@ class Mage_Review_CustomerController extends Mage_Core_Controller_Front_Action
         if ($navigationBlock = $this->getLayout()->getBlock('customer_account_navigation')) {
             $navigationBlock->setActive('review/customer');
         }
+        if ($block = $this->getLayout()->getBlock('review_customer_list')) {
+            $block->setRefererUrl($this->_getRefererUrl());
+        }
         $this->renderLayout();
     }
 

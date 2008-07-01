@@ -85,30 +85,19 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
      */
     public function getProductAttributes()
     {
-        $attributes = array();
-        Varien_Profiler::start('CART:'.__METHOD__);
-        if ($attributesOption = $this->getItem()->getOptionByCode('attributes')) {
-            $data = unserialize($attributesOption->getValue());
-            $usedAttributes = $this->getConfigurableProduct()->getTypeInstance()->getUsedProductAttributes();
-
-            foreach ($data as $attributeId => $attributeValue) {
-            	if (isset($usedAttributes[$attributeId])) {
-            	    $attribute = $usedAttributes[$attributeId];
-            	    $label = $attribute->getFrontend()->getLabel();
-
-            	    if ($attribute->getSourceModel()) {
-            	        $value = $this->htmlEscape($attribute->getSource()->getOptionText($attributeValue));
-            	    }
-            	    else {
-            	        $value = $this->htmlEscape($this->getProduct()->getData($attribute->getCode()));
-            	    }
-
-            	    $attributes[] = array('label'=>$label, 'value'=>$value);
-            	}
-            }
-        }
-        Varien_Profiler::stop('CART:'.__METHOD__);
+        $attributes = $this->getConfigurableProduct()->getTypeInstance()->getSelectedAttributesInfo();
         return $attributes;
+    }
+
+    /**
+     * Get list of all otions for product
+     *
+     * @return array
+     */
+    public function getOptionList()
+    {
+        $options = array_merge($this->getProductAttributes(), $this->getProductOptions());
+        return $options;
     }
 
     /**

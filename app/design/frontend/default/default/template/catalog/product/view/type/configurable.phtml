@@ -27,21 +27,6 @@
 ?>
 <?php $_product = $this->getProduct() ?>
 <?php if($_product->isSaleable()): ?>
-    <div class="product-attributes">
-        <table cellspacing="0">
-        <?php foreach($this->getAllowAttributes() as $_attribute): ?>
-            <tr>
-                <td class="label"><?php echo $_attribute->getLabel() ?>:</td>
-                <td>
-                    <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute select super-attribute-select">
-                        <option><?php echo $this->__('Choose an Option...') ?></option>
-                    </select>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </table>
-        <input type="hidden" name="" id="" />
-    </div>
 
     <?php $_tierPrices = $this->getTierPrices() ?>
     <?php if(count($_tierPrices)>0): ?>

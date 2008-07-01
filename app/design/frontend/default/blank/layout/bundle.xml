@@ -23,7 +23,7 @@
 <layout version="0.1.0">
 
 <!--
-Category default layout
+Adding custom product price block
 -->
 
     <catalog_category_default>
@@ -31,6 +31,40 @@ Category default layout
             <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
         </reference>
     </catalog_category_default>
+
+    <catalogsearch_result_index>
+        <reference name="search_result_list">
+            <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
+        </reference>
+    </catalogsearch_result_index>
+
+    <catalogsearch_advanced_result>
+        <reference name="search_result_list">
+            <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
+        </reference>
+    </catalogsearch_advanced_result>
+
+    <tag_product_list>
+        <reference name="search_result_list">
+            <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
+        </reference>
+    </tag_product_list>
+
+<!--
+Partof block for simple broducts
+-->
+
+   <PRODUCT_TYPE_simple>
+        <reference name="product.info.additional">
+            <block type="bundle/catalog_product_list_partof" before="-" name="product.info.partof" as="partof_products" template="bundle/catalog/product/list/partof.phtml">
+                <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
+            </block>
+        </reference>
+    </PRODUCT_TYPE_simple>
+
+<!--
+Shopping cart item renderer
+-->
 
     <checkout_cart_index>
         <reference name="checkout.cart">
@@ -46,15 +80,25 @@ Additional block for bundle product type
         <reference name="head">
             <action method="addItem"><type>skin_js</type><name>js/bundle.js</name></action>
         </reference>
+
         <reference name="product.info">
             <block type="bundle/catalog_product_view_type_bundle" name="product.info.bundle" as="product_type_data" template="bundle/catalog/product/view/type/bundle.phtml">
-                <action method="setShowAllSelections"><status>1</status></action>
                 <action method="addPriceBlockType"><type>bundle</type><block>bundle/catalog_product_price</block><template>bundle/catalog/product/price.phtml</template></action>
-                <action method="addRenderer"><type>select</type><block>bundle/catalog_product_view_type_bundle_option_select</block></action>
-                <action method="addRenderer"><type>multi</type><block>bundle/catalog_product_view_type_bundle_option_multi</block></action>
-                <action method="addRenderer"><type>radio</type><block>bundle/catalog_product_view_type_bundle_option_radio</block></action>
-                <action method="addRenderer"><type>checkbox</type><block>bundle/catalog_product_view_type_bundle_option_checkbox</block></action>
             </block>
+        </reference>
+
+        <block type="bundle/catalog_product_view_type_bundle" name="product.info.bundle.options" as="type_bundle_options" template="bundle/catalog/product/view/type/bundle/options.phtml">
+            <action method="addRenderer"><type>select</type><block>bundle/catalog_product_view_type_bundle_option_select</block></action>
+            <action method="addRenderer"><type>multi</type><block>bundle/catalog_product_view_type_bundle_option_multi</block></action>
+            <action method="addRenderer"><type>radio</type><block>bundle/catalog_product_view_type_bundle_option_radio</block></action>
+            <action method="addRenderer"><type>checkbox</type><block>bundle/catalog_product_view_type_bundle_option_checkbox</block></action>
+        </block>
+
+        <reference name="product.info.container1">
+            <action method="insertBlockIfEquals"><block>product.info.bundle.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+        </reference>
+        <reference name="product.info.container2">
+            <action method="insertBlockIfEquals"><block>product.info.bundle.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
         </reference>
     </PRODUCT_TYPE_bundle>
 

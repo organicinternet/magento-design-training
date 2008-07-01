@@ -48,10 +48,30 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Declare order for creditmemo
+     * Load shipment by increment id
+     *
+     * @param string $incrementId
+     * @return Mage_Sales_Model_Order_Shipment
+     */
+    public function loadByIncrementId($incrementId)
+    {
+        $ids = $this->getCollection()
+            ->addAttributeToFilter('increment_id', $incrementId)
+            ->getAllIds();
+
+        if (!empty($ids)) {
+            reset($ids);
+            $this->load(current($ids));
+        }
+        return $this;
+    }
+
+
+    /**
+     * Declare order for shipment
      *
      * @param   Mage_Sales_Model_Order $order
-     * @return  Mage_Sales_Model_Order_Creditmemo
+     * @return  Mage_Sales_Model_Order_Shipment
      */
     public function setOrder(Mage_Sales_Model_Order $order)
     {
@@ -113,7 +133,9 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         foreach ($this->getAllItems() as $item) {
             if ($item->getQty()>0) {
                 $item->register();
-                $totalQty+= $item->getQty();
+                if (!$item->getOrderItem()->isDummy(true)) {
+                    $totalQty+= $item->getQty();
+                }
             }
             else {
                 $item->isDeleted(true);
@@ -171,6 +193,7 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         }
         return $this;
     }
+
 
     public function getTracksCollection()
     {
@@ -260,6 +283,10 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
      */
     public function sendEmail($notifyCustomer=true, $comment='')
     {
+        $currentDesign = Mage::getDesign()->setAllGetOld(array(
+            'package' => Mage::getStoreConfig('design/package/name', $this->getStoreId()),
+        ));
+
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -286,7 +313,7 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         if ($notifyCustomer) {
             $sendTo[] = array(
                 'name'  => $customerName,
-                'email' => $this->getCustomerEmail()
+                'email' => $order->getCustomerEmail()
             );
             if ($copyTo && $copyMethod == 'bcc') {
                 $mailTemplate->addBcc($copyTo);
@@ -322,6 +349,8 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
 
         $translate->setTranslateInline(true);
 
+        Mage::getDesign()->setAllGetOld($currentDesign);
+
         return $this;
     }
 
@@ -332,6 +361,10 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
      */
     public function sendUpdateEmail($notifyCustomer = true, $comment='')
     {
+        $currentDesign = Mage::getDesign()->setAllGetOld(array(
+            'package' => Mage::getStoreConfig('design/package/name', $this->getStoreId()),
+        ));
+
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -358,7 +391,7 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         if ($notifyCustomer) {
             $sendTo[] = array(
                 'name'  => $customerName,
-                'email' => $this->getCustomerEmail()
+                'email' => $order->getCustomerEmail()
             );
             if ($copyTo && $copyMethod == 'bcc') {
                 $mailTemplate->addBcc($copyTo);
@@ -392,6 +425,8 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         }
 
         $translate->setTranslateInline(true);
+
+        Mage::getDesign()->setAllGetOld($currentDesign);
 
         return $this;
     }

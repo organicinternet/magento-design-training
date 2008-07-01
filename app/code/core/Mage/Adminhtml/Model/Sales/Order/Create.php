@@ -43,6 +43,8 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
 
     protected $_needCollect;
 
+    protected  $_productOptions = array();
+
     public function __construct()
     {
         $this->_session = Mage::getSingleton('adminhtml/session_quote');
@@ -147,47 +149,65 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
         $this->getSession()->setCustomerId($order->getCustomerId());
         $this->getSession()->setStoreId($order->getStoreId());
 
-        $convertModel = Mage::getModel('sales/convert_order');
-        /*@var $quote Mage_Sales_Model_Quote*/
-        $quote = $convertModel->toQuote($order, $this->getQuote());
-        $quote->setShippingAddress($convertModel->toQuoteShippingAddress($order));
-        $quote->setBillingAddress($convertModel->addressToQuoteAddress($order->getBillingAddress()));
-
-        if ($order->getReordered()) {
-            $quote->getPayment()->setMethod($order->getPayment()->getMethod());
-        }
-        else {
-            $convertModel->paymentToQuotePayment($order->getPayment(), $quote->getPayment());
-        }
-
-        foreach ($order->getItemsCollection() as $item) {
-            if ($order->getReordered()) {
-                $qty = $item->getQtyOrdered();
-            }
-            else {
-                $qty = min($item->getQtyToInvoice(), $item->getQtyToShip());
-            }
-            if ($qty) {
-                $quoteItem = $convertModel->itemToQuoteItem($item)
-                    ->setQty($qty);
-                $product = $quoteItem->getProduct();
-
-                if ($product->getId()) {
-                    $quote->addItem($quoteItem);
+        foreach ($order->getItemsCollection() as $orderItem) {
+            /* @var $orderItem Mage_Sales_Model_Order_Item */
+            if (!$orderItem->getParentItem()) {
+                $item = $this->initFromOrderItem($orderItem, $orderItem->getQtyOrdered());
+                if (is_string($item)) {
+                    Mage::throwException($item);
                 }
             }
         }
 
-        if ($quote->getCouponCode()) {
-            $quote->collectTotals();
+        if ($this->getQuote()->getCouponCode()) {
+            $this->getQuote()->collectTotals();
         }
 
-        $quote->getShippingAddress()->setCollectShippingRates(true);
-        $quote->getShippingAddress()->collectShippingRates();
-        $quote->collectTotals();
-        $quote->save();
+        $this->getQuote()->getShippingAddress()->setCollectShippingRates(true);
+        $this->getQuote()->getShippingAddress()->collectShippingRates();
+        $this->getQuote()->collectTotals()
+            ->save();
 
         return $this;
+    }
+
+    /**
+     * Initialize creation data from existing order Item
+     *
+     * @param Mage_Sales_Model_Order_Item $orderItem
+     * @return Mage_Sales_Model_Quote_Item | string
+     */
+    public function initFromOrderItem(Mage_Sales_Model_Order_Item $orderItem, $qty = 1)
+    {
+        if (!$orderItem->getId()) {
+            return $this;
+        }
+
+        $product = Mage::getModel('catalog/product')
+            ->setStoreId($this->getSession()->getStoreId())
+            ->load($orderItem->getProductId());
+
+        if ($product->getId()) {
+            $info = $orderItem->getProductOptionByCode('info_buyRequest');
+            $info = new Varien_Object($info);
+            $product->setSkipCheckRequiredOption(true);
+            $item = $this->getQuote()->addProduct($product,$info);
+            if (is_string($item)) {
+                return $item;
+            }
+            $item->setQty($qty);
+            if ($additionalOptions = $orderItem->getProductOptionByCode('additional_options')) {
+                $item->addOption(new Varien_Object(
+                    array(
+                        'product' => $item->getProduct(),
+                        'code' => 'additional_options',
+                        'value' => serialize($additionalOptions)
+                    )
+                ));
+            }
+        }
+
+        return $item;
     }
 
     /**
@@ -210,6 +230,7 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
         else {
             $this->_wishlist = false;
         }
+
         return $this->_wishlist;
     }
 
@@ -278,9 +299,58 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
     {
         if ($item = $this->_getQuoteItem($item)) {
             switch ($moveTo) {
+                case 'order':
+                    $info = array();
+                    if ($info = $item->getOptionByCode('info_buyRequest')) {
+                        $info = new Varien_Object(
+                            unserialize($info->getValue())
+                        );
+                        $info->setOptions($this->_prepareOptionsForRequest($item));
+                    }
+
+                    $product = Mage::getModel('catalog/product')
+                        ->setStoreId($this->getQuote()->getStoreId())
+                        ->load($item->getProduct()->getId());
+
+                    $product->setSkipCheckRequiredOption(true);
+
+                    $newItem = $this->getQuote()->addProduct($product, $info);
+                    if (is_string($newItem)) {
+                        Mage::throwException($newItem);
+                    }
+                    $product->unsSkipCheckRequiredOption();
+                    $newItem->checkData();
+                    $newItem->setQty($qty);
+                    $this->getQuote()->collectTotals()
+                        ->save();
+                    break;
                 case 'cart':
-                    if ($cart = $this->getCustomerCart()) {
-                        $cartItem = $cart->addCatalogProduct($item->getProduct());
+                    if (($cart = $this->getCustomerCart()) && is_null($item->getOptionByCode('additional_options'))) {
+                        //options and info buy request
+                        $product = Mage::getModel('catalog/product')
+                            ->setStoreId($this->getQuote()->getStoreId())
+                            ->load($item->getProduct()->getId());
+                        $product->setSkipCheckRequiredOption(true);
+
+                        $info = array();
+                        if ($info = $item->getOptionByCode('info_buyRequest')) {
+                            $info = new Varien_Object(
+                                unserialize($info->getValue())
+                            );
+                            $info->setOptions($this->_prepareOptionsForRequest($item));
+                        } else {
+                            $info = new Varien_Object(array(
+                                'product_id' => $product->getId(),
+                                'qty' => $qty,
+                                'options' => $this->_prepareOptionsForRequest($item)
+                            ));
+                        }
+
+                        $cartItem = $cart->addProduct($product, $info);
+                        if (is_string($cartItem)) {
+                            Mage::throwException($cartItem);
+                        }
+                        $product->unsSkipCheckRequiredOption();
                         $cartItem->setQty($qty);
                         $cartItem->setPrice($item->getProduct()->getPrice());
                         $cart->collectTotals()
@@ -307,8 +377,25 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
     public function applySidebarData($data)
     {
         if (isset($data['add'])) {
-            foreach ($data['add'] as $productId=>$qty) {
+            foreach ($data['add'] as $productId => $qty) {
                 $this->addProduct($productId, $qty);
+            }
+        }
+        if (isset($data['reorder'])) {
+            foreach ($data['reorder'] as $orderItemId=>$value) {
+                $orderItem = Mage::getModel('sales/order_item')->load($orderItemId);
+                $item = $this->initFromOrderItem($orderItem);
+                if (is_string($item)) {
+                    Mage::throwException($item);
+                }
+            }
+        }
+        if (isset($data['cartItem'])) {
+            foreach ($data['cartItem'] as $itemId => $qty) {
+                if ($item = $this->getCustomerCart()->getItemById($itemId)) {
+                    $this->moveQuoteItem($item, 'order', $qty);
+//                    $this->removeItem($itemId, 'cart');
+                }
             }
         }
         if (isset($data['remove'])) {
@@ -387,8 +474,10 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
             $item->setQty($item->getQty()+$qty);
         }
         else {
-            $item = $this->getQuote()->addCatalogProduct($product);
-            $item->setQty($qty);
+            $product->setSkipCheckRequiredOption(true);
+            $item = $this->getQuote()->addProduct($product, $qty);
+            $product->unsSkipCheckRequiredOption();
+            $item->checkData();
         }
 
         $this->setRecollect(true);
@@ -431,36 +520,41 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
                 $itemQty    = (int) $info['qty'];
                 $itemQty    = $itemQty>0 ? $itemQty : 1;
                 if (isset($info['custom_price'])) {
-                    $itemPrice  = $this->_parseCustomPrice($info['custom_price']);;
+                    $itemPrice  = $this->_parseCustomPrice($info['custom_price']);
                 }
                 else {
                     $itemPrice = null;
                 }
                 $noDiscount = !isset($info['use_discount']);
 
+//                if ($item = $this->getQuote()->getItemById($itemId)) {
+//                    $this->_assignOptionsToItem(
+//                        $item,
+//                        $this->_parseOptions($item, $info['options'])
+//                    );
+//                    if (empty($info['action'])) {
+//                        $item->setQty($itemQty);
+//                        $item->setCustomPrice($itemPrice);
+//                        $item->setNoDiscount($noDiscount);
+//                    }
+//                    else {
+//                        $this->moveQuoteItem($item, $info['action'], $itemQty);
+//                    }
+//                }
+
                 if (empty($info['action'])) {
-
                     if ($item = $this->getQuote()->getItemById($itemId)) {
-                       $item->setQty($itemQty);
-                       $item->setCustomPrice($itemPrice);
-                       $item->setNoDiscount($noDiscount);
 
-                       //options
-//                       $options = explode("\n", $info['options']);
-//                       foreach ($options as $option) {
-                            $option = $info['options'];
-                            $item->addOption(
-                                new Varien_Object(
-                                    array(
-                                        'item_id' => $item->getId(),
-                                        'product_id' => $item->getProduct()->getId(),
-                                        'product' => $item->getProduct(),
-                                        'code' => 'option_admin',
-                                        'value' => $option
-                                    )
-                            ));
-//                       }
+                        $item->setQty($itemQty);
+                        $item->setCustomPrice($itemPrice);
+                        $item->setNoDiscount($noDiscount);
+                        $item->getProduct()->setIsSuperMode(true);
 
+                        $this->_assignOptionsToItem(
+                            $item,
+                            $this->_parseOptions($item, $info['options'])
+                        );
+                        $item->checkData();
                     }
                 }
                 else {
@@ -470,6 +564,180 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
             $this->setRecollect(true);
         }
         return $this;
+    }
+
+    /**
+     * Parse additional options and sync them with product options
+     *
+     * @param Mage_Sales_Model_Quote_Item $product
+     * @param array $options
+     */
+    protected function _parseOptions(Mage_Sales_Model_Quote_Item $item, $additionalOptions)
+    {
+        if (!isset($this->_productOptions[$item->getProduct()->getId()])) {
+            foreach ($item->getProduct()->getOptions() as $_option) {
+                /* @var $option Mage_Catalog_Model_Product_Option */
+                $this->_productOptions[$item->getProduct()->getId()][$_option->getTitle()] = array('option_id' => $_option->getId());
+                if ($_option->getGroupByType() == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                    $optionValues = array();
+                    foreach ($_option->getValues() as $_value) {
+                        /* @var $value Mage_Catalog_Model_Product_Option_Value */
+                        $optionValues[$_value->getTitle()] = $_value->getId();
+                    }
+                    $this->_productOptions[$item->getProduct()->getId()][$_option->getTitle()]['values'] = $optionValues;
+                } else {
+                    $this->_productOptions[$item->getProduct()->getId()][$_option->getTitle()]['values'] = array();
+                }
+            }
+        }
+
+        $newOptions = array();
+        $newAdditionalOptions = array();
+        foreach (explode("\n", $additionalOptions) as $_additionalOption) {
+            if (strlen(trim($_additionalOption))) {
+                try {
+                    list($label,$value) = explode(':', $_additionalOption);
+                } catch (Exception $e) {
+                    Mage::throwException(Mage::helper('adminhtml')->__('One of options row has error'));
+                }
+                $label = trim($label);
+                $value = trim($value);
+                if (empty($value)) {
+                    continue;
+                }
+
+                if (isset($this->_productOptions[$item->getProduct()->getId()])) {
+                    if (array_key_exists($label, $this->_productOptions[$item->getProduct()->getId()])) {
+                        $optionId = $this->_productOptions[$item->getProduct()->getId()][$label]['option_id'];
+                        $group = $item->getProduct()
+                                ->getOptionById($optionId)
+                                ->getGroupByType();
+                        $type = $item->getProduct()
+                                ->getOptionById($optionId)
+                                ->getType();
+                        if (($type == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
+                            || $type == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE)) {
+                            $_values = array();
+                            foreach (explode(',', $value) as $_value) {
+                                $_value = trim($_value);
+                                if (array_key_exists($_value, $this->_productOptions[$item->getProduct()->getId()][$label]['values'])) {
+                                    $_values[] = $this->_productOptions[$item->getProduct()->getId()][$label]['values'][$_value];
+                                } else {
+                                    $_values = array();
+                                    $newAdditionalOptions[] = array(
+                                        'label' => $label,
+                                        'value' => $value
+                                    );
+                                    break;
+                                }
+                            }
+                            if (count($_values)) {
+                                $newOptions[$optionId] = implode(',',$_values);
+                            }
+                        } elseif ($group == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                            if (array_key_exists($value, $this->_productOptions[$item->getProduct()->getId()][$label]['values'])) {
+                                $newOptions[$optionId] = $this->_productOptions[$item->getProduct()->getId()][$label]['values'][$value];
+                            } else {
+                                $newAdditionalOptions[] = array(
+                                    'label' => $label,
+                                    'value' => $value
+                                );
+                            }
+                        } else {
+                            $newOptions[$optionId] = $value;
+                        }
+                    } else {
+                        $newAdditionalOptions[] = array(
+                            'label' => $label,
+                            'value' => $value
+                        );
+                    }
+                } else {
+                    $newAdditionalOptions[] = array(
+                        'label' => $label,
+                        'value' => $value
+                    );
+                }
+            }
+        }
+
+        return array(
+            'options' => $newOptions,
+            'additional_options' => $newAdditionalOptions
+        );
+    }
+
+    /**
+     * Assign options to item
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @param array $options
+     */
+    protected function _assignOptionsToItem(Mage_Sales_Model_Quote_Item $item, $options)
+    {
+        if ($optionIds = $item->getOptionByCode('option_ids')) {
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                $item->removeOption('option_'.$optionId);
+            }
+            $item->removeOption('option_ids');
+        }
+        if ($item->getOptionByCode('additional_options')) {
+            $item->removeOption('additional_options');
+        }
+        $item->save();
+        if (!empty($options['options'])) {
+            $item->addOption(new Varien_Object(
+                array(
+                    'product' => $item->getProduct(),
+                    'code' => 'option_ids',
+                    'value' => implode(',', array_keys($options['options']))
+                )
+            ));
+
+            foreach ($options['options'] as $optionId => $optionValue) {
+                $item->addOption(new Varien_Object(
+                    array(
+                        'product' => $item->getProduct(),
+                        'code' => 'option_'.$optionId,
+                        'value' => $optionValue
+                    )
+                ));
+            }
+        }
+        if (!empty($options['additional_options'])) {
+            $item->addOption(new Varien_Object(
+                array(
+                    'product' => $item->getProduct(),
+                    'code' => 'additional_options',
+                    'value' => serialize($options['additional_options'])
+                )
+            ));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Prepare options array for info buy request
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return array
+     */
+    protected function _prepareOptionsForRequest($item)
+    {
+        $newInfoOptions = array();
+        if ($optionIds = $item->getOptionByCode('option_ids')) {
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                $optionType = $item->getProduct()->getOptionById($optionId)->getType();
+                $optionValue = $item->getOptionByCode('option_'.$optionId)->getValue();
+                if ($optionType == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
+                    || $optionType == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
+                    $optionValue = explode(',', $optionValue);
+                }
+                $newInfoOptions[$optionId] = $optionValue;
+            }
+        }
+        return $newInfoOptions;
     }
 
     protected function _parseCustomPrice($price)
@@ -510,7 +778,7 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
     {
         if ($flag) {
             $tmpAddress = clone $this->getBillingAddress();
-            $tmpAddress->unsEntityId()
+            $tmpAddress->unsAddressId()
                 ->unsAddressType();
             $this->getShippingAddress()->addData($tmpAddress->getData());
         }
@@ -566,10 +834,15 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
 
     public function collectShippingRates()
     {
-        $this->getQuote()->collectTotals();
+        $this->collectRates();
         $this->getQuote()->getShippingAddress()->setCollectShippingRates(true);
         $this->getQuote()->getShippingAddress()->collectShippingRates();
         return $this;
+    }
+
+    public function collectRates()
+    {
+        $this->getQuote()->collectTotals();
     }
 
     public function setPaymentMethod($method)
@@ -620,7 +893,12 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
      */
     public function importPostData($data)
     {
-        $this->addData($data);
+    	if (is_array($data)) {
+    		$this->addData($data);
+    	}
+    	else {
+    		return $this;
+    	}
 
         if (isset($data['account'])) {
             $this->setAccountData($data['account']);
@@ -671,13 +949,53 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
 
         $quote = $this->getQuote();
 
-        $order = $quoteConvert->addressToOrder($quote->getShippingAddress());
+        if ($this->getQuote()->getIsVirtual()) {
+            $order = $quoteConvert->addressToOrder($quote->getBillingAddress());
+        }
+        else {
+            $order = $quoteConvert->addressToOrder($quote->getShippingAddress());
+        }
         $order->setBillingAddress($quoteConvert->addressToOrderAddress($quote->getBillingAddress()))
-            ->setShippingAddress($quoteConvert->addressToOrderAddress($quote->getShippingAddress()))
             ->setPayment($quoteConvert->paymentToOrderPayment($quote->getPayment()));
+        if (!$this->getQuote()->getIsVirtual()) {
+            $order->setShippingAddress($quoteConvert->addressToOrderAddress($quote->getShippingAddress()));
+        }
 
-        foreach ($quote->getShippingAddress()->getAllItems() as $item) {
-            $order->addItem($quoteConvert->itemToOrderItem($item));
+        if (!$this->getQuote()->getIsVirtual()) {
+            foreach ($quote->getShippingAddress()->getAllItems() as $item) {
+                /* @var $item Mage_Sales_Model_Quote_Item */
+                $orderItem = $quoteConvert->itemToOrderItem($item);
+                $options = array();
+                if ($productOptions = $item->getProduct()->getTypeInstance()->getOrderOptions()) {
+                    $productOptions['info_buyRequest']['options'] = $this->_prepareOptionsForRequest($item);
+                    $options = $productOptions;
+                }
+                if ($addOptions = $item->getOptionByCode('additional_options')) {
+                    $options['additional_options'] = unserialize($addOptions->getValue());
+                }
+                if ($options) {
+                    $orderItem->setProductOptions($options);
+                }
+                $order->addItem($orderItem);
+            }
+        }
+        if ($this->getQuote()->hasVirtualItems()) {
+            foreach ($quote->getBillingAddress()->getAllItems() as $item) {
+                /* @var $item Mage_Sales_Model_Quote_Item */
+                $orderItem = $quoteConvert->itemToOrderItem($item);
+                $options = array();
+                if ($productOptions = $item->getProduct()->getTypeInstance()->getOrderOptions()) {
+                    $productOptions['info_buyRequest']['options'] = $this->_prepareOptionsForRequest($item);
+                    $options = $productOptions;
+                }
+                if ($addOptions = $item->getOptionByCode('additional_options')) {
+                    $options['additional_options'] = unserialize($addOptions->getValue());
+                }
+                if ($options) {
+                    $orderItem->setProductOptions($options);
+                }
+                $order->addItem($orderItem);
+            }
         }
 
         if ($this->getSendConfirmation()) {
@@ -732,12 +1050,14 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object
             $errors[] = Mage::helper('adminhtml')->__('You need specify order items');
         }
 
-        if (!$this->getQuote()->getShippingAddress()->getShippingMethod()) {
-            $errors[] = Mage::helper('adminhtml')->__('Shipping method must be specified');
-        }
+        if (!$this->getQuote()->isVirtual()) {
+            if (!$this->getQuote()->getShippingAddress()->getShippingMethod()) {
+                $errors[] = Mage::helper('adminhtml')->__('Shipping method must be specified');
+            }
 
-        if (!$this->getQuote()->getPayment()->getMethod()) {
-            $errors[] = Mage::helper('adminhtml')->__('Payment method must be specified');
+            if (!$this->getQuote()->getPayment()->getMethod()) {
+                $errors[] = Mage::helper('adminhtml')->__('Payment method must be specified');
+            }
         }
 
         if (!empty($errors)) {

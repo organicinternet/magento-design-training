@@ -25,16 +25,8 @@
  * @package    Mage_Adminhtml
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Controller_Action
+class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Controller_Sales_Invoice
 {
-    /**
-     * Additional initialization
-     */
-    protected function _construct()
-    {
-        $this->setUsedModuleName('Mage_Sales');
-    }
-
     protected function _getItemQtys()
     {
         $data = $this->getRequest()->getParam('invoice');
@@ -43,7 +35,7 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
             //$this->_getSession()->setInvoiceItemQtys($qtys);
         }
         /*elseif ($this->_getSession()->getInvoiceItemQtys()) {
-        	$qtys = $this->_getSession()->getInvoiceItemQtys();
+            $qtys = $this->_getSession()->getInvoiceItemQtys();
         }*/
         else {
             $qtys = array();
@@ -56,7 +48,7 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
      *
      * @return Mage_Sales_Model_Order_Invoice
      */
-    protected function _initInvoice()
+    protected function _initInvoice($update = false)
     {
         $invoice = false;
         if ($invoiceId = $this->getRequest()->getParam('invoice_id')) {
@@ -84,18 +76,28 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
 
             $savedQtys = $this->_getItemQtys();
             foreach ($order->getAllItems() as $orderItem) {
-                if (!$orderItem->getQtyToInvoice()) {
+
+                if (!$orderItem->isDummy() && !$orderItem->getQtyToInvoice()) {
+                    continue;
+                }
+
+                if (!$update && $orderItem->isDummy() && !empty($savedQtys) && !$this->_needToAddDummy($orderItem, $savedQtys)) {
                     continue;
                 }
                 $item = $convertor->itemToInvoiceItem($orderItem);
+
                 if (isset($savedQtys[$orderItem->getId()])) {
                     $qty = $savedQtys[$orderItem->getId()];
                 }
                 else {
-                    $qty = $orderItem->getQtyToInvoice();
+                    if ($orderItem->isDummy()) {
+                        $qty = 1;
+                    } else {
+                        $qty = $orderItem->getQtyToInvoice();
+                    }
                 }
                 $item->setQty($qty);
-            	$invoice->addItem($item);
+                $invoice->addItem($item);
             }
             $invoice->collectTotals();
         }
@@ -151,9 +153,10 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
     {
         if ($invoice = $this->_initInvoice()) {
             $this->loadLayout()
-                ->_setActiveMenu('sales/order')
-                ->_addContent($this->getLayout()->createBlock('adminhtml/sales_order_invoice_view')->updateBackButtonUrl($this->getRequest()->getParam('come_from')))
-                ->renderLayout();
+                ->_setActiveMenu('sales/order');
+            $this->getLayout()->getBlock('sales_invoice_view')
+                ->updateBackButtonUrl($this->getRequest()->getParam('come_from'));
+            $this->renderLayout();
         }
         else {
             $this->_forward('noRoute');
@@ -180,7 +183,6 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
         if ($invoice = $this->_initInvoice()) {
             $this->loadLayout()
                 ->_setActiveMenu('sales/order')
-                ->_addContent($this->getLayout()->createBlock('adminhtml/sales_order_invoice_create'))
                 ->renderLayout();
         }
         else {
@@ -195,9 +197,9 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
     public function updateQtyAction()
     {
         try {
-            $invoice = $this->_initInvoice();
-            $response = $this->getLayout()->createBlock('adminhtml/sales_order_invoice_create_items')
-                ->toHtml();
+            $invoice = $this->_initInvoice(true);
+            $this->loadLayout();
+            $response = $this->getLayout()->getBlock('order_items')->toHtml();
         }
         catch (Mage_Core_Exception $e) {
             $response = array(
@@ -375,9 +377,8 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
             $invoice->sendUpdateEmail(!empty($data['is_customer_notified']), $data['comment']);
             $invoice->save();
 
-            $response = $this->getLayout()->createBlock('adminhtml/sales_order_comments_view')
-                ->setEntity($invoice)
-                ->toHtml();
+            $this->loadLayout();
+            $response = $this->getLayout()->getBlock('invoice_comments')->toHtml();
         }
         catch (Mage_Core_Exception $e) {
             $response = array(
@@ -396,16 +397,29 @@ class Mage_Adminhtml_Sales_Order_InvoiceController extends Mage_Adminhtml_Contro
         $this->getResponse()->setBody($response);
     }
 
-    public function printAction()
-    {
-        if ($invoiceId = $this->getRequest()->getParam('invoice_id')) {
-            if ($invoice = Mage::getModel('sales/order_invoice')->load($invoiceId)) {
-                $pdf = Mage::getModel('sales/order_pdf_invoice')->getPdf(array($invoice));
-                $this->_prepareDownloadResponse('invoice'.Mage::getSingleton('core/date')->date('Y-m-d_H-i-s').'.pdf', $pdf->render(), 'application/pdf');
+    /**
+     * Decides if we need to create dummy invoice item or not
+     * for eaxample we don't need create dummy parent if all
+     * children are not in process
+     *
+     * @param Mage_Sales_Model_Order_Item $item
+     * @param array $qtys
+     * @return bool
+     */
+    protected function _needToAddDummy($item, $qtys) {
+        if ($item->getHasChildren()) {
+            foreach ($item->getChildrenItems() as $child) {
+                if (isset($qtys[$child->getId()]) && $qtys[$child->getId()] > 0) {
+                    return true;
+                }
             }
-        }
-        else {
-            $this->_forward('noRoute');
+            return false;
+        } else if($item->getParentItem()) {
+            if (isset($qtys[$item->getParentItem()->getId()]) && $qtys[$item->getParentItem()->getId()] > 0) {
+                return true;
+            }
+            return false;
         }
     }
+
 }

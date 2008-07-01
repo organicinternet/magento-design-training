@@ -29,6 +29,13 @@ class Mage_Api_Model_Resource_Abstract
 {
 
     /**
+     * Resource configuration
+     *
+     * @var Varien_Simplexml_Element
+     */
+    protected $_resourceConfig = null;
+
+    /**
      * Retrieve webservice session
      *
      * @return Mage_Api_Model_Session
@@ -46,6 +53,28 @@ class Mage_Api_Model_Resource_Abstract
     protected function _getConfig()
     {
         return Mage::getSingleton('api/config');
+    }
+
+    /**
+     * Set configuration for api resource
+     *
+     * @param Varien_Simplexml_Element $xml
+     * @return Mage_Api_Model_Resource_Abstract
+     */
+    public function setResourceConfig(Varien_Simplexml_Element $xml)
+    {
+        $this->_resourceConfig = $xml;
+        return $this;
+    }
+
+    /**
+     * Retrieve configuration for api resource
+     *
+     * @return Varien_Simplexml_Element
+     */
+    public function getResourceConfig()
+    {
+        return $this->_resourceConfig;
     }
 
     /**

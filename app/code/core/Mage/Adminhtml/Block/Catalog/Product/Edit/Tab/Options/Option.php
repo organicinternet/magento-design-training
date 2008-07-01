@@ -182,16 +182,13 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Options_Option extends Mage_
 
     public function getOptionValues()
     {
-        $optionsCollection = $this->getProduct()
-            ->getProductOptionsCollection()
-            ->setOrder('`main_table`.sort_order', 'desc')
-            ->setOrder('title', 'desc')
-            ->load(false);
+        $optionsArr = array_reverse($this->getProduct()->getOptions(), true);
+//        $optionsArr = $this->getProduct()->getOptions();
 
         if (!$this->_values) {
             $values = array();
             $scope = (int) Mage::app()->getStore()->getConfig(Mage_Core_Model_Store::XML_PATH_PRICE_SCOPE);
-            foreach ($optionsCollection as $option) {
+            foreach ($optionsArr as $option) {
                 /* @var $option Mage_Catalog_Model_Product_Option */
 
                 $this->setItemCount($option->getOptionId());
@@ -211,19 +208,13 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Options_Option extends Mage_
                     $value['scopeTitleDisabled'] = is_null($option->getStoreTitle())?'disabled':null;
                 }
 
-                if ($option->getType() == 'drop_down'
-                    || $option->getType() == 'checkbox'
-                    || $option->getType() == 'radio'
-                    || $option->getType() == 'multiple') {
+                if ($option->getGroupByType() == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
 
-                    $valueCollection = $option->getValuesCollection()
-                        ->setOrder('sort_order', 'desc')
-                        ->setOrder('title', 'desc')
-                        ->load(false);
+//                    $valuesArr = array_reverse($option->getValues(), true);
 
                     $i = 0;
                     $itemCount = 0;
-                    foreach ($valueCollection as $_value) {
+                    foreach ($option->getValues() as $_value) {
                         /* @var $_value Mage_Catalog_Model_Product_Option_Value */
                         $value['optionValues'][$i] = array(
                             'item_count' => max($itemCount, $_value->getOptionTypeId()),

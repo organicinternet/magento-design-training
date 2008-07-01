@@ -296,17 +296,35 @@ p.required {
 .box-head {}
 
 /********************** Prices */
+
 .price-box {}
-.regular-price {}
+.regular-price{}
+
 .old-price {}
+.old-price .label {}
 .old-price .price {}
-.special-price {}
+
+/*Special price*/
+.special-price{}
 .special-price .label {}
 .special-price .price {}
 
+/*minimal price (as low as) */
 .minimal-price {}
 .minimal-price .label {}
 .minimal-price .price {}
+
+/*including tax*/
+.price-including-tax {}
+.price-including-tax .label {}
+.price-including-tax .price {}
+
+
+/*excluding tax*/
+.price-excluding-tax  {}
+.price-excluding-tax .label {}
+.price-excluding-tax .price {}
+
 
 
 /**********************General Product */

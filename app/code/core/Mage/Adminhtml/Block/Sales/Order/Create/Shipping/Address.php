@@ -79,4 +79,9 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Address extends Mage_Admi
     {
         return $this->getCreateOrderModel()->getShippingAddress();
     }
+
+    public function getIsDisabled()
+    {
+        return $this->getQuote()->isVirtual();
+    }
 }

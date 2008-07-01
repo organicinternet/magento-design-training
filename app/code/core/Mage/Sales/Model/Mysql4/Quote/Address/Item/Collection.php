@@ -34,6 +34,21 @@ class Mage_Sales_Model_Mysql4_Quote_Address_Item_Collection extends Mage_Core_Mo
         $this->_init('sales/quote_address_item');
     }
 
+    protected function _afterLoad()
+    {
+        parent::_afterLoad();
+        /**
+         * Assign parent items
+         */
+        foreach ($this as $item) {
+        	if ($item->getParentItemId()) {
+        	    $item->setParentItem($this->getItemById($item->getParentItemId()));
+        	}
+        }
+
+        return $this;
+    }
+
     public function setAddressFilter($addressId)
     {
         $this->addFieldToFilter('quote_address_id', $addressId);

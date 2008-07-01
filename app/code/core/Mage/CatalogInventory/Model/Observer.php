@@ -133,7 +133,7 @@ class Mage_CatalogInventory_Model_Observer
     {
         $item = $observer->getEvent()->getItem();
         /* @var $item Mage_Sales_Model_Quote_Item */
-        if (!$item || !$item->getProductId()) {
+        if (!$item || !$item->getProductId() || $item->getQuote()->getIsSuperMode()) {
             return $this;
         }
 

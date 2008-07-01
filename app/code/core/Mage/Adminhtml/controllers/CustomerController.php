@@ -272,6 +272,15 @@ class Mage_Adminhtml_CustomerController extends Mage_Adminhtml_Controller_Action
     }
 
     /**
+     * Customer last orders grid for ajax
+     *
+     */
+    public function lastOrdersAction() {
+        $this->_initCustomer();
+        $this->getResponse()->setBody($this->getLayout()->createBlock('adminhtml/customer_edit_tab_view_orders')->toHtml());
+    }
+
+    /**
      * Customer newsletter grid
      *
      */
@@ -304,6 +313,16 @@ class Mage_Adminhtml_CustomerController extends Mage_Adminhtml_Controller_Action
     }
 
     /**
+     * Customer last view wishlist for ajax
+     *
+     */
+    public function viewWishlistAction()
+    {
+        $this->_initCustomer();
+        $this->getResponse()->setBody($this->getLayout()->createBlock('adminhtml/customer_edit_tab_view_wishlist')->toHtml());
+    }
+
+    /**
      * [Handle and then] get a cart grid contents
      *
      * @return string
@@ -325,6 +344,21 @@ class Mage_Adminhtml_CustomerController extends Mage_Adminhtml_Controller_Action
 
         $this->getResponse()->setBody(
             $this->getLayout()->createBlock('adminhtml/customer_edit_tab_cart', '', array('website_id'=>$websiteId))
+                ->toHtml()
+        );
+    }
+
+    /**
+     * Get shopping cart to view only
+     *
+     */
+    public function viewCartAction()
+    {
+        $this->_initCustomer();
+
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('adminhtml/customer_edit_tab_view_cart')
+                ->setWebsiteId($this->getRequest()->getParam('website_id'))
                 ->toHtml()
         );
     }

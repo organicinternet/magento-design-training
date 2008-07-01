@@ -33,13 +33,9 @@ class Mage_Adminhtml_IndexController extends Mage_Adminhtml_Controller_Action
 
     public function indexAction()
     {
-        $url = Mage::getSingleton('admin/session')->getUser()->findFirstAvailableMenu();
+        $url = Mage::getSingleton('admin/session')->getUser()->getStatrupPageUrl();
 
-        if (Mage::getSingleton('admin/session')->isAllowed('dashboard') || $url == '') {
-            $this->_redirect('*/dashboard');
-        } else {
-            $this->_redirect($url);
-        }
+        $this->_redirect($url);
         return;
 
         $this->loadLayout();

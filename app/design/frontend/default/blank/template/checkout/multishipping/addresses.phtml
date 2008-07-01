@@ -30,6 +30,7 @@
     <h2 class="page-head"><?php echo $this->__('Ship to Multiple Addresses') ?></h2>
     <button class="form-button" type="submit" onclick="$('add_new_address_flag').value=1"><span><?php echo $this->__('Enter a New Address') ?></span></button>
 </div>
+<div class="multi-address-checkout-description"><?php echo $this->__('Please select shipping address for applicable items') ?></div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <fieldset>
     <input type="hidden" name="continue" value="0" id="can_continue_flag"/>
@@ -55,14 +56,11 @@
         <tbody>
         <?php foreach ($this->getItems() as $_index => $_item): ?>
             <tr>
-                <td>
-                    <h3><a href="<?php echo $this->helper('checkout')->getQuoteItemProductUrl($_item) ?>">
-                        <?php echo $this->helper('checkout')->getQuoteItemProductName($_item) ?>
-                    </a></h3>
-                    <?php echo $this->helper('checkout')->getQuoteItemProductDescription($_item) ?>
+                <td class="attributes-col">
+                    <?php echo $this->getItemHtml($_item->getQuoteItem())?>
                 </td>
                 <td><input name="ship[<?php echo $_index ?>][<?php echo $_item->getQuoteItemId() ?>][qty]" value="<?php echo $this->htmlEscape($_item->getQty()) ?>" size="2" class="input-text qty" /></td>
-                <td><?php echo $this->getAddressesHtmlSelect($_item, $_index) ?></td>
+                <td><?php if ($_item->getProduct()->getIsVirtual()): echo $this->__('Shipping selection is not applicable'); else: echo $this->getAddressesHtmlSelect($_item, $_index); endif; ?></td>
                 <td><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php echo $this->__('Remove Item') ?>" /></a></td>
             </tr>
         <?php endforeach; ?>

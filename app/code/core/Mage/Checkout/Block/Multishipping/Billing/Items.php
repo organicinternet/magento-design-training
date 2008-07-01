@@ -66,7 +66,7 @@ class Mage_Checkout_Block_Multishipping_Billing_Items extends Mage_Sales_Block_I
     {
         $items = array();
         foreach ($this->getQuote()->getItemsCollection() as $_item) {
-            if ($_item->getProduct()->getIsVirtual()) {
+            if ($_item->getProduct()->getIsVirtual() && !$_item->getParentItemId()) {
                 $items[] = $_item;
             }
         }

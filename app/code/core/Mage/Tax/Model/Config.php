@@ -32,8 +32,10 @@ class Mage_Tax_Model_Config
 
     // tax calculation
     const CONFIG_XML_PATH_PRICE_INCLUDES_TAX = 'tax/calculation/price_includes_tax';
+    const CONFIG_XML_PATH_SHIPPING_INCLUDES_TAX = 'tax/calculation/shipping_includes_tax';
     const CONFIG_XML_PATH_BASED_ON = 'tax/calculation/based_on';
     const CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT = 'tax/calculation/apply_after_discount';
+    const CONFIG_XML_PATH_DISCOUNT_TAX = 'tax/calculation/discount_tax';
 
     // tax defaults
     const CONFIG_XML_PATH_DEFAULT_COUNTRY = 'tax/defaults/country';
@@ -44,6 +46,7 @@ class Mage_Tax_Model_Config
     const CONFIG_XML_PATH_PRICE_DISPLAY_TYPE = 'tax/display/type';
     const CONFIG_XML_PATH_DISPLAY_TAX_COLUMN = 'tax/display/column_in_summary';
     const CONFIG_XML_PATH_DISPLAY_FULL_SUMMARY = 'tax/display/full_summary';
+    const CONFIG_XML_PATH_DISPLAY_SHIPPING = 'tax/display/shipping';
 
     // deprecated settings
     const CONFIG_XML_PATH_SHOW_IN_CATALOG = 'tax/display/show_in_catalog';

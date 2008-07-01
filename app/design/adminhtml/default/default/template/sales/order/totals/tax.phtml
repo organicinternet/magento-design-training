@@ -1,9 +1,9 @@
 <?php if ($this->helper('tax')->displayFullSummary()): ?>
     <?php $isTop = 1; ?>
     <?php foreach ($this->getFullTaxInfo() as $info): ?>
-    <?php try { ?>
         <?php $percent = $info['percent']; ?>
         <?php $amount = $info['amount']; ?>
+        <?php $baseAmount = $info['base_amount']; ?>
         <?php $rates = $info['rates']; ?>
         <?php $isFirst = 1; ?>
 
@@ -15,14 +15,13 @@
 
             <?php if ($isFirst): ?>
                 <td class="a-right" rowspan="<?php echo count($rates); ?>">
-                    <?php echo $this->helper('checkout')->formatPrice($amount); ?>
+                    <?php echo $this->displayAmount($amount, $baseAmount); ?>
                 </td>
             <?php endif; ?>
         </tr>
         <?php $isFirst = 0; ?>
-        <?php endforeach; ?>
 		<?php $isTop = 0; ?>
-    <?php } catch (Exception $e) { echo $e->getMessage(); } ?>
+        <?php endforeach; ?>
     <?php endforeach; ?>
 <?php endif;?>
 
@@ -37,6 +36,6 @@
         </div>
     </td>
     <td class="a-right">
-        <strong><?php echo $this->helper('checkout')->formatPrice($this->getOrder()->getTaxAmount()) ?></strong>
+        <?php echo $this->displayAmount($this->getOrder()->getTaxAmount(), $this->getOrder()->getBaseTaxAmount()); ?>
     </td>
 </tr>

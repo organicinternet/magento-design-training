@@ -91,12 +91,13 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Sidebar_Pviewed extends Mage_Admin
     }
 
     /**
-     * Retrieve product identifier of block item
+     * Retrieve identifier of block item
      *
-     * @param   mixed $item
-     * @return  int
+     * @param Varien_Object $item
+     * @return int
      */
-    public function getProductId($item) {
+    public function getIdentifierId($item)
+    {
         return $item->getId();
     }
 }

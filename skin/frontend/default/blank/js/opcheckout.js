@@ -14,14 +14,15 @@
  * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 var Checkout = Class.create();
 Checkout.prototype = {
-    initialize: function(accordion, progressUrl, reviewUrl, saveMethodUrl, failureUrl){
+    initialize: function(accordion, urls){
         this.accordion = accordion;
-        this.progressUrl = progressUrl;
-        this.reviewUrl = reviewUrl;
-        this.saveMethodUrl = saveMethodUrl;
-		this.failureUrl = failureUrl;
+        this.progressUrl = urls.progress;
+        this.reviewUrl = urls.review;
+        this.saveMethodUrl = urls.saveMethod;
+		this.failureUrl = urls.failure;
         this.billingForm = false;
         this.shippingForm= false;
         this.syncBillingShipping = false;
@@ -48,16 +49,30 @@ Checkout.prototype = {
         var updater = new Ajax.Updater('checkout-review-load', this.reviewUrl, {method: 'get', onFailure: this.ajaxFailure.bind(this)});
     },
 
+    _disableEnableAll: function(element, isDisabled) {
+        var descendants = element.descendants();
+        for (var k in descendants) {
+            descendants[k].disabled = isDisabled;
+        }
+        element.disabled = isDisabled;
+    },
+
     setLoadWaiting: function(step) {
         if (step) {
             if (this.loadWaiting) {
                 this.setLoadWaiting(false);
             }
-            $(step+'-buttons-container').setStyle({opacity:.5});
+            var container = $(step+'-buttons-container');
+            container.setStyle({opacity:.5});
+            this._disableEnableAll(container, true);
             Element.show(step+'-please-wait');
         } else {
             if (this.loadWaiting) {
-                $(this.loadWaiting+'-buttons-container').setStyle({opacity:1});
+                if (this.loadWaiting != 'review') {
+                    var container = $(this.loadWaiting+'-buttons-container');
+                    container.setStyle({opacity:1});
+                    this._disableEnableAll(container, false);
+                }
                 Element.hide(this.loadWaiting+'-please-wait');
             }
         }
@@ -156,6 +171,27 @@ Checkout.prototype = {
     back: function(){
         if (this.loadWaiting) return;
         this.accordion.openPrevSection(true);
+    },
+
+    setStepResponse: function(response){
+        if (response.update_section) {
+            $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+        }
+        if (response.allow_sections) {
+            response.allow_sections.each(function(e){
+                $('opc-'+e).addClassName('allow');
+            });
+        }
+        if (response.goto_section) {
+            this.reloadProgressBlock();
+            this.gotoSection(response.goto_section);
+            return true;
+        }
+        if (response.redirect) {
+            location.href = response.redirect;
+            return true;
+        }
+        return false;
     }
 }
 
@@ -292,6 +328,7 @@ Billing.prototype = {
                 response = {};
             }
         }
+
         if (response.error){
             if ((typeof response.message) == 'string') {
                 alert(response.message);
@@ -305,18 +342,13 @@ Billing.prototype = {
 
             return false;
         }
-        if (response.redirect) {
-            location.href = response.redirect;
-            return;
-        }
-        if (response.shipping_methods_html) {
-        	$('checkout-shipping-method-load').innerHTML = response.shipping_methods_html;
-        }
+
+        checkout.setStepResponse(response);
 
         // DELETE
         //alert('error: ' + response.error + ' / redirect: ' + response.redirect + ' / shipping_methods_html: ' + response.shipping_methods_html);
         // This moves the accordion panels of one page checkout and updates the checkout progress
-        checkout.setBilling();
+        //checkout.setBilling();
     }
 }
 
@@ -466,14 +498,8 @@ Shipping.prototype = {
             return false;
         }
 
-        if (response.redirect) {
-            location.href = response.redirect;
-            return;
-        }
+        checkout.setStepResponse(response);
 
-        if (response.shipping_methods_html) {
-        	$('checkout-shipping-method-load').innerHTML = response.shipping_methods_html;
-        }
         /*
         var updater = new Ajax.Updater(
             'checkout-shipping-method-load',
@@ -481,7 +507,7 @@ Shipping.prototype = {
             {method:'get', onSuccess: checkout.setShipping.bind(checkout)}
         );
         */
-        checkout.setShipping();
+        //checkout.setShipping();
     }
 }
 
@@ -551,6 +577,16 @@ ShippingMethod.prototype = {
             alert(response.message);
             return false;
         }
+
+        if (response.update_section) {
+            $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+        }
+        if (response.goto_section) {
+            checkout.gotoSection(response.goto_section);
+            checkout.reloadProgressBlock();
+            return;
+        }
+
         if (response.payment_methods_html) {
         	$('checkout-payment-method-load').update(response.payment_methods_html);
         }
@@ -668,22 +704,19 @@ Payment.prototype = {
             alert(response.error);
             return;
         }
-        if (response.redirect) {
-            location.href = response.redirect;
-            return;
-        }
-        if (response.review_html) {
-        	$('checkout-review-load').innerHTML = response.review_html;
-        }
-        checkout.setPayment();
+
+        checkout.setStepResponse(response);
+
+        //checkout.setPayment();
     }
 }
 
 var Review = Class.create();
 Review.prototype = {
-    initialize: function(saveUrl, successUrl){
+    initialize: function(saveUrl, successUrl, agreementsForm){
         this.saveUrl = saveUrl;
         this.successUrl = successUrl;
+        this.agreementsForm = agreementsForm;
         this.onSave = this.nextStep.bindAsEventListener(this);
         this.onComplete = this.resetLoadWaiting.bindAsEventListener(this);
     },
@@ -692,6 +725,9 @@ Review.prototype = {
     	if (checkout.loadWaiting!=false) return;
         checkout.setLoadWaiting('review');
         var params = Form.serialize(payment.form);
+        if (this.agreementsForm) {
+            params += '&'+Form.serialize(this.agreementsForm);
+        }
         params.save = true;
         var request = new Ajax.Request(
             this.saveUrl,

@@ -282,7 +282,7 @@ class Mage_Eav_Model_Entity_Collection_Abstract extends Varien_Data_Collection_D
             if ($attrInstance->getBackend()->isStatic()) {
                 $this->getSelect()->order($entityField.' '.$dir);
             } else {
-                $this->_addAttributeJoin($attribute);
+                $this->_addAttributeJoin($attribute, 'left');
                 if (isset($this->_joinAttributes[$attribute])) {
                     $this->getSelect()->order($attribute.' '.$dir);
                 }

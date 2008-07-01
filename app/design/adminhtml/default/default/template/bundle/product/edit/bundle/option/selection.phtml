@@ -13,7 +13,7 @@
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
  * @category   design_default
- * @package    Mage
+ * @package    Mage_Bundle
  * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -24,11 +24,11 @@
             <tr class="headings">
                 <th><?php echo Mage::helper('catalog')->__('Name') ?></th>
                 <th class="type-price"><?php echo Mage::helper('catalog')->__('Price') ?></th>
-                <th class="type-type"><?php echo Mage::helper('catalog')->__('Price Type') ?></th>
-                <th class="type-price"><?php echo Mage::helper('catalog')->__('Default Qty') ?></th>
-                <th class="type-uqty"><?php echo Mage::helper('catalog')->__('User Defined Qty') ?></th>
-                <th class="type-order"><?php echo Mage::helper('catalog')->__('Position') ?></th>
-                <th style="width:1px"><?php echo Mage::helper('catalog')->__('Default') ?></th>
+                <th class="type-type"><?php echo Mage::helper('bundle')->__('Price Type') ?></th>
+                <th class="type-price"><?php echo Mage::helper('bundle')->__('Default Qty') ?></th>
+                <th class="type-uqty"><?php echo Mage::helper('bundle')->__('User Defined Qty') ?></th>
+                <th class="type-order"><?php echo Mage::helper('bundle')->__('Position') ?></th>
+                <th style="width:1px"><?php echo Mage::helper('bundle')->__('Default') ?></th>
                 <th class="last">&nbsp;</th>
             </tr>
         </thead>
@@ -39,7 +39,10 @@
                     <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][option_id]" value="{{option_id}}">
                     <input type="hidden" class="product" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][product_id]" value="{{product_id}}">
                     <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][delete]" value="" class="delete">
-                    {{name}}
+                    {{name}}<br />
+                    <div  class="nobr">
+                        <strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> {{sku}}
+                    </div>
                 </td>
                 <td><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_price_value]" value="{{selection_price_value}}"></td>
                 <td><?php echo $this->getPriceTypeSelectHtml() ?></td>
@@ -201,6 +204,7 @@ Bundle.Selection.prototype = {
                     'name' : pair.value.name,
                     'selection_price_value' : 0,
                     'selection_qty' : pair.value.qty == '' ? 1 : pair.value.qty,
+                    'sku' : pair.value.sku,
                     'position' : 0,
                     'product_id' : pair.key,
                     'option_id' : $(bOption.idLabel + '_id_' + parts[2]).value
@@ -227,6 +231,7 @@ Bundle.Selection.prototype = {
             this.gridSelection[id][element.value] = $H({});
             this.gridSelection[id][element.value]['name'] = tr.getElementsByClassName('name')[0].innerHTML;
             this.gridSelection[id][element.value]['qty'] = tr.getElementsByClassName('qty')[0].value;
+            this.gridSelection[id][element.value]['sku'] = tr.getElementsByClassName('sku')[0].innerHTML;
         } else {
             this.gridSelection[id].remove(element.value);
         }

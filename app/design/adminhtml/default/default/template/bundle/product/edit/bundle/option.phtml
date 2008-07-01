@@ -13,7 +13,7 @@
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
  * @category   design_default
- * @package    Mage
+ * @package    Mage_Bundle
  * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -21,7 +21,7 @@
 <script type="text/javascript">
 var optionTemplate = '<div id="<?php echo $this->getFieldId() ?>_{{index}}"  class="option-box"> ' +
 '<div class="option-title"> ' +
-    '<label for="<?php echo $this->getFieldName() ?>[{{index}}][title]"><?php echo Mage::helper('catalog')->__('Default Title') ?></label>' +
+    '<label for="<?php echo $this->getFieldName() ?>[{{index}}][title]"><?php echo Mage::helper('bundle')->__('Default Title') ?> <span class="required">*</span></label>' +
     <?php if ($this->isDefaultStore()): ?>
     '<input class="input-text required-entry" type="text" name="<?php echo $this->getFieldName() ?>[{{index}}][title]" value="{{title}}">' +
     <?php else: ?>
@@ -33,11 +33,11 @@ var optionTemplate = '<div id="<?php echo $this->getFieldId() ?>_{{index}}"  cla
         '<thead>' +
             '<tr>' +
                 <?php if (!$this->isDefaultStore()): ?>
-                '<th class="opt-title"><?php echo Mage::helper('catalog')->__('Store View Title') ?></th>' +
+                '<th class="opt-title"><?php echo Mage::helper('bundle')->__('Store View Title') ?>  <span class="required">*</span></th>' +
                 <?php endif; ?>
-                '<th class="opt-type"><?php echo Mage::helper('catalog')->__('Input Type') ?></th>' +
-                '<th class="opt-req"><?php echo Mage::helper('catalog')->__('Is Require') ?></th>' +
-                '<th class="opt-order"><?php echo Mage::helper('catalog')->__('Position') ?></th>' +
+                '<th class="opt-type"><?php echo Mage::helper('bundle')->__('Input Type') ?></th>' +
+                '<th class="opt-req"><?php echo Mage::helper('bundle')->__('Is Required') ?></th>' +
+                '<th class="opt-order"><?php echo Mage::helper('bundle')->__('Position') ?> <span class="required">*</span></th>' +
                 '<th>&nbsp;</th>' +
             '</tr>' +
         '</thead>' +
@@ -78,6 +78,9 @@ Bundle.Option.prototype = {
     add : function(data) {
         if(!data){
             data = {};
+            this.top = $('product_bundle_container_top');
+        } else {
+            data.title = data.title.replace('"', "&quot;");
         }
 
         data.index = this.itemsCount++;
@@ -88,6 +91,8 @@ Bundle.Option.prototype = {
                 this.top,
                 this.template.evaluate(data)
             );
+
+        this.top = $(this.idLabel + '_' + data.index);
 
         //set selected type
         if (data.type) {
@@ -109,7 +114,7 @@ Bundle.Option.prototype = {
         var element = $(Event.findElement(event, 'div')).parentNode;
         if(element){
             Element.getElementsBySelector(element, '.delete').each(function(elem){elem.value='1'});
-            Element.getElementsBySelector(element, ['input', 'select']).each(function(elem){elem.hide()});
+            Element.getElementsBySelector(element, ['input', 'select']).each(function(elem){elem.hide(); elem.className = '';});
             Element.hide(element);
         }
     },

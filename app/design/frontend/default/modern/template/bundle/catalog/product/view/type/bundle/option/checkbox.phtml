@@ -22,17 +22,14 @@
 
 <?php $_option = $this->getOption() ?>
 <?php $_selections = $_option->getSelections() ?>
-<tr>
-    <td class="label"><?php echo $this->htmlEscape($_option->getTitle()) ?></td>
-    <td>
-        <?php if (count($_selections) == 1 && $_selections[0]->getIsDefault()): ?>
-            <?php echo $_selections[0]->getName() ?>
+<dt><label><?php echo $this->htmlEscape($_option->getTitle()) ?></label></dt>
+<dd>
+        <?php if (count($_selections) == 1 && $_option->getRequired()): ?>
+            <?php echo $this->getSelectionQtyTitlePrice($_selections[0]) ?>
             <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
         <?php else:?>
             <?php foreach($_selections as $_selection): ?>
-                <input onclick="bundle.changeSelection(this)" class="<?php echo $_option->getReauired() ? 'validate-one-required' : '' ?>" id="bundle-option-<?php echo $_option->getId() ?>" type="checkbox" name="bundle_option[<?php echo $_option->getId() ?>][<?php echo $_selection->getSelectionId() ?>]"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' checked="checked" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>value="<?php echo $_selection->getSelectionId() ?>" /><?php echo $this->getSelectionQtyTitlePrice($_selection) ?><br />
+                <label for="bundle-option-<?php echo $_option->getId() ?>"><input onclick="bundle.changeSelection(this)" class="<?php echo $_option->getReauired() ? 'validate-one-required-by-name' : '' ?>" id="bundle-option-<?php echo $_option->getId() ?>" type="checkbox" name="bundle_option[<?php echo $_option->getId() ?>][]"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' checked="checked" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>value="<?php echo $_selection->getSelectionId() ?>" /><?php echo $this->getSelectionQtyTitlePrice($_selection) ?></label>
             <?php endforeach;?>
         <?php endif; ?>
-    </td>
-    <td valign="top" class="a-center">&nbsp;</td>
-</tr>
+</dd>

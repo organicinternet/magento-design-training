@@ -138,7 +138,7 @@ class Mage_Shipping_Model_Mysql4_Carrier_Tablerate extends Mage_Core_Model_Mysql
 
 //            $conditionName = $object->getValue();
 //            if ($conditionName{0} == '_') {
-//                $conditionName = substr($conditionName, 1, strpos($conditionName, '/')-1);
+//                $conditionName = Mage::helper('core/string')->substr($conditionName, 1, strpos($conditionName, '/')-1);
 //            } else {
 //                $conditionName = $websiteModel->getConfig('carriers/tablerate/condition_name');
 //            }

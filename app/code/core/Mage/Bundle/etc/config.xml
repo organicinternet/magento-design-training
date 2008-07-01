@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Bundle>
-            <version>0.1.0</version>
+            <version>0.1.3</version>
         </Mage_Bundle>
     </modules>
     <global>
@@ -82,6 +82,7 @@
                             <downloadable />
                         </allowed_selection_types>
                         <price_model>bundle/product_price</price_model>
+                        <index_data_retreiver>bundle/catalogIndex_data_bundle</index_data_retreiver>
                     </bundle>
                 </type>
             </product>
@@ -92,20 +93,22 @@
                     <product_attributes>
                         <price_view />
                         <price_type />
+                        <shipment_type />
                     </product_attributes>
                 </item>
             </quote>
         </sales>
-        <catalog>
-            <layer>
-                <view>
-                    <product_attributes>
-                        <price_view />
-                        <price_type />
-                    </product_attributes>
-                </view>
-            </layer>
-        </catalog>
+        <pdf>
+            <invoice>
+                <bundle>bundle/sales_order_pdf_items_invoice</bundle>
+            </invoice>
+            <shipment>
+                <bundle>bundle/sales_order_pdf_items_shipment</bundle>
+            </shipment>
+            <creditmemo>
+                <bundle>bundle/sales_order_pdf_items_creditmemo</bundle>
+            </creditmemo>
+        </pdf>
     </global>
     <frontend>
         <routers>
@@ -133,6 +136,14 @@
                 </bundle>
             </updates>
         </layout>
+        <product>
+            <collection>
+                <attributes>
+                    <price_view />
+                    <price_type />
+                </attributes>
+            </collection>
+        </product>
     </frontend>
     <adminhtml>
         <translate>

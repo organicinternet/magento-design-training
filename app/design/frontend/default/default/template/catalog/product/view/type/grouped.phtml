@@ -42,18 +42,68 @@
         <tr>
             <td><?php echo $this->htmlEscape($_item->getName()) ?></td>
             <td class="a-right">
-                <?php $_price = $_item->getPrice() ?>
-                <?php $_finalPrice = $_item->getFinalPrice() ?>
+                <?php $simplePricesTax = ($this->helper('tax')->displayPriceIncludingTax() || $this->helper('tax')->displayBothPrices()); ?>
+                <?php $_price = $this->helper('tax')->getPrice($_item, $_item->getPrice(), $simplePricesTax) ?>
+                <?php $_regularPrice = $this->helper('tax')->getPrice($_item, $_item->getPrice(), $simplePricesTax) ?>
+                <?php $_finalPrice = $this->helper('tax')->getPrice($_item, $_item->getFinalPrice()) ?>
+                <?php $_finalPriceInclTax = $this->helper('tax')->getPrice($_item, $_item->getFinalPrice(), true) ?>
                 <?php if ($_finalPrice == $_price): ?>
-                    <span class="nobr"><?php echo Mage::helper('core')->currency($_price) ?></span><br />
+                    <?php if ($this->helper('tax')->displayBothPrices() && $_finalPriceInclTax != $_finalPrice): ?>
+                        <span class="price-excluding-tax">
+                            <span class="label"><?php echo $this->__('Excl. Tax:') ?></span>
+                            <span class="price" id="price-excluding-tax-<?php echo $_id ?>">
+                                <?php echo Mage::helper('core')->currency($_price) ?>
+                            </span>
+                        </span>
+                        <span class="price-including-tax">
+                            <span class="label"><?php echo $this->__('Incl. Tax:') ?></span>
+                            <span class="price" id="price-including-tax-<?php echo $_id ?>">
+                                <?php echo Mage::helper('core')->currency($_finalPriceInclTax) ?>
+                            </span>
+                        </span>
+                    <?php else: ?>
+                    <span class="regular-price">
+                        <?php echo Mage::helper('core')->currency($_price) ?>
+                    </span>
+            		<?php endif; ?>
                 <?php else: ?>
-                    <span class="nobr old-price"><?php echo $this->__('Price') ?>&nbsp;<?php echo Mage::helper('core')->currency($_price) ?></span><br />
-                    <span class="nobr special-price" style="font-size:12px;"><?php echo $this->__('Special Price') ?>&nbsp;<?php echo Mage::helper('core')->currency($_finalPrice) ?></span>
+                    <span class="old-price">
+                        <span class="label"><?php echo $this->__('Price:') ?></span>
+                        <span class="price">
+                            <?php echo Mage::helper('core')->currency($_regularPrice) ?>
+                        </span>
+                    </span>
+
+                    <?php if ($this->helper('tax')->displayBothPrices() && $_finalPriceInclTax != $_finalPrice): ?>
+            	        <div class="special-price">
+            	            <span class="label"><?php echo $this->__('Special Price:') ?></span>
+
+            	            <span class="price-excluding-tax">
+            	                <span class="label"><?php echo $this->__('Excl. Tax:') ?></span>
+            	                <span class="price">
+            	                    <?php echo Mage::helper('core')->currency($_finalPrice) ?>
+            	                </span>
+            	            </span>
+                        <span class="price-including-tax">
+                            <span class="label"><?php echo $this->__('Incl. Tax:') ?></span>
+                            <span class="price">
+                                <?php echo Mage::helper('core')->currency($_finalPriceInclTax) ?>
+                            </span>
+                        </span>
+            			</div>
+                    <?php else: ?>
+                    <span class="special-price">
+                        <span class="label"><?php echo $this->__('Special Price:') ?></span>
+                        <span class="price">
+                            <?php echo Mage::helper('core')->currency($_finalPrice) ?>
+                        </span>
+                    </span>
+            		<?php endif; ?>
                 <?php endif; ?>
                 <?php if($_item->getTierPriceCount()): ?>
-                    <?php foreach ($_item->getFormatedTierPrice() as $_tierPrice): ?>
-                        <?php if($_tierPrice['price'] <= $_finalPrice): ?>
-                            <?php if ($this->helper('tax')->displayBothPrices()): ?>
+                    <?php foreach ($this->getTierPrices($_item) as $_tierPrice): ?>
+                        <?php if($_tierPrice['price'] <= $_finalPriceInclTax): ?>
+                            <?php if ($this->helper('tax')->displayBothPrices() && $_tierPrice['formated_price'] != $_tierPrice['formated_price_incl_tax']): ?>
                                 <span class="nobr"><?php echo $this->__('Buy %s for %s (%s incl. tax) each', $_tierPrice['price_qty'], $_tierPrice['formated_price'], $_tierPrice['formated_price_incl_tax']) ?></span>
                             <?php else: ?>
                                 <span class="nobr"><?php echo $this->__('Buy %s for %s', $_tierPrice['price_qty']*1, $_tierPrice['formated_price']) ?></span>

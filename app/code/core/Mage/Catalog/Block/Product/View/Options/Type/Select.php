@@ -29,47 +29,35 @@
 class Mage_Catalog_Block_Product_View_Options_Type_Select
     extends Mage_Catalog_Block_Product_View_Options_Abstract
 {
-    /**
-     * Enter description here...
-     *
-     * @return Mage_Catalog_Model_Product_Option_Value
-     */
-    public function getValuesCollection()
-    {
-        $collection = $this->getOption()->getValuesCollection()
-            ->setOrder('option_type_id', 'asc')
-            ->load(false);
-
-        return $collection;
-    }
 
     public function getValuesHtml()
     {
-        $collection = $this->getValuesCollection();
-
         $_option = $this->getOption();
 
         if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DROP_DOWN
-            || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE
-            ) {
-
+            || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
             $require = ($_option->getIsRequire()) ? ' required-entry' : '';
             $select = $this->getLayout()->createBlock('core/html_select')
                 ->setData(array(
                     'id' => 'drop_down',
-                    'class' => 'select'.$require
-                ))
-                ->setName('options['.$_option->getid().']');
-            $select->addOption('', $this->__('-- Please Select --'));
-            foreach ($collection as $_value) {
-                if ($_value->getPriceType() == 'fixed') {
-                    $price = $this->helper('core')->currency($_value->getPrice());
-                } else {
-                    $price = '%' . number_format($_value->getPrice(), 0, null, '');
-                }
-                $select->addOption($_value->getOptionTypeId(), $_value->getTitle() . ' (' . $price . ')');
+                    'class' => 'select'.$require.' product-custom-option'
+                ));
+            if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DROP_DOWN) {
+                $select->setName('options['.$_option->getid().']')
+                    ->addOption('', $this->__('-- Please Select --'));
+            } else {
+                $select->setName('options['.$_option->getid().'][]');
             }
-
+            foreach ($_option->getValues() as $_value) {
+                $priceStr = $this->_formatPrice(array(
+                    'is_percent' => ($_value->getPriceType() == 'percent') ? true : false,
+                    'pricing_value' => $_value->getPrice(true)
+                ));
+                $select->addOption(
+                    $_value->getOptionTypeId(),
+                    $_value->getTitle() . ' ' . $priceStr . ''
+                );
+            }
             if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
                 $select->setExtraParams('multiple="multiple"');
             }
@@ -80,23 +68,32 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
         if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO
             || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
             ) {
-
-            $require = ($_option->getIsRequire()) ? ' validate-one-required' : '';
+            $selectHtml = '';
+            $require = ($_option->getIsRequire()) ? ' validate-one-required-by-name' : '';
+            $arraySign = '';
             switch ($_option->getType()) {
                 case Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO:
                     $type = 'radio';
                     $class = 'form-radio';
+                    if (!$_option->getIsRequire()) {
+                        $selectHtml .= '<label for="options_'.$_option->getId().'"><input type="radio" class="form-radio" name="options['.$_option->getId().']" value="" checked="checked" />' . $this->__('None') . '</label>';
+                    }
                     break;
                 case Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX:
                     $type = 'checkbox';
                     $class = 'form-radio';
+                    $arraySign = '[]';
                     break;
             }
-            $selectHtml = '';
-				$count = 1;
-            foreach ($collection as $_value) {
+			$count = 1;
+            foreach ($_option->getValues() as $_value) {
 				$count++;
-                $selectHtml .= '<input type="'.$type.'" class="'.$require.' '.$class.'" id="options_'.$_option->getId().'_'.$count.'" name="options['.$_option->getId().']" value="'.$_value->getOptionTypeId().'" /><label for="options_'.$_option->getId().'_'.$count.'">'.$_value->getTitle().'</label><br />';
+				$priceStr = $this->_formatPrice(array(
+				    'is_percent' => ($_value->getPriceType() == 'percent') ? true : false,
+				    'pricing_value' => $_value->getPrice(true)
+				));
+                $selectHtml .= '<label for="options_'.$_option->getId().'_'.$count.'"><input type="'.$type.'" class="'.$require.' '.$class.' product-custom-option" name="options['.$_option->getId().']'.$arraySign.'" id="options_'.$_option->getId().'_'.$count.'" value="'.$_value->getOptionTypeId().'" />'.$_value->getTitle().' '.$priceStr.'</label>';
+                $selectHtml .= '<script type="text/javascript">$(\'options_'.$_option->getId().'_'.$count.'\').advaiceContainer = $(\'options-'.$_option->getId().'-container\');</script>';
             }
 
             return $selectHtml;

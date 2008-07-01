@@ -48,20 +48,48 @@ class Mage_Catalog_Model_Product_Type_Configurable_Price extends Mage_Catalog_Mo
         if ($product->getCustomOption('attributes')) {
             $selectedAttributes = unserialize($product->getCustomOption('attributes')->getValue());
         }
-
+        
+        $basePrice = $finalPrice;
         foreach ($attributes as $attribute) {
             $attributeId = $attribute->getProductAttribute()->getId();
-            $value = $this->getValueByIndex(
+            $value = $this->_getValueByIndex(
                 $attribute->getPrices() ? $attribute->getPrices() : array(),
                 isset($selectedAttributes[$attributeId]) ? $selectedAttributes[$attributeId] : null
             );
             if($value) {
                 if($value['pricing_value'] != 0) {
-                    $finalPrice += $this->getPricingValue($value, $qty);
+                    $finalPrice += $this->_calcSelectionPrice($value, $basePrice);
                 }
             }
         }
         $product->setFinalPrice($finalPrice);
         return max(0, $product->getData('final_price'));
+    }
+    
+    /**
+     * Calculate configurable product selection price
+     *
+     * @param   array $priceInfo
+     * @param   decimal $productPrice
+     * @return  decimal
+     */
+    protected function _calcSelectionPrice($priceInfo, $productPrice)
+    {
+        if($priceInfo['is_percent']) {
+            $ratio = $priceInfo['pricing_value']/100;
+            $price = $productPrice * $ratio;
+        } else {
+            $price = $priceInfo['pricing_value'];
+        }
+        return $price;
+    }
+    
+    protected function _getValueByIndex($values, $index) {
+        foreach ($values as $value) {
+            if($value['value_index'] == $index) {
+                return $value;
+            }
+        }
+        return false;
     }
 }

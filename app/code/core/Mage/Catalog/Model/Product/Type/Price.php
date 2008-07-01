@@ -54,10 +54,19 @@ class Mage_Catalog_Model_Product_Type_Price
         $finalPrice = $product->getPrice();
         $finalPrice = $this->_applyTierPrice($product, $qty, $finalPrice);
         $finalPrice = $this->_applySpecialPrice($product, $finalPrice);
-        $finalPrice = $this->_applyOptionsPrice($product, $qty, $finalPrice);
         $product->setFinalPrice($finalPrice);
+
         Mage::dispatchEvent('catalog_product_get_final_price', array('product'=>$product));
-        return max(0, $product->getData('final_price'));
+
+        $finalPrice = $product->getData('final_price');
+        $finalPrice = $this->_applyOptionsPrice($product, $qty, $finalPrice);
+
+        return max(0, $finalPrice);
+    }
+
+    public function getChildFinalPrice($product, $productQty, $childProduct, $childProductQty)
+    {
+        return $this->getFinalPrice($childProductQty, $childProduct);
     }
 
     /**
@@ -183,40 +192,6 @@ class Mage_Catalog_Model_Product_Type_Price
         return $finalPrice;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Get product pricing value
-     *
-     * @param   array $value
-     * @param   Mage_Catalog_Model_Product $product
-     * @return  double
-     */
-    public function getPricingValue($value, $product, $qty = null)
-    {
-        if($value['is_percent']) {
-            $ratio = $value['pricing_value']/100;
-            /*$price = $this->_applyTierPrice($product, $qty, $product->getPrice());
-            $price = $this->_applySpecialPrice($product, $price);*/
-            $price = $product->getFinalPrice($qty);
-            $price = $price * $ratio;
-        } else {
-            $price = $value['pricing_value'];
-        }
-
-        return $price;
-    }
-
     /**
      * Count how many tier prices we have for the product
      *
@@ -263,44 +238,6 @@ class Mage_Catalog_Model_Product_Type_Price
     }
 
     /**
-     * Get calculated product price
-     *
-     * @param array $options
-     * @param Mage_Catalog_Model_Product $product
-     * @return double
-     */
-    public function getCalculatedPrice(array $options, $product)
-    {
-        $price = $product->getPrice();
-        foreach ($product->getSuperAttributes() as $attribute) {
-            if(isset($options[$attribute['attribute_id']])) {
-                if($value = $this->getValueByIndex($attribute['values'], $options[$attribute['attribute_id']])) {
-                    if($value['pricing_value'] != 0) {
-                        $price += $product->getPricingValue($value);
-                    }
-                }
-            }
-        }
-
-        return max(0, $price);
-    }
-
-    public function getValueByIndex($values, $index)
-    {
-        return $this->_getValueByIndex($values, $index);
-    }
-
-    protected function _getValueByIndex($values, $index) {
-        foreach ($values as $value) {
-            if($value['value_index'] == $index) {
-                return $value;
-            }
-        }
-        return false;
-    }
-
-
-    /**
      * Apply options price
      *
      * @param Mage_Catalog_Model_Product $product
@@ -310,27 +247,29 @@ class Mage_Catalog_Model_Product_Type_Price
      */
     protected function _applyOptionsPrice($product, $qty, $finalPrice)
     {
-        $basePrice = $finalPrice;
         if ($optionIds = $product->getCustomOption('option_ids')) {
-            $optionIds = explode(',', $optionIds->getValue());
-            foreach ($optionIds as $optionId) {
-                if ($optionId) {
-                    if ($option = $product->getOptionById($optionId)) {
-                        if ($option->getGroupByType($option->getType()) == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
-                            if ($valueId = $product->getCustomOption('option_'.$option->getId())->getValue()) {
-                                $values = $option->getValueById($valueId);
-                                $price = $values->getPrice();
-                                $priceType = $values->getPriceType();
-                            }
-                        } else {
-                            $price = $option->getPrice();
-                            $priceType = $option->getPriceType();
+            $basePrice = $finalPrice;
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                if ($option = $product->getOptionById($optionId)) {
+                    $optionValue = $product->getCustomOption('option_'.$option->getId())->getValue();
+                    if ($option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
+                        || $option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
+                        foreach(split(',', $optionValue) as $value) {
+                            $finalPrice += $this->_getPricingOptionValue(array(
+                                'is_percent' => ($option->getValueById($value)->getPriceType() == 'percent')? true:false,
+                                'pricing_value' => $option->getValueById($value)->getPrice()
+                            ), $basePrice);
                         }
-                        if ($priceType == 'percent') {
-                            $finalPrice += $basePrice*($price/100);
-                        } else {
-                            $finalPrice += $price;
-                        }
+                    } elseif ($option->getGroupByType() == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                        $finalPrice += $this->_getPricingOptionValue(array(
+                            'is_percent' => ($option->getValueById($optionValue)->getPriceType() == 'percent')? true:false,
+                            'pricing_value' => $option->getValueById($optionValue)->getPrice()
+                        ), $basePrice);
+                    } else {
+                        $finalPrice += $this->_getPricingOptionValue(array(
+                            'is_percent' => ($option->getPriceType() == 'percent')? true:false,
+                            'pricing_value' => $option->getPrice()
+                        ), $basePrice);
                     }
                 }
             }
@@ -339,8 +278,34 @@ class Mage_Catalog_Model_Product_Type_Price
         return $finalPrice;
     }
 
+    /**
+     * Get product pricing option value
+     *
+     * @param array $value
+     * @param double $basePrice
+     * @return double
+     */
+    protected function _getPricingOptionValue($value, $basePrice)
+    {
+        if($value['is_percent']) {
+            $ratio = $value['pricing_value']/100;
+            $price = $basePrice * $ratio;
+        } else {
+            $price = $value['pricing_value'];
+        }
+
+        return $price;
+    }
+
     public static function calculatePrice($basePrice, $specialPrice, $specialPriceFrom, $specialPriceTo, $rulePrice = false, $wId = null, $gId = null, $productId = null)
     {
+        if ($wId instanceof Mage_Core_Model_Store) {
+            $sId = $wId->getId();
+            $wId = $wId->getWebsiteId();
+        }
+        if ($gId instanceof Mage_Customer_Model_Group) {
+            $gId = $gId->getId();
+        }
         $finalPrice = $basePrice;
 
         $today = floor(time()/86400)*86400;
@@ -355,6 +320,9 @@ class Mage_Catalog_Model_Product_Type_Price
             }
         }
 
+        if(!isset($sId)) {
+            $sId = 0;
+        }
 
         if ($rulePrice === false) {
             $date = mktime(0,0,0);
@@ -363,6 +331,7 @@ class Mage_Catalog_Model_Product_Type_Price
         if ($rulePrice !== null && $rulePrice !== false) {
             $finalPrice = min($finalPrice, $rulePrice);
         }
+
         $finalPrice = max($finalPrice, 0);
 
         return $finalPrice;

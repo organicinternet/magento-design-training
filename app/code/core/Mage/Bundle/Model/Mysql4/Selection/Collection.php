@@ -64,7 +64,7 @@ class Mage_Bundle_Model_Mysql4_Selection_Collection
 
     public function setPositionOrder()
     {
-        $this->setOrder('`selection`.`position`', 'asc');
+        $this->getSelect()->order('selection.position asc');
         return $this;
     }
 }

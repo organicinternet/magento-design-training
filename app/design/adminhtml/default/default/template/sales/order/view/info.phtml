@@ -66,6 +66,12 @@
                 </a></td>
             </tr>
             <?php endif; ?>
+            <?php if($_order->getRemoteIp()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?php echo $_order->getRemoteIp() ?></strong></td>
+            </tr>
+            <?php endif; ?>
             </table>
         </fieldset>
     </div>

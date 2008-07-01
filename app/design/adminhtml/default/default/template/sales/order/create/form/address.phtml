@@ -53,6 +53,8 @@ endif; ?>
             <label for="<?=$this->getForm()->getHtmlIdPrefix()?>save_in_address_book"><?php echo Mage::helper('sales')->__('Save in address book') ?></label>
         </div>
     </div>
+    <?php $hideElement = 'address-' . ($this->getIsShipping() ? 'shipping' : 'billing') . '-overlay'; ?>
+    <div style="display:none;" id="<?php echo $hideElement ?>" class="overlay"><span><?php echo $this->__('Shipping address selection is not applicable') ?></span></div>
     <script type="text/javascript">
         order.bindAddressFields('<?php echo $_fieldsContainerId ?>')
         <?php if($this->getIsShipping() && $this->getIsAsBilling()): ?>

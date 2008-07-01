@@ -38,6 +38,7 @@ class Mage_Bundle_SelectionController extends Mage_Adminhtml_Controller_Action
             $this->getLayout()
                 ->createBlock('bundle/adminhtml_catalog_product_edit_tab_bundle_option_search')
                 ->setIndex($this->getRequest()->getParam('index'))
+                ->setFirstShow(true)
                 ->toHtml()
            );
     }

@@ -118,6 +118,15 @@
 .grid table td.empty-text       { padding:15px; }
 .grid table td .action-select   { width: 100%; }
 .grid .separator                { padding:0 4px; color:#b9b9b9; }
+/* For Bundle product rows */
+.grid tbody.odd tr              { background:#fff !important; }
+.grid tbody.even tr             { background:#f6f6f6 !important; }
+.grid tbody.odd tr td,
+.grid tbody.even tr td          { border-bottom:0; }
+.grid tbody.odd tr.border td,
+.grid tbody.even tr.border td   { border-bottom:1px solid #dadfe0; }
+.grid td.indent                 { padding-left:20px; }
+
 
 /* Grid - Pager and Buttons row */
 table.actions                   { width:100%; margin:.5em 0; }
@@ -196,7 +205,7 @@ table.actions td                { vertical-align:top; }
     padding:0px 5px 0px 0px;
     }
 
-.massaction .entry-edit .outer-span {float:left;}
+.massaction .entry-edit .outer-span { float:left; }
 
 /* Grid - Filter */
 .grid tr.filter                 { background:url(images/filter_row_bg.gif) repeat-x #e3eff1; cursor: default; }
@@ -416,6 +425,9 @@ select optgroup option          { padding-left:10px; }
 .columns .form-list td.value textarea    { width:90%; }
 .columns .form-list td.value select      { width:267px; }
 .columns .form-list td.use-default       { padding-left:15px; }
+
+.columns .form-list td.value .next-toinput {width:75px; display:inline; margin-right:5px;}
+.columns .form-list td.value .next-toselect .input-text {width:180px; display:inline;}
 
 .columns .form-list td.value             { width:270px; padding-right:5px; }
 .columns .form-list td.value input.input-text,
@@ -831,6 +843,7 @@ padding:6px 8px 4px 8px;
 
 /* SALES
 *******************************************************************************/
+.overlay span { display:block; width:100%; text-align:center; position:absolute; top:50%; margin:-5px 0 0; color:#000; }
 
 /* Create Order */
 .page-create-order .side-col            { width:260px; background:none; padding:0; }
@@ -873,6 +886,12 @@ padding:6px 8px 4px 8px;
 .order-totals table td.last             { padding:2px 6px; }
 .grand-total, .grand_total              { font-size:1.2em; font-weight:bold; color:#eb4d00 !important;}
 
+ul.item-options { list-style:none; }
+ul.item-options li { padding-left:.7em; }
+
+ul.item-options-bundle { list-style:none; }
+ul.item-options-bundle li { padding:0 0 0 0; }
+
 /* Order Constants */
 .payment-methods dt                     { margin-bottom:3px; }
 .payment-methods dd                     { outline-color: none !important;margin-left: 20px; }
@@ -898,6 +917,7 @@ padding:6px 8px 4px 8px;
 .giftmessage-order-create .entry-edit .textarea     { width:220px; }
 td.giftmessage-single-item                          { padding: 0 0 0 0; }
 .giftmessage-single-item .item-text                 { padding:2px 5px; }
+.giftmessage-single-item .item-text2                { padding:2px 0; }
 .giftmessage-single-item .item-container { cursor: auto; }
 .giftmessage-single-item .gift-form {
     display:block;
@@ -930,14 +950,14 @@ td.giftmessage-single-item                          { padding: 0 0 0 0; }
 .giftmessage-single-item .gift-form .entry-edit textarea.input-text {
     width: 99% !important;
     }
-.giftmessage-single-item .item-text .action-link {
+.giftmessage-single-item .action-link {
     padding-right: 10px;
     background-image: url(images/gift-message-expand.gif);
     background-position: center right;
     background-repeat: no-repeat;
     cursor: pointer;
     }
-.giftmessage-single-item .item-text .open {
+.giftmessage-single-item .open {
     background-image: url(images/gift-message-collapse.gif);
     background-repeat: no-repeat;
     }
@@ -1073,25 +1093,23 @@ fieldset.sitemap .form-list { width:auto; }
 .custom-options  .type-butt  {width:33px;}
 .custom-options  .type-last  {width:auto;}
 
+.custom-options .option-box  .border .input-text,
+.custom-options .option-box  .border .select{width:95%!important;}
 
-
-.custom-options  .option-box  .border .input-text,
-.custom-options  .option-box  .border .select{width:95%!important;}
-
-.custom-options    .option-box  .border .type-last  .input-text {width:60px!important;}
-.custom-options     .option-box  .border  input.type-sku  {width:150px !important;}
+.custom-options .option-box  .border .type-last  .input-text {width:60px!important;}
+.custom-options .option-box  .border  input.type-sku  {width:150px !important;}
 
 /*bundle product*/
-.bundle  .option-box  {padding-bottom:2em;}
-.bundle  .option-box  .border {width:100%; border-bottom:0;}
-.bundle  .option-box  .border td {border-bottom:1px solid #dce5e6!important;}
+.bundle .option-box  {padding-bottom:2em;}
+.bundle .option-box .border {width:100%; border-bottom:0;}
+.bundle .option-box .border td {border-bottom:1px solid #dce5e6!important;}
 .bundle .option-title {padding:0 0 10px; border-bottom:1px solid #cddddd;}
 .bundle .option-title button {float:right;}
 .bundle .option-title label {font-weight:bold; line-height:21px; padding-right:1em; float:left;}
 .bundle .option-title .input-text {float:left; width:260px; vertical-align:middle;}
 .bundle .option-header {clear:both; margin-top:5px;}
 
-.bundle  .border .last {width:33px;}
+.bundle .border .last {width:33px;}
 
 /* CUSTOMER
 *******************************************************************************/
@@ -1102,14 +1120,7 @@ fieldset.sitemap .form-list { width:auto; }
 .address-list .btn-remove-address       { position:absolute; top:8px; }
 .address-list .btn-edit-address         { right:8px; }
 .address-list .btn-remove-address       { right:27px; }
-.address-list li {
-    position:relative;
-    list-style:none;
-    padding:12px 14px;
-    cursor:pointer;
-    border-top:1px solid #e6e6e6;
-    background:url(images/address_list_li.gif) repeat;
-    }
+.address-list li                        { position:relative; list-style:none; padding:12px 14px; cursor:pointer; border-top:1px solid #e6e6e6; background:url(images/address_list_li.gif) repeat; }
 .address-list li.on                     { background:#e7efef; }
 .address-list li.over                   { background-color:#fcf5dd; }
 .address-list li table                  { width:100%;}
@@ -1254,9 +1265,9 @@ ul.super-product-attributes {
     text-transform: uppercase;
     text-align: center;
     height: 13px;
-	padding-top:3px;
-	width:61px;
-	margin:1px 0;
+    padding-top:3px;
+    width:61px;
+    margin:1px 0;
     line-height:1;
 } .grid-severity-critical {
     background:url(images/bg_severity-critical.gif) no-repeat 0 0;

@@ -27,6 +27,28 @@
     </modules>
 
     <global>
+        <catalog>
+            <product>
+                <type>
+                    <simple>
+                        <index_data_retreiver>catalogindex/data_simple</index_data_retreiver>
+                    </simple>
+                    <grouped>
+                        <index_data_retreiver>catalogindex/data_grouped</index_data_retreiver>
+                    </grouped>
+                    <configurable>
+                        <index_data_retreiver>catalogindex/data_configurable</index_data_retreiver>
+                    </configurable>
+                    <virtual>
+                        <index_data_retreiver>catalogindex/data_virtual</index_data_retreiver>
+                    </virtual>
+                    <bundle>
+                        <index_data_retreiver>catalogindex/data_bundle</index_data_retreiver>
+                    </bundle>
+                </type>
+            </product>
+        </catalog>
+
         <models>
             <catalogindex>
                 <class>Mage_CatalogIndex_Model</class>

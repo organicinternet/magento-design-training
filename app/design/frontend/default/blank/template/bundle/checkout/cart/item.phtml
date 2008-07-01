@@ -12,19 +12,14 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * @category   design_blank
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2004-2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-    <td class="a-center">
-        <a href="<?php echo $this->getDeleteUrl() ?>">
-            <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" />
-        </a>
-    </td>
     <td>
         <a href="<?php echo $this->getProductUrl() ?>">
             <img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" width="75" />
@@ -33,20 +28,51 @@
     <td class="attributes-col">
         <p class="pname"><a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a></p>
 
+        <?php if ($_bundles = $this->getBundleOptions()):?>
+        <dl class="product-bundle-options">
+        <?php foreach ($_bundles as $_option): ?>
+            <?php if ($_option->getSelections()):?>
+                <dt><?php echo $_option->getTitle()?>:</dt>
+                <?php foreach ($_option->getSelections() as $_selection): ?>
+                    <dd><span><?php printf('%d', $this->getSelectionQty($_selection->getSelectionId())) ?> x </span><?php echo $_selection->getName()?><span> (<?php echo Mage::helper('core')->currency($this->getSelectionFinalPrice($_selection)) ?>)</span></dd>
+                <?php endforeach;?>
+            <?php endif;?>
+        <?php endforeach;?>
+        </dl>
+        <?php endif;?>
+
+        <!-- item custom options -->
         <?php if ($_options = $this->getProductOptions()):?>
-        <ul class="product-options">
+        <ul class="shopping-cart-item-options">
             <?php foreach ($_options as $_option):?>
-            <li><strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong> <?php echo $this->htmlEscape($_option['value']) ?></li>
+            <?php
+            $_randomId = str_replace('.', '_', '_' . microtime(true));
+            $_truncatedRemainder = '';
+            $_truncatedValue = Mage::helper('core/string')->truncate($_option['value'], 100, '', $_truncatedRemainder);
+            $_truncatedValue     = nl2br($this->htmlEscape($_truncatedValue));
+            $_truncatedRemainder = nl2br($this->htmlEscape($_truncatedRemainder));
+            ?>
+            <li id="<?php echo $_randomId?>" class="<?php if ($_truncatedRemainder):?>truncated<?php endif;?>">
+                <strong><?php echo $_option['label'] ?>:</strong>
+                <?php if ($_truncatedRemainder):?>
+                    <?php echo $_truncatedValue?><span class="truncated-etc" id="<?php echo $_randomId?>_etc">...</span><span class="truncated-remainder" id="<?php echo $_randomId?>_remainder" style="display:none"><?php echo $_truncatedRemainder ?></span>
+                    <script type="text/javascript">
+                        Event.observe($('<?php echo $_randomId?>'), 'mouseover', function(){switchDisplay($('<?php echo $_randomId?>_etc'), $('<?php echo $_randomId?>_remainder'))});
+                        Event.observe($('<?php echo $_randomId?>'), 'mouseout',  function(){switchDisplay($('<?php echo $_randomId?>_remainder'), $('<?php echo $_randomId?>_etc'))});
+                    </script>
+                <?php else:?>
+                <?php echo $_truncatedValue?>
+                <?php endif;?>
+            </li>
             <?php endforeach;?>
         </ul>
         <?php endif;?>
+        <!-- / -->
 
-        <?php if ($messages = $this->getMessages()): ?>
-        <?php foreach ($messages as $message): ?>
-        <div class="shopping-cart-item-message <?php echo $message['type'] ?>">
-            * <?php echo $message['text'] ?>
+        <?php if($_item->getMessage()): ?>
+        <div class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
+            * <?php echo $_item->getMessage() ?>
         </div>
-        <?php endforeach; ?>
         <?php endif; ?>
     </td>
     <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
@@ -54,27 +80,18 @@
         <input type="checkbox" value="1" name="cart[<?php echo $_item->getId() ?>][wishlist]" />
     </td>
     <?php endif ?>
-    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?>
     </td>
-    <?php endif; ?>
-    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-    <td class="a-right">
-        <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()+$_item->getTaxAmount()/$_item->getQty()) ?>
-    </td>
-    <?php endif; ?>
     <td class="a-center">
         <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" />
     </td>
-    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?>
     </td>
-    <?php endif; ?>
-    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-    <td class="a-right">
-        <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()+$_item->getTaxAmount()) ?>
+    <td class="a-center">
+        <a href="<?php echo $this->getDeleteUrl() ?>">
+            <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" />
+        </a>
     </td>
-    <?php endif; ?>
 </tr>

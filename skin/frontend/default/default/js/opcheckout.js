@@ -49,16 +49,30 @@ Checkout.prototype = {
         var updater = new Ajax.Updater('checkout-review-load', this.reviewUrl, {method: 'get', onFailure: this.ajaxFailure.bind(this)});
     },
 
+    _disableEnableAll: function(element, isDisabled) {
+        var descendants = element.descendants();
+        for (var k in descendants) {
+            descendants[k].disabled = isDisabled;
+        }
+        element.disabled = isDisabled;
+    },
+
     setLoadWaiting: function(step) {
         if (step) {
             if (this.loadWaiting) {
                 this.setLoadWaiting(false);
             }
-            $(step+'-buttons-container').setStyle({opacity:.5});
+            var container = $(step+'-buttons-container');
+            container.setStyle({opacity:.5});
+            this._disableEnableAll(container, true);
             Element.show(step+'-please-wait');
         } else {
             if (this.loadWaiting) {
-                $(this.loadWaiting+'-buttons-container').setStyle({opacity:1});
+                if (this.loadWaiting != 'review') {
+                    var container = $(this.loadWaiting+'-buttons-container');
+                    container.setStyle({opacity:1});
+                    this._disableEnableAll(container, false);
+                }
                 Element.hide(this.loadWaiting+'-please-wait');
             }
         }
@@ -565,7 +579,8 @@ ShippingMethod.prototype = {
         }
 
         if (response.update_section) {
-            $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+            $('checkout-'+response.update_section.name+'-load').update(response.update_section.html);
+            response.update_section.html.evalScripts();
         }
         if (response.goto_section) {
             checkout.gotoSection(response.goto_section);

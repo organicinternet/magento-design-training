@@ -22,7 +22,7 @@
 <config>
   <modules>
     <Mage_Cybersource>
-      <active>true</active>
+      <active>false</active>
       <codePool>core</codePool>
       <depends>
                 <Mage_Adminhtml/>

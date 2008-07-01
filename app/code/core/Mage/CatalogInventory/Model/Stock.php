@@ -92,8 +92,11 @@ class Mage_CatalogInventory_Model_Stock extends Mage_Core_Model_Abstract
                 $stockItem->setStoreId($item->getStoreId());
             }
             if ($stockItem->checkQty($item->getQtyOrdered())) {
-                $stockItem->subtractQty($item->getQtyOrdered())
-                          ->save();
+                $stockItem->subtractQty($item->getQtyOrdered());
+                if ($this->getBackorders() == self::BACKORDERS_NO && $stockItem->getQty() <= $stockItem->getMinQty()) {
+                    $this->setIsInStock(false);
+                }
+                $stockItem->save();
             }
         }
         else {
@@ -107,8 +110,14 @@ class Mage_CatalogInventory_Model_Stock extends Mage_Core_Model_Abstract
     {
         $stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($productId);
         if ($stockItem->getId()) {
-            $stockItem->addQty($qty)
-                ->save();
+            $stockItem->addQty($qty);
+            /**
+             * get back in stock (when order is canceled or whatever else)
+             */
+            if ($stockItem->getCanBackInStock() && $stockItem->getQty() > $stockItem->getMinQty()) {
+                $stockItem->setIsInStock(true);
+            }
+            $stockItem->save();
         }
         return $this;
     }

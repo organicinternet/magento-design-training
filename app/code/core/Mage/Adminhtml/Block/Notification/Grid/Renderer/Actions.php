@@ -24,7 +24,7 @@
  *
  * @category   Mage
  * @package    Mage_Adminhtml
- * @author     Victor Tihonchuk <victor@varien.com>
+ * @author      Magento Core Team <core@magentocommerce.com>
  */
 class Mage_Adminhtml_Block_Notification_Grid_Renderer_Actions
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
@@ -38,7 +38,7 @@ class Mage_Adminhtml_Block_Notification_Grid_Renderer_Actions
     public function render(Varien_Object $row)
     {
         if (!$row->getIsRead()) {
-            return sprintf('<a href="%s">%s</a> | <a href="%s">%s</a> | <a href="%s" onClick="deleteConfirm(\'%s\',this.href); return false;">%s</a>',
+            return sprintf('<a target="_blank" href="%s">%s</a> | <a href="%s">%s</a> | <a href="%s" onClick="deleteConfirm(\'%s\',this.href); return false;">%s</a>',
                 $row->getUrl(),
                 Mage::helper('adminnotification')->__('Read Details'),
                 $this->getUrl('*/*/markAsRead/', array('_current'=>true, 'id' => $row->getId())),
@@ -49,7 +49,7 @@ class Mage_Adminhtml_Block_Notification_Grid_Renderer_Actions
             );
         }
         else {
-            return sprintf('<a href="%s">%s</a> | <a href="%s" onClick="deleteConfirm(\'%s\',this.href); return false;">%s</a>',
+            return sprintf('<a target="_blank" href="%s">%s</a> | <a href="%s" onClick="deleteConfirm(\'%s\',this.href); return false;">%s</a>',
                 $row->getUrl(),
                 Mage::helper('adminnotification')->__('Read Details'),
                 $this->getUrl('*/*/remove/', array('_current'=>true, 'id' => $row->getId())),

@@ -42,6 +42,9 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
     protected function _beforeToHtml()
     {
         $this->setId($this->getId().'_'.$this->getIndex());
+        $this->getChild('reset_filter_button')->setData('onclick', $this->getJsObjectName().'.resetFilter()');
+        $this->getChild('search_button')->setData('onclick', $this->getJsObjectName().'.resetFilter()');
+
         return parent::_beforeToHtml();
     }
 
@@ -53,10 +56,16 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('price')
             ->addAttributeToFilter('type_id', array('in' => $this->getAllowedSelectionTypes()))
+            ->addFilterByRequiredOptions()
             ->addStoreFilter();
 
         if ($products = $this->_getProducts()) {
             $collection->addIdFilter($this->_getProducts(), true);
+        }
+
+        if ($this->getFirstShow()) {
+            $collection->addIdFilter('-1');
+            $this->setEmptyText($this->__('Please enter search conditions to view products.'));
         }
 
         Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($collection);
@@ -82,7 +91,8 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
         $this->addColumn('sku', array(
             'header'    => Mage::helper('sales')->__('SKU'),
             'width'     => '80px',
-            'index'     => 'sku'
+            'index'     => 'sku',
+            'column_css_class'=> 'sku'
         ));
         $this->addColumn('price', array(
             'header'    => Mage::helper('sales')->__('Price'),
@@ -120,7 +130,7 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
 
     public function getGridUrl()
     {
-        return $this->getUrl('bundle/selection/grid', array('index' => $this->getIndex()));
+        return $this->getUrl('bundle/selection/grid', array('index' => $this->getIndex(), 'productss' => implode(',', $this->_getProducts())));
     }
 
     protected function _getSelectedProducts()
@@ -131,8 +141,13 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
 
     protected function _getProducts()
     {
-        $products = $this->getRequest()->getPost('products', null);
-        return $products;
+        if ($products = $this->getRequest()->getPost('products', null)) {
+            return $products;
+        } else if ($productss = $this->getRequest()->getParam('productss', null)) {
+            return explode(',', $productss);
+        } else {
+            return array();
+        }
     }
 
     public function getStore()

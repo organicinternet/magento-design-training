@@ -31,10 +31,10 @@
     public function getPrice()
     {
         $product = Mage::registry('product');
-        if($product->isConfigurable()) {
+        /*if($product->isConfigurable()) {
             $price = $product->getCalculatedPrice((array)$this->getRequest()->getParam('super_attribute', array()));
             return Mage::app()->getStore()->formatPrice($price);
-        }
+        }*/
 
         return $product->getFormatedPrice();
     }

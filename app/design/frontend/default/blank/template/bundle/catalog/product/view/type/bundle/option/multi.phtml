@@ -23,18 +23,26 @@
 <?php $_option = $this->getOption() ?>
 <?php $_selections = $_option->getSelections() ?>
 <tr>
-    <td class="label"><?php echo $this->htmlEscape($_option->getTitle()) ?></td>
+    <td class="label">
+        <?php echo $this->htmlEscape($_option->getTitle()) ?>
+        <span id="bundle-option-<?php echo $_option->getId() ?>-container"></span>
+    </td>
     <td>
-        <?php if (count($_selections) == 1 && $_selections[0]->getDefault()): ?>
-            <?php echo $_selections[0]->getName() ?>
-            <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>][]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
+        <?php if (count($_selections) == 1 && $_option->getRequired()): ?>
+        <?php echo $this->getSelectionQtyTitlePrice($_selections[0]) ?>
+            <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
         <?php else:?>
-            <select onchange="bundle.changeSelection(this)" multiple="multiple" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>]" class="<?php if ($_option->getRequired()) echo 'required-entry ' ?>select bundle-option-select">
+            <select onchange="bundle.changeSelection(this)" multiple="multiple" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>][]" class="bundle-option-<?php echo $_option->getId() ?> <?php if ($_option->getRequired()) echo 'required-entry ' ?>select bundle-option-select">
+                <?php if(!$_option->getRequired()): ?>
                 <option value=""><?php echo $this->__('None') ?></option>
+                <?php endif; ?>
                 <?php foreach($_selections as $_selection): ?>
                     <option value="<?php echo $_selection->getSelectionId() ?>"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' selected="selected" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>><?php echo $this->getSelectionQtyTitlePrice($_selection) ?></option>
                 <?php endforeach;?>
             </select>
+            <?php if($_option->getRequired()): ?>
+                <?php echo $this->setValidationContainer('bundle-option-'.$_option->getId(), 'bundle-option-'.$_option->getId().'-container') ?>
+            <?php endif; ?>
         <?php endif; ?>
     </td>
     <td valign="top" class="a-center">&nbsp;</td>

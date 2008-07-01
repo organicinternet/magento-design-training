@@ -243,7 +243,7 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
                 $this->_usedProducts[] = $product;
             }
         }
-        Varien_Profiler::start('CONFIGURABLE:'.__METHOD__);
+        Varien_Profiler::stop('CONFIGURABLE:'.__METHOD__);
         return $this->_usedProducts;
     }
 
@@ -341,6 +341,34 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
         return null;
     }
 
+    public function getSelectedAttributesInfo()
+    {
+        $attributes = array();
+        Varien_Profiler::start('CONFIGURABLE:'.__METHOD__);
+        if ($attributesOption = $this->getProduct()->getCustomOption('attributes')) {
+            $data = unserialize($attributesOption->getValue());
+            $usedAttributes = $this->getUsedProductAttributes();
+
+            foreach ($data as $attributeId => $attributeValue) {
+            	if (isset($usedAttributes[$attributeId])) {
+            	    $attribute = $usedAttributes[$attributeId];
+            	    $label = $attribute->getFrontend()->getLabel();
+
+            	    if ($attribute->getSourceModel()) {
+            	        $value = $attribute->getSource()->getOptionText($attributeValue);
+            	    }
+            	    else {
+            	        $value = '';
+            	    }
+
+            	    $attributes[] = array('label'=>$label, 'value'=>$value);
+            	}
+            }
+        }
+        Varien_Profiler::stop('CONFIGURABLE:'.__METHOD__);
+        return $attributes;
+    }
+
     /**
      * Initialize product(s) for add to cart process
      *
@@ -350,24 +378,33 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
     public function prepareForCart(Varien_Object $buyRequest)
     {
         if ($attributes = $buyRequest->getSuperAttribute()) {
-            $product = $this->getProduct();
-            /**
-             * $attributes = array($attributeId=>$attributeValue)
-             */
-            if ($subProduct = $this->getProductByAttributes($attributes)) {
-                $product->addCustomOption('attributes', serialize($attributes));
-                $product->addCustomOption('product_qty_'.$subProduct->getId(), 1, $subProduct);
-                $product->addCustomOption('simple_product', $subProduct->getId(), $subProduct);
-
-                return parent::prepareForCart($buyRequest);
+            $result = parent::prepareForCart($buyRequest);
+            if (is_array($result)) {
+                $product = $this->getProduct();
+                /**
+                 * $attributes = array($attributeId=>$attributeValue)
+                 */
+                if ($subProduct = $this->getProductByAttributes($attributes)) {
+                    $product->addCustomOption('attributes', serialize($attributes));
+                    $product->addCustomOption('product_qty_'.$subProduct->getId(), 1, $subProduct);
+                    $product->addCustomOption('simple_product', $subProduct->getId(), $subProduct);
+                    return $result;
+                }
             }
         }
         return Mage::helper('catalog')->__('Please specify the product option(s)');
     }
 
+    /**
+     * Prepare additional options/information for order item which will be
+     * created from this product
+     *
+     * @return attay
+     */
     public function getOrderOptions()
     {
         $options = parent::getOrderOptions();
+        $options['attributes_info'] = $this->getSelectedAttributesInfo();
         if ($simpleOption = $this->getProduct()->getCustomOption('simple_product')) {
             $options['simple_name'] = $simpleOption->getProduct()->getName();
             $options['simple_sku']  = $simpleOption->getProduct()->getSku();

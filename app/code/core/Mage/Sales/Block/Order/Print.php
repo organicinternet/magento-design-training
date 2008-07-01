@@ -25,7 +25,7 @@
  * @package    Mage_Sales
  */
 
-class Mage_Sales_Block_Order_Print extends Mage_Core_Block_Template
+class Mage_Sales_Block_Order_Print extends Mage_Sales_Block_Items_Abstract
 {
     protected function _prepareLayout()
     {
@@ -47,5 +47,6 @@ class Mage_Sales_Block_Order_Print extends Mage_Core_Block_Template
     {
         return Mage::registry('current_order');
     }
+
 }
 

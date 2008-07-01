@@ -45,7 +45,7 @@ class Mage_Checkout_Block_Cart_Crosssell extends Mage_Catalog_Block_Product_Abst
 
                 foreach ($collection as $item) {
                     $ninProductIds[] = $item->getId();
-                	$items[] = $item;
+                    $items[] = $item;
                 }
             }
 
@@ -58,7 +58,7 @@ class Mage_Checkout_Block_Cart_Crosssell extends Mage_Catalog_Block_Product_Abst
                     ->setRandomOrder()
                     ->load();
                 foreach ($collection as $item) {
-                	$items[] = $item;
+                    $items[] = $item;
                 }
             }
 
@@ -77,12 +77,9 @@ class Mage_Checkout_Block_Cart_Crosssell extends Mage_Catalog_Block_Product_Abst
         if (is_null($ids)) {
             $ids = array();
             foreach ($this->getQuote()->getAllItems() as $item) {
-            	if ($product = $item->getProduct()) {
-            	    $ids[] = $product->getId();
-            	    if ($superProduct = $product->getSuperProduct()) {
-            	        $ids[] = $superProduct->getId();
-            	    }
-            	}
+                if ($product = $item->getProduct()) {
+                    $ids[] = $product->getId();
+                }
             }
             $this->setData('_cart_product_ids', $ids);
         }
@@ -103,13 +100,14 @@ class Mage_Checkout_Block_Cart_Crosssell extends Mage_Catalog_Block_Product_Abst
     {
         $collection = Mage::getModel('catalog/product_link')->useCrossSellLinks()
             ->getProductCollection()
-			->addAttributeToSelect('name')
+            ->addAttributeToSelect('name')
             ->addAttributeToSelect('price')
             ->addAttributeToSelect('image')
             ->addAttributeToSelect('thumbnail')
             ->setStoreId(Mage::app()->getStore()->getId())
             ->addStoreFilter()
-            ->setPageSize($this->_maxItemCount);
+            ->setPageSize($this->_maxItemCount)
+            ->addFilterByRequiredOptions();
 
         Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($collection);
         Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($collection);

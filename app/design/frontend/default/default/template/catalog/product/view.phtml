@@ -24,10 +24,14 @@
  * @see Mage_Catalog_Block_Product_View
  */
 ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 <?php $_product=$this->getProduct() ?>
 <div class="product-info-box">
     <div class="product-essential">
+    <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form">
 
         <div class="product-img-box">
             <?php echo $this->getChildHtml('media') ?>
@@ -40,15 +44,13 @@
                 <a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a><br />
             <?php endif; ?>
 
-            <?php echo $this->helper('review/product')->getSummaryHtml($_product, null, 1) ?>
-
+            <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
             <h4><?php echo $this->__('Quick Overview') ?></h4>
             <div class="short-description"><?php echo nl2br($_product->getShortDescription()) ?></div>
-			
+
             <div class="divider"></div>
-			
-            <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form">
+
             <fieldset>
             <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
             <input type="hidden" name="related_product" id="related-products-field" value="" />
@@ -56,11 +58,11 @@
 
                 <?php echo $this->getChildHtml('alert_urls') ?>
 
+                <?php echo $this->getChildHtml('container1') ?>
+
                 <?php echo $this->getChildHtml('product_type_data') ?>
 
-                <?php echo $this->getChildHtml('product_options') ?>
-
-            </form>
+                <div class="clear"></div>
 
             <script type="text/javascript">
                 var productAddToCartForm = new VarienForm('product_addtocart_form');
@@ -70,25 +72,27 @@
                     }
                 }.bind(productAddToCartForm);
             </script>
-
-            <div class="clear"></div>
-
         </div>
+
+    <div class="clear"></div>
+
+    <?php echo $this->getChildHtml('container2') ?>
+
+    </form>
     </div>
 
     <div class="product-collateral">
-
+        <?php if($_additional = $this->getAdditionalData()): ?>
         <div class="collateral-box">
             <div class="head">
-                <h4><?php echo $this->__('Product Description') ?></h4>
+              <h4><?php echo $this->__('Product Description') ?></h4>
             </div>
             <div class="product-specs"><?php echo nl2br($_product->getDescription()) ?></div>
         </div>
-
-        <?php if($_additional = $this->getAdditionalData()): ?>
         <div class="collateral-box attribute-specs">
             <div class="head">
                 <h4><?php echo $this->__('Additional Information') ?></h4>
+                <?php //echo $this->getChildHtml('product_options') ?>
             </div>
             <table cellspacing="0" class="data-table" id="product-attribute-specs-table">
             <?php foreach ($_additional as $_data): ?>
@@ -101,7 +105,6 @@
             <script type="text/javascript">decorateTable('product-attribute-specs-table')</script>
         </div>
         <?php endif; ?>
-
         <?php echo $this->getChildHtml('upsell_products') ?>
         <?php echo $this->getChildHtml('product_additional_data') ?>
     </div>

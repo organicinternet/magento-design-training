@@ -19,7 +19,7 @@
  */
 ?>
 <div class="grid">
-    <table cellspacing="0" class="data">
+    <table cellspacing="0" class="data data-bundle">
         <col/>
         <col width="100"/>
         <col width="100"/>
@@ -30,22 +30,12 @@
                 <th class="last"><?php echo $this->helper('sales')->__('Qty to Ship') ?></th>
             </tr>
         </thead>
-        <tbody>
-            <?php $_items = $this->getShipment()->getAllItems() ?>
-            <?php $_i=0;foreach ($_items as $_item): if ($_item->getOrderItem()->getIsVirtual()): continue; endif; $_i++ ?>
-                <tr class="<?php echo $_i%2?'odd':'even' ?>">
-                    <td>
-                        <?php echo $_item->getName() ?>
-                        <div class="nobr"><strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> <?php echo $_item->getSku() ?></div>
-                        <?php echo $_item->getDescription() ?>
-                    </td>
-                    <td><?php echo $this->getQtyHtml($_item->getOrderItem()) ?></td>
-                    <td class="last">
-                        <input type="text" class="input-text" name="shipment[items][<?php echo $_item->getOrderItemId() ?>]" value="<?php echo $_item->getQty()*1 ?>"/>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
+        <?php $_items = $this->getShipment()->getAllItems() ?>
+        <?php $_i=0;foreach ($_items as $_item): if ($_item->getOrderItem()->getIsVirtual() || $_item->getOrderItem()->getParentItem()): continue; endif; $_i++ ?>
+            <tbody class="<?php echo $_i%2?'odd':'even' ?>">
+                <?php echo $this->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
     </table>
 </div>
 

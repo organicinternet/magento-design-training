@@ -34,16 +34,6 @@ class Mage_CatalogIndex_Model_Mysql4_Price extends Mage_CatalogIndex_Model_Mysql
         $this->_init('catalogindex/price', 'index_id');
     }
 
-    public function setTaxRates($rates)
-    {
-        $this->_taxRates = $rates;
-    }
-
-    public function getTaxRates()
-    {
-        return $this->_taxRates;
-    }
-
     public function setRate($rate)
     {
         $this->_rate = $rate;
@@ -66,32 +56,7 @@ class Mage_CatalogIndex_Model_Mysql4_Price extends Mage_CatalogIndex_Model_Mysql
 
     protected function _getTaxRateConditions()
     {
-        switch (Mage::helper('tax')->needPriceConversion()) {
-            case Mage_Tax_Helper_Data::PRICE_CONVERSION_PLUS:
-                $form = '+(main_table.value*(%s))';
-                break;
-
-            case Mage_Tax_Helper_Data::PRICE_CONVERSION_MINUS:
-                $form = '-(main_table.value/(1+(%s))*%s)';
-                break;
-
-            default:
-                return '';
-        }
-
-        if ($this->getTaxRates() && is_array($this->getTaxRates())) {
-            $insert = '';
-            foreach ($this->getTaxRates() as $classId=>$rate) {
-                if ($rate) {
-                    $insert .= "WHEN '{$classId}' THEN '".($rate/100)."'";
-                }
-            }
-            if ($insert) {
-                $case = "CASE IFNULL(tax_class_c.value, tax_class_d.value) {$insert} ELSE 1 END";
-                return sprintf($form, $case, $case);
-            }
-        }
-        return '';
+        return Mage::helper('tax')->getPriceTaxSql('main_table.value', 'IFNULL(tax_class_c.value, tax_class_d.value)');
     }
 
     protected function _joinTaxClass(&$select)

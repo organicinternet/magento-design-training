@@ -70,8 +70,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    {{/depend}}
                     <br/>
+                    {{/depend}}
+                    {{layout handle="sales_email_order_items" order=$order}}
+
                     {{var items_html}}
                     <br/>
                     {{var order.getEmailCustomerNote()}}

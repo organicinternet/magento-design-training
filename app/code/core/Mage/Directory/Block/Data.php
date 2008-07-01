@@ -50,7 +50,7 @@ class Mage_Directory_Block_Data extends Mage_Core_Block_Template
 		if (is_null($defValue)) {
 			$defValue = $this->getCountryId();
 		}
-		$cacheKey = 'DIRECTORY_COUNTRY_SELECT_STORE'.Mage::app()->getStore()->getId();
+		$cacheKey = 'DIRECTORY_COUNTRY_SELECT_STORE_'.Mage::app()->getStore()->getCode();
 		if (Mage::app()->useCache('config') && $cache = Mage::app()->loadCache($cacheKey)) {
 		    $options = unserialize($cache);
 		} else {

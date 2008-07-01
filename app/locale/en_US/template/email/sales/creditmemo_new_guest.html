@@ -70,7 +70,9 @@
                     </table>
                     <br/>
                     {{/depend}}
-                    {{block type='core/template' area='frontend' template='email/order/items_creditmemo.phtml' creditmemo=$creditmemo order=$order}}
+
+                    {{layout handle="sales_email_order_creditmemo_items" creditmemo=$creditmemo order=$order}}
+
                     <p>{{var comment}}</p>
                     <p>
                         Thank you again,<br/><strong>{{var order.getStoreGroupName()}}</strong>

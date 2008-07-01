@@ -18,21 +18,16 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-<?php $_optionsCollection = $this->getOptions() ?>
-<?php if ($_optionsCollection->getSize()): ?>
-<div class="clear"></div>
-<fieldset>
-    <div class="product-attributes custom-options">
-        <table cellspacing="0" border="0" cellpadding="0" id="custom-options-table">
-        <?php foreach($_optionsCollection as $_option): ?>
-            <?php echo $this->getOptionHtml($_option) ?>
-        <?php endforeach; ?>
-        </table>
-    <p class="required">* Required Fields</p>
-    </div>
-	<script type="text/javascript">decorateTable('custom-options-table')</script>
-	<script>
-
+<?php $_options = $this->getOptions() ?>
+<?php if ($_options): ?>
+      <dl>
+      <?php foreach($_options as $_option): ?>
+          <?php echo $this->getOptionHtml($_option) ?>
+      <?php endforeach; ?>
+      </dl>
+      <p class="required">* Required Fields</p>
+    <script type="text/javascript">
+/* <![CDATA[ */
     var optionFileUpload = {
         productForm : $('product_addtocart_form'),
         formAction : '',
@@ -44,9 +39,9 @@
             template = '<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;"></iframe>';
 
             new Insertion.After(
-    			$('option_'+element.readAttribute('id').sub('option_', '')+'_uploaded_file'),
-    			template
-    		);
+                $('option_'+element.readAttribute('id').sub('option_', '')+'_uploaded_file'),
+                template
+            );
 
             this.formAction = this.productForm.action;
             this.productForm.action = '<?php echo $this->getUrl('*/product/upload') ?>option_id/'+element.readAttribute('id').sub('option_', '');
@@ -80,13 +75,12 @@
                 $('option_'+data.optionId+'_file').value = '';
                 $('option_'+data.optionId+'_file').hide();
                 $('option_'+data.optionId+'').hide();
-//popWin('http://192.168.0.191/dev/ruslan.voitenko/magento/index.php/catalog/product/gallery/id/16/image/126/', 'gallery', 'scrollbars=yes,width=300,height=300,resizable=yes');return false;
-                template = '<div id="option_'+data.optionId+'_file_box"><a href="#"><img src="http://192.168.0.191/dev/ruslan.voitenko/magento/var/options/'+data.fileName+'"></a><a href="#" onclick="optionFileUpload.removeFile('+data.optionId+')">Remove file</a>';
+                template = '<div id="option_'+data.optionId+'_file_box"><a href="#"><img src="var/options/'+data.fileName+'"></a><a href="#" onclick="optionFileUpload.removeFile('+data.optionId+')">Remove file</a>';
 
                 new Insertion.After(
-        			$('option_'+data.optionId+'_uploaded_file'),
-        			template
-        		);
+                    $('option_'+data.optionId+'_uploaded_file'),
+                    template
+                );
             }
         },
         removeFile : function(optionId)
@@ -98,6 +92,68 @@
             $('option_'+optionId+'_file_box').remove();
         }
     }
+    var optionTextCounter = {
+        count : function(field,cntfield,maxlimit){
+            if (field.value.length > maxlimit){
+                field.value = field.value.substring(0, maxlimit);
+            } else {
+                cntfield.innerHTML = maxlimit - field.value.length;
+            }
+        }
+    }
+
+    Product.Options = Class.create();
+    Product.Options.prototype = {
+        initialize : function(config){
+            this.config     = config;
+            this.elements   = $$('.product-custom-option');
+            this.elements.each(function(element){
+                Event.observe(element, 'change', this.reloadPrice.bind(this));
+            }.bind(this));
+            //try to add itself to calculator stack
+            this.reloadPrice();
+        },
+        reloadPrice : function(){
+            price = new Number();
+            config = this.config;
+            this.elements.each(function(element){
+                var optionId = 0;
+                element.name.sub(/[0-9]+/, function(match){
+                    optionId = match[0];
+                });
+                if (this.config[optionId]) {
+                    if (element.type == 'checkbox' || element.type == 'radio') {
+                        if (element.checked) {
+                            if (config[optionId][element.getValue()]) {
+                                price += parseFloat(config[optionId][element.getValue()]);
+                            }
+                        }
+                    } else if(element.type == 'select-one' || element.type == 'select-multiple') {
+                        if (element.options) {
+                            $A(element.options).each(function(selectOption){
+                                if (selectOption.selected) {
+                                    if (this.config[optionId][selectOption.value]) {
+                                        price += parseFloat(this.config[optionId][selectOption.value]);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        if (element.getValue().strip() != '') {
+                            price += parseFloat(this.config[optionId]);
+                        }
+                    }
+                }
+            });
+            try {
+                optionsPrice.changePrice('options', price);
+                optionsPrice.reload();
+            } catch (e) {
+
+            }
+        }
+    }
+/* ]]> */
+    var opConfig = new Product.Options(<?php echo $this->getJsonConfig() ?>);
 </script>
-</fieldset>
 <?php endif; ?>

@@ -74,7 +74,7 @@ class Mage_Checkout_Model_Cart extends Varien_Object
         if (is_null($products)) {
             $products = array();
             foreach ($this->getQuote()->getAllItems() as $item) {
-            	$products[$item->getProductId()] = $item->getProductId();
+                $products[$item->getProductId()] = $item->getProductId();
             }
             $this->setData('product_ids', $products);
         }
@@ -100,35 +100,49 @@ class Mage_Checkout_Model_Cart extends Varien_Object
          * If user try do checkout, reset shipiing and payment data
          */
         if ($this->getCheckoutSession()->getCheckoutState() !== Mage_Checkout_Model_Session::CHECKOUT_STATE_BEGIN) {
-        	$this->getQuote()
-        		->removeAllAddresses()
-        		->removePayment();
+            $this->getQuote()
+                ->removeAllAddresses()
+                ->removePayment();
             $this->getCheckoutSession()->resetCheckout();
         }
 
         if (!$this->getQuote()->hasItems()) {
-        	$this->getQuote()->getShippingAddress()
-        		->setCollectShippingRates(false)
-        		->removeAllShippingRates();
+            $this->getQuote()->getShippingAddress()
+                ->setCollectShippingRates(false)
+                ->removeAllShippingRates();
         }
 
         return $this;
     }
 
-    public function addOrderItem($orderItem)
+    /**
+     * Convert order item to quote item
+     *
+     * @param Mage_Sales_Model_Order_Item $orderItem
+     * @param mixed $qtyFlag if is null set product qty like in order
+     * @return Mage_Checkout_Model_Cart
+     */
+    public function addOrderItem($orderItem, $qtyFlag=null)
     {
-        $product = Mage::getModel('catalog/product')->load($orderItem->getProductId());
-        if (!$product->getId()) {
-            return $this;
-        }
-        if ($orderItem->getSuperProductId()) {
-            $superProduct = Mage::getModel('catalog/product')->load($orderItem->getSuperProductId());
-            if (!$superProduct->getId()) {
+        /* @var $orderItem Mage_Sales_Model_Order_Item */
+        if (is_null($orderItem->getParentItem())) {
+            $product = Mage::getModel('catalog/product')
+                ->setStoreId(Mage::app()->getStore()->getId())
+                ->load($orderItem->getProductId());
+            if (!$product->getId()) {
                 return $this;
             }
-            $product->setSuperProduct($superProduct);
+
+            $info = $orderItem->getProductOptionByCode('info_buyRequest');
+            $info = new Varien_Object($info);
+            if (is_null($qtyFlag)) {
+                $info->setQty($orderItem->getQtyOrdered());
+            } else {
+                $info->setQty(1);
+            }
+
+            $this->addProduct($product, $info);
         }
-        $this->getQuote()->addCatalogProduct($product, $orderItem->getQtyOrdered());
         return $this;
     }
 
@@ -189,37 +203,21 @@ class Mage_Checkout_Model_Cart extends Varien_Object
 
 
         if ($product->getId()) {
-            $cartCandidates = $product->getTypeInstance()->prepareForCart($request);
-
+            $result = $this->getQuote()->addProduct($product, $request);
             /**
              * String we can get if prepare process has error
              */
-            if (is_string($cartCandidates)) {
+            if (is_string($result)) {
                 $this->getCheckoutSession()->setRedirectUrl($product->getProductUrl());
                 $this->getCheckoutSession()->setUseNotice(true);
-                Mage::throwException($cartCandidates);
-            }
-
-            /**
-             * If prepare process return one object
-             */
-            if (!is_array($cartCandidates)) {
-                $cartCandidates = array($cartCandidates);
-            }
-
-            foreach ($cartCandidates as $candidate) {
-                $item = $this->getQuote()->addCatalogProduct($candidate, $candidate->getCartQty());
-                if ($item->getHasError()) {
-                    $this->setLastQuoteMessage($item->getQuoteMessage());
-                    Mage::throwException($item->getMessage());
-                }
+                Mage::throwException($result);
             }
         }
         else {
             Mage::throwException(Mage::helper('checkout')->__('Product does not exist'));
         }
 
-        Mage::dispatchEvent('checkout_cart_product_add_after', array('quote_item'=>$item, 'product'=>$product));
+        Mage::dispatchEvent('checkout_cart_product_add_after', array('quote_item'=>$result, 'product'=>$product));
         $this->getCheckoutSession()->setLastAddedProductId($product->getId());
         return $this;
     }
@@ -246,7 +244,7 @@ class Mage_Checkout_Model_Cart extends Varien_Object
                     ->load($productId);
                 if ($product->getId() && $product->isVisibleInCatalog()) {
                     try {
-                        $this->getQuote()->addCatalogProduct($product);
+                        $this->getQuote()->addProduct($product);
                     }
                     catch (Exception $e){
                         $allAdded = false;
@@ -287,15 +285,15 @@ class Mage_Checkout_Model_Cart extends Varien_Object
                 continue;
             }
 
-        	if (!empty($itemInfo['remove']) || (isset($itemInfo['qty']) && $itemInfo['qty']=='0')) {
-        	    $this->removeItem($itemId);
-        	    continue;
-        	}
+            if (!empty($itemInfo['remove']) || (isset($itemInfo['qty']) && $itemInfo['qty']=='0')) {
+                $this->removeItem($itemId);
+                continue;
+            }
 
             $qty = isset($itemInfo['qty']) ? (float) $itemInfo['qty'] : false;
-        	if ($qty > 0) {
-        	    $item->setQty($qty);
-        	}
+            if ($qty > 0) {
+                $item->setQty($qty);
+            }
         }
 
         Mage::dispatchEvent('checkout_cart_update_items_after', array('cart'=>$this, 'info'=>$data));
@@ -321,14 +319,10 @@ class Mage_Checkout_Model_Cart extends Varien_Object
      */
     public function save()
     {
-        $address = $this->getQuote()->getShippingAddress();
-        $total = $address->getGrandTotal();
-        $address->setCollectShippingRates(true);
+        $this->getQuote()->getBillingAddress();
+        $this->getQuote()->getShippingAddress()->setCollectShippingRates(true);
         $this->getQuote()->collectTotals();
         $this->getQuote()->save();
-        /*if ($total!=$address->getGrandTotal()) {
-            $this->getQuote()->save();
-        }*/
         $this->getCheckoutSession()->setQuoteId($this->getQuote()->getId());
         return $this;
     }
@@ -452,15 +446,15 @@ class Mage_Checkout_Model_Cart extends Varien_Object
     {
         $quoteId = Mage::getSingleton('checkout/session')->getQuoteId();
         if (null === $this->_productIds) {
-    	    $this->_productIds = array();
-    	    if ($this->getSummaryQty()>0) {
-    	       foreach ($this->getQuote()->getAllItems() as $item) {
-    	           $this->_productIds[] = $item->getProductId();
-    	       }
-    	    }
-    	    $this->_productIds = array_unique($this->_productIds);
+            $this->_productIds = array();
+            if ($this->getSummaryQty()>0) {
+               foreach ($this->getQuote()->getAllItems() as $item) {
+                   $this->_productIds[] = $item->getProductId();
+               }
+            }
+            $this->_productIds = array_unique($this->_productIds);
         }
-	    return $this->_productIds;
+        return $this->_productIds;
     }
 
     /**

@@ -48,6 +48,21 @@ class Mage_Core_Model_Config extends Mage_Core_Model_Config_Base
 
     protected $_substServerVars;
 
+    protected $_resourceModel;
+
+    /**
+     * Retrieve resource model
+     *
+     * @return Mage_Core_Store_Mysql4_Config
+     */
+    public function getResourceModel()
+    {
+        if (is_null($this->_resourceModel)) {
+            $this->_resourceModel = Mage::getResourceModel('core/config');
+        }
+        return $this->_resourceModel;
+    }
+
     /**
      * Flag cache for existing or already created directories
      *
@@ -195,7 +210,7 @@ class Mage_Core_Model_Config extends Mage_Core_Model_Config_Base
             Varien_Profiler::stop('dbUpdates');
 
             Varien_Profiler::start('config/load-db');
-            $dbConf = Mage::getResourceModel('core/config');
+            $dbConf = $this->getResourceModel();
             $dbConf->loadToXml($this);
             Varien_Profiler::stop('config/load-db');
         }
@@ -887,8 +902,16 @@ class Mage_Core_Model_Config extends Mage_Core_Model_Config_Base
      */
     public function saveConfig($path, $value, $scope = 'default', $scopeId = 0)
     {
-        $resource = Mage::getResourceModel('core/config');
+        $resource = $this->getResourceModel();
         $resource->saveConfig(rtrim($path, '/'), $value, $scope, $scopeId);
+
+        return $this;
+    }
+
+    public function deleteConfig($path, $scope = 'default', $scopeId = 0)
+    {
+        $resource = $this->getResourceModel();
+        $resource->deleteConfig(rtrim($path, '/'), $scope, $scopeId);
 
         return $this;
     }

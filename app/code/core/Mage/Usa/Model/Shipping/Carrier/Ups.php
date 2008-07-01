@@ -138,6 +138,7 @@ class Mage_Usa_Model_Shipping_Carrier_Ups
         }
 
         $r->setValue($request->getPackageValue());
+        $r->setValueWithDiscount($request->getPackageValueWithDiscount());
 
         if ($request->getUpsUnitMeasure()) {
             $unit = $request->getUpsUnitMeasure();

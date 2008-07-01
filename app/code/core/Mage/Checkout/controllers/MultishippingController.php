@@ -82,7 +82,7 @@ class Mage_Checkout_MultishippingController extends Mage_Core_Controller_Front_A
         }
 
         $quote = $this->_getCheckout()->getQuote();
-        if (!$quote->hasItems() || $quote->getHasError()) {
+        if (!$quote->hasItems() || $quote->getHasError() || $quote->isVirtual()) {
             $this->_redirectUrl($this->_getHelper()->getCartUrl());
             $this->setFlag('', self::FLAG_NO_DISPATCH, true);
             return;
@@ -268,7 +268,7 @@ class Mage_Checkout_MultishippingController extends Mage_Core_Controller_Front_A
         try {
             Mage::dispatchEvent(
                 'checkout_controller_multishipping_shipping_post',
-                array('request'=>$this->getRequest())
+                array('request'=>$this->getRequest(), 'quote'=>$this->_getCheckout()->getQuote())
             );
             $this->_getCheckout()->setShippingMethods($shippingMethods);
             $this->_getState()->setActiveStep(

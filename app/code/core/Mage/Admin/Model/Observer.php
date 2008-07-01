@@ -51,7 +51,7 @@ class Mage_Admin_Model_Observer
                         ->setDispatched(false);
                 } else {
                     $request->setParam('forwarded', true)
-                        ->setModuleName('admin')
+                        ->setRouteName('adminhtml')
                         ->setControllerName('index')
                         ->setActionName('login')
                         ->setDispatched(false);

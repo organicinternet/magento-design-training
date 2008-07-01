@@ -37,13 +37,13 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Attributes_Extend ext
         $switchAttributeCode = $this->getAttribute()->getAttributeCode().'_type';
         $switchAttributeValue = $this->getProduct()->getData($switchAttributeCode);
 
-        $html = '<select name="product[' . $switchAttributeCode . ']" id="' . $switchAttributeCode . '" type="select" class="required-entry select">
-            <option value="">' . $this->__('-- Please Select --') . '</option>
+        $html = '<select name="product[' . $switchAttributeCode . ']" id="' . $switchAttributeCode . '" type="select" class="required-entry select next-toinput">
+            <option value="">' . $this->__('--select--') . '</option>
             <option ' . ($switchAttributeValue == self::DYNAMIC ? 'selected' : '') . ' value="' . self::DYNAMIC . '">' . $this->__('Dynamic') . '</option>
             <option ' . ($switchAttributeValue == self::FIXED ? 'selected' : '') . ' value="' . self::FIXED . '">' . $this->__('Fixed') . '</option>
         </select>';
 
-        $html .= $elementHtml;
+        $html .= '<span class="next-toselect">'.$elementHtml.'</span>';
         if ($this->getDisableChild()) {
             $html .= "<script type=\"text/javascript\">
                 function " . $switchAttributeCode . "_change() {

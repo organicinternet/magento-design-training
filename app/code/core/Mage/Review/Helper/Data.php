@@ -26,9 +26,6 @@
 class Mage_Review_Helper_Data extends Mage_Core_Helper_Abstract
 {
     function getDetail($origDetail){
-	    $maxLen = 50;
-	    $result = (strlen($origDetail) > $maxLen ? substr($origDetail, 0, 50) . '...' : $origDetail) ;
-
-        return nl2br($result);
+        return nl2br(Mage::helper('core/string')->truncate($origDetail, 50));
     }
 }

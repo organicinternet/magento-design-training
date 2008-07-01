@@ -22,11 +22,30 @@
 <tr>
     <td>
         <?php echo $this->htmlEscape($this->getProductName()) ?>
+        <?php if ($_options = $this->getOptionList()): ?>
+        <ul class="super-product-attributes">
+            <?php foreach ($_options as $_option): ?>
+            <li><strong><?php echo $_option['label'] ?>:</strong><br />
+            <? if (is_array($_option['value'])): ?>
+                <?php echo implode('<br />', $_option['value']) ?>
+            <? else: ?>
+                <?php echo $this->htmlEscape($_option['value']) ?>
+            <? endif; ?>
+            <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
     </td>
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?></td>
-    <?php if ($this->helper('tax')->displayTaxColumn()): ?>
-    <td class="a-right"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()+$_item->getTaxAmount()/$this->getQty()) ?></td>
     <?php endif; ?>
-    <td class="a-center"><?php echo $this->getQty() ?></td>
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <td class="a-right"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?></td>
+    <?php endif; ?>
+    <td class="a-center"><?php echo $_item->getQty() ?></td>
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></td>
+    <?php endif; ?>
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <td class="a-right"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?></td>
+    <?php endif; ?>
 </tr>

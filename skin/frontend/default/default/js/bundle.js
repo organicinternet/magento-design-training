@@ -6,6 +6,7 @@ Product.Bundle = Class.create();
 Product.Bundle.prototype = {
     initialize: function(config){
         this.config = config;
+        this.reloadPrice();
     },
     changeSelection: function(selection){
         parts = selection.id.split('-');
@@ -18,17 +19,17 @@ Product.Bundle.prototype = {
                     }
                 }
             } else if (selection.tagName == 'INPUT') {
-                selections = $A(selection.parentNode.getElementsByTagName('INPUT'));
+                selector = parts[0]+'-'+parts[1]+'-'+parts[2];
+                selections = $$('.'+selector);
                 for (var i = 0; i < selections.length; i++) {
-
-                    if (selections[i].checked && selections[i].value != 'none') {
+                    if (selections[i].checked && selections[i].value != '') {
                         selected.push(selections[i].value);
                     }
                 }
             }
             this.config.selected[parts[2]] = selected;
         } else {
-            if (selection.value != '' && selection.value != 'none') {
+            if (selection.value != '') {
                 this.config.selected[parts[2]] = new Array(selection.value);
             } else {
                 this.config.selected[parts[2]] = new Array();
@@ -36,14 +37,11 @@ Product.Bundle.prototype = {
             this.populateQty(parts[2], selection.value);
         }
         this.reloadPrice();
+
     },
 
     reloadPrice: function() {
-        if (this.config.priceType == '1') {
-            var calculatedPrice = Number(this.config.basePrice);
-        } else {
-            var calculatedPrice = Number(0);
-        }
+        var calculatedPrice = 0;
         for (var option in this.config.selected) {
             if (this.config.options[option]) {
                 for (var i=0; i < this.config.selected[option].length; i++) {
@@ -56,8 +54,10 @@ Product.Bundle.prototype = {
             calculatedPrice = (calculatedPrice*this.config.specialPrice)/100;
         }
 
-        $('bundle-price-' + this.config.bundleId).innerHTML = formatCurrency(calculatedPrice, this.config.priceFormat);
+        optionsPrice.changePrice('bundle', calculatedPrice);
+        optionsPrice.reload();
 
+        return calculatedPrice;
     },
 
     selectionPrice: function(optionId, selectionId) {
@@ -65,8 +65,12 @@ Product.Bundle.prototype = {
             return 0;
         }
 
-        if (this.config.options[optionId].selections[selectionId].customQty == 1 && !this.config['options'][optionId].isMulti) {
-            qty = $('bundle-option-' + optionId + '-qty-input').value;
+        if (this.config.options[optionId].selections[selectionId].customQty == 1 && this.config['options'][optionId].isMulti) {
+            if ($('bundle-option-' + optionId + '-qty-input')) {
+                qty = $('bundle-option-' + optionId + '-qty-input').value;
+            } else {
+                qty = 1;
+            }
         } else {
             qty = this.config.options[optionId].selections[selectionId].qty;
         }
@@ -93,28 +97,19 @@ Product.Bundle.prototype = {
 
     populateQty: function(optionId, selectionId){
         if (selectionId == '' || selectionId == 'none') {
-            this.showQtyLabel(optionId, '');
+            this.showQtyInput(optionId, '', false);
             return;
         }
         if (this.config.options[optionId].selections[selectionId].customQty == 1) {
-            this.showQtyInput(optionId, this.config.options[optionId].selections[selectionId].qty);
+            this.showQtyInput(optionId, this.config.options[optionId].selections[selectionId].qty, true);
         } else {
-            this.showQtyLabel(optionId, this.config.options[optionId].selections[selectionId].qty);
+            this.showQtyInput(optionId, this.config.options[optionId].selections[selectionId].qty, false);
         }
     },
 
-    showQtyInput: function(optionId, value) {
+    showQtyInput: function(optionId, value, canEdit) {
         $('bundle-option-' + optionId + '-qty-input').value = value;
-        $('bundle-option-' + optionId + '-qty-input').disabled = false;
-        $('bundle-option-' + optionId + '-qty-input').show();
-        $('bundle-option-' + optionId + '-qty-label').hide();
-    },
-
-    showQtyLabel: function(optionId, value) {
-        $('bundle-option-' + optionId + '-qty-label').innerHTML = value;
-        $('bundle-option-' + optionId + '-qty-input').disabled = false;
-        $('bundle-option-' + optionId + '-qty-label').show();
-        $('bundle-option-' + optionId + '-qty-input').hide();
+        $('bundle-option-' + optionId + '-qty-input').disabled = !canEdit;
     },
 
     changeOptionQty: function (element) {
@@ -128,5 +123,5 @@ Product.Bundle.prototype = {
             this.config.options[optionId].selections[selectionId].qty = element.value*1;
             this.reloadPrice();
         }
-    },
+    }
 }

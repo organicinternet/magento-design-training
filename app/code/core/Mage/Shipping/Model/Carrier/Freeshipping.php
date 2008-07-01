@@ -46,7 +46,8 @@ class Mage_Shipping_Model_Carrier_Freeshipping
         }
 
         $result = Mage::getModel('shipping/rate_result');
-        $packageValue = $request->getBaseCurrency()->convert($request->getPackageValueWithDiscount(), $request->getPackageCurrency());
+//      $packageValue = $request->getBaseCurrency()->convert($request->getPackageValueWithDiscount(), $request->getPackageCurrency());
+        $packageValue = $request->getPackageValueWithDiscount();
         $allow = ($request->getFreeShipping())
             || ($packageValue >= $this->getConfigData('free_shipping_subtotal'));
 

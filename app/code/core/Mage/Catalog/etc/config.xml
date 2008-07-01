@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Catalog>
-            <version>0.7.40</version>
+            <version>0.7.44</version>
         </Mage_Catalog>
     </modules>
 
@@ -220,27 +220,18 @@
                         <model>catalog/product_type_virtual</model>
                     </virtual>
                 </type>
+                <design>
+                    <options_container>
+                        <option1 translate="label">
+                            <value>container1</value>
+                            <label>Product Info Column</label></option1>
+                        <option2 translate="label">
+                            <value>container2</value>
+                            <label>Block after Info Column</label>
+                        </option2>
+                    </options_container>
+                </design>
             </product>
-
-            <layer>
-                <view>
-                    <product_attributes>
-                        <name />
-                        <url_key />
-                        <price />
-                        <special_price />
-                        <special_from_date />
-                        <special_to_date />
-                        <description />
-                        <short_description />
-                        <image />
-                        <thumbnail />
-                        <small_image />
-                        <tax_class_id />
-                    </product_attributes>
-                </view>
-            </layer>
-
         </catalog>
     </global>
     <adminhtml>
@@ -463,6 +454,25 @@
                 <list>5,10,15,20,25</list>
             </per_page_values>
         </catalog>
+        <product>
+            <collection>
+                <attributes>
+                    <name />
+                    <url_key />
+                    <price />
+                    <special_price />
+                    <special_from_date />
+                    <special_to_date />
+                    <description />
+                    <short_description />
+                    <image />
+                    <thumbnail />
+                    <small_image />
+                    <tax_class_id />
+                    <status />
+                </attributes>
+            </collection>
+        </product>
     </frontend>
 
     <default>

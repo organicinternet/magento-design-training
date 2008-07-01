@@ -99,8 +99,8 @@ class Mage_Reports_Model_Event_Observer
     public function checkoutCartAddProduct(Varien_Event_Observer $observer)
     {
         $quoteItem = $observer->getEvent()->getItem();
-        if (!$quoteItem->getId()) {
-            $productId = $quoteItem->getSuperProductId() ? $quoteItem->getSuperProductId() : $quoteItem->getProductId();
+        if (!$quoteItem->getId() && !$quoteItem->getParentItem()) {
+            $productId = $quoteItem->getProductId();
             $this->_event(Mage_Reports_Model_Event::EVENT_PRODUCT_TO_CART, $productId);
         }
         return $this;

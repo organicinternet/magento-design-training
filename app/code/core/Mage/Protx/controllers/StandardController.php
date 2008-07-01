@@ -123,6 +123,8 @@ class Mage_Protx_StandardController extends Mage_Core_Controller_Front_Action
 
         $order->sendNewOrderEmail();
 
+        $this->responseArr['Amount'] = str_replace(',', '', $this->responseArr['Amount']);
+
         if (sprintf('%.2f', $this->responseArr['Amount']) != sprintf('%.2f', $order->getBaseGrandTotal())) {
             // cancel order
             $order->cancel();

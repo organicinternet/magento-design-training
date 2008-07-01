@@ -25,8 +25,12 @@
  */
 ?>
 <div class="padder">
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 <?php $_product=$this->getProduct() ?>
+<form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form">
         <div class="product-img-box">
             <?php echo $this->getChildHtml('media') ?>
         </div>
@@ -38,16 +42,16 @@
                 <a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a><br />
             <?php endif; ?>
 
-            <?php echo $this->helper('review/product')->getSummaryHtml($_product, null, 1) ?>
+            <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
-            <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form">
                 <fieldset>
-                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>"/>
-                <input type="hidden" name="related_product" id="related-products-field" value=""/>
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
                 </fieldset>
                 <?php echo $this->getChildHtml('alert_urls') ?>
+                <?php echo $this->getChildHtml('container1') ?>
                 <?php echo $this->getChildHtml('product_type_data') ?>
-            </form>
+                <div class="clear"></div>
 
             <script type="text/javascript">
                 var productAddToCartForm = new VarienForm('product_addtocart_form');
@@ -57,16 +61,16 @@
                     }
                 }.bind(productAddToCartForm);
             </script>
-
-            <div class="clear"></div>
-            <br/>
+            <br />
             <h4 class="border-head"><?php echo $this->__('Quick Overview') ?></h4>
             <div class="short-description"><?php echo nl2br($_product->getShortDescription()) ?></div>
 
         </div>
         <div class="clear"></div>
+        <?php echo $this->getChildHtml('container2') ?>
+</form>
 </div>
-<br/><br/>
+<br /><br />
 <?php $_upsellHtml = $this->getChildHtml('upsell_products') ?>
 <ul class="tabs">
     <li id="product_tabs_description" class="active first"><a href="#">Product Description</a></li>
@@ -78,7 +82,7 @@
     <div id="product_tabs_description_contents" class="product-specs"><?php echo nl2br($_product->getDescription()) ?></div>
     <?php if ($_upsellHtml): ?><div id="product_tabs_upsell_contents"><?php echo $_upsellHtml ?></div><?php endif ?>
     <div id="product_tabs_tags_contents"><?php echo $this->getChildHtml('product_tag_list') ?></div>
-    
+
     <?php if($_additional = $this->getAdditionalData()): ?>
     <div id="product_tabs_additional_contents" class="collateral-box attribute-specs">
         <table cellspacing="0" class="data-table" id="product-attribute-specs-table">

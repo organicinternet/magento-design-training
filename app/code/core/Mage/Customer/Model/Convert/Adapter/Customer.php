@@ -522,7 +522,7 @@ class Mage_Customer_Model_Convert_Adapter_Customer
 
             $billingStreet = array();
             foreach ($this->_billingFields as $field) {
-                $cleanField = substr($field, 8);
+                $cleanField = Mage::helper('core/string')->substr($field, 8);
 
                 if (in_array($field, $this->_billingStreetFields) && isset($importData[$field])) {
                     $billingStreet[] = $importData[$field];
@@ -576,7 +576,7 @@ class Mage_Customer_Model_Convert_Adapter_Customer
             $shippingStreet = array();
 
             foreach ($this->_shippingFields as $field) {
-                $cleanField = substr($field, 9);
+                $cleanField = Mage::helper('core/string')->substr($field, 9);
 
                 if (in_array($field, $this->_shippingStreetFields) && isset($importData[$field])) {
                     $shippingStreet[] = $importData[$field];

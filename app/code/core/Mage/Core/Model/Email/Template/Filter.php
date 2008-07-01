@@ -29,96 +29,102 @@ class Mage_Core_Model_Email_Template_Filter extends Varien_Filter_Template
         return $this;
     }
 
-	public function blockDirective($construction)
-	{
-		$blockParameters = $this->_getIncludeParameters($construction[2]);
-		$layout = Mage::app()->getLayout();
+    public function blockDirective($construction)
+    {
+        $skipParams = array('type', 'id', 'output');
+        $blockParameters = $this->_getIncludeParameters($construction[2]);
+        $layout = Mage::app()->getLayout();
 
-		if (isset($blockParameters['type'])) {
-    		$type = $blockParameters['type'];
-    		$block = $layout->createBlock($type, null, $blockParameters);
-		} elseif (isset($blockParameters['id'])) {
-		    $block = $layout->createBlock('cms/block');
-		    if ($block) {
-    		    $block->setBlockId($blockParameters['id'])
-    		        ->setBlockParams($blockParameters);
-		    }
-		}
-		if (!$block) {
-		    return '';
-		}
-		if (isset($blockParameters['output'])) {
-		    $method = $blockParameters['output'];
-		}
-		if (!isset($method) || !is_string($method) || !is_callable(array($block, $method))) {
-		    $method = 'toHtml';
-		}
+        if (isset($blockParameters['type'])) {
+            $type = $blockParameters['type'];
+            $block = $layout->createBlock($type, null, $blockParameters);
+        } elseif (isset($blockParameters['id'])) {
+            $block = $layout->createBlock('cms/block');
+            if ($block) {
+                $block->setBlockId($blockParameters['id'])
+                    ->setBlockParams($blockParameters);
+                foreach ($blockParameters as $k => $v) {
+                    if (in_array($k, $skipParams)) {
+                        continue;
+                    }
+                    $block->setDataUsingMethod($k, $v);
+                }
+            }
+        }
+        if (!$block) {
+            return '';
+        }
+        if (isset($blockParameters['output'])) {
+            $method = $blockParameters['output'];
+        }
+        if (!isset($method) || !is_string($method) || !is_callable(array($block, $method))) {
+            $method = 'toHtml';
+        }
         return $block->$method();
-	}
+    }
 
-	public function layoutDirective($construction)
-	{
-	    $skipParams = array('handle', 'output', 'area');
-	    $setArea    = null;
+    public function layoutDirective($construction)
+    {
+        $skipParams = array('handle', 'area');
+        $setArea    = null;
 
-	    $params = $this->_getIncludeParameters($construction[2]);
-	    $layout = Mage::getModel('core/layout');
-	    /* @var $layout Mage_Core_Model_Layout */
-	    if (isset($params['area'])) {
-	        $layout->setArea($params['area']);
-	    }
-	    else {
-	        $layout->setArea(Mage::app()->getLayout()->getArea());
-	    }
-	    $layout->getUpdate()->addHandle('default');
-	    $layout->getUpdate()->addHandle($params['handle']);
-	    $layout->getUpdate()->load();
+        $params = $this->_getIncludeParameters($construction[2]);
+        $layout = Mage::getModel('core/layout');
+        /* @var $layout Mage_Core_Model_Layout */
+        if (isset($params['area'])) {
+            $layout->setArea($params['area']);
+        }
+        else {
+            $layout->setArea(Mage::app()->getLayout()->getArea());
+        }
 
-	    $layout->generateXml();
-	    $layout->generateBlocks();
+        $layout->getUpdate()->addHandle($params['handle']);
+        $layout->getUpdate()->load();
 
-	    foreach ($layout->getAllBlocks() as $block) {
-	        foreach ($params as $k => $v) {
-	            if (in_array($k, $skipParams)) {
-	                continue;
-	            }
-	            $block->addData($k, $v);
-	        }
-	    }
+        $layout->generateXml();
+        $layout->generateBlocks();
 
-        if (isset($params['output'])) {
-	        $layout->addOutputBlock($params['output']);
-	    }
+        foreach ($layout->getAllBlocks() as $blockName => $block) {
+            /* @var $block Mage_Core_Block_Abstract */
+            foreach ($params as $k => $v) {
+                if (in_array($k, $skipParams)) {
+                    continue;
+                }
 
-	    $layout->setDirectOutput(false);
-	    return $layout->getOutput();
-	}
+                $block->setDataUsingMethod($k, $v);
+                $layout->addOutputBlock($blockName);
+            }
+        }
 
-	protected function _getBlockParameters($value)
-	{
+        $layout->setDirectOutput(false);
+        return $layout->getOutput();
+    }
+
+    protected function _getBlockParameters($value)
+    {
         $tokenizer = new Varien_Filter_Template_Tokenizer_Parameter();
         $tokenizer->setString($value);
 
         return $tokenizer->tokenize();
-	}
+    }
 
-	public function skinDirective($construction)
-	{
-		$params = $this->_getIncludeParameters($construction[2]);
-		$params['_absolute'] = $this->_useAbsoluteLinks;
+    public function skinDirective($construction)
+    {
+        $params = $this->_getIncludeParameters($construction[2]);
+        $params['_absolute'] = $this->_useAbsoluteLinks;
 
-		$url = Mage::getDesign()->getSkinUrl($params['url'], $params);
+        $url = Mage::getDesign()->getSkinUrl($params['url'], $params);
 
-		return $url;
-	}
+        return $url;
+    }
 
-	public function storeDirective($construction)
-	{
-    	$params = $this->_getIncludeParameters($construction[2]);
-    	$params['_absolute'] = $this->_useAbsoluteLinks;
+    public function storeDirective($construction)
+    {
+        $params = $this->_getIncludeParameters($construction[2]);
+        $params['_absolute'] = $this->_useAbsoluteLinks;
 
-    	$path = $params['url'];
-    	unset($params['url']);
+        $path = $params['url'];
+        unset($params['url']);
 
         if (!self::$_urlInstance) {
             self::$_urlInstance = Mage::getModel('core/url');
@@ -133,9 +139,9 @@ class Mage_Core_Model_Email_Template_Filter extends Varien_Filter_Template
             $params['_query']['store'] = Mage::app()->getStore()->getCode();
         }
 
-    	$url = self::$_urlInstance->getUrl($path, $params);
+        $url = self::$_urlInstance->getUrl($path, $params);
 
-    	return $url;
-	}
+        return $url;
+    }
 
 }

@@ -276,6 +276,21 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     protected function _beforeSave()
     {
         $this->cleanCache();
+
+        $options = $this->getProductOptions();
+        if (is_array($options)) {
+            foreach ($this->getProductOptions() as $option) {
+                $this->getOptionInstance()->addOption($option);
+            }
+        }
+        $this->setRequiredOptions(false);
+        foreach ($this->getOptionInstance()->getOptions() as $option) {
+            if ($option['is_require'] == '1') {
+                $this->setRequiredOptions(true);
+                break;
+            }
+        }
+
         parent::_beforeSave();
     }
 
@@ -293,12 +308,12 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
          * Product Custom Options
          */
         /* @var $optionModel Mage_Catalog_Model_Product_Option */
-        $options = $this->getProductOptions();
-        if (is_array($options)) {
-            foreach ($this->getProductOptions() as $option) {
-                $this->getOptionInstance()->addOption($option);
-            }
-        }
+//        $options = $this->getProductOptions();
+//        if (is_array($options)) {
+//            foreach ($this->getProductOptions() as $option) {
+//                $this->getOptionInstance()->addOption($option);
+//            }
+//        }
         $this->getOptionInstance()->setProduct($this)
             ->saveOptions();
 
@@ -311,6 +326,17 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
         parent::_beforeDelete();
     }
 
+    protected function _afterLoad()
+    {
+        parent::_afterLoad();
+        foreach ($this->getProductOptionsCollection() as $option) {
+            $option->setProduct($this);
+            $this->addOption($option);
+        }
+
+        return $this;
+    }
+
     public function cleanCache()
     {
         Mage::app()->cleanCache('catalog_product_'.$this->getId());
@@ -319,16 +345,6 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     public function getPriceModel()
     {
         return Mage::getSingleton('catalog/product_type')->priceFactory($this->getTypeId());
-    }
-    /**
-     * Get product pricing value
-     *
-     * @param   array $value
-     * @return  double
-     */
-    public function getPricingValue($value, $qty = null)
-    {
-        return $this->getPriceModel()->getPricingValue($value, $this, $qty);
     }
 
     /**
@@ -382,17 +398,6 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     public function getFinalPrice($qty=null)
     {
         return $this->getPriceModel()->getFinalPrice($qty, $this);
-    }
-
-    /**
-     * Get calculated product price
-     *
-     * @param array $options
-     * @return double
-     */
-    public function getCalculatedPrice(array $options)
-    {
-        return $this->getPriceModel()->getCalculatedPrice($options, $this);
     }
 
     public function getCalculatedFinalPrice()
@@ -1180,7 +1185,7 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     public function getProductOptionsCollection()
     {
         $collection = $this->getOptionInstance()
-                ->getProductOptionCollection($this);
+            ->getProductOptionCollection($this);
 
         return $collection;
     }

@@ -37,11 +37,11 @@
 
 	 <?php $_showAddButtonFlag = false ?>
      <?php foreach($_order->getItemsRandomCollection(5) as $_item): ?>
-     <?php if ($_item->getProduct()): ?>
+     <?php if ($_item->getProduct() && is_null($_item->getParentItem())): ?>
         <li>
         		<?php if ($_item->getProduct()->getStockItem()->getIsInStock()): ?>
         		<?php $_showAddButtonFlag = true ?>
-        			<input type="checkbox" name="products[]" value="<?php echo $_item->getProductId() ?>" class="validate-one-required-by-name" />
+        			<input type="checkbox" name="order_items[]" value="<?php echo $_item->getId() ?>" class="validate-one-required-by-name" />
         		<?php endif; ?>
                 <label><a href="<?php echo $_item->getProduct()->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></label>
         </li>

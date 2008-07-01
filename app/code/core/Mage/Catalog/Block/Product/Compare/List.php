@@ -54,15 +54,7 @@
 
             $this->_items
                 ->loadComaparableAttributes()
-                ->addAttributeToSelect('name')
-                ->addAttributeToSelect('price')
-                ->addAttributeToSelect('special_price')
-                ->addAttributeToSelect('special_from_date')
-                ->addAttributeToSelect('special_to_date')
-                ->addAttributeToSelect('image')
-                ->addAttributeToSelect('status')
-                ->addAttributeToSelect('small_image')
-                ->addAttributeToSelect('tax_class_id');
+                ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes());
 
             Mage::getSingleton('catalog/product_visibility')->addVisibleInSiteFilterToCollection($this->_items);
         }

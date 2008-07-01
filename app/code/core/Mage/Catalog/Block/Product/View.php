@@ -102,4 +102,29 @@ class Mage_Catalog_Block_Product_View extends Mage_Catalog_Block_Product_Abstrac
         return parent::getAddToCartUrl($product, $additional);
     }
 
+    public function getJsonConfig()
+    {
+        $config = array();
+
+        $_request = Mage::getSingleton('tax/calculation')->getRateRequest(false, false, false);
+        $_request->setProductClassId($this->getProduct()->getTaxClassId());
+        $defaultTax = Mage::getSingleton('tax/calculation')->getRate($_request);
+
+        $_request = Mage::getSingleton('tax/calculation')->getRateRequest();
+        $_request->setProductClassId($this->getProduct()->getTaxClassId());
+        $currentTax = Mage::getSingleton('tax/calculation')->getRate($_request);
+
+        $config = array(
+            'productId' => $this->getProduct()->getId(),
+            'priceFormat' => Mage::app()->getLocale()->getJsPriceFormat(),
+            'includeTax' => Mage::helper('tax')->priceIncludesTax() ? 'true' : 'false',
+            'showIncludeTax' => $this->helper('tax')->displayPriceIncludingTax(),
+            'productPrice' => $this->getProduct()->getFinalPrice(),
+            'defaultTax' => $defaultTax,
+            'currentTax' => $currentTax
+        );
+//Zend_Debug::dump($config, 'config');die();
+        return Zend_Json::encode($config);
+    }
+
 }

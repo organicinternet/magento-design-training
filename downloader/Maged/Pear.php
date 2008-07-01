@@ -259,6 +259,8 @@ class Maged_Pear
         } else {
             throw Maged_Exception("Invalid run parameters");
         }
+        
+        if (!$run->get('no-header')) {
 ?>
 <html><head><style type="text/css">
 body { margin:0px;
@@ -273,10 +275,20 @@ if (parent && parent.disableInputs) {
     parent.disableInputs(true);
 }
 if (typeof auto_scroll=='undefined') {
-    var auto_scroll = window.setInterval("if (top.$('pear_iframe_scroll').checked) document.body.scrollTop+=3", 10);
+    var auto_scroll = window.setInterval(console_scroll, 10);
+}
+function console_scroll()
+{
+    if (typeof top.$!='function') {
+        return;
+    }
+    if (top.$('pear_iframe_scroll').checked) {
+        document.body.scrollTop+=3;
+    }
 }
 </script>
 <?php
+        }
         echo htmlspecialchars($run->get('comment'));
 
         if ($command = $run->get('command')) {
@@ -295,11 +307,13 @@ if (typeof auto_scroll=='undefined') {
                     }
                 }
             } else {
-                if ($callback = $run->get('success_callback')) {
-                    if (is_array($callback)) {
-                        call_user_func_array($callback, array($result));
-                    } else {
-                        echo $callback;
+                if (!$run->get('no-footer')) {
+                    if ($callback = $run->get('success_callback')) {
+                        if (is_array($callback)) {
+                            call_user_func_array($callback, array($result));
+                        } else {
+                            echo $callback;
+                        }
                     }
                 }
             }
@@ -307,6 +321,7 @@ if (typeof auto_scroll=='undefined') {
         } else {
             $result = false;
         }
+        if ($result instanceof PEAR_Error || !$run->get('no-footer')) {
 ?>
 <script type="text/javascript">
 if (parent && parent.disableInputs) {
@@ -315,8 +330,8 @@ if (parent && parent.disableInputs) {
 </script>
 </body></html>
 <?php
-        $fe->setLogStream($oldLogStream);
-
+            $fe->setLogStream($oldLogStream);
+        }
         return $result;
     }
 }

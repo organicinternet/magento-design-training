@@ -364,6 +364,8 @@ $_session = Mage::getSingleton('strikeiron/session');
                 ->setRateValue($tax_rate)
                 ->save();
             $data->setRateValue($tax_rate);
+            $data->setRateTitle(Mage::helper('strikeiron')->__('Tax'));
+            $data->setRateId('strikeiron_tax');
         }
         return $this;
 

@@ -45,15 +45,25 @@ class Mage_CatalogSearch_Block_Advanced_Result extends Mage_Core_Block_Template
         return parent::_prepareLayout();
     }
 
-    public function initList($template)
-    {
-        $resultBlock = $this->getLayout()
-            ->createBlock('catalog/product_list', 'product_list')
-            ->setTemplate($template)
-            ->setAvailableOrders(array('name'=>Mage::helper('catalogsearch')->__('Name'), 'price'=>Mage::helper('catalogsearch')->__('Price')))
-            ->setModes(array('grid'=>Mage::helper('catalogsearch')->__('Grid'), 'list' => Mage::helper('catalogsearch')->__('List')))
-            ->setCollection($this->_getProductCollection());
-        $this->setChild('search_result_list', $resultBlock);
+    public function setListOrders() {
+        $this->getChild('search_result_list')
+            ->setAvailableOrders(array(
+                'name' => Mage::helper('catalogsearch')->__('Name'),
+                'price'=>Mage::helper('catalogsearch')->__('Price'))
+            );
+    }
+
+    public function setListModes() {
+        $this->getChild('search_result_list')
+            ->setModes(array(
+                'grid' => Mage::helper('catalogsearch')->__('Grid'),
+                'list' => Mage::helper('catalogsearch')->__('List'))
+            );
+    }
+
+    public function setListCollection() {
+        $this->getChild('search_result_list')
+           ->setCollection($this->_getProductCollection());
     }
 
     protected function _getProductCollection(){
@@ -76,7 +86,7 @@ class Mage_CatalogSearch_Block_Advanced_Result extends Mage_Core_Block_Template
 
     public function getProductListHtml()
     {
-    	return $this->getChildHtml('search_result_list');
+        return $this->getChildHtml('search_result_list');
     }
 
     public function getFormUrl()

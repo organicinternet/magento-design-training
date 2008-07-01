@@ -29,7 +29,11 @@
         <?php if ($_product->getPriceView()): ?>
             <?php echo $this->__('As low as: %s', Mage::helper('core')->currency($_minimalPrice)) ?>
         <?php else: ?>
-            <?php echo Mage::helper('core')->currency($_minimalPrice) ?> .. <?php echo Mage::helper('core')->currency($_maximumPrice) ?>
+            <?php if ($_minimalPrice <> $_maximumPrice): ?>
+                <?php echo Mage::helper('core')->currency($_minimalPrice) ?> .. <?php echo Mage::helper('core')->currency($_maximumPrice) ?>
+            <?php else: ?>
+                <?php echo Mage::helper('core')->currency($_minimalPrice) ?>
+            <?php endif; ?>
         <?php endif; ?>
     </span>
 </div>

@@ -128,12 +128,21 @@ varienLoader.prototype = {
             }
         }
 
-        new Ajax.Request(url,{
-            method: 'post',
-            parameters: params || {},
-            onComplete: this.processResult.bind(this),
-            onFailure: this._processFailure.bind(this)
-        });
+        if (typeof(params.updaterId) != 'undefined') {
+            new Ajax.Updater(params.updaterId, url, {
+                evalScripts : true,
+                onComplete: this.processResult.bind(this),
+                onFailure: this._processFailure.bind(this)
+            });
+        }
+        else {
+            new Ajax.Request(url,{
+                method: 'post',
+                parameters: params || {},
+                onComplete: this.processResult.bind(this),
+                onFailure: this._processFailure.bind(this)
+            });
+        }
     },
 
     _processFailure : function(transport){

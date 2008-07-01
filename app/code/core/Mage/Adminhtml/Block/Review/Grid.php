@@ -108,6 +108,9 @@ class Mage_Adminhtml_Block_Review_Grid extends Mage_Adminhtml_Block_Widget_Grid
             'width'         => '100px',
             'filter_index'  => 'rdt.title',
             'index'         => 'title',
+            'type'          => 'text',
+            'truncate'      => 50,
+            'escape'        => true,
         ));
 
         $this->addColumn('nickname', array(
@@ -116,15 +119,20 @@ class Mage_Adminhtml_Block_Review_Grid extends Mage_Adminhtml_Block_Widget_Grid
             'width'         => '100px',
             'filter_index'  => 'rdt.nickname',
             'index'         => 'nickname',
+            'type'          => 'text',
+            'truncate'      => 50,
+            'escape'        => true,
         ));
 
         $this->addColumn('detail', array(
             'header'        => Mage::helper('review')->__('Review'),
             'align'         => 'left',
-            'type'          => 'text',
             'index'         => 'detail',
             'filter_index'  => 'rdt.detail',
-            'renderer'      => 'adminhtml/review_grid_renderer_detail'
+            'type'          => 'text',
+            'truncate'      => 50,
+            'nl2br'         => true,
+            'escape'        => true,
         ));
 
         /**

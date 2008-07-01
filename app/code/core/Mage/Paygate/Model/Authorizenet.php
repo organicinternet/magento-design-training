@@ -294,8 +294,8 @@ class Mage_Paygate_Model_Authorizenet extends Mage_Payment_Model_Method_Cc
             }
 
             $request->setXPoNum($payment->getPoNumber())
-                ->setXTax($shipping->getTaxAmount())
-                ->setXFreight($shipping->getShippingAmount());
+                ->setXTax($order->getTaxAmount())
+                ->setXFreight($order->getShippingAmount());
         }
 
         switch ($payment->getAnetTransMethod()) {

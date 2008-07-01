@@ -117,7 +117,7 @@ abstract class Mage_Checkout_Block_Cart_Abstract extends Mage_Core_Block_Templat
      */
     public function getItems()
     {
-        return $this->getQuote()->getAllItems();
+        return $this->getQuote()->getAllVisibleItems();
     }
 
     /**

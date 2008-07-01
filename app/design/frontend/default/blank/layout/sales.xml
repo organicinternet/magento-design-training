@@ -64,7 +64,7 @@ Customer account home dashboard layout
         <update handle="customer_account"/>
         <reference name="content">
             <block type="sales/order_history" name="sales.order.history"/>
-            <block type="customer/account_link" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
         </reference>
     </sales_order_history>
 
@@ -155,5 +155,32 @@ Customer account home dashboard layout
             <block type="sales/order_print_creditmemo" name="sales.order.print.creditmemo" template="sales/order/print/creditmemo.phtml"/>
         </reference>
     </sales_order_printcreditmemo>
+
+<!--
+Email layouts section
+-->
+    <sales_email_order_items>
+        <block type="sales/order_email_items" name="items" template="email/order/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_order_default</block><template>email/order/items/order/default.phtml</template></action>
+        </block>
+    </sales_email_order_items>
+
+    <sales_email_order_invoice_items>
+        <block type="sales/order_email_invoice_items" name="items" template="email/order/invoice/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>email/order/items/invoice/default.phtml</template></action>
+        </block>
+    </sales_email_order_invoice_items>
+
+    <sales_email_order_shipment_items>
+        <block type="sales/order_email_shipment_items" name="items" template="email/order/shipment/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>email/order/items/shipment/default.phtml</template></action>
+        </block>
+    </sales_email_order_shipment_items>
+
+    <sales_email_order_creditmemo_items>
+        <block type="sales/order_email_creditmemo_items" name="items" template="email/order/creditmemo/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>email/order/items/creditmemo/default.phtml</template></action>
+        </block>
+    </sales_email_order_creditmemo_items>
 
 </layout>

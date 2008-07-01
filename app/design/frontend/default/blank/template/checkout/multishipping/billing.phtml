@@ -67,6 +67,7 @@
 		</dd>
 	<?php endforeach; ?>
 	</dl>
+	<?php echo $this->getChildHtml('checkout_billing_items') ?>
 </div>
 <div class="buttons-container">
     <a href="<?php echo $this->getBackUrl() ?>" class="back-link">&laquo;<?php echo $this->__('Back to Shipping Information') ?></a>

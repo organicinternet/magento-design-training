@@ -178,7 +178,6 @@ class Mage_Checkout_Model_Type_Onepage
                     $shipping->addData($billing->getData())
                         ->setSameAsBilling(1)
                         ->setCollectShippingRates(true);
-                    $this->getQuote()->collectTotals();
                     $this->getCheckout()->setStepData('shipping', 'complete', true);
                     break;
             }
@@ -190,6 +189,7 @@ class Mage_Checkout_Model_Type_Onepage
         }
 
         $this->getQuote()->setCustomerDob($address->getDob());
+        $this->getQuote()->collectTotals();
         $this->getQuote()->save();
 
         $this->getCheckout()
@@ -412,12 +412,11 @@ class Mage_Checkout_Model_Type_Onepage
         if (!$this->getQuote()->isVirtual()) {
             $order->setShippingAddress($convertQuote->addressToOrderAddress($shipping));
         }
+
         $order->setPayment($convertQuote->paymentToOrderPayment($this->getQuote()->getPayment()));
+
         foreach ($this->getQuote()->getAllItems() as $item) {
-            $orderItem = $convertQuote->itemToOrderItem($item)
-                ->setProductType($item->getProductType())
-                ->setProductOptions($item->getProduct()->getTypeInstance()->getOrderOptions());
-            $order->addItem($orderItem);
+            $order->addItem($convertQuote->itemToOrderItem($item));
         }
 
         /**

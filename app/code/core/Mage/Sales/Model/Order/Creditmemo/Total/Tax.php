@@ -27,6 +27,9 @@ class Mage_Sales_Model_Order_Creditmemo_Total_Tax extends Mage_Sales_Model_Order
         $baseTotalTax   = 0;
 
         foreach ($creditmemo->getAllItems() as $item) {
+            if ($item->getOrderItem()->isDummy()) {
+                continue;
+            }
             $orderItemTax     = $item->getOrderItem()->getTaxAmount();
             $baseOrderItemTax = $item->getOrderItem()->getBaseTaxAmount();
             $orderItemQty = $item->getOrderItem()->getQtyOrdered();

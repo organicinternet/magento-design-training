@@ -32,6 +32,20 @@ class Mage_Sales_Model_Mysql4_Order_Item_Collection extends Mage_Core_Model_Mysq
         $this->_init('sales/order_item');
     }
 
+    protected function _afterLoad()
+    {
+        parent::_afterLoad();
+        /**
+         * Assign parent items
+         */
+        foreach ($this as $item) {
+        	if ($item->getParentItemId()) {
+        	    $item->setParentItem($this->getItemById($item->getParentItemId()));
+        	}
+        }
+        return $this;
+    }
+
     /**
      * Set filter by order id
      *
@@ -53,6 +67,24 @@ class Mage_Sales_Model_Mysql4_Order_Item_Collection extends Mage_Core_Model_Mysq
     public function setRandomOrder()
     {
         $this->setOrder('RAND()');
+        return $this;
+    }
+
+    /**
+     * Set filter by item id
+     *
+     * @param mixed $item
+     * @return Mage_Sales_Model_Mysql4_Order_Item_Collection
+     */
+    public function addIdFilter($item)
+    {
+        if (is_array($item)) {
+            $this->addFieldToFilter('item_id', array('in'=>$item));
+        } elseif ($item instanceof Mage_Sales_Model_Order_Item) {
+            $this->addFieldToFilter('item_id', $item->getId());
+        } else {
+            $this->addFieldToFilter('item_id', $item);
+        }
         return $this;
     }
 }

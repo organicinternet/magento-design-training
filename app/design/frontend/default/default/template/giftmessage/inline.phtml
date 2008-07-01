@@ -228,6 +228,7 @@ billing.onSave = function(evt){
                     <ul class="no-padding">
                         <li>
                             <div class="input-box">
+                                <input type="hidden" name="giftmessage[<?php echo $_item->getId() ?>][address]"    value="<?php echo $this->getEntity()->getId()?>" />
                                 <label for="gift-message-<?php echo $_item->getId() ?>-from"><?php echo $this->__('From') ?></label><br />
                                 <input type="text" name="giftmessage[<?php echo $_item->getId() ?>][from]" id="gift-message-<?php echo $_item->getId() ?>-from" title="<?php echo $this->__('From') ?>"  value="<?php echo $this->getEscaped($this->getMessage($_item)->getSender(), $this->getDefaultFrom()) ?>" class="input-text validation-passed" />
                             </div>

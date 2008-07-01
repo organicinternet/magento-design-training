@@ -28,9 +28,11 @@
  */
 abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Template
 {
-    private $_priceBlock = null;
+    private $_priceBlock = array();
     private $_priceBlockDefaultTemplate = 'catalog/product/price.phtml';
     private $_priceBlockTypes = array();
+
+    private $_reviewsHelperBlock;
 
     /**
      * Enter description here...
@@ -76,17 +78,16 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
 
     protected function _getPriceBlock($productTypeId)
     {
-        if (is_null($this->_priceBlock)) {
+        if (!isset($this->_priceBlock[$productTypeId])) {
             $block = 'catalog/product_price';
             if (isset($this->_priceBlockTypes[$productTypeId])) {
                 if ($this->_priceBlockTypes[$productTypeId]['block'] != '') {
                     $block = $this->_priceBlockTypes[$productTypeId]['block'];
                 }
             }
-
-            $this->_priceBlock = $this->getLayout()->createBlock($block);
+            $this->_priceBlock[$productTypeId] = $this->getLayout()->createBlock($block);
         }
-        return $this->_priceBlock;
+        return $this->_priceBlock[$productTypeId];
     }
 
     protected function _getPriceBlockTemplate($productTypeId)
@@ -128,6 +129,43 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
                 'block' => $block,
                 'template' => $template
             );
+        }
+    }
+
+    /**
+     * Get product reviews summary
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param bool $templateType
+     * @param bool $displayIfNoReviews
+     * @return string
+     */
+    public function getReviewsSummaryHtml(Mage_Catalog_Model_Product $product, $templateType = false, $displayIfNoReviews = false)
+    {
+        $this->_initReviewsHelperBlock();
+        return $this->_reviewsHelperBlock->getSummaryHtml($product, $templateType, $displayIfNoReviews);
+    }
+
+    /**
+     * Add/replace reviews summary template by type
+     *
+     * @param string $type
+     * @param string $template
+     */
+    public function addReviewSummaryTemplate($type, $template)
+    {
+        $this->_initReviewsHelperBlock();
+        $this->_reviewsHelperBlock->addTemplate($type, $template);
+    }
+
+    /**
+     * Create reviews summary helper block once
+     *
+     */
+    protected function _initReviewsHelperBlock()
+    {
+        if (!$this->_reviewsHelperBlock) {
+            $this->_reviewsHelperBlock = $this->getLayout()->createBlock('review/helper');
         }
     }
 }

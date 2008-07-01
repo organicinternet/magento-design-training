@@ -83,7 +83,7 @@ class Mage_Sendfriend_Model_Sendfriend extends Mage_Core_Model_Abstract
                     'message'       => $message,
                     'sender_name'   => strip_tags($this->_sender['name']),
                     'sender_email'  => strip_tags($this->_sender['email']),
-                    'product_image' => $this->helper('catalog/image')->init($this->_product, 'small_image')->resize(75),
+                    'product_image' => Mage::helper('catalog/image')->init($this->_product, 'small_image')->resize(75),
                 )
             );
         }

@@ -53,14 +53,14 @@
     </div>
     <?php echo $this->getToolbarHtml() ?>
     <div class="padder">
-    
+
 <div class="button-set">
-    <a href="<?php echo $this->getUrl('customer/account/') ?>" class="f-left">&laquo;<?php echo $this->__('Back') ?></a>
+    <a href="<?php echo $this->getBackUrl() ?>" class="f-left">&laquo;<?php echo $this->__('Back') ?></a>
 </div></div>
 <?php else: ?>
     <div class="padder"><p><?php echo $this->__('You have submitted no reviews.') ?></p>
 <div class="button-set">
-    <a href="<?php echo $this->getUrl('customer/account/') ?>" class="f-left">&laquo;<?php echo $this->__('Back') ?></a>
+    <a href="<?php echo $this->getBackUrl() ?>" class="f-left">&laquo;<?php echo $this->__('Back') ?></a>
 </div>
 </div>
 <?php endif; ?>

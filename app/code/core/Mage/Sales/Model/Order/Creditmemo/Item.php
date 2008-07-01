@@ -105,7 +105,7 @@ class Mage_Sales_Model_Order_Creditmemo_Item extends Mage_Core_Model_Abstract
         /**
          * Check qty availability
          */
-        if ($qty <= $this->getOrderItem()->getQtyToRefund()) {
+        if ($qty <= $this->getOrderItem()->getQtyToRefund() || $this->getOrderItem()->isDummy()) {
             $this->setData('qty', $qty);
         }
         else {

@@ -71,6 +71,25 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Load invoice by increment id
+     *
+     * @param string $incrementId
+     * @return Mage_Sales_Model_Order_Invoice
+     */
+    public function loadByIncrementId($incrementId)
+    {
+        $ids = $this->getCollection()
+            ->addAttributeToFilter('increment_id', $incrementId)
+            ->getAllIds();
+
+        if (!empty($ids)) {
+            reset($ids);
+            $this->load(current($ids));
+        }
+        return $this;
+    }
+
+    /**
      * Retrieve invoice configuration model
      *
      * @return Mage_Sales_Model_Order_Invoice_Config
@@ -500,6 +519,10 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
      */
     public function sendEmail($notifyCustomer=true, $comment='')
     {
+        $currentDesign = Mage::getDesign()->setAllGetOld(array(
+            'package' => Mage::getStoreConfig('design/package/name', $this->getStoreId()),
+        ));
+
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -527,7 +550,7 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
         if ($notifyCustomer) {
             $sendTo[] = array(
                 'name'  => $customerName,
-                'email' => $this->getCustomerEmail()
+                'email' => $order->getCustomerEmail()
             );
             if ($copyTo && $copyMethod == 'bcc') {
                 $mailTemplate->addBcc($copyTo);
@@ -563,6 +586,8 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
 
         $translate->setTranslateInline(true);
 
+        Mage::getDesign()->setAllGetOld($currentDesign);
+
         return $this;
     }
 
@@ -573,6 +598,10 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
      */
     public function sendUpdateEmail($notifyCustomer=true, $comment='')
     {
+        $currentDesign = Mage::getDesign()->setAllGetOld(array(
+            'package' => Mage::getStoreConfig('design/package/name', $this->getStoreId()),
+        ));
+
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -601,7 +630,7 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
         if ($notifyCustomer) {
             $sendTo[] = array(
                 'name'  => $customerName,
-                'email' => $this->getCustomerEmail()
+                'email' => $order->getCustomerEmail()
             );
             if ($copyTo && $copyMethod == 'bcc') {
                 $mailTemplate->addBcc($copyTo);
@@ -635,6 +664,8 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
         }
 
         $translate->setTranslateInline(true);
+
+        Mage::getDesign()->setAllGetOld($currentDesign);
 
         return $this;
     }

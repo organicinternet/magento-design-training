@@ -43,6 +43,13 @@
         </li>
 <?php endif ?>
 
+<?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+<?php if ($_taxvat->isEnabled()): ?>
+        <li>
+            <?php echo $_taxvat->toHtml() ?>
+        </li>
+<?php endif ?>
+
     </ul>
 </fieldset>
 <p><input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo $this->__('Change Password') ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> /> <label for="change_password"><?php echo $this->__('Change Password') ?></label>

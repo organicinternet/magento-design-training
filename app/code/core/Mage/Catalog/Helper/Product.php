@@ -140,41 +140,6 @@ class Mage_Catalog_Helper_Product extends Mage_Core_Helper_Url
     }
 
     /**
-     * Retrieve product description
-     *
-     * @param   Mage_Catalog_Model_Product $item
-     * @return  string
-     */
-    public function getProductDescription($product)
-    {
-        if ($superProduct = $product->getSuperProduct()) {
-            if ($superProduct->isConfigurable()) {
-                return $this->_getConfigurableProductDescription($product->getProduct());
-            }
-        }
-        return '';
-    }
-
-    protected function _getConfigurableProductDescription($product)
-    {
- 		$html = '<ul class="super-product-attributes">';
- 		$attributes = $product->getSuperProduct()->getTypeInstance()->getUsedProductAttributes();
- 		foreach ($attributes as $attribute) {
- 			$html.= '<li><strong>' . $attribute->getFrontend()->getLabel() . ':</strong> ';
- 			if($attribute->getSourceModel()) {
- 				$html.= $this->htmlEscape(
- 				   $attribute->getSource()->getOptionText($product->getData($attribute->getAttributeCode()))
-                );
- 			} else {
- 				$html.= $this->htmlEscape($product->getData($attribute->getAttributeCode()));
- 			}
- 			$html.='</li>';
- 		}
- 		$html.='</ul>';
-        return $html;
-    }
-
-    /**
      * Check if a product can be shown
      *
      * @param  Mage_Catalog_Model_Product|int $product

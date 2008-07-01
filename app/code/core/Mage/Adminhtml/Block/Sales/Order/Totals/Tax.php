@@ -35,13 +35,19 @@ class Mage_Adminhtml_Block_Sales_Order_Totals_Tax extends Mage_Adminhtml_Block_S
         if (!$this->getParentBlock()) {
             Mage::throwException(Mage::helper('adminhtml')->__('Invalid parrent block for this block'));
         }
-        $this->setOrder($this->getParentBlock()->getOrder());
+        $this->setOrder($this->getParentBlock()->getSource());
+
         parent::_beforeToHtml();
     }
 
     public function getFullTaxInfo()
     {
         $rates = Mage::getModel('sales/order_tax')->getCollection()->loadByOrder($this->getOrder())->toArray();
-        return Mage::getModel('tax/calculation')->reproduceProcess($rates['items']);
+        return Mage::getSingleton('tax/calculation')->reproduceProcess($rates['items']);
+    }
+
+    public function displayAmount($amount, $baseAmount)
+    {
+        return $this->displayPrices($baseAmount, $amount, false, '<br />');
     }
 }

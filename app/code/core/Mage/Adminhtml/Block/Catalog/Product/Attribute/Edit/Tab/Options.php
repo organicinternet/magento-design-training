@@ -138,8 +138,13 @@ class Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Options extends Ma
     {
         $values = array();
         $values[0] = $this->getAttributeObject()->getFrontend()->getLabel();
+        // it can be array and cause bug
+        $frontendLabel = $this->getAttributeObject()->getFrontend()->getLabel();
+        if (is_array($frontendLabel)) {
+            $frontendLabel = array_shift($frontendLabel);
+        }
         $translations = Mage::getModel('core/translate_string')
-           ->load($this->getAttributeObject()->getFrontend()->getLabel())
+           ->load($frontendLabel)
            ->getStoreTranslations();
         foreach ($this->getStores() as $store) {
             if ($store->getId() != 0) {

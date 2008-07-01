@@ -27,7 +27,110 @@
  */
 abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abstract
 {
+    protected $_parentItem  = null;
+    protected $_children    = array();
+    protected $_messages    = array();
+
     abstract function getQuote();
+
+    protected function _beforeSave()
+    {
+        parent::_beforeSave();
+        if ($this->getParentItem()) {
+            $this->setParentItemId($this->getParentItem()->getId());
+        }
+        return $this;
+    }
+
+
+    /**
+     * Set parent item
+     *
+     * @param  Mage_Sales_Model_Quote_Item $parentItem
+     * @return Mage_Sales_Model_Quote_Item
+     */
+    public function setParentItem($parentItem)
+    {
+        if ($parentItem) {
+            $this->_parentItem = $parentItem;
+            $parentItem->addChild($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Get parent item
+     *
+     * @return Mage_Sales_Model_Quote_Item
+     */
+    public function getParentItem()
+    {
+        return $this->_parentItem;
+    }
+
+    /**
+     * Get chil items
+     *
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->_children;
+    }
+
+    /**
+     * Add child item
+     *
+     * @param  Mage_Sales_Model_Quote_Item_Abstract $child
+     * @return Mage_Sales_Model_Quote_Item_Abstract
+     */
+    public function addChild($child)
+    {
+        $this->setHasChildren(true);
+        $this->_children[] = $child;
+        return $this;
+    }
+
+    /**
+     * Set masseges for quote item
+     *
+     * @param mixed $messages
+     * @return Mage_Sales_Model_Quote_Item_Abstract
+     */
+    public function setMessage($messages) {
+        if (!is_array($messages)) {
+            $messages = array($messages);
+        }
+        foreach ($messages as $message) {
+            $this->addMessage($message);
+        }
+        return $this;
+    }
+
+    /**
+     * Add message of quote item to array of messages
+     *
+     * @param string $message
+     * @return Mage_Sales_Model_Quote_Item_Abstract
+     */
+    public function addMessage($message)
+    {
+        $this->_messages[] = $message;
+        return $this;
+    }
+
+    /**
+     * Get messages array of quote item
+     *
+     * @return array
+     */
+    public function getMessage($string = true)
+    {
+        if ($string) {
+            return join("\n", $this->_messages);
+        }
+        return $this->_messages;
+    }
 
     /**
      * Retrieve store model object
@@ -46,6 +149,9 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
      */
     public function checkData()
     {
+        $this->setHasError(false);
+        $this->unsMessage();
+
         $qty = $this->getData('qty');
         try {
             $this->setQty($qty);
@@ -58,6 +164,21 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
             $this->setHasError(true);
             $this->setMessage(Mage::helper('sales')->__('Item qty declare error'));
         }
+
+        try {
+            $this->getProduct()->getTypeInstance()->checkProductBuyState();
+        } catch (Mage_Core_Exception $e) {
+            $this->setHasError(true);
+            $this->setMessage($e->getMessage());
+            $this->getQuote()->setHasError(true);
+            $this->getQuote()->addMessage(Mage::helper('sales')->__('Some of the products below don\'t have all the required options. Please remove them and add again with all the required options.'));
+        } catch (Exception $e) {
+            $this->setHasError(true);
+            $this->setMessage(Mage::helper('sales')->__('Item options declare error'));
+            $this->getQuote()->setHasError(true);
+            $this->getQuote()->addMessage(Mage::helper('sales')->__('Items options declare error.'));
+        }
+
         return $this;
     }
 
@@ -68,23 +189,18 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
      */
     public function calcRowTotal()
     {
-        $total      = $this->getCalculationPrice()*$this->getQty();
-        $baseTotal  = $this->getBaseCalculationPrice()*$this->getQty();
+        $qty = $this->getQty();
+
+        if ($this->getParentItem()) {
+            $qty = $qty*$this->getParentItem()->getQty();
+        }
+
+        $total      = $this->getCalculationPrice()*$qty;
+        $baseTotal  = $this->getBaseCalculationPrice()*$qty;
 
         $this->setRowTotal($this->getStore()->roundPrice($total));
         $this->setBaseRowTotal($this->getStore()->roundPrice($baseTotal));
 
-        return $this;
-    }
-
-    /**
-     * Calculate item row total weight
-     *
-     * @return Mage_Sales_Model_Quote_Item
-     */
-    public function calcRowWeight()
-    {
-        $this->setRowWeight($this->getWeight()*$this->getQty());
         return $this;
     }
 
@@ -110,6 +226,38 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
 
             $this->setTaxAmount($store->roundPrice($rowTotal * $taxPercent));
             $this->setBaseTaxAmount($store->roundPrice($rowBaseTotal * $taxPercent));
+
+
+            $rowTotal       = $this->getRowTotal();
+            $rowBaseTotal   = $this->getBaseRowTotal();
+            $this->setTaxBeforeDiscount($store->roundPrice($rowTotal * $taxPercent));
+            $this->setBaseTaxBeforeDiscount($store->roundPrice($rowBaseTotal * $taxPercent));
+        } else {
+            if (Mage::helper('tax')->applyTaxAfterDiscount($store)) {
+                $totalBaseTax = $this->getBaseTaxAmount();
+                $totalTax = $this->getTaxAmount();
+
+                if ($totalTax && $totalBaseTax) {
+                    $totalTax -= $this->getDiscountAmount()*($this->getTaxPercent()/100);
+                    $totalBaseTax -= $this->getBaseDiscountAmount()*($this->getTaxPercent()/100);
+
+                    $this->setBaseTaxAmount($totalBaseTax);
+                    $this->setTaxAmount($totalTax);
+                }
+            }
+        }
+
+        if (Mage::helper('tax')->discountTax($store) && !Mage::helper('tax')->applyTaxAfterDiscount($store)) {
+            if ($this->getDiscountPercent()) {
+                $baseTaxAmount =  $this->getBaseTaxBeforeDiscount();
+                $taxAmount = $this->getTaxBeforeDiscount();
+
+                $baseDiscountDisposition = $baseTaxAmount/100*$this->getDiscountPercent();
+                $discountDisposition = $taxAmount/100*$this->getDiscountPercent();
+
+                $this->setDiscountAmount($this->getDiscountAmount()+$discountDisposition);
+                $this->setBaseDiscountAmount($this->getBaseDiscountAmount()+$baseDiscountDisposition);
+            }
         }
 
         return $this;
@@ -124,7 +272,7 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
     {
         $price = $this->getData('calculation_price');
         if (is_null($price)) {
-            if ($this->getCustomPrice()) {
+            if ($this->hasCustomPrice()) {
                 $price = $this->getCustomPrice();
             }
             else {
@@ -170,26 +318,129 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
         return $price;
     }
 
+    /**
+     * Get item tax amount
+     *
+     * @return decimal
+     */
+    public function getTaxAmount()
+    {
+        if ($this->getHasChildren() && $this->getOptionBycode('product_calculations')->getValue() == 'child') {
+            $amount = 0;
+            foreach ($this->getChildren() as $child) {
+                $amount+= $child->getTaxAmount();
+            }
+            return $amount;
+        }
+        else {
+            return $this->_getData('tax_amount');
+        }
+    }
+
+    /**
+     * Get item price (item price always exclude price)
+     *
+     * @return decimal
+     */
+    public function getPrice()
+    {
+        if ($this->getHasChildren() && $this->getOptionBycode('product_calculations')->getValue() == 'child') {
+            $price = 0;
+            foreach ($this->getChildren() as $child) {
+                $price+= $child->getPrice();
+            }
+            return $price;
+        }
+        else {
+            return $this->_getData('price');
+        }
+    }
+
     public function setPrice($value)
     {
+        return $this->setData('price', $this->_calculatePrice($value));
+    }
+
+    protected function _calculatePrice($value)
+    {
         $store = $this->getQuote()->getStore();
+
         if (Mage::helper('tax')->priceIncludesTax($store)) {
-            $taxCalculationModel = Mage::getModel('tax/calculation');
-            $request = $taxCalculationModel->getRateRequest(null, null, $this->getQuote()->getCustomerTaxClassId(), $store);
-            $rate = $taxCalculationModel->getRate($request->setProductClassId($this->getProduct()->getTaxClassId()));
+            $bAddress = $this->getQuote()->getBillingAddress();
+            $sAddress = $this->getQuote()->getShippingAddress();
 
-            $taxAmount = $store->roundPrice($value/(100+$rate)*$rate);
-            $priceExcludingTax = $value - $taxAmount;
+            $address = $this->getAddress();
 
-            $totalTax = $this->getStore()->convertPrice($taxAmount)*$this->getQty();
-            if (Mage::helper('tax')->applyTaxAfterDiscount($store)) {
-                $totalTax -= $this->getDiscountAmount()*($rate/100);
+            if ($address) {
+                switch ($address->getAddressType()) {
+                    case Mage_Sales_Model_Quote_Address::TYPE_BILLING:
+                        $bAddress = $address;
+                        break;
+                    case Mage_Sales_Model_Quote_Address::TYPE_SHIPPING:
+                        $sAddress = $address;
+                        break;
+                }
             }
+
+            if ($this->getProduct()->getIsVirtual()) {
+                $sAddress = $bAddress;
+            }
+
+            $priceExcludingTax = Mage::helper('tax')->getPrice($this->getProduct()->setTaxPercent(null), $value, false, $sAddress, $bAddress, $this->getQuote()->getCustomerTaxClassId(), $store);
+            $priceIncludingTax = Mage::helper('tax')->getPrice($this->getProduct()->setTaxPercent(null), $value, true, $sAddress, $bAddress, $this->getQuote()->getCustomerTaxClassId(), $store);
+
+            $taxAmount = $priceIncludingTax - $priceExcludingTax;
+            $this->setTaxPercent($this->getProduct()->getTaxPercent());
+
+            $qty = $this->getQty();
+            if ($this->getParentItem()) {
+                $qty = $qty*$this->getParentItem()->getQty();
+            }
+            $totalBaseTax = $taxAmount*$qty;
+            $totalTax = $this->getStore()->convertPrice($totalBaseTax);
+            $this->setTaxBeforeDiscount($totalTax);
+            $this->setBaseTaxBeforeDiscount($totalBaseTax);
+
             $this->setTaxAmount($totalTax);
+            $this->setBaseTaxAmount($totalBaseTax);
 
             $value = $priceExcludingTax;
         }
-        $this->setData('price', $value);
+
+        return $value;
+    }
+
+    /**
+     * Clone quote item
+     *
+     * @return Mage_Sales_Model_Quote_Item
+     */
+    public function __clone()
+    {
+        $this->setId(null);
+        $this->_parentItem  = null;
+        $this->_children    = array();
         return $this;
+    }
+
+    public function isChildrenCalculated() {
+        if ($this->getParentItem()) {
+            if ($option = $this->getParentItem()->getOptionByCode('product_calculations')) {
+                $calculate = $option->getValue();
+            } else {
+                return true;
+            }
+        } else {
+            if ($option = $this->getOptionByCode('product_calculations')) {
+                $calculate = $option->getValue();
+            } else {
+                return true;
+            }
+        }
+
+        if ($calculate == Mage_Catalog_Model_Product_Type_Abstract::CALCULATE_CHILD) {
+            return true;
+        }
+        return false;
     }
 }

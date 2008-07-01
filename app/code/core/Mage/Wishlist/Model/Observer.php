@@ -63,9 +63,6 @@ class Mage_Wishlist_Model_Observer extends Mage_Core_Model_Abstract
             if (!empty($itemInfo['wishlist'])) {
                 if ($item = $cart->getQuote()->getItemById($itemId)) {
                     $productId = $item->getProductId();
-                    if ($item->getSuperProductId()) {
-                        $productId = $item->getSuperProductId();
-                    }
                     $productIds[] = $productId;
                     $cart->getQuote()->removeItem($itemId);
                 }

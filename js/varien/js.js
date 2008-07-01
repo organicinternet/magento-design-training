@@ -108,9 +108,14 @@ function decorateTable(table){
 /**
  * Set "odd", "even" and "last" CSS classes for list items
  */
-function decorateList(list){
-    if($(list)){
-        var items = $(list).getElementsBySelector('li')
+function decorateList(list, nonRecursive) {
+    if ($(list)) {
+        if (typeof(nonRecursive) == 'undefined') {
+            var items = $(list).getElementsBySelector('li')
+        }
+        else {
+            var items = $(list).childElements();
+        }
         if(items.length) items[items.length-1].addClassName('last');
         for(var i=0; i<items.length; i++){
             if((i+1)%2==0)
@@ -192,13 +197,13 @@ function formatCurrency(price, format, showPlus){
 };
 
 function expandDetails(el, childClass) {
-	if (el.hasClassName('show-details')) {
+	if (Element.hasClassName(el,'show-details')) {
 		$$(childClass).each(function(item){item.hide()});
-		el.removeClassName('show-details');
+		Element.removeClassName(el,'show-details');
 	}
 	else {
 		$$(childClass).each(function(item){item.show()});
-		el.addClassName('show-details');
+		Element.addClassName(el,'show-details');
 	}
 }
 

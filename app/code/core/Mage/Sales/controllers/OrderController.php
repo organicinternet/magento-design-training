@@ -50,6 +50,9 @@ class Mage_Sales_OrderController extends Mage_Core_Controller_Front_Action
     public function historyAction()
     {
         $this->loadLayout();
+        if ($block = $this->getLayout()->getBlock('customer.account.link.back')) {
+            $block->setRefererUrl($this->_getRefererUrl());
+        }
         $this->renderLayout();
     }
 
@@ -224,7 +227,7 @@ class Mage_Sales_OrderController extends Mage_Core_Controller_Front_Action
 
             $cart = Mage::getSingleton('checkout/cart');
             $cartTruncated = false;
-
+            /* @var $cart Mage_Checkout_Model_Cart */
 
             $items = $order->getItemsCollection();
             foreach ($items as $item){
@@ -245,6 +248,7 @@ class Mage_Sales_OrderController extends Mage_Core_Controller_Front_Action
                     $this->_redirect('checkout/cart');
                 }
             }
+
             $cart->save();
             $this->_redirect('checkout/cart');
         }

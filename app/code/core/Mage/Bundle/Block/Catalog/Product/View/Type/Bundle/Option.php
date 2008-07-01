@@ -26,7 +26,7 @@
  * @package     Mage_Bundle
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option extends Mage_Core_Block_Template
+class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option extends Mage_Bundle_Block_Catalog_Product_Price
 {
     public function getProduct()
     {
@@ -38,14 +38,34 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option extends Mage_Cor
 
     public function getSelectionQtyTitlePrice($_selection)
     {
-        $price = $this->getProduct()->getPriceModel()->getSelectionFinalPrice($this->getProduct(), $_selection);
-        return $_selection->getSelectionQty()*1 . ' x ' . $_selection->getName() . '&nbsp;&nbsp;' .
-            Mage::helper('core')->currency($price);
+        $price = $this->getProduct()->getPriceModel()->getSelectionPreFinalPrice($this->getProduct(), $_selection);
+        return $_selection->getSelectionQty()*1 . ' x ' . $_selection->getName() . ' &nbsp; (+' .
+            $this->formatPriceString($price) . ')';
     }
 
     public function getSelectionTitlePrice($_selection)
     {
-        $price = $this->getProduct()->getPriceModel()->getSelectionFinalPrice($this->getProduct(), $_selection, 1);
-        return $_selection->getName() . '&nbsp;&nbsp;' . Mage::helper('core')->currency($price);
+        $price = $this->getProduct()->getPriceModel()->getSelectionPreFinalPrice($this->getProduct(), $_selection, 1);
+        return $_selection->getName() . ' &nbsp; (+' . $this->formatPriceString($price) . ')';
+    }
+
+    public function setValidationContainer($elementId, $containerId)
+    {
+        return '<script type="text/javascript">$(\'' . $elementId . '\').advaiceContainer = $(\'' . $containerId . '\');</script>';
+    }
+
+    public function formatPriceString($price)
+    {
+        $priceTax = Mage::helper('tax')->getPrice($this->getProduct(), $price);
+        $priceIncTax = Mage::helper('tax')->getPrice($this->getProduct(), $price, true);
+
+        if (Mage::helper('tax')->displayBothPrices() && $priceTax != $priceIncTax) {
+            $formated = Mage::helper('core')->currency($priceTax);
+            $formated .= ' (+'.Mage::helper('core')->currency($priceIncTax).' '.Mage::helper('tax')->__('Incl. Tax').')';
+        } else {
+            $formated = $this->helper('core')->currency($priceTax);
+        }
+
+        return $formated;
     }
 }

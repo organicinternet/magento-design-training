@@ -33,7 +33,7 @@
                 <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Payment Information') ?></h4>
             </div>
             <fieldset>
-                <div><?php echo $this->getChildHtml('payment_info') ?></div>
+                <div><?php echo $this->getChildHtml('order_payment') ?></div>
                 <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
                 <?php /*if ($this->getCreditmemo()->canRefund()): ?>
                 <input type="checkbox" name="creditmemo[do_refund]" id="creditmemo_do_refund" value="1" checked/>
@@ -51,7 +51,19 @@
             </div>
             <fieldset>
                 <strong><?php echo $_order->getShippingDescription() ?></strong>
-                (<?php echo $this->helper('sales')->__('Total Shipping Charges %s', $this->displayPriceAttribute('shipping_amount', false, ' ')) ?>)
+                <?php echo $this->helper('sales')->__('Total Shipping Charges'); ?>:
+
+                <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                    <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+                <?php else: ?>
+                    <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                <?php endif; ?>
+                <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+
+                <?php echo $_excl; ?>
+                <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                    (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                <?php endif; ?>
             </fieldset>
         </div>
     </div>
@@ -65,6 +77,6 @@
     </div>
 
     <div id="creditmemo_item_container">
-        <?php echo $this->getChildHtml('items') ?>
+        <?php echo $this->getChildHtml('order_items') ?>
     </div>
 </form>

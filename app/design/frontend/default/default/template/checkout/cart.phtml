@@ -72,21 +72,10 @@
         </tr>
         <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
         <tr>
-            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
-            <?php endif; ?>
-
-            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
-            <?php endif; ?>
-
-            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
-            <?php endif; ?>
-
-            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
-            <?php endif; ?>
         </tr>
         <?php endif; ?>
     </thead>

@@ -67,6 +67,7 @@ class Mage_Paygate_Model_Payflow_Pro extends  Mage_Payment_Model_Method_Cc
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = true;
     protected $_canSaveCc = false;
+	protected $_isProxy = false;
 
     /**
      * 3 = Authorisation approved
@@ -305,12 +306,21 @@ class Mage_Paygate_Model_Payflow_Pro extends  Mage_Payment_Model_Method_Cc
 
         $client = new Varien_Http_Client();
 
-        $uri = $this->getConfigData('url');
+    	$_config = array(
+                        'maxredirects'=>5,
+                        'timeout'=>30,
+                    );
+
+    	$_isProxy = $this->getConfigData('use_proxy', false);
+    	if($_isProxy){
+    		$_config['proxy'] = $this->getConfigData('proxy_host') . ':' . $this->getConfigData('proxy_port');//http://proxy.shr.secureserver.net:3128',
+    		$_config['httpproxytunnel'] = true;
+    		$_config['proxytype'] = CURLPROXY_HTTP;
+    	}
+
+	    $uri = $this->getConfigData('url');
         $client->setUri($uri)
-               ->setConfig(array(
-                    'maxredirects'=>5,
-                    'timeout'=>30,
-                ))
+            ->setConfig($_config)
             ->setMethod(Zend_Http_Client::POST)
             ->setParameterPost($request->getData())
             ->setHeaders('X-VPS-VIT-CLIENT-CERTIFICATION-ID: 33baf5893fc2123d8b191d2d011b7fdc')

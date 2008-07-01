@@ -31,7 +31,11 @@
     <div class="product-pricing">
         <ul class="bare">
         <?php foreach($_tierPrices as $_price): ?>
-            <li><?php echo $this->__('Buy %s for %s each', $_price['price_qty'], $_price['formated_price']) ?>
+            <?php if ($this->helper('tax')->displayBothPrices() && $_price['formated_price'] != $_price['formated_price_incl_tax']): ?>
+                <li><?php echo $this->__('Buy %s for %s (%s incl. tax) each', $_price['price_qty'], $_price['formated_price'], $_price['formated_price_incl_tax']) ?>
+            <?php else: ?>
+                <li><?php echo $this->__('Buy %s for %s each', $_price['price_qty'], $_price['formated_price']) ?>
+            <?php endif; ?>
             <?php if(($_product->getPrice() == $_product->getFinalPrice() && $_product->getPrice() > $_price['price'])
             || ($_product->getPrice() != $_product->getFinalPrice() &&  $_product->getFinalPrice() > $_price['price'])): ?>
                 <?php echo $this->__('and') ?> <strong><?php echo $this->__('save %s%%', $_price['savePercent']) ?>

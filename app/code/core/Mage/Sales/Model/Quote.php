@@ -122,7 +122,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         $ids = $this->_getData('shared_store_ids');
         if (is_null($ids) || !is_array($ids)) {
             if ($website = $this->getWebsite()) {
-            	return $website->getStoreIds();
+                return $website->getStoreIds();
             }
             return $this->getStore()->getWebsite()->getStoreIds();
         }
@@ -314,7 +314,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     public function getBillingAddress()
     {
-        return $this->_getAddressByType('billing');
+        return $this->_getAddressByType(Mage_Sales_Model_Quote_Address::TYPE_BILLING);
     }
 
     /**
@@ -324,14 +324,15 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     public function getShippingAddress()
     {
-        return $this->_getAddressByType('shipping');
+        return $this->_getAddressByType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING);
     }
 
     public function getAllShippingAddresses()
     {
         $addresses = array();
         foreach ($this->getAddressesCollection() as $address) {
-            if ($address->getAddressType()=='shipping' && !$address->isDeleted()) {
+            if ($address->getAddressType()==Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
+                && !$address->isDeleted()) {
                 $addresses[] = $address;
             }
         }
@@ -349,6 +350,11 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         return $addresses;
     }
 
+    /**
+     *
+     * @param int $addressId
+     * @return Mage_Sales_Model_Quote_Address
+     */
     public function getAddressById($addressId)
     {
         foreach ($this->getAddressesCollection() as $address) {
@@ -372,7 +378,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
     public function getShippingAddressByCustomerAddressId($addressId)
     {
         foreach ($this->getAddressesCollection() as $address) {
-            if (!$address->isDeleted() && $address->getAddressType()=='shipping'
+            if (!$address->isDeleted() && $address->getAddressType()==Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
                 && $address->getCustomerAddressId()==$addressId) {
                 return $address;
             }
@@ -421,7 +427,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         if (!empty($old)) {
             $old->addData($address->getData());
         } else {
-            $this->addAddress($address->setAddressType('billing'));
+            $this->addAddress($address->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_BILLING));
         }
         return $this;
     }
@@ -435,7 +441,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
     public function setShippingAddress(Mage_Sales_Model_Quote_Address $address)
     {
         if ($this->getIsMultiShipping()) {
-            $this->addAddress($address->setAddressType('shipping'));
+            $this->addAddress($address->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING));
         }
         else {
             $old = $this->getShippingAddress();
@@ -443,7 +449,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
             if (!empty($old)) {
                 $old->addData($address->getData());
             } else {
-                $this->addAddress($address->setAddressType('shipping'));
+                $this->addAddress($address->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING));
             }
         }
         return $this;
@@ -480,6 +486,22 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         $items = array();
         foreach ($this->getItemsCollection() as $item) {
             if (!$item->isDeleted()) {
+                $items[] =  $item;
+            }
+        }
+        return $items;
+    }
+
+    /**
+     * Get array of all items what can be display directly
+     *
+     * @return array
+     */
+    public function getAllVisibleItems()
+    {
+        $items = array();
+        foreach ($this->getItemsCollection() as $item) {
+            if (!$item->isDeleted() && !$item->getParentItemId()) {
                 $items[] =  $item;
             }
         }
@@ -553,24 +575,59 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Adding product to quote
+     * Add product to quote
+     *
+     * return error message if product type instance can't prepare product
      *
      * @param   mixed $product
-     * @return  Mage_Sales_Model_Quote
+     * @return  Mage_Sales_Model_Quote_Item || string
      */
-    public function addProduct($product, $qty=1)
+    public function addProduct(Mage_Catalog_Model_Product $product, $request=null)
     {
-        if (is_int($product)) {
-            $product = Mage::getModel('catalog/product')
-                ->setStore($this->getStore())
-                ->load($product);
+        if ($request === null) {
+            $request = 1;
+        }
+        if (is_numeric($request)) {
+            $request = new Varien_Object(array('qty'=>$request));
+        }
+        if (!($request instanceof Varien_Object)) {
+            Mage::throwException(Mage::helper('sales')->__('Invalid request for adding product to quote'));
         }
 
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $this->addCatalogProduct($product, $qty);
+        $cartCandidates = $product->getTypeInstance()->prepareForCart($request);
+
+        /**
+         * Error message
+         */
+        if (is_string($cartCandidates)) {
+            return $cartCandidates;
         }
 
-        return $this;
+        /**
+         * If prepare process return one object
+         */
+        if (!is_array($cartCandidates)) {
+            $cartCandidates = array($cartCandidates);
+        }
+
+        $parentItem = null;
+        foreach ($cartCandidates as $candidate) {
+            $item = $this->_addCatalogProduct($candidate, $candidate->getCartQty());
+
+            /**
+             * As parent item we should always use the item of first added product
+             */
+            if (!$parentItem) {
+                $parentItem = $item;
+            }
+            if ($parentItem && $candidate->getParentProductId()) {
+                $item->setParentItem($parentItem);
+            }
+            if ($item->getHasError()) {
+                Mage::throwException($item->getMessage());
+            }
+        }
+        return $item;
     }
 
     /**
@@ -579,15 +636,23 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      * @param   Mage_Catalog_Model_Product $product
      * @return  Mage_Sales_Model_Quote_Item
      */
-    public function addCatalogProduct(Mage_Catalog_Model_Product $product, $qty=1)
+    protected function _addCatalogProduct(Mage_Catalog_Model_Product $product, $qty=1)
     {
         $item = $this->getItemByProduct($product);
         if (!$item) {
             $item = Mage::getModel('sales/quote_item');
+            $item->setQuote($this);
         }
 
-        //$item->importCatalogProduct($product)
-        $item->setProduct($product)
+        /**
+         * We can't modify existing child items
+         */
+        if ($item->getId() && $product->getParentProductId()) {
+            return $item;
+        }
+
+        $item->setOptions($product->getCustomOptions())
+            ->setProduct($product)
             ->addQty($qty);
 
         $this->addItem($item);
@@ -601,12 +666,12 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      * @param   int $productId
      * @return  Mage_Sales_Model_Quote_Item || false
      */
-    public function getItemByProduct($product, $superProductId = null)
+    public function getItemByProduct($product)
     {
         foreach ($this->getAllItems() as $item) {
-        	if ($item->representProduct($product)) {
-        	    return $item;
-        	}
+            if ($item->representProduct($product)) {
+                return $item;
+            }
         }
         return false;
     }
@@ -705,6 +770,11 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         return $this;
     }
 
+    /**
+     * Collect totals
+     *
+     * @return Mage_Sales_Model_Quote
+     */
     public function collectTotals()
     {
         $this->setGrandTotal(0);
@@ -725,7 +795,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         $this->setItemsQty(0);
         $this->setVirtualItemsQty(0);
 
-        foreach ($this->getAllItems() as $item) {
+        foreach ($this->getAllVisibleItems() as $item) {
             if ($item->getProduct()->getIsVirtual()) {
                 $this->setVirtualItemsQty($this->getVirtualItemsQty() + $item->getQty());
             }
@@ -735,9 +805,23 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         return $this;
     }
 
+    /**
+     * Get all quote totals
+     *
+     * @return array
+     */
     public function getTotals()
     {
-        return $this->getShippingAddress()->getTotals();
+        $totals = $this->getShippingAddress()->getTotals();
+        foreach ($this->getBillingAddress()->getTotals() as $code => $total) {
+            if (isset($totals[$code])) {
+                $totals[$code]->setValue($totals[$code]->getValue()+$total->getValue());
+            }
+            else {
+                $totals[$code] = $total;
+            }
+        }
+        return $totals;
     }
 
     public function addMessage($message, $index='error')
@@ -794,13 +878,18 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
     public function isVirtual()
     {
         $isVirtual = true;
+        $countItems = 0;
         foreach ($this->getItemsCollection() as $_item) {
             /* @var $_item Mage_Sales_Model_Quote_Item */
+            if ($_item->isDeleted()) {
+                continue;
+            }
+            $countItems ++;
             if (!$_item->getProduct()->getIsVirtual()) {
                 $isVirtual = false;
             }
         }
-        return $isVirtual;
+        return $countItems == 0 ? false : $isVirtual;
     }
 
     /**
@@ -842,7 +931,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     public function merge(Mage_Sales_Model_Quote $quote)
     {
-        foreach ($quote->getAllItems() as $item) {
+        foreach ($quote->getAllVisibleItems() as $item) {
             $found = false;
             foreach ($this->getAllItems() as $quoteItem) {
                 if ($quoteItem->compare($item)) {
@@ -851,8 +940,17 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
                     break;
                 }
             }
+
             if (!$found) {
-                $this->addItem(clone $item);
+                $newItem = clone $item;
+                $this->addItem($newItem);
+                if ($item->getHasChildren()) {
+                    foreach ($item->getChildren() as $child) {
+                        $newChild = clone $child;
+                        $newChild->setParentItem($newItem);
+                        $this->addItem($newChild);
+                    }
+                }
             }
         }
 

@@ -64,7 +64,18 @@
                                         <strong><?php echo $_rate->getCarrierTitle() ?>: <?php echo $_rate->getErrorMessage() ?></strong>
                                    <?php else: ?>
                                         <input name="shipping_method[<?php echo $_address->getId() ?>]" type="radio" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $_address->getId() ?>_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod($_address)) echo ' checked="checked"' ?> />
-                                        <label for="s_method_<?php echo $_address->getId() ?>_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodDescription() ?> - <strong><?php echo $_rate->getPrice() ?></strong></label>
+                                        <label for="s_method_<?php echo $_address->getId() ?>_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodDescription() ?>
+                                        -
+                                        <strong>
+                                        <?php $_excl = $this->getShippingPrice($_address, $_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                        <?php $_incl = $this->getShippingPrice($_address, $_rate->getPrice(), true); ?>
+
+                                        <?php echo $_excl; ?>
+                                        <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                            (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                        <?php endif; ?>
+                                        </strong>
+                                        </label>
                                    <?php endif ?>
                                 </li>
                             <?php endforeach; ?>
@@ -107,6 +118,7 @@
     </div>
     </div>
 <?php endforeach; ?>
+<?php echo $this->getChildHtml('checkout_billing_items') ?>
 </div>
 <div class="button-set">
     <a href="<?php echo $this->getBackUrl() ?>" class="left"><?php echo $this->__('&laquo; Back to Select Addresses') ?></a>

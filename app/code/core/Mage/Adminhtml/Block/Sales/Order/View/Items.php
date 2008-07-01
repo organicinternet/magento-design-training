@@ -38,7 +38,7 @@ class Mage_Adminhtml_Block_Sales_Order_View_Items extends Mage_Adminhtml_Block_S
         $this->setOrder($this->getParentBlock()->getOrder());
         parent::_beforeToHtml();
     }
-    
+
     /**
      * Retrieve order items collection
      *
@@ -47,64 +47,5 @@ class Mage_Adminhtml_Block_Sales_Order_View_Items extends Mage_Adminhtml_Block_S
     public function getItemsCollection()
     {
         return $this->getOrder()->getItemsCollection();
-    }
-
-    /**
-     * Retrieve include tax html formated content
-     *
-     * @param Varien_Object $item
-     * @return string
-     */
-    public function displayPriceInclTax(Varien_Object $item)
-    {
-        return $this->getOrder()->formatPrice($item->getPrice()+$item->getTaxAmount()/$item->getQtyOrdered());
-    }
-
-    /**
-     * Retrieve subtotal price include tax html formated content
-     *
-     * @param Varien_Object $item
-     * @return string
-     */
-    public function displaySubtotalInclTax($item)
-    {
-        return $this->getOrder()->formatPrice($item->getRowTotal()+$item->getTaxAmount());
-    }
-
-    /**
-     * Retrieve tax calculation html content
-     *
-     * @param Varien_Object $item
-     * @return string
-     */
-    public function displayTaxCalculation(Varien_Object $item)
-    {
-        if ($item->getTaxPercent() && $item->getTaxString() == '') {
-            $percents = array($item->getTaxPercent());
-        } else if ($item->getTaxString()) {
-            $percents = explode(Mage_Tax_Model_Config::CALCULATION_STRING_SEPARATOR, $item->getTaxString());
-        } else {
-            return '0%';
-        }
-
-        foreach ($percents as &$percent) {
-            $percent = sprintf('%.2f%%', $percent);
-        }
-        return implode(' + ', $percents);
-    }
-
-    /**
-     * Retrieve tax with persent html content
-     *
-     * @param Varien_Object $item
-     * @return string
-     */
-    public function displayTaxPercent(Varien_Object $item)
-    {
-        if ($item->getTaxPercent()) {
-            return sprintf('%.2f%%', $item->getTaxPercent());
-        } else {
-            return '0%';
-        }
     }
 }

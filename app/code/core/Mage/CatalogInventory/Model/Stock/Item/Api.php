@@ -38,6 +38,14 @@ class Mage_CatalogInventory_Model_Stock_Item_Api extends Mage_Catalog_Model_Api_
             $productIds = array($productIds);
         }
 
+        $product = Mage::getModel('catalog/product');
+
+        foreach ($productIds as &$productId) {
+            if ($newId = $product->getIdBySku($productId)) {
+                $productId = $newId;
+            }
+        }
+
         $collection = Mage::getModel('catalog/product')
             ->getCollection()
             ->addFieldToFilter('entity_id', array('in'=>$productIds));
@@ -48,6 +56,7 @@ class Mage_CatalogInventory_Model_Stock_Item_Api extends Mage_Catalog_Model_Api_
             if ($product->getStockItem()) {
                 $result[] = array(
                     'product_id'    => $product->getId(),
+                    'sku'           => $product->getSku(),
                     'qty'           => $product->getStockItem()->getQty(),
                     'is_in_stock'   => $product->getStockItem()->getIsInStock()
                 );
@@ -59,25 +68,32 @@ class Mage_CatalogInventory_Model_Stock_Item_Api extends Mage_Catalog_Model_Api_
 
     public function update($productId, $data)
     {
-        $product = Mage::getModel('catalog/product')
-            ->setStoreId($this->_getStoreId())
+        $product = Mage::getModel('catalog/product');
+
+        if ($newId = $product->getIdBySku($productId)) {
+            $productId = $newId;
+        }
+
+        $product->setStoreId($this->_getStoreId())
             ->load($productId);
 
         if (!$product->getId()) {
             $this->_fault('not_exists');
         }
 
-        if (!$product->getStockData()) {
-            $product->setStockData(array());
+        if (!$stockData = $product->getStockData()) {
+            $stockData = array();
         }
 
         if (isset($data['qty'])) {
-            $product->setData('stock_data/qty', $data['qty']);
+            $stockData['qty'] = $data['qty'];
         }
 
         if (isset($data['is_in_stock'])) {
-            $product->setData('stock_data/is_in_stock', $data['is_in_stock']);
+            $stockData['is_in_stock'] = $data['is_in_stock'];
         }
+
+        $product->setStockData($stockData);
 
         try {
             $product->save();

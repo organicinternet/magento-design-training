@@ -32,7 +32,10 @@ class Mage_Rss_Block_Catalog_Category extends Mage_Rss_Block_Abstract
         /*
         * setting cache to save the rss for 10 minutes
         */
-        $this->setCacheKey('rss_catalog_category_'.$this->getRequest()->getParam('name'));
+        $this->setCacheKey('rss_catalog_category_'
+            .$this->getRequest()->getParam('cid').'_'
+            .$this->getRequest()->getParam('sid')
+        );
         $this->setCacheLifetime(600);
     }
 

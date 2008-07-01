@@ -1,0 +1,90 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php $_item = $this->getItem() ?>
+<tr class="border" id="order-item-row-<?php echo $_item->getId() ?>">
+    <td>
+        <?php echo $this->htmlEscape($_item->getName()) ?>
+        <?php if($_options = $this->getItemOptions()): ?>
+        <ul class="item-options">
+        <?php foreach ($_options as $_option): ?>
+            <li><strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong><br />
+                <?php echo $this->htmlEscape($_option['value']); ?>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+        <?php echo $_item->getDescription() ?>
+        <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+            <br /><a href="#" id="order-item-gift-message-link-<?php echo $_item->getId() ?>" class="giftmessage-preview-link expand" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>')"><?php echo $this->__('Gift Message') ?></a>
+        <?php endif; ?>
+    </td>
+    <td class="nowrap"><?php echo $this->getItem()->getSku() ?></td>
+    <td class="a-right">
+        <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceExclTax()): ?>
+            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                <?php echo $this->__('Excl. Tax'); ?>:
+            <?php endif; ?>
+            <strong><?php echo $this->getOrder()->formatPrice($this->getItem()->getPrice()) ?></strong><br />
+        <?php endif; ?>
+        <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceInclTax()): ?>
+            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                <?php echo $this->__('Incl. Tax'); ?>:
+            <?php endif; ?>
+            <strong><?php echo $this->getOrder()->formatPrice($this->helper('checkout')->getPriceInclTax($this->getItem())); ?></strong>
+        <?php endif; ?>
+    </td>
+    <td class="a-right nowrap">
+        <?php if ($this->getItem()->getQtyOrdered() > 0): ?>
+            <?php echo $this->__('Ordered'); ?>: <strong><?php echo $this->getItem()->getQtyOrdered()*1 ?></strong><br />
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyShipped() > 0): ?>
+            <?php echo $this->__('Shipped'); ?>: <strong><?php echo $this->getItem()->getQtyShipped()*1 ?></strong><br />
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyCanceled() > 0): ?>
+            <?php echo $this->__('Canceled'); ?>: <strong><?php echo $this->getItem()->getQtyCanceled()*1 ?></strong><br />
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyRefunded() > 0): ?>
+            <?php echo $this->__('Refunded'); ?>: <strong><?php echo $this->getItem()->getQtyRefunded()*1 ?></strong><br />
+        <?php endif; ?>
+    </td>
+    <td class="a-right">
+        <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceExclTax()): ?>
+            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                <?php echo $this->__('Excl. Tax'); ?>:
+            <?php endif; ?>
+            <strong><?php echo $this->getOrder()->formatPrice($this->getItem()->getRowTotal()) ?></strong><br />
+        <?php endif; ?>
+        <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceInclTax()): ?>
+            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                <?php echo $this->__('Incl. Tax'); ?>:
+            <?php endif; ?>
+            <strong><?php echo $this->getOrder()->formatPrice($this->helper('checkout')->getSubtotalInclTax($this->getItem())); ?></strong>
+        <?php endif; ?>
+    </td>
+    <!--
+    <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceExclTax()): ?>
+    <th class="nowrap a-right" width="5%"><?php echo $this->getOrder()->formatPrice($this->getItem()->getRowTotal()) ?></th>
+    <?php endif; ?>
+    <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceInclTax()): ?>
+    <th class="nowrap a-right" width="5%"><?php echo $this->getOrder()->formatPrice($this->helper('checkout')->getSubtotalInclTax($this->getItem())); ?></th>
+    <?php endif; ?>
+    -->
+</tr>

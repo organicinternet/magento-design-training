@@ -494,14 +494,23 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
 
     protected function _addFinalPrice()
     {
-        foreach ($this->_items as &$product) {
+        foreach ($this->_items as $product) {
             $basePrice = $product->getPrice();
             $specialPrice = $product->getSpecialPrice();
             $specialPriceFrom = $product->getSpecialFromDate();
             $specialPriceTo = $product->getSpecialToDate();
             $rulePrice = $product->getData('_rule_price');
 
-            $finalPrice = Mage_Catalog_Model_Product_Price::calculatePrice($basePrice, $specialPrice, $specialPriceFrom, $specialPriceTo, $rulePrice);
+            $finalPrice = $product->getPriceModel()->calculatePrice(
+                $basePrice,
+                $specialPrice,
+                $specialPriceFrom,
+                $specialPriceTo,
+                $rulePrice,
+                null,
+                null,
+                $product->getId()
+            );
 
             $product->setCalculatedFinalPrice($finalPrice);
         }
@@ -541,11 +550,11 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
     protected function _addTaxPercents(){
         $classToRate = array();
 
-        $request = Mage::getModel('tax/calculation')->getRateRequest();
+        $request = Mage::getSingleton('tax/calculation')->getRateRequest();
         foreach ($this as &$item) {
             if (!isset($classToRate[$item->getTaxClassId()])) {
                 $request->setProductClassId($item->getTaxClassId());
-                $classToRate[$item->getTaxClassId()] = Mage::getModel('tax/calculation')->getRate($request);
+                $classToRate[$item->getTaxClassId()] = Mage::getSingleton('tax/calculation')->getRate($request);
             }
             $item->setTaxPercent($classToRate[$item->getTaxClassId()]);
         }
@@ -571,10 +580,26 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
                 ->addValuesToResult();
 
             foreach ($options as $option) {
-                $this->getItemById($option->getProductId())->addOption($option);
+                if($this->getItemById($option->getProductId())) {
+                    $this->getItemById($option->getProductId())->addOption($option);
+                }
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * Filter products with required options
+     *
+     * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
+     */
+    public function addFilterByRequiredOptions()
+    {
+        $this->getSelect()
+            ->where(
+                new Zend_Db_Expr('(SELECT COUNT(*) FROM '.$this->getTable('catalog/product_option').' WHERE (product_id = `e`.`entity_id`) AND (is_require = 1)) = 0')
+            );
         return $this;
     }
 

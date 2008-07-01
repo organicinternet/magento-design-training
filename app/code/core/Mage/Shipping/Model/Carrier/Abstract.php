@@ -160,7 +160,7 @@ abstract class Mage_Shipping_Model_Carrier_Abstract extends Varien_Object
     {
         if ($method == $this->getConfigData('free_method') &&
             $this->getConfigData('free_shipping_enable') &&
-            $this->getConfigData('free_shipping_subtotal') <= $this->_rawRequest->getValue())
+            $this->getConfigData('free_shipping_subtotal') <= $this->_rawRequest->getValueWithDiscount())
         {
             $price = '0.00';
         } else {

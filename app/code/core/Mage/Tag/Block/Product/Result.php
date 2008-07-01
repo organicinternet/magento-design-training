@@ -44,14 +44,25 @@ class Mage_Tag_Block_Product_Result extends Mage_Catalog_Block_Product_Abstract
         return parent::_prepareLayout();
     }
 
-    public function initList($template)
-    {
-        $resultBlock = $this->getLayout()->createBlock('catalog/product_list', 'product_list')
-            ->setTemplate($template)
-            ->setAvailableOrders(array('name'=>Mage::helper('tag')->__('Name'), 'price'=>Mage::helper('tag')->__('Price')))
-            ->setModes(array('list' => Mage::helper('tag')->__('List'), 'grid' => Mage::helper('tag')->__('Grid')))
-            ->setCollection($this->_getProductCollection());
-        $this->setChild('search_result_list', $resultBlock);
+    public function setListOrders() {
+        $this->getChild('search_result_list')
+            ->setAvailableOrders(array(
+                'name' => Mage::helper('tag')->__('Name'),
+                'price'=>Mage::helper('tag')->__('Price'))
+            );
+    }
+
+    public function setListModes() {
+        $this->getChild('search_result_list')
+            ->setModes(array(
+                'grid' => Mage::helper('tag')->__('Grid'),
+                'list' => Mage::helper('tag')->__('List'))
+            );
+    }
+
+    public function setListCollection() {
+        $this->getChild('search_result_list')
+           ->setCollection($this->_getProductCollection());
     }
 
     public function getProductListHtml()
@@ -64,24 +75,7 @@ class Mage_Tag_Block_Product_Result extends Mage_Catalog_Block_Product_Abstract
         if(is_null($this->_productCollection)) {
             $tagModel = Mage::getModel('tag/tag');
             $this->_productCollection = $tagModel->getEntityCollection()
-                ->addAttributeToSelect('name')
-                ->addAttributeToSelect('url_key')
-
-                ->addAttributeToSelect('price')
-                ->addAttributeToSelect('special_price')
-                ->addAttributeToSelect('special_from_date')
-                ->addAttributeToSelect('special_to_date')
-                ->addMinimalPrice()
-
-                ->addAttributeToSelect('description')
-                ->addAttributeToSelect('short_description')
-
-                ->addAttributeToSelect('image')
-                ->addAttributeToSelect('thumbnail')
-                ->addAttributeToSelect('small_image')
-
-                ->addAttributeToSelect('tax_class_id')
-
+                ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes())
                 ->addTagFilter($this->getTag()->getId())
                 ->addStoreFilter()
                 ->addUrlRewrite();

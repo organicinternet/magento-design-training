@@ -164,6 +164,12 @@ class Mage_Core_Controller_Request_Http extends Zend_Controller_Request_Http
     public function setRouteName($route)
     {
         $this->_route = $route;
+        $router = Mage::app()->getFrontController()->getRouterByRoute($route);
+        if (!$router) return $this;
+        $module = $router->getFrontNameByRoute($route);
+        if ($module) {
+            $this->setModuleName($module);
+        }
         return $this;
     }
 

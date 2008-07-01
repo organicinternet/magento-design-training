@@ -375,18 +375,6 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
 
     protected function _beforeSave()
     {
-        if ($this->getBackorders() == Mage_CatalogInventory_Model_Stock::BACKORDERS_NO
-            && $this->getQty() <= $this->getMinQty()) {
-            if(!$this->getProduct() || !$this->getProduct()->isSuper()) {
-                $this->setIsInStock(false);
-            }
-        }
-
-        // get back in stock (when order is canceled or whatever else)
-        if ($this->getCanBackInStock() && $this->getQty() > $this->getMinQty()) {
-            $this->setIsInStock(true);
-        }
-
         /**
          * if qty is below notify qty, update the low stock date to today date otherwise set null
          */
@@ -396,6 +384,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
         } else {
             $this->setLowStockDate(false);
         }
+
         Mage::dispatchEvent('cataloginventory_stock_item_save_before', array('item'=>$this));
         return $this;
     }

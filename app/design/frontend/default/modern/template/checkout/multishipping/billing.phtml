@@ -81,6 +81,7 @@
                 </dl>
             </div>
         </div>
+    <?php echo $this->getChildHtml('checkout_billing_items') ?>
 <div class="button-set">
     <a href="<?php echo $this->getBackUrl() ?>" class="f-left">&laquo; <?php echo $this->__('Back to Shipping Information') ?></a>
     <a href="#" onclick="$('multishipping-billing-form').submit()"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif') ?>" alt="<?php echo $this->__('Continue to Review Your Order') ?>" class="v-middle"/></a>

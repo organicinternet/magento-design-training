@@ -79,6 +79,9 @@ CREATE TABLE `{$installer->getTable('sales_flat_order_item')}` (
     `base_row_invoiced` decimal(12,4) NOT NULL default '0.0000',
 
     `row_weight` decimal(12,4) default '0.0000',
+    
+	`gift_message_id` int(10) default NULL,                   
+	`gift_message_available` int(10) default NULL,      
 
     PRIMARY KEY  (`item_id`),
     KEY `IDX_ORDER` (`order_id`)

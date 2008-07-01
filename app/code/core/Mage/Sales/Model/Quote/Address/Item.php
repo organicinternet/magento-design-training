@@ -84,10 +84,7 @@ class Mage_Sales_Model_Quote_Address_Item extends Mage_Sales_Model_Quote_Item_Ab
             ->setQuoteItemId($quoteItem->getId())
             ->setProductId($quoteItem->getProductId())
             ->setProduct($quoteItem->getProduct())
-            ->setSuperProductId($quoteItem->getSuperProductId())
-            ->setSuperProduct($quoteItem->getSuperProduct())
             ->setSku($quoteItem->getSku())
-            ->setImage($quoteItem->getImage())
             ->setName($quoteItem->getName())
             ->setDescription($quoteItem->getDescription())
             ->setWeight($quoteItem->getWeight())
@@ -99,5 +96,13 @@ class Mage_Sales_Model_Quote_Address_Item extends Mage_Sales_Model_Quote_Item_Ab
         }
         $this->setQuoteItemImported(true);
         return $this;
+    }
+    
+    public function getOptionBycode($code)
+    {
+        if ($this->getQuoteItem()) {
+        	return $this->getQuoteItem()->getOptionBycode($code);
+        }
+        return null;
     }
 }

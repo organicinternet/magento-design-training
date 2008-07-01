@@ -71,7 +71,7 @@
                     </table>
                     <br/>
                     {{/depend}}
-                    {{var items_html}}
+                    {{layout handle="sales_email_order_items" order=$order}}
                     <br/>
                     {{var order.getEmailCustomerNote()}}
                     <p>Thank you again,<br/><strong>{{var order.getStoreGroupName()}}</strong></p>

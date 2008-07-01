@@ -28,18 +28,49 @@
     <td class="attributes-col">
         <p class="pname"><a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a></p>
 
-        <?php if ($_options = $this->getProductOptions()):?>
-        <ul class="product-options">
-            <?php foreach ($_options as $_option):?>
-            <li><strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong> <?php echo $this->htmlEscape($_option['value']) ?></li>
+        <!-- item custom options -->
+        <?php if ($_options = $this->getOptionList()):?>
+        <ul class="shopping-cart-item-options">
+            <?php foreach ($_options as $_option) : ?>
+            <?php
+            $_randomId = str_replace('.', '_', 'trunc_' . microtime(true));
+            $_truncatedRemainder = '';
+            if (is_array($_option['value'])) {
+                $_truncatedValue = implode('<br />', $_option['value']);
+            } else {
+                $_truncatedValue = Mage::helper('core/string')->truncate($_option['value'], 100, '', $_truncatedRemainder);
+                $_truncatedValue     = nl2br($this->htmlEscape($_truncatedValue));
+                $_truncatedRemainder = nl2br($this->htmlEscape($_truncatedRemainder));
+            }
+            ?>
+            <li<?php if ($_truncatedRemainder):?> id="<?php echo $_randomId?>" class="truncated"<?php endif; ?>><strong><?php echo $_option['label'] ?>:</strong><br />
+                <?php if ($_truncatedRemainder):?>
+                    <? /* <?php echo $_truncatedValue?><span class="truncated-etc" id="<?php echo $_randomId?>_etc">...</span><span class="truncated-remainder" id="<?php echo $_randomId?>_remainder" style="display:none"><?php echo $_truncatedRemainder ?></span>
+                    <script type="text/javascript">
+                      Event.observe($('<?php echo $_randomId?>'), 'mouseover', function(){switchDisplay($('<?php echo $_randomId?>_etc'), $('<?php echo $_randomId?>_remainder'))});
+                      Event.observe($('<?php echo $_randomId?>'), 'mouseout',  function(){switchDisplay($('<?php echo $_randomId?>_remainder'), $('<?php echo $_randomId?>_etc'))});
+                    </script> */ ?>
+                <?php echo $_truncatedValue . '...'; ?>
+                <div class="truncated_value" id="<?php echo $_randomId?>_full_value"><strong><?php echo $_option['label'] ?>:</strong> <?php echo $_truncatedValue . $_truncatedRemainder ; ?></div>
+                <script type="text/javascript">
+                  Event.observe($('<?php echo $_randomId?>'), 'mouseover', function(){ $('<?php echo $_randomId?>_full_value').style.display="block"; });
+                  Event.observe($('<?php echo $_randomId?>'), 'mouseout', function(){ $('<?php echo $_randomId?>_full_value').style.display="none"; });
+                </script>
+                <?php else : ?>
+                <?php echo $_truncatedValue; ?>
+                <?php endif;?>
+            </li>
             <?php endforeach;?>
         </ul>
         <?php endif;?>
+        <!-- / -->
 
-        <?php if($_item->getMessage()): ?>
-        <div class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
-            * <?php echo $_item->getMessage() ?>
+        <?php if ($messages = $this->getMessages()): ?>
+        <?php foreach ($messages as $message): ?>
+        <div class="shopping-cart-item-message <?php echo $message['type'] ?>">
+            * <?php echo $message['text'] ?>
         </div>
+        <?php endforeach; ?>
         <?php endif; ?>
     </td>
     <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
@@ -47,15 +78,29 @@
         <input type="checkbox" value="1" name="cart[<?php echo $_item->getId() ?>][wishlist]" />
     </td>
     <?php endif ?>
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?>
     </td>
+    <?php endif; ?>
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <td class="a-right">
+        <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?>
+    </td>
+    <?php endif; ?>
     <td class="a-center">
         <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" />
     </td>
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?>
     </td>
+    <?php endif; ?>
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <td class="a-right">
+        <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?>
+    </td>
+    <?php endif; ?>
     <td class="a-center">
         <a href="<?php echo $this->getDeleteUrl() ?>">
             <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" />

@@ -87,6 +87,13 @@ class Varien_Io_File extends Varien_Io_Abstract
     protected $_streamChmod;
 
     /**
+     * Lock file
+     *
+     * @var bool
+     */
+    protected $_streamLocked = false;
+
+    /**
      * Destruct
      */
     public function __destruct()
@@ -119,6 +126,35 @@ class Varien_Io_File extends Varien_Io_Abstract
         $this->_streamFileName = $fileName;
         $this->_streamChmod = $chmod;
         return true;
+    }
+
+    /**
+     * Lock file
+     *
+     * @return bool
+     */
+    public function streamLock($exclusive = true)
+    {
+        if (!$this->_streamHandler) {
+            return false;
+        }
+        $this->_streamLocked = true;
+        $lock = $exclusive ? LOCK_EX : LOCK_SH;
+        return flock($this->_streamHandler, $lock);
+    }
+
+    /**
+     * Unlock file
+     *
+     * @return bool
+     */
+    public function streamUnlock()
+    {
+        if (!$this->_streamHandler || !$this->_streamLocked) {
+            return false;
+        }
+        $this->_streamLocked = false;
+        return flock($this->_streamHandler, LOCK_UN);
     }
 
     /**
@@ -180,6 +216,9 @@ class Varien_Io_File extends Varien_Io_Abstract
             return false;
         }
 
+        if ($this->_streamLocked) {
+            $this->streamUnlock();
+        }
         @fclose($this->_streamHandler);
         @chmod($this->_streamFileName, $this->_streamChmod);
         return true;
@@ -700,5 +739,10 @@ class Varien_Io_File extends Varien_Io_Abstract
     public function dirsep()
     {
         return DIRECTORY_SEPARATOR;
+    }
+
+    public function dirname($file)
+    {
+        return $this->getCleanPath(dirname($file));
     }
 }

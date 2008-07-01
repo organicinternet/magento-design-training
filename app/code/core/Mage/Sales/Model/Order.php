@@ -569,7 +569,6 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
 
-        $itemsBlock = Mage::getBlockSingleton('sales/order_email_items')->setOrder($this);
         $paymentBlock = Mage::helper('payment')->getInfoBlock($this->getPayment())
             ->setIsSecureMode(true);
 
@@ -615,7 +614,6 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
                         'order'         => $this,
                         'billing'       => $this->getBillingAddress(),
                         'payment_html'  => $paymentBlock->toHtml(),
-                        'items_html'    => $itemsBlock->toHtml(),
                     )
                 );
         }
@@ -632,6 +630,13 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
      */
     public function sendOrderUpdateEmail($notifyCustomer=true, $comment='')
     {
+        // set design parameters, required for email (remember current)
+        $currentDesign = Mage::getDesign()->setAllGetOld(array(
+            'store'   => $this->getStoreId(),
+            'area'    => 'frontend',
+            'package' => Mage::getStoreConfig('design/package/name', $this->getStoreId()),
+        ));
+
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -690,6 +695,9 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
         }
 
         $translate->setTranslateInline(true);
+
+        // revert current design
+        Mage::getDesign()->setAllGetOld($currentDesign);
 
         return $this;
     }
@@ -789,14 +797,30 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
         return $items;
     }
 
+    public function getAllVisibleItems()
+    {
+        $items = array();
+        foreach ($this->getItemsCollection() as $item) {
+            if (!$item->isDeleted() && !$item->getParentItemId()) {
+                $items[] =  $item;
+            }
+        }
+        return $items;
+    }
+
     public function getItemById($itemId)
     {
+        return $this->getItemsCollection()->getItemById($itemId);
+    }
+
+    public function getItemByQuoteItemId($quoteItemId)
+    {
         foreach ($this->getItemsCollection() as $item) {
-            if ($item->getId()==$itemId) {
+            if ($item->getQuoteItemId()==$quoteItemId) {
                 return $item;
             }
         }
-        return false;
+        return null;
     }
 
     public function addItem(Mage_Sales_Model_Order_Item $item)
@@ -1234,6 +1258,18 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
             $name = array($store->getWebsite()->getName(),$store->getGroup()->getName(),$store->getName());
             $this->setStoreName(implode("\n", $name));
         }
+
+        /**
+         * Process items dependency for new order
+         */
+        if (!$this->getId()) {
+            foreach ($this->getAllItems() as $item) {
+            	if ($parent = $item->getQuoteParentItemId()) {
+                    $item->setParentItem($this->getItemByQuoteItemId($parent));
+            	}
+            }
+        }
+
         return $this;
     }
 
@@ -1301,5 +1337,11 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
     public function getIsNotVirtual()
     {
         return !$this->getIsVirtual();
+    }
+
+    public function getFullTaxInfo()
+    {
+        $rates = Mage::getModel('sales/order_tax')->getCollection()->loadByOrder($this)->toArray();
+        return Mage::getSingleton('tax/calculation')->reproduceProcess($rates['items']);
     }
 }

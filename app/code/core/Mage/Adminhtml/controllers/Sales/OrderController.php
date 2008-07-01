@@ -183,13 +183,8 @@ class Mage_Adminhtml_Sales_OrderController extends Mage_Adminhtml_Controller_Act
                 $order->addStatusToHistory($data['status'], $data['comment'], $notify);
                 $comment = trim(strip_tags($data['comment']));
 
-                if ($notify && $comment) {
-                    Mage::getDesign()->setStore($order->getStoreId());
-                    Mage::getDesign()->setArea('frontend');
-                }
                 $order->sendOrderUpdateEmail($notify, $comment);
                 $order->save();
-                Mage::getDesign()->setArea('adminhtml');
                 $response = $this->getLayout()->createBlock('adminhtml/sales_order_view_history')->toHtml();
             }
             catch (Mage_Core_Exception $e) {

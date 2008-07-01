@@ -27,6 +27,12 @@
  */
 class Mage_Adminhtml_Block_Sales_Order_Create_Items_Grid extends Mage_Adminhtml_Block_Sales_Order_Create_Abstract
 {
+    /**
+     * Flag to check can items be move to customer storage
+     *
+     * @var bool
+     */
+    protected $_moveToCustomerStorage = true;
 
     public function __construct()
     {
@@ -60,7 +66,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Items_Grid extends Mage_Adminhtml_
 
     public function getItemOrigPrice($item)
     {
-        //return $this->convertPrice($item->getProduct()->getPrice());
+//        return $this->convertPrice($item->getProduct()->getPrice());
         return $this->convertPrice($item->getPrice());
     }
 
@@ -103,7 +109,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Items_Grid extends Mage_Adminhtml_
 
     public function usedCustomPriceForItem($item)
     {
-        return $item->getCustomPrice();
+        return $item->hasCustomPrice();
     }
 
     public function getQtyTitle($item)
@@ -140,14 +146,55 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Items_Grid extends Mage_Adminhtml_
      * Get Custom Options of item
      *
      * @param Mage_Sales_Model_Quote_Item $item
-     * @return string | null
+     * @return array
      */
     public function getCustomOptions(Mage_Sales_Model_Quote_Item $item)
     {
-        if ($options = $item->getOptionByCode('option_admin')) {
-            return $options->getValue();
+        $optionStr = '';
+        $this->_moveToCustomerStorage = true;
+        if ($optionIds = $item->getOptionByCode('option_ids')) {
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                if ($option = $item->getProduct()->getOptionById($optionId)) {
+                    $optionValue = $item->getOptionByCode('option_' . $option->getId())->getValue();
+                    $optionStr .= $option->getTitle() . ':';
+                    if ($option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
+                        || $option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
+                        foreach (explode(',', $optionValue) as $_value) {
+                            $optionStr .= $option->getValueById($_value)->getTitle() . ', ';
+                        }
+                        $optionStr = Mage::helper('core/string')->substr($optionStr, 0, -2);
+                    } elseif ($option->getGroupByType() == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                        $optionStr .= $option->getValueById($optionValue)->getTitle();
+                    } else {
+                        $optionStr .= $optionValue;
+                    }
+                    $optionStr .= "\n";
+                }
+            }
         }
+        foreach ($item->getProduct()->getOptions() as $option) {
+            if ($option->getIsRequire() && !$item->getOptionByCode('option_'.$option->getId())) {
+                $optionStr .= $option->getTitle() . ':' . "\n";
+            }
+        }
+        if ($additionalOptions = $item->getOptionByCode('additional_options')) {
+            $this->_moveToCustomerStorage = false;
+            foreach (unserialize($additionalOptions->getValue()) as $additionalOption) {
+                $optionStr .= $additionalOption['label'] . ':' . $additionalOption['value'] . "\n";
+            }
+        }
+        $optionStr = $this->helper('core/string')->substr($optionStr, 0, -1);
 
-        return null;
+        return $optionStr;
+    }
+
+    /**
+     * Get flag for rights to move items to customer storage
+     *
+     * @return bool
+     */
+    public function getMoveToCustomerStorage()
+    {
+        return $this->_moveToCustomerStorage;
     }
 }

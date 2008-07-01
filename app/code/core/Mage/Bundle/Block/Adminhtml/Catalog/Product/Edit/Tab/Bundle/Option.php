@@ -140,7 +140,7 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option extends
                     $this->getProduct()->getTypeInstance()->getOptionsIds()
                 );
 
-            $optionCollection->setShowAllSelections($this->getShowAllSelections());
+
             $this->_options = $optionCollection->appendSelections($selectionCollection);
         }
         return $this->_options;

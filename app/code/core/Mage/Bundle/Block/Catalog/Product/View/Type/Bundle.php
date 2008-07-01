@@ -42,7 +42,7 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                     $this->getProduct()->getTypeInstance()->getOptionsIds()
                 );
 
-            $optionCollection->setShowAllSelections($this->getShowAllSelections());
+
             $this->_options = $optionCollection->appendSelections($selectionCollection);
         }
         return $this->_options;
@@ -65,6 +65,8 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                 'isMulti' => ($_option->getType() == 'multi' || $_option->getType() == 'checkbox')
             );
 
+            $selectionCount = count($_option->getSelections());
+
             foreach ($_option->getSelections() as $_selection) {
                 $_qty = !($_selection->getSelectionQty()*1)?'1':$_selection->getSelectionQty()*1;
                 $selection = array (
@@ -77,7 +79,7 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                 );
                 $option['selections'][$_selection->getSelectionId()] = $selection;
 
-                if ($_selection->getIsDefault()) {
+                if (($_selection->getIsDefault() || ($selectionCount == 1 && $_option->getRequired())) && $_selection->isSalable()) {
                     $selected[$_option->getId()][] = $_selection->getSelectionId();
                 }
             }
@@ -97,11 +99,6 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
         return Zend_Json::encode($config);
     }
 
-    public function setShowAllSelections($status)
-    {
-        $this->setData('show_all_selections', (bool)$status);
-        return $this;
-    }
     public function addRenderer($type, $block)
     {
         $this->_optionRenderers[$type] = $block;

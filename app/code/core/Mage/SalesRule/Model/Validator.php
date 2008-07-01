@@ -108,8 +108,11 @@ class Mage_SalesRule_Model_Validator extends Mage_Core_Model_Abstract
 			if (!$rule->getActions()->validate($item)) {
 			    continue;
 			}
-
-			$qty = $rule->getDiscountQty() ? min($item->getQty(), $rule->getDiscountQty()) : $item->getQty();
+            $qty = $item->getQty();
+            if ($item->getParentItem()) {
+                $qty*= $item->getParentItem()->getQty();
+            }
+			$qty = $rule->getDiscountQty() ? min($qty, $rule->getDiscountQty()) : $qty;
 			$rulePercent = $rule->getDiscountAmount();
             $discountAmount = 0;
             $baseDiscountAmount = 0;

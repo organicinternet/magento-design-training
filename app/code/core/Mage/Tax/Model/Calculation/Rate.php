@@ -32,9 +32,22 @@ class Mage_Tax_Model_Calculation_Rate extends Mage_Core_Model_Abstract
         $this->_init('tax/calculation_rate');
     }
 
+    protected function _beforeSave()
+    {
+        parent::_beforeSave();
+        $country = $this->getTaxCountryId();
+        $region = $this->getTaxRegionId();
+        $regionModel = Mage::getModel('directory/region');
+        $regionModel->load($region);
+        if ($regionModel->getCountryId() != $country) {
+            $this->setTaxRegionId('*');
+        }
+    }
+
     protected function _afterSave()
     {
         $this->saveTitles();
+        parent::_afterSave();
     }
 
     public function saveTitles($titles = null)

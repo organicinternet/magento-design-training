@@ -29,10 +29,10 @@ abstract class Mage_Api_Model_Server_Handler_Abstract
 {
     public function __construct()
     {
-        set_error_handler(array(get_class($this), 'hadlePhpError'), E_ALL);
+        set_error_handler(array(get_class($this), 'handlePhpError'), E_ALL);
     }
 
-    static public function hadlePhpError($errorCode, $errorMessage, $errorFile)
+    static public function handlePhpError($errorCode, $errorMessage, $errorFile)
     {
         Mage::log($errorMessage, null, $errorFile);
         if (in_array($errorCode, array(E_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR))) {
@@ -240,6 +240,9 @@ abstract class Mage_Api_Model_Server_Handler_Abstract
             $modelName = (string) $resources->$resourceName->model;
             try {
                 $model = Mage::getModel($modelName);
+                if ($model instanceof Mage_Api_Model_Resource_Abstract) {
+                    $model->setResourceConfig($resources->$resourceName);
+                }
             } catch (Exception $e) {
                 throw new Mage_Api_Exception('resource_path_not_callable');
             }
@@ -405,11 +408,6 @@ abstract class Mage_Api_Model_Server_Handler_Abstract
             if (isset($resource->acl) && !$this->_isAllowed((string) $resource->acl)) {
                 continue;
             }
-            $model = Mage::getModel((string) $resource->model);
-
-
-            $modelReflect = new ReflectionObject($model);
-
 
             $methods = array();
             foreach ($resource->methods->children() as $methodName => $method) {
@@ -423,22 +421,12 @@ abstract class Mage_Api_Model_Server_Handler_Abstract
                    }
                 }
 
-                $methodCall = (isset($method->method) ? (string) $method->method : $methodName);
-                $args = array();
-                if ($methodReflect = $modelReflect->getMethod($methodCall)) {
-                    foreach ($methodReflect->getParameters() as $parameter) {
-                        /* @var $parameter ReflectionParameter */
-                        $args[$parameter->getName()] = $parameter->isArray() ? 'array' : ($parameter->getClass() ? $parameter->getClass()->getName() : 'mixed' );
-                    }
-                }
-
                 $methods[] = array(
                     'title'       => (string) $method->title,
                     'description' => (isset($method->description) ? (string)$method->description : null),
                     'path'        => $resourceName . '.' . $methodName,
                     'name'        => $methodName,
-                    'aliases'     => $methodAliases,
-                    'args'        => $args
+                    'aliases'     => $methodAliases
                 );
             }
 

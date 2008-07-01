@@ -307,7 +307,9 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
     {
         $this->loadLayout();
         $this->_initLayoutMessages('customer/session');
-
+        if ($block = $this->getLayout()->getBlock('customer_edit')) {
+            $block->setRefererUrl($this->_getRefererUrl());
+        }
         $data = $this->_getSession()->getCustomerFormData(true);
         $customer = $this->_getSession()->getCustomer();
         if (!empty($data)) {

@@ -68,6 +68,7 @@ EOT;
 EOT;
         $weightUnit = 'LB';
         foreach ($this->getQuote()->getAllItems() as $item) {
+            $weight = (float) $item->getWeight();
             $digital = $item->getIsVirtual() ? 'true' : 'false';
             $xml .= <<<EOT
             <item>
@@ -76,7 +77,7 @@ EOT;
                 <item-description><![CDATA[{$item->getDescription()}]]></item-description>
                 <unit-price currency="{$this->getCurrency()}">{$item->getBaseCalculationPrice()}</unit-price>
                 <quantity>{$item->getQty()}</quantity>
-                <item-weight unit="{$weightUnit}" value="{$item->getWeight()}" />
+                <item-weight unit="{$weightUnit}" value="{$weight}" />
                 <tax-table-selector>{$item->getTaxClassId()}</tax-table-selector>
                 {$this->_getDigitalContentXml($item)}
                 {$this->_getMerchantPrivateItemDataXml($item)}
@@ -117,7 +118,7 @@ EOT;
     {
         $xml = <<<EOT
             <merchant-private-item-data>
-                <quote-item-id>{$item->getEntityId()}</quote-item-id>
+                <quote-item-id>{$item->getId()}</quote-item-id>
             </merchant-private-item-data>
 EOT;
         return $xml;
@@ -217,6 +218,8 @@ EOT;
 
         $addressCategory = Mage::getStoreConfig('google/checkout_shipping_carrier/address_category');
 
+        $defPrice = Mage::helper('tax')->getShippingPrice($defPrice, false, false);
+
 //      $taxRate = $this->_getShippingTaxRate();
 //      <additional-variable-charge-percent>{$taxRate}</additional-variable-charge-percent>
 
@@ -275,6 +278,7 @@ EOT;
             $title = Mage::getStoreConfig('google/checkout_shipping_flatrate/title_'.$i);
             $price = Mage::getStoreConfig('google/checkout_shipping_flatrate/price_'.$i);
             $price = number_format($price, 2, '.','');
+            $price = Mage::helper('tax')->getShippingPrice($price, false, false);
 
             if (empty($title) || $price <= 0) {
                 continue;
@@ -324,6 +328,7 @@ EOT;
                 }
 
                 $defaultPrice = $methods['price'][$i];
+                $defaultPrice = Mage::helper('tax')->getShippingPrice($defaultPrice, false, false);
 
                 $xml .= <<<EOT
                     <merchant-calculated-shipping name="{$method}">
@@ -344,6 +349,7 @@ EOT;
 
         $title = Mage::getStoreConfig('google/checkout_shipping_pickup/title');
         $price = Mage::getStoreConfig('google/checkout_shipping_pickup/price');
+        $price = Mage::helper('tax')->getShippingPrice($price, false, false);
 
         $xml = <<<EOT
                 <pickup name="{$title}">
@@ -357,8 +363,8 @@ EOT;
     {
         $shippingTaxRate = 0;
         if ($shippingTaxClass = Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_SHIPPING_TAX_CLASS)) {
-            $request = Mage::getModel('tax/calculation')->getRateRequest();
-            $shippingTaxRate = Mage::getModel('tax/calculation')->getRate($request->setProductClassId($shippingTaxClass));
+            $request = Mage::getSingleton('tax/calculation')->getRateRequest();
+            $shippingTaxRate = Mage::getSingleton('tax/calculation')->getRate($request->setProductClassId($shippingTaxClass));
             $shippingTaxed = 'true';
         }
         return $shippingTaxRate;
@@ -480,12 +486,10 @@ EOT;
         }
         $customerTaxClass = Mage::getModel('customer/group')->load($customerGroup)->getTaxClassId();
 
-        $rulesArr = Mage::getResourceModel('googlecheckout/tax')
-            ->fetchRuleRatesForCustomerTaxClass($customerTaxClass);
-
+        $customerRules = Mage::getSingleton('tax/calculation')->getRatesByCustomerTaxClass($customerTaxClass);
         $rules = array();
-        foreach ($rulesArr as $rule) {
-            $rules[$rule['tax_product_class_id']][] = $rule;
+        foreach ($customerRules as $rule) {
+            $rules[$rule['product_class']][] = $rule;
         }
 
         return $rules;

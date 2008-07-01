@@ -126,7 +126,7 @@ class Mage_GiftMessage_Helper_Message extends Mage_Core_Helper_Data
                    );
         } elseif ($type=='order_item') {
             return $resultItems && $this->_getDependenceFromStoreConfig(
-                        (is_null($entity->getGiftMessageAvailable()) ? 0 : $entity->getGiftMessageAvailable()),
+                        (is_null($entity->getGiftMessageAvailable()) ? 2 : $entity->getGiftMessageAvailable()),
                         $store
                     );
         } elseif ($type=='address_item') {

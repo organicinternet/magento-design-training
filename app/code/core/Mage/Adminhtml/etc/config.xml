@@ -123,20 +123,7 @@
                 <sort_order>10</sort_order>
                 <action>adminhtml/dashboard</action>
             </dashboard>
-            <api translate="title" module="adminhtml">
-                <title>Web Services</title>
-                <sort_order>80</sort_order>
-                <children>
-                    <users translate="title" module="adminhtml">
-                        <title>Users</title>
-                        <action>adminhtml/api_user</action>
-                    </users>
-                    <roles translate="title" module="adminhtml">
-                        <title>Roles</title>
-                        <action>adminhtml/api_role</action>
-                    </roles>
-                </children>
-            </api>
+
             <system translate="title" module="adminhtml">
                 <title>System</title>
                 <sort_order>90</sort_order>
@@ -151,6 +138,20 @@
                         <title>Tools</title>
                         <sort_order>20</sort_order>
                     </tools>
+                    <api translate="title" module="adminhtml">
+                        <title>Web Services</title>
+                        <sort_order>25</sort_order>
+                        <children>
+                            <users translate="title" module="adminhtml">
+                                <title>Users</title>
+                                <action>adminhtml/api_user</action>
+                            </users>
+                            <roles translate="title" module="adminhtml">
+                                <title>Roles</title>
+                                <action>adminhtml/api_role</action>
+                            </roles>
+                        </children>
+                    </api>
                     <design translate="title" module="adminhtml">
                         <title>Design</title>
                         <action>adminhtml/system_design</action>
@@ -209,7 +210,7 @@
                         </children>
                     </extensions>
                     <cache translate="title" module="adminhtml">
-                        <title>Cache management</title>
+                        <title>Cache Management</title>
                         <action>adminhtml/system_cache</action>
                         <sort_order>90</sort_order>
                     </cache>
@@ -335,6 +336,10 @@
                                             <title>Email to a Friend</title>
                                             <sort_order>140</sort_order>
                                         </sendfriend>
+                                        <admin>
+                                            <title>Advanced Admin Section</title>
+                                            <sort_order>100</sort_order>
+                                        </admin>
                                     </children>
                                 </config>
                                 <currency>

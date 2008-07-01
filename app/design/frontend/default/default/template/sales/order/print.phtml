@@ -51,34 +51,26 @@
 </div>
 <br />
 <h4><?php echo $this->__('Items Ordered') ?></h4>
-<table cellspacing="0" class="data-table">
+<table cellspacing="0" class="data-table print">
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
+            <th class="a-center" width="15%"><?php echo $this->__('SKU') ?></th>
             <th class="a-right" width="15%"><?php echo $this->__('Price') ?></th>
-            <th class="a-center" width="10%"><?php echo $this->__('Qty Ordered') ?></th>
-            <?php if (!$_order->getIsVirtual()): ?><th class="a-center" width="10%"><?php echo $this->__('Qty Shipped') ?></th><?php endif; ?>
+            <th class="a-center" width="15%"><?php echo $this->__('Qty') ?></th>
             <th class="a-right last" width="20%"><?php echo $this->__('Subtotal') ?></th>
         </tr>
     </thead>
-    <tbody>
-        <?php $_items = $_order->getItemsCollection(); ?>
-        <?php $_count = $_items->count(); ?>
-        <?php $_index = 0; ?>
-        <?php foreach ($_items as $_item): ?>
-            <tr<?php echo ($_index++ > $_count ? ' class="last"' : '') ?>>
-            <td>
-                <?php echo $this->htmlEscape($_item->getName()) ?>
-                <?php echo $_item->getDescription() ?>
-            </td>
-            <td class="a-right nowrap"><?php echo $_order->formatPrice($_item->getPrice()) ?></td>
-            <td class="a-center"><?php echo $_item->getQtyOrdered()*1 ?></td>
-            <?php if (!$_order->getIsVirtual()): ?><td class="a-center"><?php echo $_item->getQtyShipped()*1 ?></td><?php endif; ?>
-            <td class="last a-right nowrap"><?php echo $_order->formatPrice($_item->getRowTotal()) ?></td>
-        <?php endforeach; ?>
-        </tr>
+    <?php $_items = $_order->getItemsCollection(); ?>
+    <?php $_count = $_items->count(); ?>
+    <?php $_index = 0; ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getParentItem()) continue; else $_index++ ?>
+    <tbody class="<?php echo $_index%2 ? 'even' : 'odd' ?>">
+        <?php echo $this->getItemHtml($_item) ?>
     </tbody>
-    <?php if ($_order->getIsVirtual()): $colspan = 3; else: $colspan = 4; endif; ?>
+    <?php endforeach; ?>
+    <?php $colspan = 4; ?>
     <tfoot>
         <tr>
             <td colspan="<?php echo $colspan; ?> " class="a-right"><?php echo $this->__('Order Subtotal') ?></td>
@@ -91,10 +83,7 @@
         </tr>
         <?php endif; ?>
         <?php if ($_order->getTaxAmount() > 0): ?>
-        <tr>
-            <td colspan="<?php echo $colspan; ?>" class="a-right"><?php echo $this->__('Tax') ?></td>
-            <td class="last a-right"><?php echo $_order->formatPrice($_order->getTaxAmount()) ?></td>
-        </tr>
+            <?php echo $this->getChildHtml('tax'); ?>
         <?php endif; ?>
         <?php if (!$_order->getIsVirtual() && ($_order->getShippingAmount()*1 || $_order->getShippingDescription())): ?>
         <tr>

@@ -28,11 +28,17 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
         'quote_address_item'=> 'sales_flat_quote_address_item',
         'quote_address_rate'=> 'sales_flat_quote_shipping_rate',
         'quote_payment'     => 'sales_flat_quote_payment',
+        'order_item'        => 'sales_flat_order_item',
     );
+
+    protected function _flatTableExist($table)
+    {
+        return $this->getConnection()->fetchOne("show tables like '{$this->getTable($table)}'");
+    }
 
     public function addAttribute($entityTypeId, $code, array $attr)
     {
-        if (isset($this->_flatEntityTables[$entityTypeId])) {
+        if (isset($this->_flatEntityTables[$entityTypeId]) && $this->_flatTableExist($this->_flatEntityTables[$entityTypeId])) {
             $this->_addFlatAttribute($this->_flatEntityTables[$entityTypeId], $code, $attr);
         }
         else {
@@ -632,6 +638,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
                     'base_shipping_amount'   => array('type'=>'decimal'),
                     'base_grand_total'       => array('type'=>'decimal'),
                     'email_sent' => array('type'=>'int'),
+                    'store_id'   => array('type'=>'static'),
                 ),
             ),
 
@@ -702,6 +709,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
                     'total_qty'         => array('type'=>'decimal'),
                     'total_weight'      => array('type'=>'decimal'),
                     'email_sent'        => array('type'=>'int'),
+                    'store_id'          => array('type' => 'static'),
                 ),
             ),
 
@@ -802,8 +810,9 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
                     'base_adjustment'        => array('type'=>'decimal'),
                     'base_adjustment_positive' => array('type'=>'decimal'),
                     'base_adjustment_negative' => array('type'=>'decimal'),
-                    'base_grand_total'       => array('type'=>'decimal'),
-                    'email_sent' => array('type'=>'int'),
+                    'base_grand_total'         => array('type'=>'decimal'),
+                    'email_sent'               => array('type' => 'int'),
+                    'store_id'                 => array('type' => 'static'),
                 ),
             ),
 

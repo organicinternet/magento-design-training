@@ -273,6 +273,7 @@ Product.Config.prototype = {
             this.resetChildren(element);
         }
         this.reloadPrice();
+//      Calculator.updatePrice();
     },
 
     reloadOptionLabels: function(element){
@@ -384,21 +385,27 @@ Product.Config.prototype = {
     },
 
     reloadPrice: function(){
-        var price = parseFloat(this.config.basePrice);
+//        var price = parseFloat(this.config.basePrice);
+        var price = 0;
         for(var i=this.settings.length-1;i>=0;i--){
             var selected = this.settings[i].options[this.settings[i].selectedIndex];
             if(selected.config){
-                price+= parseFloat(selected.config.price);
+                price += parseFloat(selected.config.price);
             }
         }
         if (price < 0)
             price = 0;
-        price = this.formatPrice(price);
+//        price = this.formatPrice(price);
+
+        optionsPrice.changePrice('config', price);
+        optionsPrice.reload();
+
+
+        return price;
 
         if($('product-price-'+this.config.productId)){
             $('product-price-'+this.config.productId).innerHTML = price;
         }
-
         this.reloadOldPrice();
     },
 
@@ -460,5 +467,84 @@ Product.Super.Configurable.prototype = {
                 parameters:parameters
             });
         }
+    }
+}
+
+/**************************** PRICE RELOADER ********************************/
+Product.OptionsPrice = Class.create();
+Product.OptionsPrice.prototype = {
+    initialize: function(config) {
+        this.productId          = config.productId;
+        this.priceFormat        = config.priceFormat;
+        this.includeTax         = config.includeTax;
+        this.defaultTax         = config.defaultTax;
+        this.currentTax         = config.currentTax;
+        this.productPrice       = config.productPrice;
+        this.showIncludeTax     = config.showIncludeTax;
+        this.productPrice       = config.productPrice;
+
+        this.optionPrices = {};
+        this.containers = {};
+
+        this.initPrices();
+    },
+
+    initPrices: function() {
+        this.containers[0] = 'product-price-' + this.productId;
+        this.containers[1] = 'bundle-price-' + this.productId;
+        this.containers[2] = 'price-including-tax-' + this.productId;
+        this.containers[3] = 'price-excluding-tax-' + this.productId;
+    },
+
+    changePrice: function(key, price) {
+        this.optionPrices[key] = parseFloat(price);
+    },
+
+    getOptionPrices: function() {
+        var result = 0;
+        $H(this.optionPrices).each(function(pair) {
+            result += pair.value;
+        });
+        return result;
+    },
+
+    reload: function() {
+        var price;
+        var formattedPrice;
+        var optionPrices = this.getOptionPrices();
+        $H(this.containers).each(function(pair) {
+            if ($(pair.value)) {
+                if (pair.value == 'price-including-tax-'+this.productId) {
+                    price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
+                } else {
+                    if (this.showIncludeTax) {
+                        price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
+                    } else {
+                        price = this.getPriceWithoutTax(optionPrices+parseFloat(this.productPrice));
+                    }
+                }
+                if (price < 0) price = 0;
+                formattedPrice = this.formatPrice(price);
+                $(pair.value).innerHTML = formattedPrice;
+            };
+        }.bind(this));
+    },
+
+    getPriceWithoutTax: function(price) {
+        if (this.includeTax == 'true') {
+            price = ((price-(price/(1+(this.defaultTax))*this.defaultTax))*this.currentTax);
+        }
+        return price;
+    },
+
+    getPriceWithTax: function(price) {
+        if (this.includeTax == 'false') {
+            price += price*(this.currentTax/100);
+        }
+        return price;
+    },
+
+    formatPrice: function(price) {
+        return formatCurrency(price, this.priceFormat);
     }
 }

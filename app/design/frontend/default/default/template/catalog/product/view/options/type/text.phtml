@@ -19,30 +19,13 @@
  */
 ?>
 <?php $_option = $this->getOption() ?>
-<tr>
-    <td class="label">
-        <?php echo  $this->htmlEscape($_option->getTitle()) ?>
-        <?php if ($_option->getIsRequire()): ?>
-            <span class="required">*</span>
-        <?php endif; ?>
-        (
-        <?php if ($_option->getPriceType() == 'fixed'): ?>
-            <?php echo $this->helper('core')->currency($_option->getPrice()) ?>
-        <?php else: ?>
-            <?php echo '%' . number_format($_option->getPrice(), 0, null, '') ?>
-        <?php endif; ?>
-        )
-    </td>
-</tr>
-<tr>
-    <td class="data">
-    <?php if ($_option->getType() == 'field'): ?>
-        <input type="text" class="input-text<?php echo $_option->getIsRequire() ? ' required-entry' : '' ?>" name="options[<?php echo $_option->getId() ?>]" value="">
-    <?php elseif ($_option->getType() == 'area'): ?>
-        <textarea class="<?php echo $_option->getIsRequire() ? ' required-entry' : '' ?>" name="options[<?php echo $_option->getId() ?>]"></textarea>
-    <?php endif; ?>
-    </td>
-</tr>
-<tr>
-    <td>Maximum number of characters: <strong><?php echo (!$_option->getMaxCharacters())?Mage::helper('catalog')->__('Unlimeted') : $_option->getMaxCharacters() ?></strong></td>
-</tr>
+<dt><label><?php echo  $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getIsRequire()): ?><span class="required">&nbsp;*</span><?php endif; ?></label>
+  <?php echo $this->getFormatedPrice() ?></dt>
+<dd>
+<?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_FIELD): ?>
+		<input type="text" id="options_<?php echo $_option->getId() ?>_text" class="input-text<?php echo $_option->getIsRequire() ? ' required-entry' : '' ?> product-custom-option" name="options[<?php echo $_option->getId() ?>]" value="">
+<?php elseif ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_AREA): ?>
+		<textarea id="options_<?php echo $_option->getId() ?>_text" class="<?php echo $_option->getIsRequire() ? ' required-entry' : '' ?> product-custom-option" name="options[<?php echo $_option->getId() ?>]"></textarea>
+<?php endif; ?>
+<p class="no-margin"><?php echo Mage::helper('catalog')->__('Maximum number of characters')?>: <strong><?php echo (!$_option->getMaxCharacters()) ? Mage::helper('catalog')->__('Unlimited') : $_option->getMaxCharacters() ?></strong></p>
+</dd>

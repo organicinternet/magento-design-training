@@ -51,17 +51,29 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
 
     protected $_values = array();
 
-    public function __construct()
+    protected function _construct()
     {
         $this->_init('catalog/product_option');
     }
 
+    /**
+     * Add value of option to values array
+     *
+     * @param Mage_Catalog_Model_Product_Option_Value $value
+     * @return Mage_Catalog_Model_Product_Option
+     */
     public function addValue(Mage_Catalog_Model_Product_Option_Value $value)
     {
         $this->_values[$value->getId()] = $value;
         return $this;
     }
 
+    /**
+     * Get value by given id
+     *
+     * @param int $valueId
+     * @return Mage_Catalog_Model_Product_Option_Value
+     */
     public function getValueById($valueId)
     {
         if (isset($this->_values[$valueId])) {
@@ -162,8 +174,11 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
      * @param string $type
      * @return array
      */
-    public function getGroupByType($type)
+    public function getGroupByType($type = null)
     {
+        if (is_null($type)) {
+            $type = $this->getType();
+        }
         $optionGroupsToTypes = array(
             self::OPTION_TYPE_FIELD => self::OPTION_GROUP_TEXT,
             self::OPTION_TYPE_AREA => self::OPTION_GROUP_TEXT,
@@ -181,7 +196,7 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Save options
+     * Save options.
      *
      * @return Mage_Catalog_Model_Product_Option
      */
@@ -238,15 +253,8 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
                         }
                     }
                 }
-                $this->save();
-//                if ($this->getData('title') == 'test') {
-//                    Zend_Debug::dump($this->getId(), 'ID');
-//                    Zend_Debug::dump($this->getData(), 'option');
-//                    die();
-//                }
-            }
+                $this->save();            }
         }//eof foreach()
-
         return $this;
     }
 
@@ -263,6 +271,23 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
         }
 
         return parent::_afterSave();
+    }
+
+    /**
+     * Return price. If $flag is true and price is percent
+     *  return converted percent to price
+     *
+     * @param bool $flag
+     * @return decimal
+     */
+    public function getPrice($flag=false)
+    {
+        if ($flag && $this->getPriceType() == 'percent') {
+            $basePrice = $this->getProduct()->getFinalPrice();
+            $price = $basePrice*($this->_getData('price')/100);
+            return $price;
+        }
+        return $this->_getData('price');
     }
 
     /**
@@ -297,9 +322,12 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
      */
     public function getProductOptionCollection(Mage_Catalog_Model_Product $product)
     {
-        $collection = Mage::getResourceModel('catalog/product_option_collection')
+        $collection = $this->getCollection()
             ->addFieldToFilter('product_id', $product->getId())
-            ->getOptions($product->getStoreId());
+            ->getOptions($product->getStoreId())
+            ->setOrder('sort_order', 'asc')
+            ->setOrder('title', 'asc')
+            ->addValuesToResult();
 
         return $collection;
     }

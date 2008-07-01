@@ -43,7 +43,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Date
         $calendar = $this->getLayout()
             ->createBlock('core/html_date')
             ->setId('options_'.$this->getOption()->getId().'_date')
-            ->setName('options['.$this->getOption()->getId().']')
+            ->setName('options['.$this->getOption()->getId().'][date]')
             ->setClass('input-text'.$require)
             ->setImage(Mage::getDesign()->getSkinUrl('images/grid-cal.gif'))
             ->setFormat(Mage::app()->getLocale()->getDateStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
@@ -51,4 +51,38 @@ class Mage_Catalog_Block_Product_View_Options_Type_Date
         return $calendar->getHtml();
     }
 
+    public function getTimeHtml()
+    {
+        $require = $this->getOption()->getIsRequire() ? ' required-entry' : '';
+        $hour = $this->getLayout()
+            ->createBlock('core/html_select')
+                ->setData(array(
+                    'id' => 'options_'.$this->getOption()->getId().'_hour',
+                    'class' => 'select'.$require
+                ))
+            ->setName('options['.$this->getOption()->getId().'][hour]')
+            ->setOptions(array('00' => '00', '01' => '01'));
+
+        $minutes = $this->getLayout()
+            ->createBlock('core/html_select')
+                ->setData(array(
+                    'id' => 'options_'.$this->getOption()->getId().'_minutes',
+                    'class' => 'select'.$require
+                ))
+            ->setName('options['.$this->getOption()->getId().'][minutes]')
+            ->setOptions(array('00' => '00', '05' => '05'));
+
+        $timeFormat = $this->getLayout()
+            ->createBlock('core/html_select')
+                ->setData(array(
+                    'id' => 'options_'.$this->getOption()->getId().'_time_format',
+                    'class' => 'select'.$require
+                ))
+            ->setName('options['.$this->getOption()->getId().'][time_format]')
+            ->setOptions(array('am' => 'AM', 'pm' => 'PM'));
+
+//Zend_Debug::dump(Mage::app()->getLocale()->getTimeFormat());
+//Zend_Debug::dump(Mage::app()->getLocale()->getTimeStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
+        return $hour->getHtml().$minutes->getHtml().$timeFormat->getHtml();
+    }
 }

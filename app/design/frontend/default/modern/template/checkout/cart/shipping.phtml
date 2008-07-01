@@ -39,7 +39,7 @@
     <li><label for="postcode"><?php echo $this->__('Zip/Postal Code') ?></label><br/>
     <input  class="input-text" type="text" id="postcode" name="estimate_postcode" value="<?php echo $this->htmlEscape($this->getEstimatePostcode()) ?>" /></li>
   </ul>
-    <p><a href="#" onclick="coShippingMethodForm.submit()"><img src="<?php echo $this->getSkinUrl('images/btn_cart_get_a_quote.gif') ?>" alt="<?php echo $this->__('Get a Quote') ?>"/></a></p>
+    <p><a href="#" onclick="coShippingMethodForm.submit(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_cart_get_a_quote.gif') ?>" alt="<?php echo $this->__('Get a Quote') ?>"/></a></p>
        <script type="text/javascript">
            $('region_id').setAttribute('defaultValue', "<?php echo $this->getEstimateRegionId() ?>");
        </script>
@@ -63,7 +63,17 @@
                             <?php echo $_rate->getErrorMessage() ?>
                        <?php else: ?>
                             <input name="estimate_method" type="radio" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?>/>
-                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodDescription() ?> - <strong><?php echo $_rate->getPrice() ?></strong></label>
+                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodDescription() ?>
+                            -
+                            <strong>
+                            <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                            <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+
+                            <?php echo $_excl; ?>
+                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                            <?php endif; ?>
+                            </strong></label>
                        <?php endif ?>
                     </li>
                 <?php endforeach; ?>

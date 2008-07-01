@@ -105,7 +105,7 @@ class Mage_Sales_Model_Order_Invoice_Item extends Mage_Core_Model_Abstract
          * Check qty availability
          */
 
-        if ($qty <= $this->getOrderItem()->getQtyToInvoice()) {
+        if ($qty <= $this->getOrderItem()->getQtyToInvoice() || $this->getOrderItem()->isDummy()) {
             $this->setData('qty', $qty);
         }
         else {

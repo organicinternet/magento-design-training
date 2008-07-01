@@ -56,7 +56,7 @@
         <?php echo $this->getItemHtml($_item) ?>
     <?php endforeach; ?>
     </ol>
-    <script type="text/javascript">decorateList('cart-sidebar')</script>
+    <script type="text/javascript">decorateList('cart-sidebar', 'non-recursive')</script>
     <?php else: ?>
     <div class="content"><p><?php echo $this->__('You have no items in your shopping cart.') ?></p></div>
     <?php endif ?>

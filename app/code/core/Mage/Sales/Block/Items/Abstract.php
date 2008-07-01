@@ -61,6 +61,7 @@ class Mage_Sales_Block_Items_Abstract extends Mage_Core_Block_Template
             'template'  => $template,
             'renderer'  => null
         );
+
         return $this;
     }
 
@@ -75,6 +76,7 @@ class Mage_Sales_Block_Items_Abstract extends Mage_Core_Block_Template
         if (!isset($this->_itemRenders[$type])) {
             $type = 'default';
         }
+
         if (is_null($this->_itemRenders[$type]['renderer'])) {
             $this->_itemRenders[$type]['renderer'] = $this->getLayout()
                 ->createBlock($this->_itemRenders[$type]['block'])
@@ -84,15 +86,33 @@ class Mage_Sales_Block_Items_Abstract extends Mage_Core_Block_Template
     }
 
     /**
+     * Prepare item before output
+     *
+     * @param Mage_Core_Block_Abstract $renderer
+     * @return Mage_Sales_Block_Items_Abstract
+     */
+    protected function _prepareItem(Mage_Core_Block_Abstract $renderer)
+    {
+        return $this;
+    }
+
+    /**
      * Get item row html
      *
-     * @param   Mage_Sales_Model_Quote_Item $item
+     * @param   Varien_Object $item
      * @return  string
      */
-    public function getItemHtml(Mage_Sales_Model_Quote_Item $item)
+    public function getItemHtml(Varien_Object $item)
     {
-        return $this->getItemRenderer($item->getProductType())
-            ->setItem($item)
-            ->toHtml();
+        if ($item->getOrderItem()) {
+            $type = $item->getOrderItem()->getProductType();
+        } else {
+            $type = $item->getProductType();
+        }
+
+        $block = $this->getItemRenderer($type)
+            ->setItem($item);
+        $this->_prepareItem($block);
+        return $block->toHtml();
     }
 }

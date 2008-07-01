@@ -34,7 +34,7 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tabs extends Mage_Adminht
         parent::_prepareLayout();
 
         $this->addTab('bundle_items', array(
-            'label'     => Mage::helper('catalog')->__('Bundle Items'),
+            'label'     => Mage::helper('bundle')->__('Bundle Items'),
             'content'   => $this->getLayout()->createBlock('bundle/adminhtml_catalog_product_edit_tab_bundle', 'admin.product.bundle.items')
                 ->setProductId($this->getRequest()->getParam('id'))
                 ->toHtml(),

@@ -136,6 +136,7 @@ class Mage_Usa_Model_Shipping_Carrier_Usps
         }
 
         $r->setValue($request->getPackageValue());
+        $r->setValueWithDiscount($request->getPackageValueWithDiscount());
 
         $this->_rawRequest = $r;
 

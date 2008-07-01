@@ -72,9 +72,11 @@
                         </tbody>
                     </table>
                     <br/>
-                    {{block type='core/template' area='frontend' template='email/order/items_shipment.phtml' shipment=$shipment order=$order}}
+
+                    {{layout handle="sales_email_order_shipment_items" shipment=$shipment order=$order}}
+
                     <br/>
-                    {{block type='core/template' area='frontend' template='email/order/shipment_track.phtml' shipment=$shipment order=$order}}
+                    {{block type='core/template' area='frontend' template='email/order/shipment/track.phtml' shipment=$shipment order=$order}}
                     <p>{{var comment}}</p>
                     <p>
                         Thank you again,<br/><strong>{{var order.getStoreGroupName()}}</strong>

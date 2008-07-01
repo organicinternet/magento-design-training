@@ -33,7 +33,7 @@ class Mage_Catalog_Model_Product_Option_Value extends Mage_Core_Model_Abstract
 
     protected $_option;
 
-    public function __construct()
+    protected function _construct()
     {
         $this->_init('catalog/product_option_value');
     }
@@ -110,6 +110,23 @@ class Mage_Catalog_Model_Product_Option_Value extends Mage_Core_Model_Abstract
                 $this->save();
             }
         }//eof foreach()
+    }
+
+    /**
+     * Return price. If $flag is true and price is percent
+     *  return converted percent to price
+     *
+     * @param bool $flag
+     * @return decimal
+     */
+    public function getPrice($flag=false)
+    {
+        if ($flag && $this->getPriceType() == 'percent') {
+            $basePrice = $this->getOption()->getProduct()->getFinalPrice();
+            $price = $basePrice*($this->_getData('price')/100);
+            return $price;
+        }
+        return $this->_getData('price');
     }
 
     /**

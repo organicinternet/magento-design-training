@@ -24,8 +24,8 @@
  *
  * @category   Mage
  * @package    Mage_Adminhtml
- * @author     Victor Tihonchuk <victor@varien.com>
+ * @author     Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Adminhtml_Block_Sales_Items_Column_Qty extends Mage_Adminhtml_Block_Template
+class Mage_Adminhtml_Block_Sales_Items_Column_Qty extends Mage_Adminhtml_Block_Sales_Items_Column_Default
 {}
 ?>

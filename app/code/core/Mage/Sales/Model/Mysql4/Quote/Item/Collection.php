@@ -57,6 +57,18 @@ class Mage_Sales_Model_Mysql4_Quote_Item_Collection extends Mage_Core_Model_Mysq
     protected function _afterLoad()
     {
         parent::_afterLoad();
+        /**
+         * Assign parent items
+         */
+        foreach ($this as $item) {
+        	if ($item->getParentItemId()) {
+        	    $item->setParentItem($this->getItemById($item->getParentItemId()));
+        	}
+        }
+
+        /**
+         * Assign options and products
+         */
         $this->_assignOptions()
             ->_assignProducts();
         return $this;
@@ -115,6 +127,9 @@ class Mage_Sales_Model_Mysql4_Quote_Item_Collection extends Mage_Core_Model_Mysq
                     if ($product = $productCollection->getItemById($option->getProductId())) {
                         $option->setProduct($product);
                     }
+                    else {
+                    	$option->setProduct($item->getProduct());
+                    }
                 }
             }
             else {
@@ -130,89 +145,4 @@ class Mage_Sales_Model_Mysql4_Quote_Item_Collection extends Mage_Core_Model_Mysq
         Varien_Profiler::stop('QUOTE:'.__METHOD__);
         return $this;
     }
-
-//    protected function __afterLoad()
-//    {
-//        $productCollection = $this->_getProductCollection();
-//        $recollectQuote = false;
-//
-//        foreach ($this as $item) {
-//            if ($productCollection) {
-//                $product = $productCollection->getItemById($item->getProductId());
-//            } else {
-//                $product = false;
-//            }
-//
-//            if ($this->_quote) {
-//                $item->setQuote($this->_quote);
-//            }
-//
-//            if (!$product) {
-//                $item->isDeleted(true);
-//                $recollectQuote = true;
-//                continue;
-//            }
-//
-//            if ($item->getSuperProductId()) {
-//                $superProduct = $productCollection->getItemById($item->getSuperProductId());
-//                if (!$superProduct) {
-//                    $item->isDeleted(true);
-//                    $recollectQuote = true;
-//                    continue;
-//                }
-//            }
-//            else {
-//                $superProduct = null;
-//            }
-//
-//            $itemProduct = clone $product;
-//            if ($superProduct) {
-//                $itemProduct->setSuperProduct($superProduct);
-//                $item->setSuperProduct($superProduct);
-//            }
-//
-//            $item->importCatalogProduct($itemProduct);
-//            $item->checkData();
-//        }
-//
-//        if ($recollectQuote && $this->_quote) {
-//            $this->_quote->collectTotals();
-//        }
-//        return $this;
-//    }
-//
-//    protected function _getProductCollection()
-//    {
-//        $productIds = array();
-//        foreach ($this as $item) {
-//            $productIds[$item->getProductId()] = $item->getProductId();
-//            if ($item->getSuperProductId()) {
-//                $productIds[$item->getSuperProductId()] = $item->getSuperProductId();
-//            }
-//            if ($item->getParentProductId()) {
-//                $productIds[$item->getSuperProductId()] = $item->getParentProductId();
-//            }
-//        }
-//
-//        if (empty($productIds)) {
-//            return false;
-//        }
-//
-//        $collection = Mage::getModel('catalog/product')->getCollection()
-//            ->setStoreId($this->getStoreId())
-//            ->addIdFilter($productIds)
-//            ->addAttributeToSelect('*')
-//            ->addStoreFilter()
-//            ->addUrlRewrite();
-//
-//        if (Mage::app()->useCache('checkout_quote')) {
-//            $collection->initCache(
-//                $this->_getCacheInstance(),
-//                $this->_cacheConf['prefix'].'_PRODUCTS',
-//                $this->_getCacheTags()
-//            );
-//        }
-//
-//        return $collection;
-//    }
 }

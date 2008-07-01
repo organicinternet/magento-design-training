@@ -35,8 +35,14 @@ class Mage_Tax_Model_Observer
         $address = $observer->getEvent()->getAddress();
         $order = $observer->getEvent()->getOrder();
 
-        $order->setAppliedTaxes($address->getAppliedTaxes());
-        $order->setConvertingFromQuote(true);
+        $taxes = $address->getAppliedTaxes();
+        if (is_array($taxes)) {
+            if (is_array($order->getAppliedTaxes())) {
+                $taxes = array_merge($order->getAppliedTaxes(), $taxes);
+            }
+            $order->setAppliedTaxes($taxes);
+            $order->setConvertingFromQuote(true);
+        }
     }
 
     /**
@@ -53,7 +59,6 @@ class Mage_Tax_Model_Observer
 
         $taxes = $order->getAppliedTaxes();
         foreach ($taxes as $row) {
-            //throw new Exception(print_r($tax, true));
             foreach ($row['rates'] as $tax) {
                 $data = array(
                             'order_id'=>$order->getId(),
@@ -63,6 +68,8 @@ class Mage_Tax_Model_Observer
                             'priority'=>$tax['priority'],
                             'position'=>$tax['position'],
                             'amount'=>$row['amount'],
+                            'base_amount'=>$row['base_amount'],
+                            'process'=>$row['process'],
                             );
 
                 Mage::getModel('sales/order_tax')->setData($data)->save();

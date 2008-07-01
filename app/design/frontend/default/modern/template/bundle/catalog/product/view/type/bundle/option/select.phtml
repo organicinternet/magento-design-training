@@ -22,30 +22,39 @@
 
 <?php $_option = $this->getOption() ?>
 <?php $_selections = $_option->getSelections() ?>
-<tr>
-    <td class="label"><?php echo $this->htmlEscape($_option->getTitle()) ?></td>
-    <td>
-        <?php if (count($_selections) == 1 && $_selections[0]->getDefault()): ?>
-            <?php echo $_selections[0]->getName() ?>
-            <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
-        <?php else:?>
-            <select onchange="bundle.changeSelection(this)" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>]" class="<?php if ($_option->getRequired()) echo 'required-entry ' ?>select bundle-option-select">
-                <option value=""><?php echo $this->__('Choose a selection...') ?></option>
-                <?php foreach($_selections as $_selection): ?>
-                    <option value="<?php echo $_selection->getSelectionId() ?>"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' selected="selected" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>><?php echo $this->getSelectionTitlePrice($_selection) ?></option>
-                <?php endforeach;?>
-            </select>
-        <?php endif; ?>
-    </td>
-    <td valign="top" align="center">
+<?php $_showSingle = (count($_selections) == 1 && $_option->getRequired()) ?>
+<dt>
+    <label class="f-left"><?php echo $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getRequired()) echo '<span class="required">&nbsp;*</span>' ?></label>
+    <span class="qty-holder">
         <?php if ($_default = $_option->getDefaultSelection()): ?>
             <?php $_defaultQty = $_default->getSelectionQty()*1 ?>
             <?php $_canChangeQty = $_default->getSelectionCanChangeQty() ?>
         <?php else: ?>
-            <?php $_defaultQty = '' ?>
-            <?php $_canChangeQty = false ?>
+            <?php if (!$_showSingle): ?>
+                <?php $_defaultQty = '' ?>
+                <?php $_canChangeQty = false ?>
+            <?php else: ?>
+                <?php $_defaultQty = $_selections[0]->getSelectionQty()*1 ?>
+                <?php $_canChangeQty = true ?>
+            <?php endif; ?>
         <?php endif; ?>
-        <input onkeyup="bundle.changeOptionQty(this)" style="display:<?php echo $_canChangeQty?'block':'none' ?>" id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
-        <span style="display:<?php echo $_canChangeQty?'none':'block' ?>" id="bundle-option-<?php echo $_option->getId() ?>-qty-label"><?php echo $_defaultQty ?></span>
-    </td>
-</tr>
+        <label for="bundle-option-<?php echo $_option->getId() ?>-qty-input"><?php echo $this->__('Qty:') ?>&nbsp;</label><input onkeyup="bundle.changeOptionQty(this)" <?php echo $_canChangeQty?'':'disabled="disabled"' ?> id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
+    </span>
+    <span id="bundle-option-<?php echo $_option->getId() ?>-container"></span>
+</dt>
+<dd>
+    <?php if ($_showSingle): ?>
+        <?php echo $this->getSelectionTitlePrice($_selections[0]) ?>
+        <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
+    <?php else:?>
+        <select onchange="bundle.changeSelection(this)" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>]" class="bundle-option-<?php echo $_option->getId() ?> <?php if ($_option->getRequired()) echo 'required-entry ' ?>select bundle-option-select">
+            <option value=""><?php echo $this->__('Choose a selection...') ?></option>
+            <?php foreach($_selections as $_selection): ?>
+                <option value="<?php echo $_selection->getSelectionId() ?>"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' selected="selected" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>><?php echo $this->getSelectionTitlePrice($_selection) ?></option>
+            <?php endforeach;?>
+        </select>
+        <?php if($_option->getRequired()): ?>
+            <?php echo $this->setValidationContainer('bundle-option-'.$_option->getId(), 'bundle-option-'.$_option->getId().'-container') ?>
+        <?php endif; ?>
+    <?php endif; ?>
+</dd>

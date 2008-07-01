@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Customer>
-            <version>0.8.6</version>
+            <version>0.8.7</version>
         </Mage_Customer>
     </modules>
 
@@ -79,6 +79,7 @@
                 <password><create>1</create></password>
                 <confirmation><create>1</create></confirmation>
                 <dob><create>1</create><update>1</update></dob>
+                <taxvat><create>1</create><update>1</update></taxvat>
             </customer_account>
         </fieldsets>
 

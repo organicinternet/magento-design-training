@@ -34,7 +34,7 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
      *
      * @var Mage_Sales_Model_Quote
      */
-    protected $_quote   = null;
+    protected $_quote       = null;
     protected $_options = array();
     protected $_optionsByCode = array();
 
@@ -63,10 +63,6 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
     {
         $this->_quote = $quote;
         $this->setQuoteId($quote->getId());
-//        if ($this->getHasError()) {
-//            $quote->setHasError(true);
-//        }
-//        $quote->addMessage($this->getQuoteMessage(), $this->getQuoteMessageIndex());
         return $this;
     }
 
@@ -110,7 +106,7 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
     public function setQty($qty)
     {
         $qty    = $this->_prepareQty($qty);
-        $oldQty = $this->getQty();
+        $oldQty = $this->_getData('qty');
         $this->setData('qty', $qty);
 
         Mage::dispatchEvent('sales_quote_item_qty_set_after', array('item'=>$this));
@@ -138,6 +134,7 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
         $productIds = array();
         $return     = array();
         foreach ($this->getOptions() as $option) {
+//            mageDebugBacktrace();
             /* @var $option Mage_Sales_Model_Quote_Item_Option */
             if ($option->getProduct()->getId() != $this->getProduct()->getId()
                 && !isset($productIds[$option->getProduct()->getId()])) {
@@ -162,21 +159,24 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
      */
     public function setProduct($product)
     {
+        if ($this->getQuote()) {
+        	$product->setStoreId($this->getQuote()->getStoreId());
+        }
         $this->setData('product', $product)
             ->setProductId($product->getId())
             ->setProductType($product->getTypeId())
-            ->setSku($product->getSku())
+            ->setSku($this->getProduct()->getSku())
             ->setName($product->getName())
-            ->setWeight($product->getWeight())
+            ->setWeight($this->getProduct()->getWeight())
             ->setTaxClassId($product->getTaxClassId())
             ->setCost($product->getCost())
             ->setIsQtyDecimal($product->getIsQtyDecimal());
 
-        if ($options = $product->getCustomOptions()) {
-            foreach ($options as $option) {
-                $this->addOption($option);
-            }
-        }
+//        if ($options = $product->getCustomOptions()) {
+//            foreach ($options as $option) {
+//                $this->addOption($option);
+//            }
+//        }
         return $this;
     }
 
@@ -275,10 +275,6 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
         if ($product = $this->getProduct()) {
             $data['product'] = $product->toArray();
         }
-        if ($superProduct = $this->getSuperProduct()) {
-            $data['super_product'] = $superProduct->toArray();
-        }
-
         return $data;
     }
 
@@ -341,6 +337,20 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
     }
 
     /**
+     *Remove option from item options
+     *
+     * @param string $code
+     * @return Mage_Sales_Model_Quote_Item
+     */
+    public function removeOption($code)
+    {
+        if ($option = $this->getOptionByCode($code)) {
+            $option->isDeleted(true);
+        }
+        return $this;
+    }
+
+    /**
      * Register option code
      *
      * @param   Mage_Sales_Model_Quote_Item_Option $option
@@ -365,7 +375,7 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
      */
     public function getOptionByCode($code)
     {
-        if (isset($this->_optionsByCode[$code])) {
+        if (isset($this->_optionsByCode[$code]) && !$this->_optionsByCode[$code]->isDeleted()) {
             return $this->_optionsByCode[$code];
         }
         return null;
@@ -378,9 +388,11 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
      */
     protected function _afterSave()
     {
-        foreach ($this->_options as $option) {
+        foreach ($this->_options as $index => $option) {
             if ($option->isDeleted()) {
                 $option->delete();
+                unset($this->_options[$index]);
+                unset($this->_optionsByCode[$option->getCode()]);
             }
             else {
                 $option->save();
@@ -396,7 +408,7 @@ class Mage_Sales_Model_Quote_Item extends Mage_Sales_Model_Quote_Item_Abstract
      */
     public function __clone()
     {
-        $this->setId(null);
+        parent::__clone();
         $options = $this->getOptions();
         $this->_quote           = null;
         $this->_options         = array();

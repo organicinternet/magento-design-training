@@ -24,7 +24,7 @@
  *
  * @category   Mage
  * @package    Mage_Adminhtml
- * @author     Victor Tihonchuk <victor@varien.com>
+ * @author      Magento Core Team <core@magentocommerce.com>
  */
 class Mage_Adminhtml_Block_Notification_Toolbar extends Mage_Adminhtml_Block_Template
 {
@@ -69,7 +69,7 @@ class Mage_Adminhtml_Block_Notification_Toolbar extends Mage_Adminhtml_Block_Tem
 
     public function getNoticesInboxUrl()
     {
-        return $this->getUrl('*/notification');
+        return $this->getUrl('adminhtml/notification');
     }
 
     public function getLatestNotice()

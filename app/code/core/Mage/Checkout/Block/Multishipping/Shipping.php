@@ -62,9 +62,13 @@ class Mage_Checkout_Block_Multishipping_Shipping extends Mage_Sales_Block_Items_
 
     public function getAddressItems($address)
     {
-        $items = $address->getAllItems();
-        foreach ($items as $item) {
+        $items = array();
+        foreach ($address->getAllItems() as $item) {
+            if ($item->getParentItemId()) {
+                continue;
+            }
             $item->setQuoteItem($this->getCheckout()->getQuote()->getItemById($item->getQuoteItemId()));
+            $items[] = $item;
         }
         $itemsFilter = new Varien_Filter_Object_Grid();
         $itemsFilter->addFilter(new Varien_Filter_Sprintf('%d'), 'qty');
@@ -79,14 +83,6 @@ class Mage_Checkout_Block_Multishipping_Shipping extends Mage_Sales_Block_Items_
     public function getShippingRates($address)
     {
         $groups = $address->getGroupedAllShippingRates();
-        if (!empty($groups)) {
-            $ratesFilter = new Varien_Filter_Object_Grid();
-            $ratesFilter->addFilter(Mage::app()->getStore()->getPriceFilter(), 'price');
-
-            foreach ($groups as $code => $groupItems) {
-                $groups[$code] = $ratesFilter->filter($groupItems);
-            }
-        }
         return $groups;
     }
 
@@ -116,5 +112,10 @@ class Mage_Checkout_Block_Multishipping_Shipping extends Mage_Sales_Block_Items_
     public function getBackUrl()
     {
         return $this->getUrl('*/*/backtoaddresses');
+    }
+
+    public function getShippingPrice($address, $price, $flag)
+    {
+        return $address->getQuote()->getStore()->convertPrice($this->helper('tax')->getShippingPrice($price, $flag, $address), true);
     }
 }

@@ -30,10 +30,10 @@ class Mage_Bundle_Model_Source_Option_Type
     public function toOptionArray()
     {
         return array(
-            array('value' => 'select', 'label' => Mage::helper('adminhtml')->__('Drop-down')),
-            array('value' => 'radio', 'label' => Mage::helper('adminhtml')->__('Radio Buttons')),
-            array('value' => 'checkbox', 'label' => Mage::helper('adminhtml')->__('Checkbox')),
-            array('value' => 'multi', 'label' => Mage::helper('adminhtml')->__('Multiple Select'))
+            array('value' => 'select', 'label' => Mage::helper('bundle')->__('Drop-down')),
+            array('value' => 'radio', 'label' => Mage::helper('bundle')->__('Radio Buttons')),
+            array('value' => 'checkbox', 'label' => Mage::helper('bundle')->__('Checkbox')),
+            array('value' => 'multi', 'label' => Mage::helper('bundle')->__('Multiple Select'))
         );
     }
 }

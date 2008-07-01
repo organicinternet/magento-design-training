@@ -35,7 +35,7 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
     public function __construct()
     {
         parent::__construct();
-        $this->addOptionRender(
+        $this->addOptionRenderer(
             'default',
             'catalog/product_view_options_type_default',
             'catalog/product/view/options/type/default.phtml'
@@ -43,7 +43,7 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
     }
 
     /**
-     * Enter description here...
+     * Retrieve product object
      *
      * @return Mage_Catalog_Model_Product
      */
@@ -59,25 +59,41 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
         return $this->_product;
     }
 
+    /**
+     * Set product object
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return Mage_Catalog_Block_Product_View_Options
+     */
     public function setProduct($product)
     {
         $this->_product = $product;
         return $this;
     }
 
-    public function addOptionRender($type, $block, $template)
+    /**
+     * Add option renderer to renderers array
+     *
+     * @param string $type
+     * @param string $block
+     * @param string $template
+     * @return Mage_Catalog_Block_Product_View_Options
+     */
+    public function addOptionRenderer($type, $block, $template)
     {
         $this->_optionRenders[$type] = array(
             'block' => $block,
             'template' => $template,
+            'renderer' => null
         );
         return $this;
     }
 
     /**
-     * Enter description here...
+     * Get option render by given type
      *
      * @param string $type
+     * @return array
      */
     public function getOptionRender($type)
     {
@@ -96,32 +112,60 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
     }
 
     /**
-     * Enter description here...
+     * Get product options
      *
-     * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Option_Collection
+     * @return array
      */
     public function getOptions()
     {
-        $collection = $this->getProduct()
-            ->getProductOptionsCollection()
-            ->setOrder('sort_order', 'asc')
-            ->load(false);
-        return $collection;
+        return $this->getProduct()->getOptions();
+    }
+
+    public function getJsonConfig()
+    {
+        $config = array();
+
+        foreach ($this->getOptions() as $option) {
+            /* @var $option Mage_Catalog_Model_Product_Option */
+            $priceValue = 0;
+            if ($option->getGroupByType() == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                $_tmpPriceValues = array();
+                foreach ($option->getValues() as $value) {
+                    /* @var $value Mage_Catalog_Model_Product_Option_Value */
+                    if ($value->getPriceType() == 'fixed') {
+                	   $_tmpPriceValues[$value->getId()] = $value->getPrice();
+                    } else {
+                        $_tmpPriceValues[$value->getId()] = $this->getProduct()->getFinalPrice()*($value->getPrice()/100);
+                    }
+                }
+                $priceValue = $_tmpPriceValues;
+            } else {
+                if ($option->getPriceType() == 'fixed') {
+                    $priceValue = $option->getPrice();
+                } else {
+                    $priceValue = $this->getProduct()->getFinalPrice()*($option->getPrice()/100);
+                }
+            }
+            $config[$option->getId()] = $priceValue;
+        }
+
+        return Zend_Json::encode($config);
     }
 
     /**
-     * Enter description here...
+     * Get option html block
      *
      * @param Mage_Catalog_Model_Product_Option $option
      */
     public function getOptionHtml(Mage_Catalog_Model_Product_Option $option)
     {
-        $render = $this->getOptionRender(
+        $renderer = $this->getOptionRender(
             $this->getGroupOfOption($option->getType())
         );
-        return $this->getLayout()->createBlock($render['block'])
-            ->setOption($option)
-            ->setTemplate($render['template'])->toHtml();
-
+        if (is_null($renderer['renderer'])) {
+            $renderer['renderer'] = $this->getLayout()->createBlock($renderer['block'])
+                ->setTemplate($renderer['template']);
+        }
+        return $renderer['renderer']->setOption($option)->toHtml();
     }
 }

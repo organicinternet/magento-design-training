@@ -101,4 +101,21 @@ class Mage_Customer_Block_Account_Dashboard extends Mage_Core_Block_Template
         return $addresses;
     }
 
+    /**
+     * Get back url in account dashboard
+     *
+     * This method is copypasted in:
+     * Mage_Wishlist_Block_Customer_Wishlist  - because of strange inheritance
+     * Mage_Customer_Block_Address_Book - because of secure url
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        // the RefererUrl must be set in appropriate controller
+        if ($this->getRefererUrl()) {
+            return $this->getRefererUrl();
+        }
+        return $this->getUrl('customer/account/');
+    }
 }

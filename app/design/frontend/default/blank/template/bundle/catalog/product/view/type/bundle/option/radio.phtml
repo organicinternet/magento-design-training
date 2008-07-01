@@ -22,30 +22,42 @@
 
 <?php $_option = $this->getOption() ?>
 <?php $_selections = $_option->getSelections() ?>
+<?php $_default = $_option->getDefaultSelection() ?>
+<?php $_showSingle = count($_selections) == 1 && $_option->getRequired() ?>
 <tr>
-    <td class="label"><?php echo $this->htmlEscape($_option->getTitle()) ?></td>
+    <td class="label">
+        <?php echo $this->htmlEscape($_option->getTitle()) ?>
+        <span id="bundle-option-<?php echo $_option->getId() ?>-container"></span>
+    </td>
     <td>
-        <?php if (count($_selections) == 1 && $_selections[0]->getDefault()): ?>
-            <?php echo $_selections[0]->getName() ?>
+        <?php if ($_showSingle): ?>
+        <?php echo $this->getSelectionTitlePrice($_selections[0]) ?>
             <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
         <?php else:?>
             <?php if(!$_option->getRequired()): ?>
-            <input onclick="bundle.changeSelection(this)" class="validate-one-required" id="bundle-option-<?php echo $_option->getId() ?>" type="radio" name="bundle_option[<?php echo $_option->getId() ?>]"<?php echo ($_option->getDefaultSelection())?'':' checked="checked" ' ?> value="none" /><?php echo $this->__('None') ?><br />
+            <input onclick="bundle.changeSelection(this)" id="bundle-option-<?php echo $_option->getId() ?>" type="radio" name="bundle_option[<?php echo $_option->getId() ?>]"<?php echo ($_default && $_default->isSalable())?'':' checked="checked" ' ?> value="" /><?php echo $this->__('None') ?><br />
             <?php endif; ?>
             <?php foreach($_selections as $_selection): ?>
-            <input onclick="bundle.changeSelection(this)" class="validate-one-required" id="bundle-option-<?php echo $_option->getId() ?>" type="radio" name="bundle_option[<?php echo $_option->getId() ?>]"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' checked="checked" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>value="<?php echo $_selection->getSelectionId() ?>" /><?php echo $this->getSelectionTitlePrice($_selection) ?><br />
+            <input onclick="bundle.changeSelection(this)" class="bundle-option-<?php echo $_option->getId() ?> <?php echo $_option->getRequired()?'validate-one-required-by-name':'' ?>" id="bundle-option-<?php echo $_option->getId() ?>-<?php echo $_selection->getSelectionId() ?>" type="radio" name="bundle_option[<?php echo $_option->getId() ?>]"<?php echo ($_selection->getIsDefault() && $_selection->isSaleable())?' checked="checked" ':'' ?><?php echo !$_selection->isSaleable()?' disabled="disabled" ':'' ?>value="<?php echo $_selection->getSelectionId() ?>" /><?php echo $this->getSelectionTitlePrice($_selection) ?><br />
+            <?php if($_option->getRequired()): ?>
+                <?php echo $this->setValidationContainer('bundle-option-'.$_option->getId().'-'.$_selection->getSelectionId(), 'bundle-option-'.$_option->getId().'-container') ?>
+            <?php endif; ?>
             <?php endforeach;?>
         <?php endif; ?>
     </td>
     <td valign="top" align="center">
-        <?php if ($_default = $_option->getDefaultSelection()): ?>
+        <?php if ($_default): ?>
             <?php $_defaultQty = $_default->getSelectionQty()*1 ?>
             <?php $_canChangeQty = $_default->getSelectionCanChangeQty() ?>
         <?php else: ?>
-            <?php $_defaultQty = '' ?>
-            <?php $_canChangeQty = false ?>
+            <?php if (!$_showSingle): ?>
+                <?php $_defaultQty = '' ?>
+                <?php $_canChangeQty = false ?>
+            <?php else: ?>
+                <?php $_defaultQty = $_selections[0]->getSelectionQty()*1 ?>
+                <?php $_canChangeQty = true ?>
+            <?php endif; ?>
         <?php endif; ?>
-        <input onkeyup="bundle.changeOptionQty(this)" style="display:<?php echo $_canChangeQty?'block':'none' ?>" id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
-        <span style="display:<?php echo $_canChangeQty?'none':'block' ?>" id="bundle-option-<?php echo $_option->getId() ?>-qty-label"><?php echo $_defaultQty ?></span>
+        <input onkeyup="bundle.changeOptionQty(this)" <?php echo $_canChangeQty?'':'disabled="disabled"' ?> id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
     </td>
 </tr>

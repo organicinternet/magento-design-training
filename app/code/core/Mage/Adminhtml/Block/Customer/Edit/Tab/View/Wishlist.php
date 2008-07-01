@@ -50,12 +50,6 @@ class Mage_Adminhtml_Block_Customer_Edit_Tab_View_Wishlist extends Mage_Adminhtm
         return parent::_prepareCollection();
     }
 
-    protected function _afterLoadCollection()
-    {
-        $this->getParentBlock()->setTitle(Mage::helper('customer')->__('Wishlist - %d item(s)', $this->getCollection()->getSize()));
-        return $this;
-    }
-
     protected function _prepareColumns()
     {
         $this->addColumn('id', array(

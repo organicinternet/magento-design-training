@@ -183,10 +183,10 @@ class Mage_Sales_Model_Convert_Order extends Varien_Object
 //            ->setCcExpMonth($payment->getCcExpMonth())
 //            ->setCcExpYear($payment->getCcExpYear())
 //
-//            ->setCcSsIssue($payment->getCcSsIssue())	//for direct payment
+//            ->setCcSsIssue($payment->getCcSsIssue())  //for direct payment
 //            ->setCcSsStartMonth($payment->getCcSsStartMonth()) //for direct payment
-//            ->setCcSsStartYear($payment->getCcSsStartYear())	//for direct payment
-//				;
+//            ->setCcSsStartYear($payment->getCcSsStartYear())  //for direct payment
+//              ;
         return $quotePayment;
     }
 
@@ -199,10 +199,9 @@ class Mage_Sales_Model_Convert_Order extends Varien_Object
     public function itemToQuoteItem(Mage_Sales_Model_Order_Item $item)
     {
         $quoteItem = Mage::getModel('sales/quote_item')
-            ->setStoreId($item->getStoreId())
+            ->setStoreId($item->getOrder()->getStoreId())
             ->setQuoteItemId($item->getId())
             ->setProductId($item->getProductId())
-            ->setSuperProductId($item->getSuperProductId())
             ->setParentProductId($item->getParentProductId());
 
         Mage::helper('core')->copyFieldset('sales_convert_order_item', 'to_quote_item', $item, $quoteItem);

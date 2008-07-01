@@ -1339,7 +1339,9 @@ class Mage_Oscommerce_Model_Mysql4_Oscommerce extends Mage_Core_Model_Mysql4_Abs
             $n = explode(" ", $name);
             if (sizeof($n) > 1) {
                 $newName['lastname'] = $n[(sizeof($n) - 1)];
-                $newName['fistname']  = substr($name, 0, strlen($name) - (strlen($newName['lastname'] + 1)));
+                $newName['fistname']  = Mage::helper('core/string')->substr($name, 0,
+                    Mage::helper('core/string')->strlen($name) - (Mage::helper('core/string')->strlen($newName['lastname'] + 1))
+                );
                 return $newName;
             }  else {
                 return array('firstname' => $n);

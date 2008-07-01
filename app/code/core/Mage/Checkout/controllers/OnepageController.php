@@ -278,7 +278,7 @@ class Mage_Checkout_OnepageController extends Mage_Core_Controller_Front_Action
             $result will have erro data if shipping method is empty
             */
             if(!$result) {
-                Mage::dispatchEvent('checkout_controller_onepage_save_shipping_method', array('request'=>$this->getRequest()));
+                Mage::dispatchEvent('checkout_controller_onepage_save_shipping_method', array('request'=>$this->getRequest(), 'quote'=>$this->getOnepage()->getQuote()));
                 $this->getResponse()->setBody(Zend_Json::encode($result));
 
                 $result['goto_section'] = 'payment';

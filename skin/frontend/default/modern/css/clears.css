@@ -50,7 +50,8 @@
 .search-autocomplete li:after,
 .generic-product-list li:after,
 .account-nav li:after,
-.listing-type-list .listing-item:after {
+.listing-type-list .listing-item:after,
+.product-options dt:after {
 	content:".";
 	display:block;
 	clear:both;

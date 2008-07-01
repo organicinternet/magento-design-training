@@ -40,9 +40,11 @@ abstract class Mage_Catalog_Block_Product_View_Abstract extends Mage_Catalog_Blo
         return $this->getData('product');
     }
 
-    public function getTierPrices()
+    public function getTierPrices($product = null)
     {
-        $product = $this->getProduct();
+        if (is_null($product)) {
+            $product = $this->getProduct();
+        }
         $prices  = $product->getFormatedTierPrice();
 
         $res = array();

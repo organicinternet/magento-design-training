@@ -13,7 +13,7 @@
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
  * @category   design_default
- * @package    Mage
+ * @package    Mage_Bundle
  * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -23,6 +23,25 @@ if(typeof Bundle=='undefined') {
     var Bundle = {};
 }
 </script>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('bundle')->__('Shipment') ?></h4>
+    </div>
+    <fieldset>
+        <legend><?php echo Mage::helper('bundle')->__('Shipment') ?></legend>
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label for="shipment_type"><?php echo Mage::helper('bundle')->__('Ship Bundle Items') ?></label></td>
+                <td class="value"><select id="shipment_type" name="<?php echo $this->getFieldSuffix() ?>[shipment_type]" class="select">
+                    <option value="1"><?php echo Mage::helper('bundle')->__('Separately') ?></option>
+                    <option value="0"<?php if ($this->getProduct()->getShipmentType() == 0): ?> selected="selected"<?php endif; ?>><?php echo Mage::helper('bundle')->__('Together') ?></option>
+                </select>
+                </td>
+            </tr>
+            </table>
+    </fieldset>
+</div>
 
 <div class="entry-edit custom-options bundle" id="product_bundle_container">
     <div class="entry-edit-head">

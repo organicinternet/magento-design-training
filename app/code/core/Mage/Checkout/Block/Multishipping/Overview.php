@@ -80,16 +80,31 @@ class Mage_Checkout_Block_Multishipping_Overview extends Mage_Sales_Block_Items_
     public function getShippingAddressRate($address)
     {
         if ($rate = $address->getShippingRateByCode($address->getShippingMethod())) {
-            $filter = Mage::app()->getStore()->getPriceFilter();
-            $rate->setPrice($filter->filter($rate->getPrice()));
             return $rate;
         }
         return false;
     }
 
+    public function getShippingPriceInclTax($address)
+    {
+        $exclTax = $address->getShippingAmount();
+        $taxAmount = $address->getShippingTaxAmount();
+        return $this->formatPrice($exclTax + $taxAmount);
+    }
+
+    public function getShippingPriceExclTax($address)
+    {
+        return $this->formatPrice($address->getShippingAmount());
+    }
+
+    public function formatPrice($price)
+    {
+        return $this->getQuote()->getStore()->formatPrice($price);
+    }
+
     public function getShippingAddressItems($address)
     {
-        return $address->getAllItems();
+        return $address->getAllVisibleItems();
     }
 
     public function getShippingAddressTotals($address)
@@ -97,7 +112,12 @@ class Mage_Checkout_Block_Multishipping_Overview extends Mage_Sales_Block_Items_
         $totals = $address->getTotals();
         foreach ($totals as $total) {
             if ($total->getCode()=='grand_total') {
-                $total->setTitle($this->__('Total for this address'));
+                if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_BILLING) {
+                    $total->setTitle($this->__('Total'));
+                }
+                else {
+                    $total->setTitle($this->__('Total for this address'));
+                }
             }
         }
         return $totals;
@@ -161,8 +181,11 @@ class Mage_Checkout_Block_Multishipping_Overview extends Mage_Sales_Block_Items_
     public function getVirtualItems()
     {
         $items = array();
-        foreach ($this->getQuote()->getItemsCollection() as $_item) {
-            if ($_item->getProduct()->getIsVirtual()) {
+        foreach ($this->getBillingAddress()->getItemsCollection() as $_item) {
+            if ($_item->isDeleted()) {
+                continue;
+            }
+            if ($_item->getProduct()->getIsVirtual() && !$_item->getParentItemId()) {
                 $items[] = $_item;
             }
         }

@@ -32,6 +32,8 @@ class Mage_Sales_Model_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Ad
         $store = $address->getQuote()->getStore();
         $address->setTaxAmount(0);
         $address->setBaseTaxAmount(0);
+        //$address->setShippingTaxAmount(0);
+        //$address->setBaseShippingTaxAmount(0);
         $address->setAppliedTaxes(array());
 
         $items = $address->getAllItems();
@@ -40,36 +42,112 @@ class Mage_Sales_Model_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Ad
         }
         $custTaxClassId = $address->getQuote()->getCustomerTaxClassId();
 
-        $taxCalculationModel = Mage::getModel('tax/calculation');
+        $taxCalculationModel = Mage::getSingleton('tax/calculation');
         /* @var $taxCalculationModel Mage_Tax_Model_Calculation */
         $request = $taxCalculationModel->getRateRequest($address, $address->getQuote()->getBillingAddress(), $custTaxClassId, $store);
 
         foreach ($items as $item) {
-        	$rate = $taxCalculationModel->getRate($request->setProductClassId($item->getProduct()->getTaxClassId()));
+            /**
+             * Child item's tax we calculate for parent
+             */
+            if ($item->getParentItemId()) {
+                continue;
+            }
+            /**
+             * We calculate parent tax amount as sum of children's tax amounts
+             */
 
-            $item->setTaxPercent($rate);
-            $item->calcTaxAmount();
-            $address->setTaxAmount($address->getTaxAmount() + $item->getTaxAmount());
-            $address->setBaseTaxAmount($address->getBaseTaxAmount() + $item->getBaseTaxAmount());
+            if ($_option = $item->getOptionByCode('product_calculations')) {
+                $calculations = $_option->getValue();
+            }
 
-        	$this->_saveAppliedTaxes($address, $taxCalculationModel->getAppliedRates($request), $item->getTaxAmount(), $rate);
+            if ($item->getHasChildren() && $item->isChildrenCalculated()) {
+                foreach ($item->getChildren() as $child) {
+                    $discountBefore = $item->getDiscountAmount();
+                    $baseDiscountBefore = $item->getBaseDiscountAmount();
+
+                    $rate = $taxCalculationModel->getRate($request->setProductClassId($child->getProduct()->getTaxClassId()));
+
+                    $child->setTaxPercent($rate);
+                    $child->calcTaxAmount();
+
+                    if ($discountBefore != $item->getDiscountAmount()) {
+                        $address->setDiscountAmount($address->getDiscountAmount()+($item->getDiscountAmount()-$discountBefore));
+                        $address->setBaseDiscountAmount($address->getBaseDiscountAmount()+($item->getBaseDiscountAmount()-$baseDiscountBefore));
+
+                        $address->setGrandTotal($address->getGrandTotal() - ($item->getDiscountAmount()-$discountBefore));
+                        $address->setBaseGrandTotal($address->getBaseGrandTotal() - ($item->getBaseDiscountAmount()-$baseDiscountBefore));
+                    }
+
+                    $this->_saveAppliedTaxes(
+                       $address,
+                       $taxCalculationModel->getAppliedRates($request),
+                       $child->getTaxAmount(),
+                       $child->getBaseTaxAmount(),
+                       $rate
+                    );
+                }
+                $address->setTaxAmount($address->getTaxAmount() + $item->getTaxAmount());
+                $address->setBaseTaxAmount($address->getBaseTaxAmount() + $item->getBaseTaxAmount());
+            }
+            else {
+                $discountBefore = $item->getDiscountAmount();
+                $baseDiscountBefore = $item->getBaseDiscountAmount();
+
+                $rate = $taxCalculationModel->getRate($request->setProductClassId($item->getProduct()->getTaxClassId()));
+
+                $item->setTaxPercent($rate);
+                $item->calcTaxAmount();
+
+                if ($discountBefore != $item->getDiscountAmount()) {
+                    $address->setDiscountAmount($address->getDiscountAmount()+($item->getDiscountAmount()-$discountBefore));
+                    $address->setBaseDiscountAmount($address->getBaseDiscountAmount()+($item->getBaseDiscountAmount()-$baseDiscountBefore));
+
+                    $address->setGrandTotal($address->getGrandTotal() - ($item->getDiscountAmount()-$discountBefore));
+                    $address->setBaseGrandTotal($address->getBaseGrandTotal() - ($item->getBaseDiscountAmount()-$baseDiscountBefore));
+                }
+
+                $address->setTaxAmount($address->getTaxAmount() + $item->getTaxAmount());
+                $address->setBaseTaxAmount($address->getBaseTaxAmount() + $item->getBaseTaxAmount());
+
+                $this->_saveAppliedTaxes(
+                   $address,
+                   $taxCalculationModel->getAppliedRates($request),
+                   $item->getTaxAmount(),
+                   $item->getBaseTaxAmount(),
+                   $rate
+                );
+            }
         }
+
 
         $shippingTaxClass = Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_SHIPPING_TAX_CLASS, $store);
         if ($shippingTaxClass) {
             if ($rate = $taxCalculationModel->getRate($request->setProductClassId($shippingTaxClass))) {
-                $shippingTax    = $address->getShippingAmount() * $rate/100;
-                $shippingBaseTax= $address->getBaseShippingAmount() * $rate/100;
+                if (!Mage::helper('tax')->shippingPriceIncludesTax()) {
+                    $shippingTax    = $address->getShippingAmount() * $rate/100;
+                    $shippingBaseTax= $address->getBaseShippingAmount() * $rate/100;
+
+                    $address->setShippingTaxAmount($shippingTax);
+                    $address->setBaseShippingTaxAmount($shippingBaseTax);
+                } else {
+                    $shippingTax    = $address->getShippingTaxAmount();
+                    $shippingBaseTax= $address->getBaseShippingTaxAmount();
+                }
+
                 $shippingTax    = $store->roundPrice($shippingTax);
                 $shippingBaseTax= $store->roundPrice($shippingBaseTax);
-
-                $address->setShippingTaxAmount($shippingTax);
-                $address->setBaseShippingTaxAmount($shippingBaseTax);
 
                 $address->setTaxAmount($address->getTaxAmount() + $shippingTax);
                 $address->setBaseTaxAmount($address->getBaseTaxAmount() + $shippingBaseTax);
 
-            	$this->_saveAppliedTaxes($address, $taxCalculationModel->getAppliedRates($request), $shippingTax, $rate);
+                $this->_saveAppliedTaxes(
+                    $address,
+                    $taxCalculationModel->getAppliedRates($request),
+                    $shippingTax,
+                    $shippingBaseTax,
+                    $rate
+                );
             }
         }
 
@@ -78,22 +156,28 @@ class Mage_Sales_Model_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Ad
         return $this;
     }
 
-    protected function _saveAppliedTaxes(Mage_Sales_Model_Quote_Address $address, $applied, $amount, $rate)
+    protected function _saveAppliedTaxes(Mage_Sales_Model_Quote_Address $address, $applied, $amount, $baseAmount, $rate)
     {
         $previouslyAppliedTaxes = $address->getAppliedTaxes();
-    	foreach ($applied as $row) {
+        $process = count($previouslyAppliedTaxes);
+
+        foreach ($applied as $row) {
             if (!isset($previouslyAppliedTaxes[$row['id']])) {
+                $row['process'] = $process;
                 $row['amount'] = 0;
+                $row['base_amount'] = 0;
                 $previouslyAppliedTaxes[$row['id']] = $row;
             }
             $appliedAmount = $amount/$rate*$row['percent'];
+            $baseAppliedAmount = $baseAmount/$rate*$row['percent'];
 
             if ($appliedAmount || $previouslyAppliedTaxes[$row['id']]['amount']) {
                 $previouslyAppliedTaxes[$row['id']]['amount'] += $appliedAmount;
+                $previouslyAppliedTaxes[$row['id']]['base_amount'] += $baseAppliedAmount;
             } else {
                 unset($previouslyAppliedTaxes[$row['id']]);
             }
-    	}
+        }
         $address->setAppliedTaxes($previouslyAppliedTaxes);
     }
 

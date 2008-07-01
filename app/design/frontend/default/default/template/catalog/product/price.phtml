@@ -18,7 +18,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-
 <?php $_product = $this->getProduct() ?>
 <?php $_id = $_product->getId() ?>
 
@@ -93,7 +92,7 @@
     <?php endif; /* if ($_finalPrice == $_price): */ ?>
 
     <?php if ($this->getDisplayMinimalPrice() && $_minimalPriceValue && $_minimalPriceValue < $_product->getFinalPrice()): ?>
-        <a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price">
+        <a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price-link">
             <span class="label"><?php echo $this->__('As low as:') ?></span>
             <span class="price" id="product-minimal-price-<?php echo $_id ?>">
                 <?php echo Mage::helper('core')->currency($_minimalPrice) ?>
@@ -106,7 +105,7 @@
 
     <?php if ($this->getDisplayMinimalPrice() && $_minimalPriceValue): ?>
         <div class="price-box">
-            <a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price">
+            <a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price-link">
                 <span class="label"><?php echo $this->__('Starting at:') ?></span>
                 <span class="price" id="product-minimal-price-<?php echo $_id ?>">
                     <?php echo Mage::helper('core')->currency($_minimalPrice) ?>

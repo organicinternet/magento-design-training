@@ -27,11 +27,22 @@
  */
 class Mage_Adminhtml_Block_Sales_Order_Create_Sidebar_Abstract extends Mage_Adminhtml_Block_Sales_Order_Create_Abstract
 {
+    protected $_sidebarStorageAction = 'add';
 
     public function __construct()
     {
         parent::__construct();
         $this->setTemplate('sales/order/create/sidebar/items.phtml');
+    }
+
+    /**
+     * Return name of sidebar storage action
+     *
+     * @return string
+     */
+    public function getSidebarStorageAction()
+    {
+        return $this->_sidebarStorageAction;
     }
 
     /**
@@ -60,12 +71,12 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Sidebar_Abstract extends Mage_Admi
     }
 
     /**
-     * Retrieve product identifier of block item
+     * Retrieve identifier of block item
      *
-     * @param   mixed $item
+     * @param   Varien_Object $item
      * @return  int
      */
-    public function getProductId($item)
+    public function getIdentifierId($item)
     {
         return $item->getProductId();
     }

@@ -50,7 +50,9 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search 
 
     protected function _beforeToHtml()
     {
-        $this->getChild('grid')->setIndex($this->getIndex());
+        $this->getChild('grid')->setIndex($this->getIndex())
+            ->setFirstShow($this->getFirstShow());
+
         return parent::_beforeToHtml();
     }
 

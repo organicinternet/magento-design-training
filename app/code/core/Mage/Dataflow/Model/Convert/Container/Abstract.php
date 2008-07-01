@@ -42,7 +42,7 @@ abstract class Mage_Dataflow_Model_Convert_Container_Abstract
 
     public function getVar($key, $default=null)
     {
-        if (!isset($this->_vars[$key])) {
+        if (!isset($this->_vars[$key]) || strlen($this->_vars[$key]) == 0) {
             return $default;
         }
         return $this->_vars[$key];

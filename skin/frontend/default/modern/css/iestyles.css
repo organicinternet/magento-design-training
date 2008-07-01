@@ -47,7 +47,9 @@
 .generic-product-list li,
 .account-nav li,
 .listing-type-list .listing-item,
-#nav li { zoom:1; }
+#nav li,
+.truncated,
+.product-options dt { zoom:1; }
 
 .clear {
 	display:block;

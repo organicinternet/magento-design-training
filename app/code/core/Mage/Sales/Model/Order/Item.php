@@ -46,7 +46,9 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
      *
      * @var Mage_Sales_Model_Order
      */
-    protected $_order;
+    protected $_order       = null;
+    protected $_parentItem  = null;
+    protected $_children    = array();
 
     /**
      * Init resource model
@@ -67,7 +69,36 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
         if (!$this->getOrderId()) {
             $this->setOrderId($this->getOrder()->getId());
         }
+        if ($this->getParentItem()) {
+            $this->setParentItemId($this->getParentItem()->getId());
+        }
         return $this;
+    }
+
+    /**
+     * Set parent item
+     *
+     * @param   Mage_Sales_Model_Order_Item $item
+     * @return  Mage_Sales_Model_Order_Item
+     */
+    public function setParentItem($item)
+    {
+        if ($item) {
+            $this->_parentItem = $item;
+            $item->setHasChildren(true);
+            $item->addChildItem($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Get parent item
+     *
+     * @return Mage_Sales_Model_Order_Item || null
+     */
+    public function getParentItem()
+    {
+        return $this->_parentItem;
     }
 
     /**
@@ -107,6 +138,10 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
      */
     public function getQtyToShip()
     {
+        if ($this->isDummy(true)) {
+            return 0;
+        }
+
         $qty = $this->getQtyOrdered()
             - $this->getQtyShipped()
             - $this->getQtyRefunded()
@@ -121,6 +156,10 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
      */
     public function getQtyToInvoice()
     {
+        if ($this->isDummy()) {
+            return 0;
+        }
+
         $qty = $this->getQtyOrdered()
             - $this->getQtyInvoiced()
             - $this->getQtyCanceled();
@@ -134,6 +173,10 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
      */
     public function getQtyToRefund()
     {
+        if ($this->isDummy()) {
+            return 0;
+        }
+
         return max($this->getQtyInvoiced()-$this->getQtyRefunded(), 0);
     }
 
@@ -310,5 +353,132 @@ class Mage_Sales_Model_Order_Item extends Mage_Core_Model_Abstract
             return unserialize($options);
         }
         return array();
+    }
+
+    /**
+     * Get product options array by code.
+     * If code is null return all options
+     *
+     * @param string $code
+     * @return array
+     */
+    public function getProductOptionByCode($code=null)
+    {
+        $options = $this->getProductOptions();
+        if (is_null($code)) {
+            return $options;
+        }
+        if (isset($options[$code])) {
+            return $options[$code];
+        }
+        return null;
+    }
+
+    /**
+     * Adds child item to this item
+     *
+     * @param Mage_Sales_Model_Order_Item $item
+     */
+    public function addChildItem($item)
+    {
+        if ($item instanceof Mage_Sales_Model_Order_Item) {
+            $this->_children[] = $item;
+        } else if (is_array($item)) {
+            $this->_children = array_merge($this->_children, $item);
+        }
+    }
+
+    /**
+     * Return chilgren items of this item
+     *
+     * @return array
+     */
+    public function getChildrenItems() {
+        return $this->_children;
+    }
+
+    /**
+     * Return checking of what calculation
+     * type was for this product
+     *
+     * @return bool
+     */
+    public function isChildrenCalculated() {
+        if ($parentItem = $this->getParentItem()) {
+            $options = $parentItem->getProductOptions();
+        } else {
+            $options = $this->getProductOptions();
+        }
+
+        if (isset($options['product_calculations']) &&
+             $options['product_calculations'] == Mage_Catalog_Model_Product_Type_Abstract::CALCULATE_CHILD) {
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return checking of what shipment
+     * type was for this product
+     *
+     * @return bool
+     */
+    public function isShipSeparately() {
+        if ($parentItem = $this->getParentItem()) {
+            $options = $parentItem->getProductOptions();
+        } else {
+            $options = $this->getProductOptions();
+        }
+
+        if (isset($options['shipment_type']) &&
+             $options['shipment_type'] == Mage_Catalog_Model_Product_Type_Abstract::SHIPMENT_SEPARATELY) {
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * This is Dummy item or not
+     * if $shipment is true then we checking this for shipping situation if not
+     * then we checking this for calculation
+     *
+     * @param bool $shipment
+     * @return bool
+     */
+    public function isDummy($shipment = false){
+        if ($shipment) {
+            if ($this->getHasChildren() && $this->isShipSeparately()) {
+                return true;
+            }
+
+            if ($this->getHasChildren() && !$this->isShipSeparately()) {
+                return false;
+            }
+
+            if ($this->getParentItem() && $this->isShipSeparately()) {
+                return false;
+            }
+
+            if ($this->getParentItem() && !$this->isShipSeparately()) {
+                return true;
+            }
+        } else {
+            if ($this->getHasChildren() && $this->isChildrenCalculated()) {
+                return true;
+            }
+
+            if ($this->getHasChildren() && !$this->isChildrenCalculated()) {
+                return false;
+            }
+
+            if ($this->getParentItem() && $this->isChildrenCalculated()) {
+                return false;
+            }
+
+            if ($this->getParentItem() && !$this->isChildrenCalculated()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -168,6 +168,9 @@ class Mage_Sales_Model_Convert_Quote extends Varien_Object
 //            ->setTelephone($address->getTelephone())
 //            ->setFax($address->getFax());
 
+        Mage::dispatchEvent('sales_convert_quote_address_to_order_address',
+            array('address' => $address, 'order_address' => $orderAddress));
+
         return $orderAddress;
     }
 
@@ -218,12 +221,16 @@ class Mage_Sales_Model_Convert_Quote extends Varien_Object
         $orderItem = Mage::getModel('sales/order_item')
             ->setStoreId($item->getStoreId())
             ->setQuoteItemId($item->getId())
+            ->setQuoteParentItemId($item->getParentItemId())
             ->setProductId($item->getProductId())
-//            ->setSuperProductId($item->getSuperProductId())
-//            ->setParentProductId($item->getParentProductId())
-            ;
+            ->setProductType($item->getProductType())
+            ->setProductOptions($item->getProduct()->getTypeInstance()->getOrderOptions());
 
         Mage::helper('core')->copyFieldset('sales_convert_quote_item', 'to_order_item', $item, $orderItem);
+
+        if ($item->getParentItem()) {
+            $orderItem->setQtyOrdered($orderItem->getQtyOrdered()*$item->getParentItem()->getQty());
+        }
 //            ->setSku($item->getSku())
 //            ->setName($item->getName())
 //            ->setDescription($item->getDescription())

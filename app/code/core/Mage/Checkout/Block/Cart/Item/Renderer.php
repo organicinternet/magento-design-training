@@ -35,7 +35,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
      * @param   Mage_Sales_Model_Quote_Item $item
      * @return  Mage_Checkout_Block_Cart_Item_Renderer
      */
-    public function setItem(Mage_Sales_Model_Quote_Item $item)
+    public function setItem(Mage_Sales_Model_Quote_Item_Abstract $item)
     {
         $this->_item = $item;
         return $this;
@@ -98,30 +98,46 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
      */
     public function getProductOptions()
     {
-        $options = false;
+        $options = array();
         if ($optionIds = $this->getItem()->getOptionByCode('option_ids')) {
-            $optionIds = explode(',', $optionIds->getValue());
             $options = array();
-            foreach ($optionIds as $optionId) {
-                if ($optionId) {
-                    if ($option = $this->getProduct()->getOptionById($optionId)) {
-                        $optionValue = '';
-                        $optionGroup = $option->getGroupByType($option->getType());
-                        if ($optionGroup == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
-                            $optionValue = $option->getValueById(
-                                $this->getItem()->getOptionByCode('option_'.$optionId)->getValue())->getTitle();
-                        } else {
-                            $optionValue =  $this->getItem()->getOptionByCode('option_'.$optionId)->getValue();
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                if ($option = $this->getProduct()->getOptionById($optionId)) {
+                    $formatedValue = '';
+                    $optionGroup = $option->getGroupByType();
+                    $optionValue = $this->getItem()->getOptionByCode('option_' . $option->getId())->getValue();
+                    if ($option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX
+                        || $option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
+                        foreach(split(',', $optionValue) as $value) {
+                            $formatedValue .= $option->getValueById($value)->getTitle() . ', ';
                         }
-                        $options[] = array(
-                            'label' => $option->getTitle(),
-                            'value' => $optionValue
-                        );
+                        $formatedValue = Mage::helper('core/string')->substr($formatedValue, 0, -2);
+                    } elseif ($optionGroup == Mage_Catalog_Model_Product_Option::OPTION_GROUP_SELECT) {
+                        $formatedValue = $option->getValueById($optionValue)->getTitle();
+                    } else {
+                        $formatedValue = $optionValue;
                     }
+                    $options[] = array(
+                        'label' => $this->htmlEscape($option->getTitle()),
+                        'value' => $this->htmlEscape($formatedValue),
+                    );
                 }
             }
         }
+        if ($addOptions = $this->getItem()->getOptionByCode('additional_options')) {
+        	$options = array_merge($options, unserialize($addOptions->getValue()));
+        }
         return $options;
+    }
+
+    /**
+     * Get list of all otions for product
+     *
+     * @return array
+     */
+    public function getOptionList()
+    {
+        return $this->getProductOptions();
     }
 
     /**
@@ -177,11 +193,13 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
     public function getMessages()
     {
         $messages = array();
-        if ($this->getItem()->getMessage()) {
-            $messages[] = array(
-                'text'  => $this->getItem()->getMessage(),
-                'type'  => $this->getItem()->getHasError() ? 'error' : 'notice'
-            );
+        if ($this->getItem()->getMessage(false)) {
+            foreach ($this->getItem()->getMessage(false) as $message) {
+                $messages[] = array(
+                    'text'  => $message,
+                    'type'  => $this->getItem()->getHasError() ? 'error' : 'notice'
+                );
+            }
         }
         return $messages;
     }

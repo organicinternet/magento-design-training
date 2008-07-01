@@ -28,6 +28,8 @@
  */
 class Mage_Adminhtml_Model_Giftmessage_Save extends Varien_Object
 {
+    protected $_saved = false;
+
     /**
      * Save all seted giftmessages
      *
@@ -55,6 +57,11 @@ class Mage_Adminhtml_Model_Giftmessage_Save extends Varien_Object
         return $this;
     }
 
+    public function getSaved()
+    {
+        return $this->_saved;
+    }
+
     public function saveAllInOrder()
     {
         $giftmessages = $this->getGiftmessages();
@@ -79,14 +86,22 @@ class Mage_Adminhtml_Model_Giftmessage_Save extends Varien_Object
      */
     protected function _saveOne($entityId, $giftmessage) {
         $giftmessageModel = Mage::getModel('giftmessage/message');
-        $entityModel = $giftmessageModel->getEntityModelByType($this->_getMappedType($giftmessage['type']));
+
+        if ($this->_getMappedType($giftmessage['type'])!='quote_item') {
+            $entityModel = $giftmessageModel->getEntityModelByType($this->_getMappedType($giftmessage['type']));
+        } else {
+            $entityModel = $this->_getQuote()->getItemById($entityId);
+        }
+
+
 
         if ($this->_getMappedType($giftmessage['type'])=='quote') {
             $entityModel->setStoreId($this->_getQuote()->getStoreId());
         }
 
-        $entityModel->load($entityId);
-
+        if ($this->_getMappedType($giftmessage['type'])!='quote_item') {
+            $entityModel->load($entityId);
+        }
 
 
         if ($entityModel->getGiftMessageId()) {
@@ -98,11 +113,12 @@ class Mage_Adminhtml_Model_Giftmessage_Save extends Varien_Object
         if ($giftmessageModel->isMessageEmpty() && $giftmessageModel->getId()) {
             // remove empty giftmessage
             $this->_deleteOne($entityModel, $giftmessageModel);
+            $this->_saved = false;
         } elseif (!$giftmessageModel->isMessageEmpty()) {
             $giftmessageModel->save();
             $entityModel->setGiftMessageId($giftmessageModel->getId())
                 ->save();
-
+            $this->_saved = true;
         }
 
         return $this;

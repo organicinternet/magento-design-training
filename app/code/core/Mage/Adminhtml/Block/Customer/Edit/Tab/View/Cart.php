@@ -59,25 +59,6 @@ class Mage_Adminhtml_Block_Customer_Edit_Tab_View_Cart extends Mage_Adminhtml_Bl
         return parent::_prepareCollection();
     }
 
-    /**
-     * Replace parent block title with quantity of carts in item
-     *
-     * @return Mage_Adminhtml_Block_Customer_Edit_Tab_View_Cart
-     */
-    protected function _afterLoadCollection()
-    {
-        $title = Mage::helper('customer')->__('Shopping Cart - %d item(s)', $this->getCollection()->getSize());
-        if ($this->getWebsiteId() && (count(Mage::registry('current_customer')->getSharedWebsiteIds()) > 1)) {
-            $title = Mage::helper('customer')->__('Shopping Cart of %1$s - %2$d item(s)',
-                Mage::app()->getWebsite($this->getWebsiteId())->getName(),
-                $this->getCollection()->getSize()
-            );
-        }
-
-        $this->getParentBlock()->setTitle($title);
-        return $this;
-    }
-
     protected function _prepareColumns()
     {
         $this->addColumn('product_id', array(

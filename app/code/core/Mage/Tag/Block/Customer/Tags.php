@@ -26,7 +26,7 @@
  * @author      Magento Core Team <core@magentocommerce.com>
  */
 
-class Mage_Tag_Block_Customer_Tags extends Mage_Core_Block_Template
+class Mage_Tag_Block_Customer_Tags extends Mage_Customer_Block_Account_Dashboard
 {
     protected $_tags;
     protected $_minPopularity;
@@ -80,10 +80,4 @@ class Mage_Tag_Block_Customer_Tags extends Mage_Core_Block_Template
     {
         return $this->_minPopularity;
     }
-    
-    public function getBackUrl()
-    {
-        return $this->getUrl('customer/account/');
-    }
-
 }

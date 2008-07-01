@@ -28,6 +28,7 @@
 
 class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle extends Mage_Adminhtml_Block_Widget
 {
+    protected $_product = null;
     public function __construct()
     {
         parent::__construct();
@@ -53,29 +54,6 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle extends Mage_A
         return parent::_prepareLayout();
     }
 
-    /*
-    protected function _prepareForm()
-    {
-        $product = $this->getProduct();
-
-        $form = new Varien_Data_Form();
-        $fieldset = $form->addFieldset('bundled_options', array('legend'=>Mage::helper('bundle')->__('Options')));
-
-        $fieldset->addField('bundle_options', 'text', array(
-                'name'=>'bundle_items',
-                'class'=>'requried-entry',
-                'value'=>$product->getData('bundle_items')
-        ));
-
-        $form->getElement('bundle_options')->setRenderer(
-            $this->getLayout()->createBlock('bundle/adminhtml_catalog_product_edit_tab_bundle_item')
-        );
-
-        $this->setForm($form);
-
-    }
-    */
-
     public function getAddButtonHtml()
     {
         return $this->getChildHtml('add_button');
@@ -85,4 +63,16 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle extends Mage_A
     {
         return $this->getChildHtml('options_box');
     }
+
+    public function getFieldSuffix()
+    {
+        return 'product';
+    }
+
+    public function getProduct()
+    {
+        return Mage::registry('product');
+    }
+
+
 }

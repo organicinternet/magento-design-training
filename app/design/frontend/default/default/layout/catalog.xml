@@ -100,6 +100,7 @@ Category layered navigation layout
         <reference name="content">
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
+                    <!-- <action method="addReviewSummaryTemplate"><type>default</type><template>review/helper/su.phtml</template></action> -->
                     <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
                         <!-- The following code shows how to set your own pager increments -->
                         <!--
@@ -173,15 +174,32 @@ Product view
         </reference>
         <reference name="content">
             <block type="catalog/product_view" name="product.info" template="catalog/product/view.phtml">
+                <!--
+                <action method="addReviewSummaryTemplate"><type>default</type><template>review/helper/summary.phtml</template></action>
+                <action method="addReviewSummaryTemplate"><type>short</type><template>review/helper/summary_short.phtml</template></action>
+                <action method="addReviewSummaryTemplate"><type>...</type><template>...</template></action>
+                -->
                 <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
                 <block type="core/text_list" name="alert.urls" as="alert_urls" />
                 <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml"/>
                 <block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data" />
+
                 <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
-                    <action method="addOptionRender"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
-                    <action method="addOptionRender"><type>file</type><block>catalog/product_view_options_type_file</block><template>catalog/product/view/options/type/file.phtml</template></action>
-                    <action method="addOptionRender"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
-                    <action method="addOptionRender"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
+                    <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
+                    <action method="addOptionRenderer"><type>file</type><block>catalog/product_view_options_type_file</block><template>catalog/product/view/options/type/file.phtml</template></action>
+                    <action method="addOptionRenderer"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
+                    <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
+                </block>
+
+                <block type="core/template_facade" name="product.info.container1" as="container1" template="catalog/product/view/container.phtml">
+                    <action method="setDataByKey"><key>alias_in_layout</key><value>container1</value></action>
+                    <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
+                    <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                </block>
+                <block type="core/template_facade" name="product.info.container2" as="container2" template="catalog/product/view/container.phtml">
+                    <action method="setDataByKey"><key>alias_in_layout</key><value>container2</value></action>
+                    <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
+                    <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
                 </block>
             </block>
         </reference>
@@ -201,6 +219,14 @@ Additional block dependant on product type
     <PRODUCT_TYPE_configurable>
         <reference name="product.info">
             <block type="catalog/product_view_type_configurable" name="product.info.configurable" as="product_type_data" template="catalog/product/view/type/configurable.phtml"/>
+        </reference>
+
+        <block type="catalog/product_view_type_configurable" name="product.info.options.configurable" as="options_configurable" template="catalog/product/view/type/options/configurable.phtml"/>
+        <reference name="product.info.container1">
+            <action method="insertBlockIfEquals"><block>product.info.options.configurable</block><if>alias_in_layout</if><equals>options_container</equals></action>
+        </reference>
+        <reference name="product.info.container2">
+            <action method="insertBlockIfEquals"><block>product.info.options.configurable</block><if>alias_in_layout</if><equals>options_container</equals></action>
         </reference>
     </PRODUCT_TYPE_configurable>
     <PRODUCT_TYPE_grouped>

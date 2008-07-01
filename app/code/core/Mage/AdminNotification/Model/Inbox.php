@@ -24,7 +24,7 @@
  *
  * @category   Mage
  * @package    Mage_AdminNotification
- * @author     Victor Tihonchuk <victor@varien.com>
+ * @author      Magento Core Team <core@magentocommerce.com>
  */
 class Mage_AdminNotification_Model_Inbox extends Mage_Core_Model_Abstract
 {
