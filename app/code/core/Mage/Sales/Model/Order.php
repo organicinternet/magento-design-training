@@ -1001,11 +1001,12 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
      * Retrieve formated price value includeing order rate
      *
      * @param   float $price
+     * @param   bool  $addBrackets
      * @return  string
      */
-    public function formatPrice($price)
+    public function formatPrice($price, $addBrackets = false)
     {
-        return $this->getOrderCurrency()->format($price);
+        return $this->getOrderCurrency()->format($price, array(), true, $addBrackets);
     }
 
     /**

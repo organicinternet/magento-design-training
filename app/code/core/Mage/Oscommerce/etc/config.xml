@@ -63,12 +63,6 @@
                     </oscommerce_order_history>
                 </entities>
             </oscommerce_mysql4>
-            
-            <catalog_resource_eav_mysql4>
-                <rewrite>
-                    <url>Mage_Oscommerce_Model_Mysql4_Catalog_Url</url>
-                </rewrite>
-            </catalog_resource_eav_mysql4>
         </models>
         <blocks>
             <oscommerce>

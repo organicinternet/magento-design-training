@@ -70,14 +70,13 @@
     </div>
 </div>
 <?php if (count($_items)): ?>
-<div>
-    <?php echo $this->getChildHtml('creditmemo_items') ?>
-</div>
+<div id="creditmemo_items_container"><?php echo $this->getChildHtml('creditmemo_items') ?></div>
 <?php else: ?>
 <div class="entry-edit">
     <fieldset><center><?php echo $this->helper('sales')->__('No Items') ?></center></fieldset>
 </div>
 <?php endif; ?>
+<br />
 <div class="box-left entry-edit">
     <div class="entry-edit-head"><h4><?php echo $this->__('Credit Memo History') ?></h4></div>
     <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>

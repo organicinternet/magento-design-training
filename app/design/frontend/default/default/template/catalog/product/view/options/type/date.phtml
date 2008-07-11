@@ -19,13 +19,13 @@
  */
 ?>
 <?php $_option = $this->getOption() ?>
-<dt><label><?php echo $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getIsRequire()): ?><span class="required">*</span><?php endif; ?></label></dt>
+<dt><label><?php echo $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getIsRequire()): ?><span class="required">&nbsp;*</span><?php endif; ?></label></dt>
 <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE_TIME
         || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE): ?>
-<dd><?php echo $this->__('Date&nbsp;') ?> <?php echo $this->getCalendarHtml() ?></dd>
+<dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>><?php echo $this->__('Date') ?>&nbsp;<?php echo $this->getCalendarHtml() ?></dd>
 <?php endif; ?>
 <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE_TIME
         || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_TIME): ?>
-<dd><?php echo $this->__('Time') ?> <?php echo $this->getTimeHtml() ?>
+<dd <?php if ($_option->decoratedIsLast){?> class="last"<?php }?>><?php echo $this->__('Time') ?> <?php echo $this->getTimeHtml() ?>
     <?php //echo $this->__('Time') ?> <!--<input type="text" class="input-text<?php echo $_option->getIsRequire() ? ' required-entry' : '' ?>" name="options[<?php echo $_option->getId() ?>]" value="" />--></dd>
 <?php endif; ?>

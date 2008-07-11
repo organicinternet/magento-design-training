@@ -40,37 +40,37 @@ class Mage_Adminhtml_Block_Widget_Grid_Column_Filter_Date extends Mage_Adminhtml
 
     public function getHtml()
     {
+        $htmlId = $this->_getHtmlId() . microtime(true);
         $format = $this->getLocale()->getDateStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         $html = '<div class="range"><div class="range-line date">
             <span class="label">' . Mage::helper('adminhtml')->__('From').':</span>
-            <input type="text" name="'.$this->_getHtmlName().'[from]" id="'.$this->_getHtmlId().'_from" value="'.$this->getEscapedValue('from').'" class="input-text no-changes"/>
-            <img src="' . Mage::getDesign()->getSkinUrl('images/grid-cal.gif') . '" alt="" class="v-middle" id="'.$this->_getHtmlId().'_from_trig" title="'.$this->htmlEscape(Mage::helper('adminhtml')->__('Date selector')).'"/>
+            <input type="text" name="'.$this->_getHtmlName().'[from]" id="'.$htmlId.'_from" value="'.$this->getEscapedValue('from').'" class="input-text no-changes"/>
+            <img src="' . Mage::getDesign()->getSkinUrl('images/grid-cal.gif') . '" alt="" class="v-middle" id="'.$htmlId.'_from_trig" title="'.$this->htmlEscape(Mage::helper('adminhtml')->__('Date selector')).'"/>
             </div>';
         $html.= '<div class="range-line date">
             <span class="label">' . Mage::helper('adminhtml')->__('To').' :</span>
-            <input type="text" name="'.$this->_getHtmlName().'[to]" id="'.$this->_getHtmlId().'_to" value="'.$this->getEscapedValue('to').'" class="input-text no-changes"/>
-            <img src="' . Mage::getDesign()->getSkinUrl('images/grid-cal.gif') . '" alt="" class="v-middle" id="'.$this->_getHtmlId().'_to_trig" title="'.$this->htmlEscape(Mage::helper('adminhtml')->__('Date selector')).'"/>
+            <input type="text" name="'.$this->_getHtmlName().'[to]" id="'.$htmlId.'_to" value="'.$this->getEscapedValue('to').'" class="input-text no-changes"/>
+            <img src="' . Mage::getDesign()->getSkinUrl('images/grid-cal.gif') . '" alt="" class="v-middle" id="'.$htmlId.'_to_trig" title="'.$this->htmlEscape(Mage::helper('adminhtml')->__('Date selector')).'"/>
             </div></div>';
         $html.= '<input type="hidden" name="'.$this->_getHtmlName().'[locale]" value="'.$this->getLocale()->getLocaleCode().'"/>';
         $html.= '<script type="text/javascript">
             Calendar.setup({
-                inputField : "'.$this->_getHtmlId().'_from",
+                inputField : "'.$htmlId.'_from",
                 ifFormat : "'.$format.'",
-                button : "'.$this->_getHtmlId().'_from_trig",
+                button : "'.$htmlId.'_from_trig",
                 align : "Bl",
                 singleClick : true
             });
             Calendar.setup({
-                inputField : "'.$this->_getHtmlId().'_to",
+                inputField : "'.$htmlId.'_to",
                 ifFormat : "'.$format.'",
-                button : "'.$this->_getHtmlId().'_to_trig",
+                button : "'.$htmlId.'_to_trig",
                 align : "Bl",
                 singleClick : true
             });
         </script>';
         return $html;
     }
-
     public function getEscapedValue($index=null)
     {
         $value = $this->getValue($index);

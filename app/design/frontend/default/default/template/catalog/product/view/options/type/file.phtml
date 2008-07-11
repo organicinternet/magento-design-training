@@ -19,7 +19,7 @@
  */
 ?>
 <?php $_option = $this->getOption() ?>
-<dt><label><?php echo  $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getIsRequire()): ?><span class="required">*</span><?php endif; ?></label>
+<dt><label><?php echo  $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getIsRequire()): ?><span class="required">&nbsp;*</span><?php endif; ?></label>
         (
         <?php if ($_option->getPriceType() == 'fixed'): ?>
             <?php echo $this->helper('core')->currency($_option->getPrice()) ?>
@@ -27,7 +27,7 @@
             <?php echo '%' . number_format($_option->getPrice(), 0, null, '') ?>
         <?php endif; ?>
         )</dt>
-<dd><input type="file" id="option_<?php echo $_option->getId() ?>_file" name="option_file" />
+<dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>><input type="file" id="option_<?php echo $_option->getId() ?>_file" name="option_file" />
     <input type="button" id="option_<?php echo $_option->getId() ?>" name="upload" value="Upload" onclick="optionFileUpload.upload(this)" />
     <input type="hidden" id="option_<?php echo $_option->getId() ?>_uploaded_file" name="options[<?php echo $_option->getId() ?>][file]" value="" />
 </dd>

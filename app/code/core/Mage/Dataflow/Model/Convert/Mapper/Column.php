@@ -95,8 +95,6 @@ class Mage_Dataflow_Model_Convert_Mapper_Column extends Mage_Dataflow_Model_Conv
         $batchModel  = $this->getBatchModel();
         $batchExport = $this->getBatchExportModel();
 
-        //if ($this->getVars() && is_a)a
-
         $batchExportIds = $batchExport
             ->setBatchId($this->getBatchModel()->getId())
             ->getIdCollection();
@@ -119,8 +117,6 @@ class Mage_Dataflow_Model_Convert_Mapper_Column extends Mage_Dataflow_Model_Conv
             $attributesToSelect = array();
         }
 
-//        var_dump($attributesToSelect);
-
         if (!$attributesToSelect) {
             $this->getBatchExportModel()
                 ->setBatchId($this->getBatchModel()->getId())
@@ -134,10 +130,8 @@ class Mage_Dataflow_Model_Convert_Mapper_Column extends Mage_Dataflow_Model_Conv
             $row = $batchExport->getBatchData();
 
             $newRow = array();
-            foreach ($row as $field => $value) {
-                if (isset($attributesToSelect[$field])) {
-                    $newRow[$field] = $value;
-                }
+            foreach ($attributesToSelect as $field => $mapField) {
+                $newRow[$mapField] = isset($row[$field]) ? $row[$field] : null;
             }
 
             $batchExport->setBatchData($newRow)

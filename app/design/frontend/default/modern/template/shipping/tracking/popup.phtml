@@ -59,7 +59,7 @@
             <?php elseif($track->getUrl()): ?>
             <tr>
                 <td class="first label"><?php echo $this->__('Track:'); ?></td>
-                <td><a href="<?php echo $track->getUrl(); ?>" target="_blank"><?php echo $track->getUrl(); ?></a></td>
+                <td><a href="<?php echo $track->getUrl(); ?>" onclick="this.target='_blank'"><?php echo $track->getUrl(); ?></a></td>
             </tr>
             <?php else: ?>
                 <?php if ($track->getStatus()): ?>

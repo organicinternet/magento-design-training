@@ -76,7 +76,7 @@ class Varien_Data_Form_Element_Image extends Varien_Data_Form_Element_Abstract
     {
         $html = '';
         if ($this->getValue()) {
-            $html.= '<input type="checkbox" name="'.parent::getName().'[delete]" value="1" id="'.$this->getHtmlId().'_delete"'.($this->getDisabled() ? ' disabled': '').'/>';
+            $html.= '<input type="checkbox" name="'.parent::getName().'[delete]" value="1" class="checkbox" id="'.$this->getHtmlId().'_delete"'.($this->getDisabled() ? ' disabled': '').'/>';
             $html.= '<label class="'.($this->getDisabled() ? 'disabled' : 'normal'). '" for="'.$this->getHtmlId().'_delete">'.__('Delete Image').'</label>';
             $html.= $this->_getHiddenInput();
         }

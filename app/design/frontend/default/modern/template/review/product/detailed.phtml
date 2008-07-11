@@ -48,7 +48,7 @@
             <h3 class="product-name"><?php echo $this->htmlEscape($product->getName()) ?></h3>
         <?php echo $this->getChildHtml('rating') ?>
         <?php if( $reviewCount ): ?>
-            <a href="#customer-reviews" class="no-wrap"><?php echo $this->__('%s Review(s)', $reviewCount) ?></a>
+            <a href="#customer-reviews" class="nobr"><?php echo $this->__('%s Review(s)', $reviewCount) ?></a>
         <?php endif; ?>
 
         <form action="<?php echo $this->getUrl('checkout/cart/add') ?>" method="post" id="product_addtocart_form">
@@ -74,7 +74,6 @@
             <?php echo $this->getChildHtml('super_group') ?>
         <?php endif; ?>
 
-        <?php if(!$product->isGrouped()): ?>
             <?php if($product->isSaleable()): ?>
             <p><?php echo $this->__('Availability: In stock.') ?></p>
             <?php else: ?>
@@ -86,9 +85,11 @@
             <fieldset class="add-to-cart-box">
                 <legend><?php echo $this->__('Add Items to Cart') ?></legend>
                 <div class="f-left">
+                <?php if(!$product->isGrouped()): ?>
                     <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
                     <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>"/></span>
-                    <a href="#" onclick="productAddToCartForm.submit()"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 10px 0 5px;"/></a>
+                <?php endif; ?>
+                    <a href="#" onclick="productAddToCartForm.submit(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" title="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 10px 0 5px;"/></a>
                 </div>
             <?php if ($this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ) : ?>
                 <ul class="add-to f-left">
@@ -119,23 +120,6 @@
             </fieldset>
             <?php endif; ?>
 
-
-        <?php else: ?>
-            <fieldset class="add-to-cart-box">
-            <a href="#" onclick="productAddToCartForm.submit()"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 10px 0 5px;"/></a>
-            
-            <?php if ($this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ) : ?>
-                <ul class="add-to">
-                <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                    <li><a href="<?php echo $wishlistLink ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
-                <?php endif; ?>
-                <?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
-                    <li><a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
-                <?php endif; ?>
-            </ul>
-            <?php endif; ?>
-            </fieldset>
-        <?php endif; ?>
         </form>
         <script type="text/javascript">
             var productAddToCartForm = new VarienForm('product_addtocart_form');
@@ -151,14 +135,13 @@
         </div>
         <div class="clear"></div>
     </div>
-
-<br/>
-
+<div class="padder">
     <?php if( $this->getCollection() && $this->count()): ?>
+            <br />
             <div class="head head-alt2" id="customer-reviews">
                 <h4 class="title"><?php echo $this->__('Customer Reviews') ?></h4>
             </div>
-            <div class="padder">
+            
             <ol>
         <?php foreach( $this->getCollection()->getItems() as $_review ): ?>
                 <li>
@@ -181,10 +164,9 @@
                 </li>
         <?php endforeach; ?>
             </ol>
-            </div>
+
         <?php echo $this->getToolbarHtml() ?>
     <?php else: ?>
     <?php endif; ?>
-    <div class="padder"><br/>
     <?php echo $this->getChildHtml('reviewForm') ?>
-    </div>
+</div>

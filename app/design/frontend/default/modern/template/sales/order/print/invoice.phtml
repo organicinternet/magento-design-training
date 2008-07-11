@@ -51,7 +51,7 @@
         </div>
         <?php if (!$_order->getIsVirtual()): ?>
     </div>
-    <br/>
+    <br />
     <div class="col2-set">
         <div class="col-1">
             <h4><?php echo $this->__('Shipping Method') ?></h4>
@@ -63,27 +63,23 @@
             <?php echo $this->getPaymentInfoHtml() ?>
         </div>
     </div>
-    <br/>
+    <br />
     <h4><?php echo $this->__('Items Invoiced') ?></h4>
-    <table cellspacing="0" class="data-table data-bundle">
+    <table cellspacing="0" class="data-table" id="my-invoice-table-<?php echo $_invoice->getId(); ?>">
+        <col />
+        <col width="25%" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
         <thead>
             <tr>
                 <th><?php echo $this->__('Product Name') ?></th>
-                <th class="a-center" width="15%"><?php echo $this->__('SKU') ?></th>
-                <th class="a-right" width="15%"><?php echo $this->__('Price') ?></th>
-                <th class="a-center" width="10%"><?php echo $this->__('Qty Invoiced') ?></th>
-                <th class="a-right last" width="20%"><?php echo $this->__('Subtotal') ?></th>
+                <th><?php echo $this->__('SKU') ?></th>
+                <th class="a-right"><?php echo $this->__('Price') ?></th>
+                <th class="a-center"><span class="nobr"><?php echo $this->__('Qty Invoiced') ?></span></th>
+                <th class="a-right last"><?php echo $this->__('Subtotal') ?></th>
             </tr>
         </thead>
-            <?php $_items = $_invoice->getItemsCollection(); ?>
-            <?php $_count = $_items->count(); ?>
-            <?php $_index = 0; ?>
-            <?php foreach ($_items as $_item): ?>
-        <?php if ($_item->getOrderItem()->getParentItem()) continue; else $_index++ ?>
-        <tbody class="<?php echo $_index%2 ? 'even' : 'odd' ?>">
-            <?php echo $this->getItemHtml($_item) ?>
-        </tbody>
-            <?php endforeach; ?>
         <?php $colspan = 4; ?>
         <tfoot>
             <?php if($_invoice->getSubtotal() != $_invoice->getGrandTotal()): ?>
@@ -115,7 +111,15 @@
                 <td class="last a-right"><?php echo $_order->formatPrice($_invoice->getGrandTotal()) ?></td>
             </tr>
         </tfoot>
+        <?php $_items = $_invoice->getItemsCollection(); ?>
+        <?php $_count = $_items->count(); ?>
+        <?php foreach ($_items as $_item): ?>
+        <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+        <tbody>
+            <?php echo $this->getItemHtml($_item) ?>
+        </tbody>
+        <?php endforeach; ?>
     </table>
-    <br/>
+		<script type="text/javascript">decorateTable('my-invoice-table-<?php echo $_invoice->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
 <?php endforeach; ?>
 <script type="text/javascript">window.print();</script>

@@ -100,21 +100,13 @@
             <?php endif;?>
         </ul>
     </fieldset>
-    <!--<p><input type="checkbox" name="billing[use_for_shipping]" id="billing:use_for_shipping" value="1" <?php if($this->getUseForShipping()): ?>checked="checked"<?php endif ?> onclick="billing.setUseForShipping(this.checked)"/> &nbsp;<label for="billing:use_for_shipping"><?php echo $this->__('Ship to this address') ?></label></p>-->
-    <!--
-        TO DO:
-        - After making sure the new code works, remove the line above and add onclick action to radio buttons below
-        - Add PHP to show current values of radio buttons (old: $this->getUseForShipping()) - CHECK with Moshe / Mischa
-        - Create the JS setPickupOrUseForShipping method in billing
-    -->
     <?php if ($this->canShip()): ?>
     <p>
-        <input type="radio" name="billing[pickup_or_use_for_shipping]" id="billing:pickup_or_use_for_shipping_yes" value="1"<?php  if(($this->getPickupOrUseForShipping() === 1) || ($this->getPickupOrUseForShipping() === false)): ?> checked="checked"<?php  endif ?> onclick="billing.setPickupOrUseForShipping(1);" />&nbsp;<label for="billing:pickup_or_use_for_shipping_yes"><?php echo  $this->__('Ship to this address') ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="radio" name="billing[pickup_or_use_for_shipping]" id="billing:pickup_or_use_for_shipping_no" value="0"<?php if($this->getPickupOrUseForShipping() === 0): ?> checked="checked"<?php endif ?> onclick="billing.setPickupOrUseForShipping(0);" />&nbsp;<label for="billing:pickup_or_use_for_shipping_no"><?php echo $this->__('Ship to different address') ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-        <?php  if(Mage::getStoreConfig('carriers/pickup/active')) : ?><input type="radio" name="billing[pickup_or_use_for_shipping]" id="billing:pickup_or_use_for_shipping_pickup" value="2"<?php  if($this->getPickupOrUseForShipping() === 2): ?> checked="checked"<?php  endif ?>  onclick="billing.setPickupOrUseForShipping(2);" />&nbsp;<label for="billing:pickup_or_use_for_shipping_pickup"><?php echo  $this->__('Store Pickup') ?></label><?php  endif ?>
+        <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_yes" value="1" <?php if ($this->isUseBillingAddressForShipping()) {?>checked="checked" <?php }?>onclick="$('shipping:same_as_billing').checked = true;" />&nbsp;<label for="billing:use_for_shipping_yes"><?php echo  $this->__('Ship to this address') ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_no" value="0" <?php if (!$this->isUseBillingAddressForShipping()) {?>checked="checked" <?php }?>onclick="$('shipping:same_as_billing').checked = false;" />&nbsp;<label for="billing:use_for_shipping_no"><?php echo $this->__('Ship to different address') ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
     </p>
     <?php else: ?>
-    <input type="hidden" name="billing[pickup_or_use_for_shipping]" value="1" />
+        <input type="hidden" name="billing[use_for_shipping]" value="1" />
     <?php endif; ?>
 
 </form>

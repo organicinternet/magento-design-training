@@ -24,13 +24,11 @@
 
 <?php echo $this->getPriceHtml($_product) ?>
 
-
+<?php if($_product->isSaleable()): ?>
 
 <script type="text/javascript">
 var bundle = new Product.Bundle(<?php echo $this->getJsonConfig() ?>);
 </script>
-
-<?php if($_product->isSaleable()): ?>
 
 <?php /* @see bundle/options.phtml */ ?>
 

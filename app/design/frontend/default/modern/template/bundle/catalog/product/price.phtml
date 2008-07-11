@@ -30,20 +30,19 @@
         <?php if ($_product->getPriceView()): ?>
             <span class="minimal-price"><span class="label"><?php echo $this->__('As low as:') ?></span>
             <?php if ($this->helper('tax')->displayBothPrices() && ($_minimalPriceTax != $_minimalPriceInclTax)): ?>
-                <span class="price" id="product-price-bundle-<?php echo $_id ?>"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
-                <span class="price-including-tax">(<span class="price"><?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?></span> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
+                <?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+                <span class="price-including-tax">(<?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
             <?php else: ?>
-            <span class="regular-price" id="product-price-<?php echo $_id ?>"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+            <span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span></span>
             <?php endif; ?>
-            </span>
         <?php else: ?>
             <?php if ($_minimalPrice <> $_maximalPrice): ?>
                 <span class="price-from"><span class="label"><?php echo $this->__('From:') ?></span>
                 <?php if ($this->helper('tax')->displayBothPrices() && ($_minimalPriceTax != $_minimalPriceInclTax)): ?>
-                    <span class="price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span></span>
-                    <span class="price-including-tax">(<span class="price"><?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?></span> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
+                    <?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+                    <span class="price-including-tax">(<?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
                 <?php else: ?>
-                    <span class="price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+                    <?php echo Mage::helper('core')->currency($_minimalPriceTax) ?>
                 </span>
                 <?php endif; ?>
 
@@ -52,17 +51,17 @@
 
                 <span class="price-to"><span class="label"><?php echo $this->__('To:') ?></span>
                 <?php if ($this->helper('tax')->displayBothPrices() && ($_maximalPriceTax != $_maximalPriceInclTax)): ?>
-                    <span class="price"><?php echo Mage::helper('core')->currency($_maximalPriceTax) ?></span></span>
-                    <span class="price-including-tax">(<span class="price"><?php echo Mage::helper('core')->currency($_maximalPriceInclTax) ?></span> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
+                    <?php echo Mage::helper('core')->currency($_maximalPriceTax) ?></span>
+                    <span class="price-including-tax">(<?php echo Mage::helper('core')->currency($_maximalPriceInclTax) ?> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
                 <?php else: ?>
-                    <span class="price"><?php echo Mage::helper('core')->currency($_maximalPriceTax) ?></span>
+                    <?php echo Mage::helper('core')->currency($_maximalPriceTax) ?>
                 </span>
                 <?php endif; ?>
-        <?php else: ?>
-                <?php if ($this->helper('tax')->displayBothPrices() && ($_minimalPriceTax != $_minimalPriceInclTax)): ?>
-                    <span><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span><br />
-                    (<span><?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?></span> <?php echo Mage::helper('tax')->__('Incl. Tax') ?>)
             <?php else: ?>
+                <?php if ($this->helper('tax')->displayBothPrices() && ($_minimalPriceTax != $_minimalPriceInclTax)): ?>
+										<span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+                    <span class="price-including-tax">(<?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
+                <?php else: ?>
                     <span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
                 <?php endif; ?>
             <?php endif; ?>

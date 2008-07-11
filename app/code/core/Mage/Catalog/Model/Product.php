@@ -322,8 +322,40 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
 
     protected function _beforeDelete()
     {
+        $this->_substractQtyFromQuotes();
         $this->cleanCache();
         parent::_beforeDelete();
+    }
+
+    /**
+     * Substract this product from all quotes quantities
+     *
+     * @throws Exception
+     */
+    protected function _substractQtyFromQuotes()
+    {
+        // get all quotes and store ids, in which the product may be
+        /*
+        SELECT qi.item_id, qi.qty, qi.quote_id, q.store_id, q.items_qty, q.items_count
+        FROM sales_flat_quote_item qi
+            INNER JOIN sales_flat_quote q ON qi.quote_id=q.entity_id
+        WHERE qi.product_id=?d
+        */
+        $quotesCollection = Mage::getModel('sales/quote')->getCollection();
+        $quoteItemsCollection = Mage::getModel('sales/quote_item')->getCollection()
+            ->resetJoinQuotes($quotesCollection->getResource()->getMainTable(), $this->getId());
+        $quotesStores = $quoteItemsCollection->getConnection()->fetchAll($quoteItemsCollection->getSelect());
+
+        foreach ($quotesStores as $quoteStore) {
+            // substract quantity from the quote
+            $quoteItem = Mage::getModel('sales/quote')
+                ->setId($quoteStore['quote_id'])
+                ->setItemsCount((int)$quoteStore['items_count'] - 1)
+                ->setItemsQty((int)$quoteStore['items_qty'] - (int)$quoteStore['qty'])
+                ->setStoreId($quoteStore['store_id']) // it is used in _beforeSave()
+            ;
+            $quoteItem->save();
+        }
     }
 
     protected function _afterLoad()

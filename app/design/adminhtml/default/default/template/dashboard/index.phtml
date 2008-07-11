@@ -20,6 +20,7 @@
 ?>
 
 <script type="text/javascript">
+//<![CDATA[
 function changeDiagramsPeriod(periodObj) {
     periodParam = periodObj.value ? 'period/' + periodObj.value + '/' : '';
 <?php foreach ($this->getChild('diagrams')->getTabsIds() as $tabId): ?>
@@ -34,13 +35,12 @@ function toggleCal(id) {
     $('dashboard_'+id+'_cal_div').toggle();
     $('dashboard_'+id+'_range_div').toggle();
 }
+//]]>
 </script>
 <div class="content-header">
     <table cellspacing="0">
         <tr>
-            <td>
-                <h3 class="head-dashboard"><?php echo $this->__('Dashboard') ?></h3>
-            </td>
+            <td><h3 class="head-dashboard"><?php echo $this->__('Dashboard') ?></h3></td>
         </tr>
     </table>
 </div>
@@ -65,9 +65,7 @@ function toggleCal(id) {
             <td>
                 <div class="entry-edit" style="border:1px solid #ccc;">
                     <?php echo $this->getChildHtml('diagrams') ?>
-                    <center>
                         <div id="diagram_tab_content"></div>
-                    </center>
                     <div style="margin:20px;">
                         <?php echo $this->getChildHtml('totals') ?>
                     </div>

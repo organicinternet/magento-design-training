@@ -32,7 +32,7 @@
             <div class="product-images">
                 <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="50" height="50"/></a>
             </div>
-            <?php if(!$_item->isSuper() && $_item->isSaleable()): ?>
+            <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
                 <span class="checkbox-container">
                 <?php if (!$_item->getRequiredOptions()): ?>
                     <input type="checkbox" class="related-checkbox left" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>"/>
@@ -42,7 +42,7 @@
             <div class="product-details">
                     <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
                     <?php echo $this->getPriceHtml($_item) ?>
-                    <?php if($_item->isSuper()): ?>
+                    <?php if($_item->isComposite()): ?>
                         <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a><br/>
                     <?php else: ?>
                         <?php if ($this->helper('wishlist')->isAllow()) : ?>

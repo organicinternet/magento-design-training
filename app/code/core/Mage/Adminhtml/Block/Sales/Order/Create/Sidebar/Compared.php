@@ -59,7 +59,6 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Sidebar_Compared extends Mage_Admi
                     ->addAttributeToSelect('price')
                     ->addAttributeToSelect('image')
                     ->addAttributeToSelect('status')
-                    ->addAttributeToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                     ->load();
             }
             $this->setData('item_collection', $collection);

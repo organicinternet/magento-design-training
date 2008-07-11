@@ -82,7 +82,7 @@ class Mage_Adminhtml_Block_Report_Tag_Customer_Grid extends Mage_Adminhtml_Block
                 'getter'    => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('catalog')->__('Show reviews'),
+                        'caption' => Mage::helper('catalog')->__('Show Tags'),
                         'url'     => array(
                             'base'=>'*/*/customerDetail'
                         ),

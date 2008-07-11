@@ -86,7 +86,6 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Sidebar_Pcompared extends Mage_Adm
                     ->addAttributeToSelect('price')
                     ->addAttributeToSelect('small_image')
                     ->addIdFilter($productIds)
-                    ->addAttributeToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                     ->load();
             }
             $this->setData('item_collection', $productCollection);

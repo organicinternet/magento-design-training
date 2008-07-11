@@ -94,6 +94,7 @@
                         <price_view />
                         <price_type />
                         <shipment_type />
+                        <weight_type />
                     </product_attributes>
                 </item>
             </quote>
@@ -111,15 +112,6 @@
         </pdf>
     </global>
     <frontend>
-        <routers>
-            <bundle>
-                <use>standard</use>
-                <args>
-                    <module>Mage_Bundle</module>
-                    <frontName>bundle</frontName>
-                </args>
-            </bundle>
-        </routers>
         <translate>
             <modules>
                 <Mage_Bundle>
@@ -144,7 +136,38 @@
                 </attributes>
             </collection>
         </product>
+        <events>
+            <catalog_product_upsell>
+                <observers>
+                    <bundle_observer>
+                        <type>singleton</type>
+                        <class>bundle/observer</class>
+                        <method>appendUpsellProducts</method>
+                    </bundle_observer>
+                </observers>
+            </catalog_product_upsell>
+            <sales_convert_quote_item_to_order_item>
+                <observers>
+                    <bundle_observer>
+                        <type>singleton</type>
+                        <class>bundle/observer</class>
+                        <method>appendBundleSelectionData</method>
+                    </bundle_observer>
+                </observers>
+            </sales_convert_quote_item_to_order_item>
+        </events>
     </frontend>
+    <admin>
+        <routers>
+            <bundle>
+                <use>admin</use>
+                <args>
+                    <module>Mage_Bundle</module>
+                    <frontName>bundle</frontName>
+                </args>
+            </bundle>
+        </routers>
+    </admin>
     <adminhtml>
         <translate>
             <modules>
@@ -172,6 +195,15 @@
                     </bundle_observer>
                 </observers>
             </catalog_product_prepare_save>
+            <sales_convert_quote_item_to_order_item>
+                <observers>
+                    <bundle_observer>
+                        <type>singleton</type>
+                        <class>bundle/observer</class>
+                        <method>appendBundleSelectionData</method>
+                    </bundle_observer>
+                </observers>
+            </sales_convert_quote_item_to_order_item>
         </events>
     </adminhtml>
 </config>

@@ -73,8 +73,8 @@ class Mage_Catalog_Model_Convert_Parser_Product
             if ($node->is('system')) {
                 $this->_systemFields[] = $code;
             }
-            if ($node->is('extenal')) {
-                $this->_externalFields[] = $code;
+            if ($node->is('external')) {
+                $this->_externalFields[$code] = $code;
             }
             if ($node->is('img')) {
                 $this->_imageFields[] = $code;
@@ -422,6 +422,8 @@ class Mage_Catalog_Model_Convert_Parser_Product
         $productAttributes = Mage::getResourceModel('eav/entity_attribute_collection')
             ->setEntityTypeFilter($entityTypeId)
             ->load();
+
+            var_dump($this->_externalFields);
 
         $attributes = $this->_externalFields;
 

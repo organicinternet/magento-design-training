@@ -19,13 +19,27 @@
  */
 ?>
 
+<?php echo $this->getBlockBefore()->getChildHtml('', true, true); ?>
+
 <?php
-$_contents = $this->getChildHtml('', true, true);
+$_children = $this->getSortedChildBlocks();
+foreach ($_children as $_key => $_child) {
+    if (!$_child->hasOptions()) {
+        unset($_children[$_key]);
+    }
+}
+$_children = Mage::helper('core')->decorateArray($_children);
 ?>
-<?php if ('' !== trim($_contents)):?>
+<?php if ($_children):?>
 <div class="product-attributes">
   <fieldset class="product-options">
-    <?php echo $_contents ?>
+    <?php foreach ($_children as $_child):?>
+        <?php echo $_child->toHtml()?>
+    <?php endforeach;?>
   </fieldset>
 </div>
-<?php endif; ?>
+<?php else: ?>
+<!-- container is empty -->
+<?php endif;?>
+
+<?php echo $this->getBlockAfter()->getChildHtml('', true, true); ?>

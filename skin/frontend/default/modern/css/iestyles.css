@@ -49,15 +49,12 @@
 .listing-type-list .listing-item,
 #nav li,
 .truncated,
-.product-options dt { zoom:1; }
+.product-options dt,
+.error-msg, .success-msg, .notice-msg, .note-msg { zoom:1; }
 
-.clear {
-	display:block;
-	clear:both;
-	height:0;
-	font-size:0;
-	line-height:0;
-	}
 .footer .footer-callout { position:relative; zoom:1; }
 .login-box .content     { height:180px; }
 .col-left, .col-right, .col-main    { display:inline; }
+
+/* Fix for IE menu bug */
+#nav iframe { position:absolute; left:-1px; top:0; z-index:-1; background:transparent; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0); }

@@ -41,22 +41,13 @@ class Mage_Checkout_Block_Onepage_Billing extends Mage_Checkout_Block_Onepage_Ab
         parent::_construct();
     }
 
-    // CHECK with Moshe / Mischa
-    public function getPickupOrUseForShipping()
+    public function isUseBillingAddressForShipping()
     {
-        if ($this->getQuote()->getIsVirtual()) {
+        if (($this->getQuote()->getIsVirtual())
+            || !$this->getQuote()->getShippingAddress()->getSameAsBilling()) {
             return false;
         }
-
-        if ($this->getQuote()->getShippingAddress()) {
-        	if ($this->getQuote()->getShippingAddress()->getSameAsBilling()) {
-        		return 1;
-        	} else {
-        		return 0;
-        	}
-        } else {
-        	return 2;
-        }
+        return true;
     }
 
     public function getCountries()

@@ -20,21 +20,21 @@
 ?>
 <?php  $_order = $this->getOrder() ?>
 <?php  if ($_order->getTracksCollection()->count()) : ?>
-<div style="float:right">
+<div class="right">
 <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopUpUrlByOrderId($_order->getId()) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track all shipment(s)') ?>"><?php echo $this->__('Track all shipments') ?></a>
 </div>
 <?php endif; ?>
-<a href="<?php echo $this->getPrintAllShipmentsUrl($_order) ?>" target="_blank"><?php echo $this->__('Print All Shipments') ?></a>
+<a href="<?php echo $this->getPrintAllShipmentsUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Shipments') ?></a>
 <br />
 <?php foreach ($_order->getShipmentsCollection() as $_shipment): ?>
 <br />
 <div class="head">
     <h3><?php echo $this->__('Shipment #') ?><?php echo $_shipment->getIncrementId(); ?></h3>
-    <a href="<?php echo $this->getPrintShipmentUrl($_shipment) ?>" target="_blank"><?php echo $this->__('Print Shipment') ?></a>
+    <a href="<?php echo $this->getPrintShipmentUrl($_shipment) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print Shipment') ?></a>
 </div>
-<table class="data">
 <?php $tracks = $_shipment->getTracksCollection(); ?>
 <?php  if ($tracks->count()): ?>
+<table cellspacing="0" class="data">
     <tr>
         <td colspan="2">
             <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopUpUrlByShipId($_shipment->getId()) ?>','trackshipment','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track this shipment') ?>"><?php echo $this->__('Track this shipment') ?></a>
@@ -57,26 +57,28 @@
     endforeach; ?>
         </td>
     </tr>
-<?php  endif; ?>
 </table>
+<?php  endif; ?>
 <h4><?php echo $this->__('Items Shipped') ?></h4>
-<table cellspacing="0" class="data-table data-bundle" id="my-orders-table-<?php echo $_shipment->getId(); ?>">
+<table cellspacing="0" class="data-table" id="my-shipment-table-<?php echo $_shipment->getId(); ?>">
+    <col />
+    <col width="35%" />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
-            <th width="15%"><?php echo $this->__('SKU') ?></th>
-            <th class="a-center" width="15%"><?php echo $this->__('Qty Shipped') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-center"><span class="nobr"><?php echo $this->__('Qty Shipped') ?></span></th>
         </tr>
     </thead>
     <?php $_items = $_shipment->getAllItems(); ?>
     <?php $_count = count($_items) ?>
-    <?php $_index = 0; ?>
     <?php foreach ($_items as $_item): ?>
-    <?php if ($_item->getOrderItem()->getParentItem()) continue; else $_index++ ?>
-    <tbody class="<?php echo ($_index%2 ? 'even' : 'odd') ?>">
+    <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+    <tbody>
         <?php echo $this->getItemHtml($_item) ?>
     </tbody>
     <?php endforeach; ?>
 </table>
-<script type="text/javascript">decorateTable('my-orders-table-<?php echo $_shipment->getId(); ?>')</script>
+<script type="text/javascript">decorateTable('my-shipment-table-<?php echo $_shipment->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
 <?php endforeach; ?>

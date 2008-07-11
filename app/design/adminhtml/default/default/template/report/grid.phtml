@@ -179,10 +179,11 @@ $numColumns = sizeof($this->getColumns());
     </div>
 <?php if($this->canDisplayContainer()): ?>
 </div>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
+//<![CDATA[
     <?php echo $this->getJsObjectName() ?> = new varienGrid('<?php echo $this->getId() ?>', '<?php echo $this->getGridUrl() ?>', '<?php echo $this->getVarNamePage() ?>', '<?php echo $this->getVarNameSort() ?>', '<?php echo $this->getVarNameDir() ?>', '<?php echo $this->getVarNameFilter() ?>');
     <?php echo $this->getJsObjectName() ?>.useAjax = '<?php echo $this->getUseAjax() ?>';
-    <? if($this->getDateFilterVisibility()):?>
+    <?php if($this->getDateFilterVisibility()):?>
     <?php echo $this->getJsObjectName() ?>.doFilterCallback = validateFilterDate;
     var period_date_from = $('period_date_from');
     var period_date_to   = $('period_date_to');
@@ -198,7 +199,8 @@ $numColumns = sizeof($this->getColumns());
             return true;
         }
     }
-    <? endif;?>
+    <?php endif;?>
+//]]>
 </script>
 <?php endif; ?>
 <?php endif; ?>

@@ -10,7 +10,7 @@
         <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-cart"><?php echo $this->__('Reorder') ?></a>
         <span class="pipe">|</span>
     <?php endif ?>
-    <a href="<?php echo $this->getPrintUrl($_order) ?>" class="link-cart" target="_blank"><?php echo $this->__('Print Order') ?></a>
+    <a href="<?php echo $this->getPrintUrl($_order) ?>" class="link-cart" onclick="this.target='_blank';"><?php echo $this->__('Print Order') ?></a>
 </div>
 <?php echo $this->getStatusHistoryRssUrl($_order) ?>
 <div class="order-access">

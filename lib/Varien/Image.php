@@ -118,38 +118,41 @@ class Varien_Image
     /**
      * Resize an image
      *
-     * @param int $width. Default value is NULL
-     * @param int $height. Default value is NULL
+     * @param int $width
+     * @param int $height
      * @access public
      * @return void
      */
-    public function resize($width = null, $height = null, $keepProportion = true)
+    public function resize($width, $height = null)
     {
-        $this->_getAdapter()
-            ->setKeepProportion((bool)$keepProportion)
-            ->resize($width, $height)
-        ;
+        $this->_getAdapter()->resize($width, $height);
     }
 
-    /**
-     * Passthrough to adapter
-     *
-     * @return void
-     */
-    public function setFillOnResize($flag)
+    public function keepAspectRatio($value)
     {
-        $this->_getAdapter()->setFillOnResize($flag);
+        return $this->_getAdapter()->keepAspectRatio($value);
     }
 
-    /**
-     * Passthrough to Varien_Image
-     *
-     * @return void
-     */
-    public function setFillColorOnResize($RGBAlphaArray)
+    public function keepFrame($value)
     {
-        $this->_getAdapter()->setFillColorOnResize($RGBAlphaArray);
+        return $this->_getAdapter()->keepFrame($value);
     }
+
+    public function keepTransparency($value)
+    {
+        return $this->_getAdapter()->keepTransparency($value);
+    }
+
+    public function constrainOnly($value)
+    {
+        return $this->_getAdapter()->constrainOnly($value);
+    }
+
+    public function backgroundColor($value)
+    {
+        return $this->_getAdapter()->backgroundColor($value);
+    }
+
 
     /**
      * Adds watermark to our image.

@@ -44,16 +44,29 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
     }
 
     /**
+     * Get item configurable child product
+     *
+     * @return Mage_Catalog_Model_Product
+     */
+    public function getChildProduct()
+    {
+        if ($option = $this->getItem()->getOptionByCode('simple_product')) {
+            return $option->getProduct();
+        }
+        return $this->getProduct();
+    }
+
+    /**
      * Get product thumbnail image
      *
      * @return Mage_Catalog_Model_Product_Image
      */
     public function getProductThumbnail()
     {
-        $product = $this->getProduct();
+        $product = $this->getChildProduct();
         if (($product->getData('thumbnail') == 'no_selection')
             || (Mage::getStoreConfig(self::CONFIGURABLE_PRODUCT_IMAGE) == self::USE_PARENT_IMAGE)) {
-            $product = $this->getConfigurableProduct();
+            $product = $this->getProduct();
         }
         return $this->helper('catalog/image')->init($product, 'thumbnail');
     }
@@ -65,7 +78,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
      */
     public function getProductName()
     {
-        return $this->getConfigurableProduct()->getName();
+        return $this->getProduct()->getName();
     }
 
     /**
@@ -75,7 +88,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
      */
     public function getProductUrl()
     {
-        return $this->getConfigurableProduct()->getProductUrl();
+        return $this->getProduct()->getProductUrl();
     }
 
     /**
@@ -85,7 +98,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
      */
     public function getProductAttributes()
     {
-        $attributes = $this->getConfigurableProduct()->getTypeInstance()->getSelectedAttributesInfo();
+        $attributes = $this->getProduct()->getTypeInstance()->getSelectedAttributesInfo();
         return $attributes;
     }
 
@@ -100,29 +113,4 @@ class Mage_Checkout_Block_Cart_Item_Renderer_Configurable extends Mage_Checkout_
         return $options;
     }
 
-    /**
-     * Retrieve item messages
-     * Return array with keys
-     *
-     * type     => type of a message
-     * text     => the message text
-     *
-     * @return array
-     */
-    public function getMessages()
-    {
-        $messages = array();
-        if ($options = $this->getItem()->getQtyOptions()) {
-            foreach ($options as $option) {
-                /* @var $option Mage_Sales_Model_Quote_Item_Option */
-                if ($option->getMessage()) {
-                    $messages[] = array(
-                        'text'  => $option->getMessage(),
-                        'type'  => $option->getHasError() ? 'error' : 'notice'
-                    );
-                }
-            }
-        }
-        return $messages;
-    }
 }

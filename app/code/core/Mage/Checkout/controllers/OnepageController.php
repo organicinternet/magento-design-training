@@ -227,7 +227,7 @@ class Mage_Checkout_OnepageController extends Mage_Core_Controller_Front_Action
                         'html' => $this->_getPaymentMethodsHtml()
                     );
                 }
-                elseif (isset($data['pickup_or_use_for_shipping']) && $data['pickup_or_use_for_shipping'] == 1) {
+                elseif (isset($data['use_for_shipping']) && $data['use_for_shipping'] == 1) {
                     $result['goto_section'] = 'shipping_method';
                     $result['update_section'] = array(
                         'name' => 'shipping-method',

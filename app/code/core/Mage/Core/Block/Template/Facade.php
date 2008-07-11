@@ -20,6 +20,7 @@
 
 /**
  * Block, that can insert other blocks as sorted children, depending on conditions.
+ * Also it can spawn neighbours and insert blocks there, also as sorted children, depending on conditions.
  * Conditions are implemented in methods, that do actually insert blocks.
  * Data for conditions must be set before calling inserting method.
  *
@@ -29,6 +30,8 @@
  */
 class Mage_Core_Block_Template_Facade extends Mage_Core_Block_Template
 {
+    private $_neighbours = array();
+
     /**
      * Just set data, like Varien_Object
      *
@@ -75,12 +78,69 @@ class Mage_Core_Block_Template_Facade extends Mage_Core_Block_Template
      */
     public function insertBlockIfEquals($blockName)
     {
-        // get block name as first param
         $args = func_get_args();
-        $blockName = array_shift($args);
+        return $this->_insertBlockIfEquals($this, $args);
+    }
 
-        // obtain conditions keys
+    /**
+     * Insert a block as a child of neighbour before
+     *
+     * @see insertBlockIfEquals()
+     * @param string $blockName
+     * @return Mage_Core_Block_Template
+     */
+    public function insertBlockBeforeIfEquals($blockName)
+    {
+        $args = func_get_args();
+        return $this->_insertBlockIfEquals($this->_getNeighbour('before'), $args);
+    }
+
+    /**
+     * Insert a block as a child of neighbour after
+     *
+     * @see insertBlockIfEquals()
+     * @param string $blockName
+     * @return Mage_Core_Block_Template
+     */
+    public function insertBlockAfterIfEquals($blockName)
+    {
+        $args = func_get_args();
+        return $this->_insertBlockIfEquals($this->_getNeighbour('after'), $args);
+    }
+
+    /**
+     * Get facade neighbour before
+     *
+     * @return Mage_Core_Block_Template
+     */
+    public function getBlockBefore()
+    {
+        return $this->_getNeighbour('before');
+    }
+
+    /**
+     * Get facade neighbour after
+     *
+     * @return Mage_Core_Block_Template
+     */
+    public function getBlockAfter()
+    {
+        return $this->_getNeighbour('after');
+    }
+
+    private function _getNeighbour($name)
+    {
+        if (!isset($this->_neighbours[$name])) {
+            $this->_neighbours[$name] = $this->getLayout()->createBlock('core/template');
+        }
+        return $this->_neighbours[$name];
+    }
+
+    private function _insertBlockIfEquals(Mage_Core_Block_Template $blockInsertTo, array $args)
+    {
+        $blockName     = array_shift($args);
         $conditionKeys = $args;
+
         // assume, that conditions keys are passed from layout as array
         if ((count($conditionKeys) > 0) && (is_array($conditionKeys[1]))) {
             $conditionKeys = $conditionKeys[1];
@@ -90,19 +150,17 @@ class Mage_Core_Block_Template_Facade extends Mage_Core_Block_Template
         if (!empty($conditionKeys)) {
             foreach ($conditionKeys as $key) {
                 if (!isset($this->_data[$key])) {
-                    return $this;
+                    return $blockInsertTo;
                 }
             }
             $lastValue = $this->_data[$key];
             foreach ($conditionKeys as $key) {
                 if ($this->_data[$key] !== $lastValue)  {
-                    return $this;
+                    return $blockInsertTo;
                 }
             }
         }
 
-        // insert the block
-        return parent::insert($blockName);
+        return $blockInsertTo->insert($blockName);
     }
-
 }

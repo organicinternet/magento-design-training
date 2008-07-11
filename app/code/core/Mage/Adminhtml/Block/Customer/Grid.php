@@ -59,7 +59,8 @@ class Mage_Adminhtml_Block_Customer_Grid extends Mage_Adminhtml_Block_Widget_Gri
         $this->addColumn('id', array(
             'header'    => Mage::helper('customer')->__('ID'),
             'width'     => '50px',
-            'index'     => 'entity_id'
+            'index'     => 'entity_id',
+            'type'  => 'number',
         ));
         /*$this->addColumn('firstname', array(
             'header'    => Mage::helper('customer')->__('First Name'),

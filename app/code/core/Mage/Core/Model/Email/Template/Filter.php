@@ -21,6 +21,11 @@
 class Mage_Core_Model_Email_Template_Filter extends Varien_Filter_Template
 {
     protected $_useAbsoluteLinks = false;
+    /**
+     * Url Instance
+     *
+     * @var Mage_Core_Model_Url
+     */
     protected static $_urlInstance;
 
     public function setUseAbsoluteLinks($flag)
@@ -121,6 +126,15 @@ class Mage_Core_Model_Email_Template_Filter extends Varien_Filter_Template
     public function storeDirective($construction)
     {
         $params = $this->_getIncludeParameters($construction[2]);
+        if (!isset($params['_query'])) {
+            $params['_query'] = array();
+        }
+        foreach ($params as $k => $v) {
+            if (strpos($k, '_query_') === 0) {
+                $params['_query'][substr($k, 7)] = $v;
+                unset($params[$k]);
+            }
+        }
         $params['_absolute'] = $this->_useAbsoluteLinks;
 
         $path = $params['url'];
@@ -130,13 +144,10 @@ class Mage_Core_Model_Email_Template_Filter extends Varien_Filter_Template
             self::$_urlInstance = Mage::getModel('core/url');
         }
 
-        if (!Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_STORE_IN_URL)
+        if (!empty($path) && !Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_STORE_IN_URL)
             && !Mage::app()->isSingleStoreMode())
         {
-            if (!isset($params['_query'])) {
-                $params['_query'] = array();
-            }
-            $params['_query']['store'] = Mage::app()->getStore()->getCode();
+            $params['_query']['___store'] = Mage::app()->getStore()->getCode();
         }
 
         $url = self::$_urlInstance->getUrl($path, $params);

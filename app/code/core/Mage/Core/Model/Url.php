@@ -621,15 +621,6 @@ class Mage_Core_Model_Url extends Varien_Object
     {
         $escapeQuery = false;
 
-        if (isset($routeParams['_query'])) {
-            if (is_string($routeParams['_query'])) {
-                $this->setQuery($routeParams['_query']);
-            } elseif (is_array($routeParams['_query'])) {
-                $this->setQueryParams($routeParams['_query']);
-            }
-            unset($routeParams['_query']);
-        }
-
         if (isset($routeParams['_fragment'])) {
             $this->setFragment($routeParams['_fragment']);
             unset($routeParams['_fragment']);
@@ -647,6 +638,17 @@ class Mage_Core_Model_Url extends Varien_Object
             $this->setQueryParam($session->getSessionIdQueryParam(), $sessionId);
         }
 
+        /**
+         * Apply query params, need call after getRouteUrl for rewrite _current values
+         */
+        if (isset($routeParams['_query'])) {
+            if (is_string($routeParams['_query'])) {
+                $this->setQuery($routeParams['_query']);
+            } elseif (is_array($routeParams['_query'])) {
+                $this->setQueryParams($routeParams['_query']);
+            }
+            unset($routeParams['_query']);
+        }
 
         if ($query = $this->getQuery($escapeQuery)) {
             $url .= '?'.$query;

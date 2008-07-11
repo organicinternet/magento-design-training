@@ -32,13 +32,7 @@ class Mage_Catalog_Block_Product_List_Related extends Mage_Catalog_Block_Product
     protected function _prepareData()
     {
         $collection = Mage::registry('product')->getRelatedProductCollection()
-            ->addAttributeToSelect('name')
-            ->addAttributeToSelect('price')
-            ->addAttributeToSelect('special_price')
-            ->addAttributeToSelect('image')
-            ->addAttributeToSelect('small_image')
-            ->addAttributeToSelect('thumbnail')
-            ->addAttributeToSelect('tax_class_id')
+            ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes())
             ->addAttributeToSelect('required_options')
             ->addAttributeToSort('position', 'asc')
             ->addStoreFilter()
@@ -48,6 +42,11 @@ class Mage_Catalog_Block_Product_List_Related extends Mage_Catalog_Block_Product
         Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($collection);
         $collection->load();
         $this->_itemCollection = $collection;
+
+        foreach ($this->_itemCollection as $product) {
+            $product->setDoNotUseCategoryId(true);
+        }
+
         return $this;
     }
 

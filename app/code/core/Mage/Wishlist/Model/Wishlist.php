@@ -38,6 +38,8 @@ class Mage_Wishlist_Model_Wishlist extends Mage_Core_Model_Abstract
      */
     protected $_store = null;
 
+    protected $_storeIds = null;
+
     protected function _construct()
     {
         $this->_init('wishlist/wishlist');
@@ -145,7 +147,22 @@ class Mage_Wishlist_Model_Wishlist extends Mage_Core_Model_Abstract
      */
     public function getSharedStoreIds()
     {
-        return Mage::app()->getStore()->getWebsite()->getStoreIds();
+        if (is_null($this->_storeIds)) {
+            $this->_storeIds = Mage::app()->getStore()->getWebsite()->getStoreIds();
+        }
+        return $this->_storeIds;
+    }
+
+    /**
+     * Set store ids
+     *
+     * @param array $storeIds
+     * @return Mage_Wishlist_Model_Wishlist
+     */
+    public function setSharedStoreIds($storeIds)
+    {
+        $this->_storeIds = $storeIds;
+        return $this;
     }
 
     /**

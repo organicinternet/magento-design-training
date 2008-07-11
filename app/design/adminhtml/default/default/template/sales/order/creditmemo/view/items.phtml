@@ -19,24 +19,25 @@
  */
 ?>
 <?php $_items = $this->getCreditmemo()->getAllItems() ?>
-<div class="grid">
-    <table cellspacing="0" class="data data-bundle" id="invoice_items_grid_table">
-        <col/>
-        <col width="100"/>
-        <col width="70"/>
-        <col width="90"/>
-        <col width="90"/>
-        <col width="100"/>
-        <col width="100"/>
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
         <thead>
             <tr class="headings">
                 <th><?php echo $this->helper('sales')->__('Product') ?></th>
                 <th><?php echo $this->helper('sales')->__('Price') ?></th>
-                <th><?php echo $this->helper('sales')->__('Qty') ?></th>
+                <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
                 <th><?php echo $this->helper('sales')->__('Subtotal') ?></th>
-                <th><?php echo $this->helper('sales')->__('Tax Amount') ?></th>
-                <th><?php echo $this->helper('sales')->__('Discount Amount') ?></th>
-                <th class="last"><?php echo $this->helper('sales')->__('Row Total') ?></th>
+                <th><span class="nobr"><?php echo $this->helper('sales')->__('Tax Amount') ?></span></th>
+                <th><span class="nobr"><?php echo $this->helper('sales')->__('Discount Amount') ?></span></th>
+                <th class="last"><span class="nobr"><?php echo $this->helper('sales')->__('Row Total') ?></span></th>
             </tr>
         </thead>
         <?php $i=0;foreach ($_items as $_item): ?>
@@ -46,4 +47,6 @@
             </tbody>
         <?php endforeach; ?>
     </table>
+  </div>
 </div>
+<br />

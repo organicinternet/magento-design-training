@@ -181,8 +181,15 @@ Product view
                 -->
                 <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
                 <block type="core/text_list" name="alert.urls" as="alert_urls" />
-                <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml"/>
+                <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml">
+                    <action method="setColumnCount"><columns>4</columns></action>
+                    <!--
+                    <action method="setItemLimit"><type>upsell</type><limit>4</limit></action>
+                    -->
+                </block>
                 <block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data" />
+                <block type="catalog/product_view_description" name="product.description" as="description" template="catalog/product/view/description.phtml"/>
+                <block type="catalog/product_view_attributes" name="product.attributes" as="additional" template="catalog/product/view/attributes.phtml"/>
 
                 <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
                     <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
@@ -191,15 +198,22 @@ Product view
                     <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
                 </block>
 
+                <block type="catalog/product_view" name="product.info.addto" template="catalog/product/view/addto.phtml" />
+                <block type="catalog/product_view" name="product.info.addtocart" template="catalog/product/view/addtocart.phtml" />
+
                 <block type="core/template_facade" name="product.info.container1" as="container1" template="catalog/product/view/container.phtml">
                     <action method="setDataByKey"><key>alias_in_layout</key><value>container1</value></action>
                     <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
                     <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockBeforeIfEquals"><block>product.info.addto</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockAfterIfEquals"><block>product.info.addtocart</block><if>alias_in_layout</if><equals>options_container</equals></action>
                 </block>
                 <block type="core/template_facade" name="product.info.container2" as="container2" template="catalog/product/view/container.phtml">
                     <action method="setDataByKey"><key>alias_in_layout</key><value>container2</value></action>
                     <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
                     <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockBeforeIfEquals"><block>product.info.addto</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockAfterIfEquals"><block>product.info.addtocart</block><if>alias_in_layout</if><equals>options_container</equals></action>
                 </block>
             </block>
         </reference>

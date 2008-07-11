@@ -136,11 +136,15 @@ class Mage_Directory_Model_Currency extends Mage_Core_Model_Abstract
      * Format price to currency format
      *
      * @param   double $price
+     * @param   bool $includeContainer
      * @return  string
      */
-    public function format($price, $options=array())
+    public function format($price, $options=array(), $includeContainer = true, $addBrackets = false)
     {
-        return '<span class="nobr">'.$this->formatTxt($price, $options).'</span>';
+        if ($includeContainer) {
+            return '<span class="price">' . ($addBrackets ? '[' : '') . $this->formatTxt($price, $options) . ($addBrackets ? ']' : '') . '</span>';
+        }
+        return $this->formatTxt($price, $options);
     }
 
     public function formatTxt($price, $options=array())

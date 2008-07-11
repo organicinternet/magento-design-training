@@ -36,6 +36,7 @@ abstract class Varien_Image_Adapter_Abstract
     const POSITION_TILE = 'tile';
 
     protected $_fileType = null;
+    protected $_fileName = null;
     protected $_fileMimeType = null;
     protected $_fileSrcName = null;
     protected $_fileSrcPath = null;
@@ -46,9 +47,12 @@ abstract class Varien_Image_Adapter_Abstract
     protected $_watermarkPosition = null;
     protected $_watermarkWidth = null;
     protected $_watermarkHeigth = null;
-    protected $_keepProportion    = true;
-    protected $_fillOnResize      = true;
-    protected $_fillColorOnResize = array(255, 255, 255, null);
+
+    protected $_keepAspectRatio;
+    protected $_keepFrame;
+    protected $_keepTransparency;
+    protected $_backgroundColor;
+    protected $_constrainOnly;
 
     abstract public function open($fileName);
 
@@ -110,39 +114,83 @@ abstract class Varien_Image_Adapter_Abstract
         return $this->_watermarkHeigth;
     }
 
-    public function setKeepProportion($flag)
-    {
-        $this->_keepProportion = $flag;
-        return $this;
-    }
 
-    public function keepProportion()
+    /**
+     * Get/set keepAspectRatio
+     *
+     * @param bool $value
+     * @return bool|Varien_Image_Adapter_Abstract
+     */
+    public function keepAspectRatio($value = null)
     {
-        return $this->_keepProportion;
-    }
-
-    public function setFillOnResize($flag)
-    {
-        $this->_fillOnResize = $flag;
-    }
-
-    public function getFillOnResize()
-    {
-        return $this->_fillOnResize;
-    }
-
-    public function setFillColorOnResize($RGBAlphaArray)
-    {
-        if (count($RGBAlphaArray) !== 4) {
-            throw new Exception('Four params must be specified: RGB colors and alpha transparency.');
+        if (null !== $value) {
+            $this->_keepAspectRatio = (bool)$value;
         }
-        list($red, $green, $blue, $alpha) = $RGBAlphaArray;
-        foreach (array('red' => 255, 'green' => 255, 'blue' => 255, 'alpha' => 127) as $var => $maxValue) {
-            if (((int)$$var < 0) || ((int)$$var > $maxValue)) {
-                throw new Exception(sprintf('The "%s" value must be between 0 and %d', $var, $maxValue));
+        return $this->_keepAspectRatio;
+    }
+
+    /**
+     * Get/set keepFrame
+     *
+     * @param bool $value
+     * @return bool
+     */
+    public function keepFrame($value = null)
+    {
+        if (null !== $value) {
+            $this->_keepFrame = (bool)$value;
+        }
+        return $this->_keepFrame;
+    }
+
+    /**
+     * Get/set keepTransparency
+     *
+     * @param bool $value
+     * @return bool
+     */
+    public function keepTransparency($value = null)
+    {
+        if (null !== $value) {
+            $this->_keepTransparency = (bool)$value;
+        }
+        return $this->_keepTransparency;
+    }
+
+    /**
+     * Get/set constrainOnly
+     *
+     * @param bool $value
+     * @return bool
+     */
+    public function constrainOnly($value = null)
+    {
+        if (null !== $value) {
+            $this->_constrainOnly = (bool)$value;
+        }
+        return $this->_constrainOnly;
+    }
+
+    /**
+     * Get/set keepBackgroundColor
+     *
+     * @param array $value
+     * @return array
+     */
+    public function backgroundColor($value = null)
+    {
+        if (null !== $value) {
+            if ((!is_array($value)) || (3 !== count($value))) {
+                return;
+            }
+            foreach ($value as $color) {
+                if ((!is_integer($color)) || ($color < 0) || ($color > 255)) {
+                    return;
+                }
             }
         }
-        $this->_fillColorOnResize = array($red, $green, $blue, $alpha);
+        $this->_backgroundColor = $value;
+        return $this->_backgroundColor;
     }
 
     protected function _getFileAttributes()

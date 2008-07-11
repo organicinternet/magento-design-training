@@ -31,7 +31,7 @@ class Mage_Adminhtml_Block_Sales_Order_View_History extends Mage_Adminhtml_Block
     {
         $onclick = "submitAndReloadArea($('order_history_block').parentNode, '".$this->getSubmitUrl()."')";
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
-            ->addData(array(
+            ->setData(array(
                 'label'   => Mage::helper('sales')->__('Submit Comment'),
                 'class'   => 'save',
                 'onclick' => $onclick

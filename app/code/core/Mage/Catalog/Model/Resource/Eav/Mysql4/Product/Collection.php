@@ -596,10 +596,7 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
      */
     public function addFilterByRequiredOptions()
     {
-        $this->getSelect()
-            ->where(
-                new Zend_Db_Expr('(SELECT COUNT(*) FROM '.$this->getTable('catalog/product_option').' WHERE (product_id = `e`.`entity_id`) AND (is_require = 1)) = 0')
-            );
+        $this->addAttributeToFilter('required_options', array(array('neq'=>'1'), array('null'=>true)), 'left');
         return $this;
     }
 

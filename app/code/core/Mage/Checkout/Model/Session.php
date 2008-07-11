@@ -76,6 +76,21 @@ class Mage_Checkout_Model_Session extends Mage_Core_Model_Session_Abstract
         return $this->_quote;
     }
 
+    protected function _getQuoteIdKey()
+    {
+        return 'quote_id_' . Mage::app()->getStore()->getWebsiteId();
+    }
+
+    public function setQuoteId($quoteId)
+    {
+        $this->setData($this->_getQuoteIdKey(), $quoteId);
+    }
+
+    public function getQuoteId()
+    {
+        return $this->getData($this->_getQuoteIdKey());
+    }
+
     /**
      * Load data for customer quote and merge with current quote
      *
@@ -154,10 +169,4 @@ class Mage_Checkout_Model_Session extends Mage_Core_Model_Session_Abstract
         $this->setCheckoutState(self::CHECKOUT_STATE_BEGIN);
         return $this;
     }
-
-    public function getQuoteId()
-    {
-        return $this->_getData('quote_id');
-    }
-
 }

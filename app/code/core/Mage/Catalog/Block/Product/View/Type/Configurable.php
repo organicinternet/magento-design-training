@@ -50,6 +50,20 @@ class Mage_Catalog_Block_Product_View_Type_Configurable extends Mage_Catalog_Blo
         return $this->getProduct()->getTypeInstance()->getConfigurableAttributes();
     }
 
+    public function hasOptions()
+    {
+        $attributes = $this->getAllowAttributes();
+        if (count($attributes)) {
+            foreach ($attributes as $key => $attribute) {
+                /** @var Mage_Catalog_Model_Product_Type_Configurable_Attribute $attribute */
+                if ($attribute->getData('prices')) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function getAllowProducts()
     {
         if (!$this->hasAllowProducts()) {

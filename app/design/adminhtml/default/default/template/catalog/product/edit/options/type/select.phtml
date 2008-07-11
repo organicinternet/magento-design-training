@@ -47,7 +47,7 @@ var OptionTemplateSelectRow = '<tr id="product_option_{{id}}_select_{{select_id}
             '<td><?php echo $this->getPriceTypeSelectHtml() ?>{{checkboxScopePrice}}</td>'+
             '<td><input type="text" class="input-text" name="product[options][{{id}}][values][{{select_id}}][sku]" value="{{sku}}"></td>'+
             '<td><input type="text" class="validate-zero-or-greater input-text" name="product[options][{{id}}][values][{{select_id}}][sort_order]" value="{{sort_order}}"></td>'+
-            '<td class="last"><?php echo $this->getDeleteButtonHtml() ?></td>'+
+            '<td class="last"><span title="Delete row"><?php echo $this->getDeleteButtonHtml() ?></span></td>'+
         '</tr>';
 
 var selectOptionType = {

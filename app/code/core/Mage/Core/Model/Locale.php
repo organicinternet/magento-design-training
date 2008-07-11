@@ -427,7 +427,8 @@ class Mage_Core_Model_Locale
         Varien_Profiler::start('locale/currency');
         if (!isset(self::$_currencyCache[$this->getLocaleCode()][$currency])) {
             self::$_currencyCache[$this->getLocaleCode()][$currency] =
-                new Zend_Currency($currency, $this->getLocale());
+                //new Zend_Currency($currency, $this->getLocale());
+                new Mage_Core_Model_Locale_Currency($currency, $this->getLocale());
         }
         Varien_Profiler::stop('locale/currency');
         return self::$_currencyCache[$this->getLocaleCode()][$currency];
@@ -443,6 +444,9 @@ class Mage_Core_Model_Locale
      * ' 12343 ' = 12343
      * '-9456km' = -9456
      * '0' = 0
+     * '2 054,10' = 2054.1
+     * '2'054.52' = 2054.52
+     * '2,46 GB' = 2.46
      *
      * @param string|int $value
      * @return float
@@ -456,6 +460,10 @@ class Mage_Core_Model_Locale
         if (!is_string($value)) {
             return floatval($value);
         }
+
+        //trim space and apos
+        $value = str_replace('\'', '', $value);
+        $value = str_replace(' ', '', $value);
 
         $separatorComa = strpos($value, ',');
         $separatorDot  = strpos($value, '.');

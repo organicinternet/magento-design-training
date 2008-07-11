@@ -79,7 +79,5 @@
             <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items to Invoice') ?></h4>
         </div>
     </div>
-    <div id="invoice_item_container">
-        <?php echo $this->getChildHtml('order_items') ?>
-    </div>
+    <div id="invoice_item_container"><?php echo $this->getChildHtml('order_items') ?></div>
 </form>

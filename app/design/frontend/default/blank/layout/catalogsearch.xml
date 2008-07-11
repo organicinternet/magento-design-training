@@ -49,7 +49,7 @@
                 <action method="setListCollection"/>
             </block>
         </reference>
-        
+
         <reference name="right">
             <block type="reports/product_viewed" before="right.permanent.callout" name="left.reports.product.viewed" template="reports/product_viewed.phtml" />
         </reference>

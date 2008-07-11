@@ -60,4 +60,24 @@ abstract class Mage_Dataflow_Model_Convert_Adapter_Abstract
         return $this;
     }
 
+    public function getNumber($value)
+    {
+        if (!($separator = $this->getBatchParams('decimal_separator'))) {
+            $separator = '.';
+        }
+
+        $allow  = array_merge(range(0, 9), array('-', $separator));
+        $number = '';
+        for ($i = 0; $i < strlen($value); $i ++) {
+            if (in_array($value[$i], $allow)) {
+                $number .= $value[$i];
+            }
+        }
+
+        if ($separator != '.') {
+            $number = str_replace($separator, '.', $number);
+        }
+
+        return floatval($number);
+    }
 }

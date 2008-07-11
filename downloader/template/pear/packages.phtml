@@ -37,7 +37,7 @@
 <div class="bar-head">
     <h4>Manage Existing Extensions</h4>
     <?php if (empty($_GET['updates'])): ?>
-        <span class="f-right"><button type="button" class="f-right" onclick="location.href += '&updates=yes'">Check for Upgrades</button></span>
+        <span class="f-right"><button type="button" class="f-right" onclick="location.href = location.href.replace(/(#.*|$)/, '&updates=yes')">Check for Upgrades</button></span>
     <?php endif; ?>
 </div>
 <?php $packages = $this->get('pear')->getAllPackages(); $i = 0; $cnt = count($packages); ?>

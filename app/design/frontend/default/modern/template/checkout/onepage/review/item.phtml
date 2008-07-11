@@ -25,12 +25,17 @@
         <?php if ($_options = $this->getOptionList()): ?>
         <ul class="super-product-attributes">
             <?php foreach ($_options as $_option): ?>
-            <li><strong><?php echo $_option['label'] ?>:</strong><br />
-            <? if (is_array($_option['value'])): ?>
-                <?php echo implode('<br />', $_option['value']) ?>
-            <? else: ?>
-                <?php echo $this->htmlEscape($_option['value']) ?>
-            <? endif; ?>
+            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
+            <?php $randomId =  str_replace('.', '_', 'trunc_' . microtime(true)) ?>
+            <li class="truncated truncate-option" id="<?php echo $randomId ?>">
+                <strong><?php echo $this->htmlEscape($_option['label']) ?></strong><br />
+            <?php echo $_formatedOptionValue['value'] ?>
+            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                <div id="<?php echo $randomId ?>_full_view" class="truncated_value">
+                    <strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong><br /> <?php echo $_formatedOptionValue['full_view'] ?>
+                </div>
+            <?php endif; ?>
+            </li>
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>

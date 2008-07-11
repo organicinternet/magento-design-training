@@ -19,61 +19,38 @@
  */
 ?>
 <?php  $_order = $this->getOrder() ?>
-<table cellspacing="0" class="data-table data-bundle" id="my-orders-table">
+<table cellspacing="0" class="data-table" id="my-orders-table">
+    <col />
+    <col width="25%" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
-            <th width="5%" class="a-center"><?php echo $this->__('SKU') ?></th>
-            <th class="a-center" width="10%"><?php echo $this->__('Price') ?></th>
-            <th class="a-center" width="10%"><?php echo $this->__('Qty') ?></th>
-            <th class="a-center" width="10%"><?php echo $this->__('Subtotal') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
         </tr>
         <!-- tr>
             <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceExclTax()): ?>
-            <th class="a-center" width="5%"><?php echo $this->__('Excl. Tax') ?></th>
+            <th class="a-center"><?php echo $this->__('Excl. Tax') ?></th>
             <?php endif; ?>
             <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceInclTax()): ?>
-            <th class="a-center" width="5%"><?php echo $this->__('Incl. Tax') ?></th>
+            <th class="a-center"><?php echo $this->__('Incl. Tax') ?></th>
             <?php endif; ?>
             <th class="a-center" width="6%"><?php echo $this->__('Ordered') ?></th>
             <?php if (!$_order->getIsVirtual()): ?><th class="a-center" width="6%"><?php echo $this->__('Shipped') ?></th><?php endif; ?>
             <th class="a-center" width="6%"><?php echo $this->__('Canceled') ?></th>
             <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceExclTax()): ?>
-            <th class="a-center" width="5%"><?php echo $this->__('Excl. Tax') ?></th>
+            <th class="a-center"><?php echo $this->__('Excl. Tax') ?></th>
             <?php endif; ?>
             <?php if ($this->helper('tax')->displayCartBothPrices() || $this->helper('tax')->displayCartPriceInclTax()): ?>
-            <th class="a-center" width="5%"><?php echo $this->__('Incl. Tax') ?></th>
+            <th class="a-center"><?php echo $this->__('Incl. Tax') ?></th>
             <?php endif; ?>
         </tr -->
     </thead>
-        <?php $_items = $_order->getItemsCollection(); ?>
-        <?php $_count = $_items->count(); ?>
-        <?php $_index = 0; ?>
-        <?php foreach ($_items as $_item): ?>
-        <?php if ($_item->getParentItem()) continue; else $_index++ ?>
-        <tbody class="<?php echo $_index%2 ? 'even' : 'odd' ?>">
-            <?php echo $this->getItemHtml($_item) ?>
-            <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
-            <tr <?php echo ($_index++ > $_count ? ' class="last"' : '') ?> id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
-                <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); ?>
-                <td class="giftmessage-row last" colspan="7">
-                <div class="left">
-                     <ul>
-                        <li>
-                            <label><?php echo $this->__('From') ?></label> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?>
-                        </li>
-                        <li>
-                            <label><?php echo $this->__('To') ?></label> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?>
-                        </li>
-                        <li><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) ?></li>
-                     </ul>
-                </div>
-                <div class="right"><a href="#" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>')"><img src="<?php echo $this->getSkinUrl('images/gift-message-close.gif') ?>" /></a></div>
-                </td>
-            </tr>
-            <?php endif ?>
-        </tbody>
-        <?php endforeach; ?>
     <?php $colspan = 4; ?>
     <tfoot>
         <tr>
@@ -106,5 +83,27 @@
         </tr>
         <?php endif; ?>
     </tfoot>
+        <?php $_items = $_order->getItemsCollection(); ?>
+        <?php $_index = 0; ?>
+				<?php $_count = $_items->count(); ?>
+        <?php foreach ($_items as $_item): ?>
+        <?php if ($_item->getParentItem()) continue; ?>
+        <tbody>
+            <?php echo $this->getItemHtml($_item) ?>
+            <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+            <tr class="border<?php echo ($_index++ > $_count ?' last':'') ?>" id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
+                <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); ?>
+                <td class="giftmessage-row last" colspan="7">
+                  <ul class="giftmessage-content">
+                    <li><label><?php echo $this->__('From') ?></label> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></li>
+                    <li><label><?php echo $this->__('To') ?></label> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></li>
+                    <li><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) ?></li>
+                  </ul>
+                  <div class="giftmessage-close"><a href="#" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>');"><img src="<?php echo $this->getSkinUrl('images/gift-message-close.gif') ?>" alt="" /></a></div>
+                </td>
+            </tr>
+            <?php endif ?>
+        </tbody>
+        <?php endforeach; ?>
 </table>
-<script type="text/javascript">decorateTable('my-orders-table')</script>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>

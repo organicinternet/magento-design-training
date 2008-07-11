@@ -19,13 +19,13 @@
  */
 ?>
 <div class="grid">
-    <table cellspacing="0" class="data data-bundle">
-        <col/>
-        <col width="100"/>
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col width="1" />
         <thead>
             <tr class="headings">
                 <th><?php echo $this->helper('sales')->__('Product') ?></th>
-                <th class="last"><?php echo $this->helper('sales')->__('Qty Shipped') ?></th>
+                <th class="a-center last"><span class="nobr"><?php echo $this->helper('sales')->__('Qty Shipped') ?></span></th>
             </tr>
         </thead>
         <?php $_items = $this->getShipment()->getAllItems() ?>

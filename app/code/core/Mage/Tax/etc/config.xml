@@ -209,6 +209,7 @@
                 <based_on>shipping</based_on>
                 <price_includes_tax>0</price_includes_tax>
                 <shipping_includes_tax>0</shipping_includes_tax>
+                <discount_tax>0</discount_tax>
             </calculation>
             <defaults>
                 <country>US</country>
@@ -217,9 +218,9 @@
             </defaults>
             <display>
                 <column_in_summary>1</column_in_summary>
-                <type>0</type>
+                <type>1</type>
                 <full_summary>0</full_summary>
-                <shipping>0</shipping>
+                <shipping>1</shipping>
             </display>
         </tax>
     </default>

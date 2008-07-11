@@ -19,16 +19,15 @@
  */
 ?>
 <?php if ($_item = $this->getItem()): ?>
-    <?php echo $_item->getName() ?>
+    <h5 class="title"><?php echo $_item->getName() ?></h5>
     <div class="nobr"><strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> <?php echo $_item->getSku() ?></div>
     <?php if ($this->getOrderOptions()): ?>
-        <ul class="item-options">
+        <dl class="item-options">
         <?php foreach ($this->getOrderOptions() as $option): ?>
-            <li><strong><?php echo $option['label'] ?>:</strong><br />
-                <?php echo $this->htmlEscape($option['value']); ?>
-            </li>
+            <dt><?php echo $option['label'] ?></dt>
+            <dd><?php echo $this->htmlEscape($option['value']); ?></dd>
         <?php endforeach; ?>
-        </ul>
+        </dl>
     <?php endif; ?>
     <?php echo $_item->getDescription() ?>
 <?php endif; ?>

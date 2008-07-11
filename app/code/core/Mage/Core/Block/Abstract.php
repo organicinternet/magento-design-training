@@ -410,6 +410,20 @@ abstract class Mage_Core_Block_Abstract extends Varien_Object
     }
 
     /**
+     * Obtain sorted child blocks
+     *
+     * @return array
+     */
+    public function getSortedChildBlocks()
+    {
+        $children = array();
+        foreach ($this->getSortedChildren() as $childName) {
+            $children[$childName] = $this->getLayout()->getBlock($childName);
+        }
+        return $children;
+    }
+
+    /**
      * Retrieve child block HTML
      *
      * @param   string $name

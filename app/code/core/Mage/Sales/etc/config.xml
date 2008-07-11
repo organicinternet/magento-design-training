@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Sales>
-            <version>0.9.10</version>
+            <version>0.9.11</version>
         </Mage_Sales>
     </modules>
     <global>
@@ -189,6 +189,10 @@
                 <base_shipping_amount><to_quote_address_shipping>*</to_quote_address_shipping></base_shipping_amount>
                 <base_giftcert_amount><to_quote_address_shipping>*</to_quote_address_shipping></base_giftcert_amount>
                 <base_custbalance_amount><to_quote_address_shipping>*</to_quote_address_shipping></base_custbalance_amount>
+
+                <shipping_tax_amount><to_cm>*</to_cm></shipping_tax_amount>
+                <base_shipping_tax_amount><to_cm>*</to_cm></base_shipping_tax_amount>
+
             </sales_convert_order>
 
             <sales_convert_order_address>

@@ -201,14 +201,16 @@ class Mage_PaypalUk_Model_Api_Pro extends  Mage_PaypalUk_Model_Api_Abstract
         $result = $this->postRequest($proArr);
 
         if ($result && $result->getResultCode()==self::RESPONSE_CODE_APPROVED) {
-             $this->setToken($result->getToken());
-             $this->setRedirectUrl($this->getPaypalUrl());
-         } else {
+            $this->setToken($result->getToken());
+            $this->setRedirectUrl($this->getPaypalUrl());
+        } else if ($result) {
             $errorArr['code'] = $result->getResultCode();
             $errorArr['message'] = $result->getRespmsg();
             $this->setError($errorArr);
             return false;
-         }
+        } else {
+            return false;
+        }
 
          return $this;
     }

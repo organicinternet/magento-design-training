@@ -69,7 +69,7 @@ abstract class Mage_Catalog_Block_Product_View_Options_Abstract extends Mage_Cor
      * @param array $value
      * @return string
      */
-    protected function _formatPrice($value)
+    protected function _formatPrice($value, $flag=true)
     {
         if ($value['pricing_value'] == 0) {
             return '';
@@ -80,17 +80,25 @@ abstract class Mage_Catalog_Block_Product_View_Options_Abstract extends Mage_Cor
             $value['pricing_value'] = 0 - $value['pricing_value'];
         }
         $priceStr = $sign;
+        $_priceInclTax = $this->getPrice($value['pricing_value'], true);
+        $_priceExclTax = $this->getPrice($value['pricing_value']);
         if (Mage::helper('tax')->displayPriceIncludingTax()) {
-            $priceStr .= $this->helper('core')->currency($this->getPrice($value['pricing_value'], true));
+            $priceStr .= $this->helper('core')->currency($_priceInclTax, true, $flag);
         } elseif (Mage::helper('tax')->displayPriceExcludingTax()) {
-            $priceStr .= $this->helper('core')->currency($this->getPrice($value['pricing_value']));
+            $priceStr .= $this->helper('core')->currency($_priceExclTax, true, $flag);
         } elseif (Mage::helper('tax')->displayBothPrices()) {
-            $priceStr .= $this->helper('core')->currency($this->getPrice($value['pricing_value']));
-            $priceStr .= ' ('.$sign.$this->helper('core')
-                ->currency($this->getPrice($value['pricing_value'], true)).' '.$this->__('Incl. Tax').')';
+            $priceStr .= $this->helper('core')->currency($_priceExclTax, true, $flag);
+            if ($_priceInclTax != $_priceExclTax) {
+                $priceStr .= ' ('.$sign.$this->helper('core')
+                    ->currency($_priceInclTax, true, $flag).' '.$this->__('Incl. Tax').')';
+            }
         }
 
-        return '(' . $priceStr . ')';
+        if ($flag) {
+            $priceStr = '<span class="price-notice">'.$priceStr.'</span>';
+        }
+
+        return $priceStr;
     }
 
     /**

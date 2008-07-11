@@ -54,13 +54,6 @@
 .generic-product-list li,
 .truncated { zoom:1; }
 
-.clear {
-    display:block;
-    clear:both;
-    height:0;
-    font-size:0;
-    line-height:0;
-    }
 .form-button, .form-button-alt { padding:1px 10px 0; }
 .multi-address-checkout-box .box { zoom:1; }
 .multi-address-checkout-box .legend { zoom:1; position:relative; margin-left:8px; }
@@ -74,4 +67,4 @@
 #nav ul li.parent { margin-bottom:-3px; }
 
 /* Fix for IE menu bug */
-#nav iframe { position:absolute; left:-1px; top:0; z-index:-1; background:transparent; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0); }
+#nav iframe { position:absolute; left:-1px; top:0; z-index:-1; background:transparent; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0); }

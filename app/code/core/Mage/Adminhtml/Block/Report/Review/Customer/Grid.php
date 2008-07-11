@@ -60,7 +60,7 @@ class Mage_Adminhtml_Block_Report_Review_Customer_Grid extends Mage_Adminhtml_Bl
             'align'     => 'right',
             'index'     => 'review_cnt'
         ));
-        /*
+
         $this->addColumn('action', array(
             'header'    => Mage::helper('reports')->__('Action'),
             'width'     => '100px',
@@ -68,7 +68,7 @@ class Mage_Adminhtml_Block_Report_Review_Customer_Grid extends Mage_Adminhtml_Bl
             'filter'    => false,
             'sortable'  => false,
             'renderer'  => 'adminhtml/report_grid_column_renderer_customer'
-        ));*/
+        ));
 
         $this->setFilterVisibility(false);
 

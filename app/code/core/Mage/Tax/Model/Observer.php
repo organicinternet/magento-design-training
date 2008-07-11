@@ -60,6 +60,7 @@ class Mage_Tax_Model_Observer
         $taxes = $order->getAppliedTaxes();
         foreach ($taxes as $row) {
             foreach ($row['rates'] as $tax) {
+                $baseRealAmount = $row['base_amount']/$row['percent']*$tax['percent'];
                 $data = array(
                             'order_id'=>$order->getId(),
                             'code'=>$tax['code'],
@@ -70,6 +71,7 @@ class Mage_Tax_Model_Observer
                             'amount'=>$row['amount'],
                             'base_amount'=>$row['base_amount'],
                             'process'=>$row['process'],
+                            'base_real_amount'=>$baseRealAmount,
                             );
 
                 Mage::getModel('sales/order_tax')->setData($data)->save();

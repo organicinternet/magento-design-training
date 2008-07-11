@@ -58,20 +58,36 @@ class Mage_Bundle_Model_Mysql4_Option_Collection extends Mage_Core_Model_Mysql4_
 
     public function setPositionOrder()
     {
-        $this->getSelect()->order('main_table.position asc');
+        $this->getSelect()->order('main_table.position asc')
+            ->order('main_table.option_id asc');
         return $this;
     }
 
-    public function appendSelections($selectionsCollection, $stripBefore = false)
+    /**
+     * Append selection to options
+     * stripBefore - indicates to reload
+     * appendAll - indecates do we need to filter by saleable and required custom options
+     *
+     * @param Mage_Bundle_Model_Mysql4_Selection_Collection $selectionsCollection
+     * @param bool $stripBefore
+     * @param bool $appendAll
+     * @return array
+     */
+    public function appendSelections($selectionsCollection, $stripBefore = false, $appendAll = true)
     {
         if ($stripBefore) {
             $this->_stripSelections();
         }
 
         if (!$this->_selectionsAppended) {
-            foreach ($selectionsCollection as $_selection) {
+            foreach ($selectionsCollection->getItems() as $key=>$_selection) {
                 if ($_option = $this->getItemById($_selection->getOptionId())) {
-                    $_option->addSelection($_selection);
+                    if ((!$appendAll && $_selection->isSalable() && !$_selection->getRequiredOptions()) || $appendAll) {
+                        $_selection->setOption($_option);
+                        $_option->addSelection($_selection);
+                    } else {
+                        $selectionsCollection->removeItemByKey($key);
+                    }
                 }
             }
             $this->_selectionsAppended = true;
@@ -79,6 +95,11 @@ class Mage_Bundle_Model_Mysql4_Option_Collection extends Mage_Core_Model_Mysql4_
         return $this->getItems();
     }
 
+    /**
+     * Removes appended selections before
+     *
+     * @return Mage_Bundle_Model_Mysql4_Option_Collection
+     */
     protected function _stripSelections()
     {
         foreach ($this->getItems() as $option) {

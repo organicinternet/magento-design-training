@@ -59,7 +59,8 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
         }
 
         $attributes = $this->getRequest()->getParam('attributes');
-        if ($attributes && $product->isConfigurable()) {
+        if ($attributes && $product->isConfigurable() &&
+            (!$productId || !$product->getTypeInstance()->getUsedProductAttributeIds())) {
             $product->getTypeInstance()->setUsedProductAttributeIds(
                 explode(",", base64_decode(urldecode($attributes)))
             );

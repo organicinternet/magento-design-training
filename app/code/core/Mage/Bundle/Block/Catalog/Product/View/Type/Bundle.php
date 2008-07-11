@@ -43,9 +43,18 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                 );
 
 
-            $this->_options = $optionCollection->appendSelections($selectionCollection);
+            $this->_options = $optionCollection->appendSelections($selectionCollection, false, false);
         }
         return $this->_options;
+    }
+
+    public function hasOptions()
+    {
+        $this->getOptions();
+        if (empty($this->_options) || !$this->getProduct()->isSalable()) {
+            return false;
+        }
+        return true;
     }
 
     public function getJsonConfig()
@@ -72,8 +81,8 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                 $selection = array (
                     'qty' => $_qty,
                     'customQty' => $_selection->getSelectionCanChangeQty(),
-                    'price' => $_selection->getFinalPrice(),
-                    'priceValue' => $_selection->getSelectionPriceValue(),
+                    'price' => Mage::helper('core')->currency($_selection->getFinalPrice(), false, false),
+                    'priceValue' => Mage::helper('core')->currency($_selection->getSelectionPriceValue(), false, false),
                     'priceType' => $_selection->getSelectionPriceType(),
                     'tierPrice' => $_selection->getTierPrice()
                 );
@@ -91,7 +100,7 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
             'selected' => $selected,
             'bundleId' => $this->getProduct()->getId(),
             'priceFormat' => Mage::app()->getLocale()->getJsPriceFormat(),
-            'basePrice' => $this->getProduct()->getPrice(),
+            'basePrice' => Mage::helper('core')->currency($this->getProduct()->getPrice(), false, false),
             'priceType' => $this->getProduct()->getPriceType(),
             'specialPrice' => $this->getProduct()->getSpecialPrice()
         );

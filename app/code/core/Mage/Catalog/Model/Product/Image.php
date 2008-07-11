@@ -29,9 +29,13 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
 {
     protected $_width;
     protected $_height;
-    protected $_keepAspectRatio;
-    protected $_fillOnResize;
-    protected $_fillColorOnResize;
+
+    protected $_keepAspectRatio  = true;
+    protected $_keepFrame        = true;
+    protected $_keepTransparency = true;
+    protected $_constrainOnly    = false;
+    protected $_backgroundColor  = array(255, 255, 255);
+
     protected $_baseFile;
     protected $_newFile;
     protected $_processor;
@@ -72,9 +76,45 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
     /**
      * @return Mage_Catalog_Model_Product_Image
      */
-    public function setKeepAspectRatio($keep = true)
+    public function setKeepAspectRatio($keep)
     {
         $this->_keepAspectRatio = (bool)$keep;
+        return $this;
+    }
+
+    /**
+     * @return Mage_Catalog_Model_Product_Image
+     */
+    public function setKeepFrame($keep)
+    {
+        $this->_keepFrame = (bool)$keep;
+        return $this;
+    }
+
+    /**
+     * @return Mage_Catalog_Model_Product_Image
+     */
+    public function setKeepTransparency($keep)
+    {
+        $this->_keepTransparency = (bool)$keep;
+        return $this;
+    }
+
+    /**
+     * @return Mage_Catalog_Model_Product_Image
+     */
+    public function setConstrainOnly($flag)
+    {
+        $this->_constrainOnly = (bool)$flag;
+        return $this;
+    }
+
+    /**
+     * @return Mage_Catalog_Model_Product_Image
+     */
+    public function setBackgroundColor(array $rgbArray)
+    {
+        $this->_backgroundColor = $rgbArray;
         return $this;
     }
 
@@ -84,9 +124,9 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
     public function setSize($size)
     {
         // determine width and height from string
-        list($width, $height) = @explode('x', strtolower($size), 2);
+        list($width, $height) = explode('x', strtolower($size), 2);
         foreach (array('width', 'height') as $wh) {
-            $$wh  = @(int)$$wh;
+            $$wh  = (int)$$wh;
             if (empty($$wh))
                 $$wh = null;
         }
@@ -153,15 +193,15 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Convert array of 4 items (decimal r, g, b, alpha) to string of their hex values
+     * Convert array of 3 items (decimal r, g, b) to string of their hex values
      *
-     * @param array $RGBAlphaArray
+     * @param array $rgbArray
      * @return string
      */
-    private function _rgbAlphaToString($RGBAlphaArray)
+    private function _rgbToString($rgbArray)
     {
         $result = array();
-        foreach ($RGBAlphaArray as $value) {
+        foreach ($rgbArray as $value) {
             if (null === $value) {
                 $result[] = 'null';
             }
@@ -175,59 +215,70 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
     /**
      * Set filenames for base file and new file
      *
-     * $file should contain heading slash
-     *
      * @param string $file
      * @return Mage_Catalog_Model_Product_Image
      */
     public function setBaseFile($file)
     {
-        // build base filename
+        if (($file) && (0 !== strpos($file, '/', 0))) {
+            $file = '/' . $file;
+        }
         $baseDir = Mage::getSingleton('catalog/product_media_config')->getBaseMediaPath();
 
-        if ($file && $file != 'no_selection' && !$this->_checkMemory($baseDir . '/' . $file)) {
+        if ('/no_selection' == $file) {
             $file = null;
         }
-        if (!$file || $file == 'no_selection') {
-            if (Mage::getStoreConfig("catalog/placeholder/{$this->getDestinationSubdir()}_placeholder") && file_exists($baseDir . '/placeholder/' . Mage::getStoreConfig("catalog/placeholder/{$this->getDestinationSubdir()}_placeholder"))) {
-                $file = '/placeholder/' . Mage::getStoreConfig("catalog/placeholder/{$this->getDestinationSubdir()}_placeholder");
-            } else {
-                $baseDir = Mage::getDesign()->getSkinBaseDir();
-                if (file_exists($baseDir . "/images/catalog/product/placeholder/{$this->getDestinationSubdir()}.jpg")) {
-                    $file = "/images/catalog/product/placeholder/{$this->getDestinationSubdir()}.jpg";
-                }
+        if ($file) {
+            if ((!file_exists($baseDir . $file)) || !$this->_checkMemory($baseDir . $file)) {
+                $file = null;
             }
-            $baseFile = $baseDir . $file;
-        } else {
-            $baseFile = $baseDir . '/' . $file;
-            if (!file_exists($baseFile)) {
-                if (file_exists($baseDir . "/images/catalog/product/placeholder/{$this->getDestinationSubdir()}.jpg")) {
-                    $baseFile = "/images/catalog/product/placeholder/{$this->getDestinationSubdir()}.jpg";
+        }
+        if (!$file) {
+            // check if placeholder defined in config
+            $isConfigPlaceholder = Mage::getStoreConfig("catalog/placeholder/{$this->getDestinationSubdir()}_placeholder");
+            $configPlaceholder   = '/placeholder/' . $isConfigPlaceholder;
+            if ($isConfigPlaceholder && file_exists($baseDir . $configPlaceholder)) {
+                $file = $configPlaceholder;
+            }
+            else {
+                // replace file with skin or default skin placeholder
+                $skinBaseDir     = Mage::getDesign()->getSkinBaseDir();
+                $skinPlaceholder = "/images/catalog/product/placeholder/{$this->getDestinationSubdir()}.jpg";
+                $file = $skinPlaceholder;
+                if (file_exists($skinBaseDir . $file)) {
+                    $baseDir = $skinBaseDir;
+                }
+                else {
+                    $baseDir = Mage::getDesign()->getSkinBaseDir(array('_theme' => 'default'));
                 }
             }
         }
 
-        if (!file_exists($baseFile)) {
+        $baseFile = $baseDir . $file;
+
+        if ((!$file) || (!file_exists($baseFile))) {
             throw new Exception(Mage::helper('catalog')->__('Image file not found'));
         }
         $this->_baseFile = $baseFile;
 
         // build new filename (most important params)
         $path = array(
-             Mage::getSingleton('catalog/product_media_config')->getBaseMediaPath()
-            ,'cache'
-            ,Mage::app()->getStore()->getId()
-            ,$path[] = $this->getDestinationSubdir()
+            Mage::getSingleton('catalog/product_media_config')->getBaseMediaPath(),
+            'cache',
+            Mage::app()->getStore()->getId(),
+            $path[] = $this->getDestinationSubdir()
         );
         if((!empty($this->_width)) || (!empty($this->_height)))
             $path[] = "{$this->_width}x{$this->_height}";
         // add misc params as a hash
         $path[] = md5(
             implode('_', array(
-                 (false === $this->_fillOnResize ? 'no' : '') . 'frame'
-                ,(null === $this->_fillColorOnResize ? 'ffffffnull' : $this->_rgbAlphaToString($this->_fillColorOnResize))
-                ,($this->_keepAspectRatio ? '' : 'non') . 'proportional'
-                ,'angle' . $this->_angle
+                ($this->_keepAspectRatio  ? '' : 'non') . 'proportional',
+                ($this->_keepFrame        ? '' : 'no')  . 'frame',
+                ($this->_keepTransparency ? '' : 'no')  . 'transparency',
+                ($this->_constrainOnly ? 'do' : 'not')  . 'constrainonly',
+                $this->_rgbToString($this->_backgroundColor),
+                'angle' . $this->_angle
             ))
         );
         // append prepared filename
@@ -267,50 +318,24 @@ class Mage_Catalog_Model_Product_Image extends Mage_Core_Model_Abstract
 //            }
             $this->_processor = new Varien_Image($this->getBaseFile());
         }
+        $this->_processor->keepAspectRatio($this->_keepAspectRatio);
+        $this->_processor->keepFrame($this->_keepFrame);
+        $this->_processor->keepTransparency($this->_keepTransparency);
+        $this->_processor->constrainOnly($this->_constrainOnly);
+        $this->_processor->backgroundColor($this->_backgroundColor);
         return $this->_processor;
     }
 
     /**
+     * @see Varien_Image_Adapter_Abstract
      * @return Mage_Catalog_Model_Product_Image
      */
     public function resize()
     {
-        if( is_null($this->getWidth()) && is_null($this->getHeight()) ) {
+        if (is_null($this->getWidth()) && is_null($this->getHeight())) {
             return $this;
         }
-
-        // prepare pre-resize params
-        if (null !== $this->_fillOnResize) {
-            $this->getImageProcessor()->setFillOnResize($this->_fillOnResize);
-        }
-        if (null !== $this->_fillColorOnResize) {
-            $this->getImageProcessor()->setFillColorOnResize($this->_fillColorOnResize);
-        }
-
-        // resize the image
-        $this->getImageProcessor()->resize($this->getWidth(), $this->getHeight(), $this->_keepAspectRatio);
-        return $this;
-    }
-
-    /**
-     * Passthrough to Varien_Image
-     *
-     * @return Mage_Catalog_Model_Product_Image
-     */
-    public function setFillOnResize($flag)
-    {
-        $this->_fillOnResize = (bool)$flag;
-        return $this;
-    }
-
-    /**
-     * Passthrough to Varien_Image
-     *
-     * @return Mage_Catalog_Model_Product_Image
-     */
-    public function setFillColorOnResize($RGBAlphaArray)
-    {
-        $this->_fillColorOnResize = $RGBAlphaArray;
+        $this->getImageProcessor()->resize($this->_width, $this->_height);
         return $this;
     }
 

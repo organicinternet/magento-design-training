@@ -39,10 +39,10 @@
             <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
             <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form">
-				<fieldset>
-					<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
-					<input type="hidden" name="related_product" id="related-products-field" value="" />
-				</fieldset>
+                <fieldset>
+                    <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                    <input type="hidden" name="related_product" id="related-products-field" value="" />
+                </fieldset>
 
                 <?php echo $this->getChildHtml('alert_urls') ?>
 
@@ -74,20 +74,12 @@
     </div>
 
     <div class="product-collateral">
-		<h3><?php echo $this->__('Product Description') ?></h3>
-        <div class="product-description"><?php echo nl2br($_product->getDescription()) ?></div>
+        <h3><?php echo $this->__('Product Description') ?></h3>
+        <?php echo $this->getChildHtml('description') ?>
 
         <?php if($_additional = $this->getAdditionalData()): ?>
             <h3><?php echo $this->__('Additional Information') ?></h3>
-            <table cellspacing="0" class="data-table" id="product-attribute-specs-table">
-            <?php foreach ($_additional as $_data): ?>
-	            <tr>
-	                <td class="label"><?php echo $_data['label'] ?></td>
-	                <td class="data"><?php echo $_data['value'] ?></td>
-	            </tr>
-            <?php endforeach; ?>
-            </table>
-            <script type="text/javascript">decorateTable('product-attribute-specs-table')</script>
+            <?php echo $this->getChildHtml('additional') ?>
         <?php endif; ?>
 
         <?php echo $this->getChildHtml('upsell_products') ?>

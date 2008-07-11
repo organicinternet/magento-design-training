@@ -36,7 +36,7 @@
             <?php endif; ?>
             </td>
             <?php if($this->getLastPageNum()>1): ?>
-            <td>
+            <td class="pages">
                 <strong><?php echo $this->__('Page:') ?></strong>
                 <ol>
                 <?php if (!$this->isFirstPage()): ?>
@@ -97,7 +97,7 @@
                 <?php endforeach; ?>
             </td>
             <?php if ($this->helper('rss/catalog')->getTagFeedUrl()): ?>
-            <td class="a-right"><a href="<?php echo $this->helper('rss/catalog')->getTagFeedUrl() ?>" class="no-wrap link-feed"><?php echo $this->__('Subscribe to Feed') ?></a></td>
+            <td class="a-right"><a href="<?php echo $this->helper('rss/catalog')->getTagFeedUrl() ?>" class="nobr link-feed"><?php echo $this->__('Subscribe to Feed') ?></a></td>
             <?php endif; ?>
         </tr>
     </table>

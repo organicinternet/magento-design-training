@@ -60,4 +60,14 @@ class Mage_Checkout_Block_Onepage_Success extends Mage_Core_Block_Template
         return $this->getUrl('sales/guest/printOrder', array('order_id'=>Mage::getSingleton('checkout/session')->getLastOrderId()));*/
         return $this->getUrl('sales/order/print', array('order_id'=>Mage::getSingleton('checkout/session')->getLastOrderId()));
     }
+
+    /**
+     * Get url for view order details
+     *
+     * @return string
+     */
+    public function getViewOrderUrl()
+    {
+        return $this->getUrl('sales/order/view/', array('order_id'=>Mage::getSingleton('checkout/session')->getLastOrderId(), '_secure' => true));
+    }
 }

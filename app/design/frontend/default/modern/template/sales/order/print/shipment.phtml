@@ -49,7 +49,7 @@
             <address><?php echo $_order->getBillingAddress()->format('html') ?></address>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="col2-set">
         <div class="col-1">
             <h4><?php echo $this->__('Shipping Method') ?></h4>
@@ -60,27 +60,29 @@
             <?php echo $this->getPaymentInfoHtml() ?>
         </div>
     </div>
-    <br/>
+    <br />
     <h4><?php echo $this->__('Items Shipped') ?></h4>
-    <table cellspacing="0" class="data-table data-bundle">
+    <table cellspacing="0" class="data-table" id="my-shipment-table-<?php echo $_shipment->getId(); ?>">
+        <col />
+        <col width="35%" />
+        <col width="1" />
         <thead>
             <tr>
                 <th><?php echo $this->__('Product Name') ?></th>
-                <th class="a-center" width="10%"><?php echo $this->__('SKU') ?></th>
-                <th class="a-center" width="10%"><?php echo $this->__('Qty Shipped') ?></th>
+                <th><?php echo $this->__('SKU') ?></th>
+                <th class="a-center"><span class="nobr"><?php echo $this->__('Qty Shipped') ?></span></th>
             </tr>
         </thead>
-            <?php $_items = $_shipment->getItemsCollection(); ?>
+        <?php $_items = $_shipment->getItemsCollection(); ?>
         <?php $_count = count($_items) ?>
-            <?php $_index = 0; ?>
-            <?php foreach ($_items as $_item): ?>
-        <?php if ($_item->getOrderItem()->getParentItem()) continue; else $_index++ ?>
-        <tbody class="<?php echo ($_index%2 ? 'even' : 'odd') ?>">
+        <?php foreach ($_items as $_item): ?>
+        <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+        <tbody>
             <?php echo $this->getItemHtml($_item) ?>
         </tbody>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
     </table>
-    <br/>
+    <script type="text/javascript">decorateTable('my-shipment-table-<?php echo $_shipment->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
 <?php endforeach; ?>
 <?php endif; ?>
 <script type="text/javascript">window.print();</script>

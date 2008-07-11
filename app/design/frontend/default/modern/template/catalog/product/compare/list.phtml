@@ -20,7 +20,7 @@
 ?>
 <div class="page-head button-level">
     <h3><?php echo $this->__('Compare Products') ?></h3>
-    <a href="#" class="link-print right" onclick="print();"><?php echo $this->__('Print This Page') ?></a>
+    <a href="#" class="link-print f-right" onclick="print();"><?php echo $this->__('Print This Page') ?></a>
 </div>
 <?php $_total=$this->getItems()->getSize() ?>
 <?php if($_total): ?>
@@ -111,14 +111,10 @@
         </tbody>
     </table>
     <div class="button-set">
-        <a href="#" onclick="window.close();window.opener.focus();"><img src="<?php echo $this->getSkinUrl('images/btn_close_window.gif') ?>" alt="<?php echo $this->__('Close Window') ?>"/></a>
+        <a href="#" onclick="window.close(); window.opener.focus();"><img src="<?php echo $this->getSkinUrl('images/btn_close_window.gif') ?>" alt="<?php echo $this->__('Close Window') ?>"/></a>
     </div>
 </div>
-<script type="text/javascript">
-    decorateTable('product_comparison');
-</script>
+<script type="text/javascript">decorateTable('product_comparison');</script>
 <?php else: ?>
-<script type="text/javascript">
-    window.close();
-</script>
+<script type="text/javascript">window.close();</script>
 <?php endif; ?>

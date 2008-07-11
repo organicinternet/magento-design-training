@@ -365,17 +365,11 @@ class Mage_Tax_Helper_Data extends Mage_Core_Helper_Abstract
         $result = '';
 
         if ($this->priceIncludesTax()) {
-            if ($this->displayPriceExcludingTax() || $this->displayBothPrices()) {
-                if ($defaultTaxString) {
-                    $result = "-({$priceField}/(1+({$defaultTaxString}))*{$defaultTaxString})";
-                }
-            } else {
-                if ($defaultTaxString) {
-                    $result  = "-({$priceField}/(1+({$defaultTaxString}))*{$defaultTaxString})";
-                }
-                if ($currentTaxString) {
-                    $result .= "+(({$priceField}{$result})*{$currentTaxString})";
-                }
+            if ($defaultTaxString) {
+                $result  = "-({$priceField}/(1+({$defaultTaxString}))*{$defaultTaxString})";
+            }
+            if (!$this->displayPriceExcludingTax() && $currentTaxString) {
+                $result .= "+(({$priceField}{$result})*{$currentTaxString})";
             }
         } else {
             if ($this->displayPriceIncludingTax()) {
@@ -390,5 +384,10 @@ class Mage_Tax_Helper_Data extends Mage_Core_Helper_Abstract
     public function discountTax($store=null)
     {
         return ((int)Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_DISCOUNT_TAX, $store) == 1);
+    }
+
+    public function getTaxBasedOn($store = null)
+    {
+        return Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON, $store);
     }
 }

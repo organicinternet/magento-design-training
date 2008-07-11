@@ -20,17 +20,11 @@
 
 * { margin:0; padding:0; }
 
-body {
-    background:url(../images/body_bg.gif) repeat #f2f2f2;
-    color:#444;
-    font:11px/1.55em arial, helvetica, sans-serif;
-    text-align:center;
-    }
+body        { background:#f2f2f2 url(../images/body_bg.gif) 0 0 repeat; color:#444; font:11px/1.55em arial, helvetica, sans-serif; text-align:center; }
 a           { color:#4f8100; text-decoration:none; }
 a:hover     { color:#4f8100; text-decoration:underline; }
 a img       { border:0;}
-:focus      { outline: 0; }
-
+:focus      { outline:0; }
 
 /* Heading */
 h1          { font-size:2em; line-height:1.17em; }

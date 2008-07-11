@@ -119,7 +119,8 @@ class Mage_Reports_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Re
 
         $this->getSelect()
             ->from("", array("carts" => "({$countSelect})"))
-            ->group("e.{$this->getProductEntityId()}");
+            ->group("e.{$this->getProductEntityId()}")
+            ->having('carts > 0');
 
         return $this;
     }

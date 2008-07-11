@@ -121,6 +121,14 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
         return $this->getProduct()->getOptions();
     }
 
+    public function hasOptions()
+    {
+        if ($this->getOptions()) {
+            return true;
+        }
+        return false;
+    }
+
     public function getJsonConfig()
     {
         $config = array();
@@ -132,19 +140,11 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
                 $_tmpPriceValues = array();
                 foreach ($option->getValues() as $value) {
                     /* @var $value Mage_Catalog_Model_Product_Option_Value */
-                    if ($value->getPriceType() == 'fixed') {
-                	   $_tmpPriceValues[$value->getId()] = $value->getPrice();
-                    } else {
-                        $_tmpPriceValues[$value->getId()] = $this->getProduct()->getFinalPrice()*($value->getPrice()/100);
-                    }
+            	   $_tmpPriceValues[$value->getId()] = Mage::helper('core')->currency($value->getPrice(true), false, false);
                 }
                 $priceValue = $_tmpPriceValues;
             } else {
-                if ($option->getPriceType() == 'fixed') {
-                    $priceValue = $option->getPrice();
-                } else {
-                    $priceValue = $this->getProduct()->getFinalPrice()*($option->getPrice()/100);
-                }
+                $priceValue = Mage::helper('core')->currency($option->getPrice(), false, false);
             }
             $config[$option->getId()] = $priceValue;
         }

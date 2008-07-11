@@ -171,7 +171,12 @@ Product view
             <block type="catalog/product_view" name="product.info" template="catalog/product/view.phtml">
                 <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
                 <block type="core/text_list" name="alert.urls" as="alert_urls" />
-                <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml"/>
+                <block type="catalog/product_view_tabs" name="product.info.tabs" as="info_tabs" template="catalog/product/view/tabs.phtml" >
+                    <action method="addTab" translate="title" module="catalog"><alias>description</alias><title>Product Description</title><block>catalog/product_view_description</block><template>catalog/product/view/description.phtml</template></action>
+                    <action method="addTab" translate="title" module="catalog"><alias>upsell_products</alias><title>We Also Recommend</title><block>catalog/product_list_upsell</block><template>catalog/product/list/upsell.phtml</template></action>
+                    <action method="addTab" translate="title" module="catalog"><alias>additional</alias><title>Additional Information</title><block>catalog/product_view_attributes</block><template>catalog/product/view/attributes.phtml</template></action>
+                </block>
+
                 <block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data" />
                 <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
                     <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
@@ -179,25 +184,38 @@ Product view
                     <action method="addOptionRenderer"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
                     <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
                 </block>
-
+<!-- seems like a duplicate of previous operator
                 <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
                     <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
                     <action method="addOptionRenderer"><type>file</type><block>catalog/product_view_options_type_file</block><template>catalog/product/view/options/type/file.phtml</template></action>
                     <action method="addOptionRenderer"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
                     <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
                 </block>
+-->
+                <block type="catalog/product_view" name="product.info.addto" template="catalog/product/view/addto.phtml" />
+                <block type="catalog/product_view" name="product.info.addtocart" template="catalog/product/view/addtocart.phtml" />
 
                 <block type="core/template_facade" name="product.info.container1" as="container1" template="catalog/product/view/container.phtml">
                     <action method="setDataByKey"><key>alias_in_layout</key><value>container1</value></action>
                     <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
                     <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockBeforeIfEquals"><block>product.info.addto</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockAfterIfEquals"><block>product.info.addtocart</block><if>alias_in_layout</if><equals>options_container</equals></action>
                 </block>
                 <block type="core/template_facade" name="product.info.container2" as="container2" template="catalog/product/view/container.phtml">
                     <action method="setDataByKey"><key>alias_in_layout</key><value>container2</value></action>
                     <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
                     <action method="insertBlockIfEquals"><block>product.info.options</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockBeforeIfEquals"><block>product.info.addto</block><if>alias_in_layout</if><equals>options_container</equals></action>
+                    <action method="insertBlockAfterIfEquals"><block>product.info.addtocart</block><if>alias_in_layout</if><equals>options_container</equals></action>
                 </block>
             </block>
+        </reference>
+        <reference name="upsell_products">
+            <action method="setColumnCount"><columns>5</columns></action>
+            <!--
+                <action method="setItemLimit"><type>upsell</type><limit>5</limit></action>
+            -->
         </reference>
         <reference name="left">
             <block type="catalog/product_list_related" name="catalog.product.related" before="-" template="catalog/product/list/related.phtml"/>

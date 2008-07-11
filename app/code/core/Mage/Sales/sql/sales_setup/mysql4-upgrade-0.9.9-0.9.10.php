@@ -30,8 +30,8 @@ WHERE `product_id` NOT IN (
 )
 ");
 
-$installer->run("
-ALTER TABLE `{$this->getTable('sales_flat_quote_item')}`
-ADD CONSTRAINT `FK_SALES_QUOTE_ITEM_CATALOG_PRODUCT_ENTITY`
-FOREIGN KEY (`product_id`) REFERENCES `{$this->getTable('catalog_product_entity')}` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE
-");
+$installer->getConnection()->addConstraint(
+    'FK_SALES_QUOTE_ITEM_CATALOG_PRODUCT_ENTITY',
+    $this->getTable('sales_flat_quote_item'), 'product_id',
+    $this->getTable('catalog_product_entity'), 'entity_id'
+);

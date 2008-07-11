@@ -43,7 +43,7 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
     {
         $this->setId($this->getId().'_'.$this->getIndex());
         $this->getChild('reset_filter_button')->setData('onclick', $this->getJsObjectName().'.resetFilter()');
-        $this->getChild('search_button')->setData('onclick', $this->getJsObjectName().'.resetFilter()');
+        $this->getChild('search_button')->setData('onclick', $this->getJsObjectName().'.doFilter()');
 
         return parent::_beforeToHtml();
     }
@@ -55,6 +55,7 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('price')
+            ->addAttributeToSelect('attribute_set_id')
             ->addAttributeToFilter('type_id', array('in' => $this->getAllowedSelectionTypes()))
             ->addFilterByRequiredOptions()
             ->addStoreFilter();
@@ -88,6 +89,21 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_
             'index'     => 'name',
             'column_css_class'=> 'name'
         ));
+
+        $sets = Mage::getResourceModel('eav/entity_attribute_set_collection')
+            ->setEntityTypeFilter(Mage::getModel('catalog/product')->getResource()->getTypeId())
+            ->load()
+            ->toOptionHash();
+
+        $this->addColumn('set_name',
+            array(
+                'header'=> Mage::helper('catalog')->__('Attrib. Set Name'),
+                'width' => '100px',
+                'index' => 'attribute_set_id',
+                'type'  => 'options',
+                'options' => $sets,
+        ));
+
         $this->addColumn('sku', array(
             'header'    => Mage::helper('sales')->__('SKU'),
             'width'     => '80px',

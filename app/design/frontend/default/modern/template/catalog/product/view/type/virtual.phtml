@@ -27,13 +27,14 @@
 <?php $_product = $this->getProduct() ?>
 
 <?php if($_product->isSaleable()): ?>
-    <p><small><?php echo $this->__('Availability: In stock.') ?></small></p>
+    <p><?php echo $this->__('Availability: In stock.') ?></p>
 <?php else: ?>
-    <p><small><?php echo $this->__('Availability: Out of stock.') ?></small></p>
+    <p><?php echo $this->__('Availability: Out of stock.') ?></p>
 <?php endif; ?>
 
 <?php echo $this->getPriceHtml($_product) ?>
 
+<?php /*
 <?php if($_product->isSaleable()): ?>
     <fieldset class="add-to-cart-box">
         <legend><?php echo $this->__('Add Items to Cart') ?></legend>
@@ -55,4 +56,4 @@
     <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a>
 <?php endif; ?>
 </div>
-
+*/ ?>

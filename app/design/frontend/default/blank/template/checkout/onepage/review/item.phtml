@@ -25,12 +25,12 @@
         <?php if ($_options = $this->getOptionList()): ?>
         <ul>
             <?php foreach ($_options as $_option): ?>
-            <li><strong><?php echo $_option['label'] ?>:</strong><br />
-            <? if (is_array($_option['value'])): ?>
+            <li><strong><?php echo $_option['label'] ?></strong><br />
+            <?php if (is_array($_option['value'])): ?>
                 <?php echo implode('<br />', $_option['value']) ?>
-            <? else: ?>
+            <?php else: ?>
                 <?php echo $this->htmlEscape($_option['value']) ?>
-            <? endif; ?>
+            <?php endif; ?>
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>

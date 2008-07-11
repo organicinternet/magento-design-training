@@ -52,7 +52,7 @@ class Mage_Adminhtml_Model_System_Config_Backend_Product_Alert_Cron extends Mage
             intval($time[0]),                                   # Hour
             ($frequncy == $frequencyMonthly) ? '1' : '*',       # Day of the Month
             '*',                                                # Month of the Year
-            ($frequncy == $frequencyDaily) ? '1' : '*',         # Day of the Week
+            ($frequncy == $frequencyWeekly) ? '1' : '*',         # Day of the Week
         );
 
         $cronExprString     = join(' ', $cronExprArray);

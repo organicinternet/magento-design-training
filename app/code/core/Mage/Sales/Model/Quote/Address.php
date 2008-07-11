@@ -207,15 +207,29 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
                 $items[] = $aItem;
             }
         } else {
+            $isQuoteVirtual = $this->getQuote()->isVirtual();
             foreach ($quoteItems as $qItem) {
                 if ($qItem->isDeleted()) {
                     continue;
                 }
-                if ($this->getAddressType() == self::TYPE_BILLING && $qItem->getProduct()->getIsVirtual()) {
-                    $items[] = $qItem;
+//                if ($this->getAddressType() == self::TYPE_BILLING && $qItem->getProduct()->getIsVirtual()) {
+//                    $items[] = $qItem;
+//                }
+//                elseif ($this->getAddressType() == self::TYPE_SHIPPING && !$qItem->getProduct()->getIsVirtual()) {
+//                    $items[] = $qItem;
+//                }
+                /**
+                 * For virtual quote we assign all items to billing address
+                 */
+                if ($isQuoteVirtual) {
+                	if ($this->getAddressType() == self::TYPE_BILLING) {
+                		$items[] = $qItem;
+                	}
                 }
-                elseif ($this->getAddressType() == self::TYPE_SHIPPING && !$qItem->getProduct()->getIsVirtual()) {
-                    $items[] = $qItem;
+                else {
+                	if ($this->getAddressType() == self::TYPE_SHIPPING) {
+                		$items[] = $qItem;
+                	}
                 }
             }
         }
@@ -227,15 +241,19 @@ class Mage_Sales_Model_Quote_Address extends Mage_Customer_Model_Address_Abstrac
     {
         $items = array();
         foreach ($this->getAllItems() as $item) {
-        	if (!$item->getParentItemId()) {
-        	    $items[] = $item;
-        	}
+            if (!$item->getParentItemId()) {
+                $items[] = $item;
+            }
         }
         return $items;
     }
 
     public function getItemQty($itemId=0)
     {
+        if ($this->hasData('item_qty')) {
+            return $this->getData('item_qty');
+        }
+
         $qty = 0;
         if ($itemId == 0) {
             foreach ($this->getAllItems() as $item) {

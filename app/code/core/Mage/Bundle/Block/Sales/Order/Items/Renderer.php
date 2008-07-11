@@ -27,8 +27,6 @@
  */
 class Mage_Bundle_Block_Sales_Order_Items_Renderer extends Mage_Sales_Block_Order_Item_Renderer_Default
 {
-    protected $_itemsArray = null;
-
     public function isShipmentSeparately($item = null)
     {
         if ($item) {
@@ -96,21 +94,26 @@ class Mage_Bundle_Block_Sales_Order_Items_Renderer extends Mage_Sales_Block_Orde
         return false;
     }
 
-    public function getBundleOptions() {
-        if ($options = $this->getOrderItem()->getProductOptions()) {
-            if (isset($options['bundle_options'])) {
-                return $options['bundle_options'];
-            }
+    public function getSelectionAttributes($item) {
+        if ($item instanceof Mage_Sales_Model_Order_Item) {
+            $options = $item->getProductOptions();
+        } else {
+            $options = $item->getOrderItem()->getProductOptions();
         }
-        return array();
+        if (isset($options['bundle_selection_attributes'])) {
+            return unserialize($options['bundle_selection_attributes']);
+        }
+        return null;
     }
 
-    public function getValueHtml($value)
+    public function getValueHtml($item)
     {
-        if (is_array($value)) {
-            return sprintf('%d', $value['qty']) . ' x ' . $this->htmlEscape($value['title']) . " " . $this->getOrder()->formatPrice($value['price']);
+        if ($attributes = $this->getSelectionAttributes($item)) {
+            return sprintf('%d', $attributes['qty']) . ' x ' .
+                $this->htmlEscape($item->getName()) .
+                " " . $this->getOrder()->formatPrice($attributes['price']);
         } else {
-            return $this->htmlEscape($value);
+            return $this->htmlEscape($item->getName());
         }
     }
 
@@ -122,28 +125,28 @@ class Mage_Bundle_Block_Sales_Order_Items_Renderer extends Mage_Sales_Block_Orde
      */
     public function getChilds($item)
     {
-        if (!$this->_itemsArray) {
-            if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
-                $_items = $item->getInvoice()->getAllItems();
-            } else if ($item instanceof Mage_Sales_Model_Order_Shipment_Item) {
-                $_items = $item->getShipment()->getAllItems();
-            } else if ($item instanceof Mage_Sales_Model_Order_Creditmemo_Item) {
-                $_items = $item->getCreditmemo()->getAllItems();
-            }
+        $_itemsArray = array();
 
-            if ($_items) {
-                foreach ($_items as $_item) {
-                    if ($parentItem = $_item->getOrderItem()->getParentItem()) {
-                        $this->_itemsArray[$parentItem->getId()][$_item->getOrderItemId()] = $_item;
-                    } else {
-                        $this->_itemsArray[$_item->getOrderItem()->getId()][$_item->getOrderItemId()] = $_item;
-                    }
+        if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
+            $_items = $item->getInvoice()->getAllItems();
+        } else if ($item instanceof Mage_Sales_Model_Order_Shipment_Item) {
+            $_items = $item->getShipment()->getAllItems();
+        } else if ($item instanceof Mage_Sales_Model_Order_Creditmemo_Item) {
+            $_items = $item->getCreditmemo()->getAllItems();
+        }
+
+        if ($_items) {
+            foreach ($_items as $_item) {
+                if ($parentItem = $_item->getOrderItem()->getParentItem()) {
+                    $_itemsArray[$parentItem->getId()][$_item->getOrderItemId()] = $_item;
+                } else {
+                    $_itemsArray[$_item->getOrderItem()->getId()][$_item->getOrderItemId()] = $_item;
                 }
             }
         }
 
-        if (isset($this->_itemsArray[$item->getOrderItem()->getId()])) {
-            return $this->_itemsArray[$item->getOrderItem()->getId()];
+        if (isset($_itemsArray[$item->getOrderItem()->getId()])) {
+            return $_itemsArray[$item->getOrderItem()->getId()];
         } else {
             return null;
         }

@@ -99,7 +99,7 @@ class Mage_Adminhtml_Block_Report_Tag_Popular_Grid extends Mage_Adminhtml_Block_
                 'getter'    => 'getId',
                 'actions'   => array(
                     array(
-                        'caption' => Mage::helper('catalog')->__('Show reviews'),
+                        'caption' => Mage::helper('catalog')->__('Show Details'),
                         'url'     => array(
                             'base'=>'*/*/tagDetail'
                         ),

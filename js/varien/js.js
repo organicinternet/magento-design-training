@@ -63,43 +63,96 @@ function setLanguageCode(code, fromCode){
 }
 
 /**
- * Set "odd", "even", "first" and "last" CSS classes for table rows and cells
+ * Add classes to specified elements.
+ * Supported classes are: 'odd', 'even', 'first', 'last'
+ *
+ * @param elements - array of elements to be decorated
+ * [@param decorateParams] - array of classes to be set. If omitted, all available will be used
  */
-function decorateTable(table){
-    table = $(table);
-    if(table){
-        var allRows = table.getElementsBySelector('tr')
-        var bodyRows = table.getElementsBySelector('tbody tr');
-        var headRows = table.getElementsBySelector('thead tr');
-        var footRows = table.getElementsBySelector('tfoot tr');
+function decorateGeneric(elements, decorateParams)
+{
+    var allSupportedParams = ['odd', 'even', 'first', 'last'];
+    var _decorateParams = {};
+    var total = elements.length;
 
-        for(var i=0; i<bodyRows.length; i++){
-            if((i+1)%2==0) {
-                bodyRows[i].addClassName('even');
+    if (total) {
+        // determine params called
+        if (typeof(decorateParams) == 'undefined') {
+            decorateParams = allSupportedParams;
+        }
+        if (!decorateParams.length) {
+            return;
+        }
+        for (var k in allSupportedParams) {
+            _decorateParams[allSupportedParams[k]] = false;
+        }
+        for (var k in decorateParams) {
+            _decorateParams[decorateParams[k]] = true;
+        }
+
+        // decorate elements
+        // elements[0].addClassName('first'); // will cause bug in IE (#5587)
+        if (_decorateParams.first) {
+            Element.addClassName(elements[0], 'first');
+        }
+        if (_decorateParams.last) {
+            Element.addClassName(elements[total-1], 'last');
+        }
+        for (var i = 0; i < total; i++) {
+            if ((i + 1) % 2 == 0) {
+                if (_decorateParams.even) {
+                    Element.addClassName(elements[i], 'even');
+                }
             }
             else {
-                bodyRows[i].addClassName('odd');
+                if (_decorateParams.odd) {
+                    Element.addClassName(elements[i], 'odd');
+                }
             }
         }
+    }
+}
 
-        if(headRows.length) {
-          headRows[0].addClassName('first');
-          headRows[headRows.length-1].addClassName('last');
+/**
+ * Decorate table rows and cells, tbody etc
+ * @see decorateGeneric()
+ */
+function decorateTable(table, options) {
+    var table = $(table);
+    if (table) {
+        // set default options
+        var _options = {
+            'tbody'    : false,
+            'tbody tr' : ['odd', 'even', 'first', 'last'],
+            'thead tr' : ['first', 'last'],
+            'tfoot tr' : ['first', 'last'],
+            'tr td'    : ['last']
+        };
+        // overload options
+        if (typeof(options) != 'undefined') {
+            for (var k in options) {
+                _options[k] = options[k];
+            }
         }
-        if(bodyRows.length) {
-          bodyRows[0].addClassName('first');
-          bodyRows[bodyRows.length-1].addClassName('last');
+        // decorate
+        if (_options['tbody']) {
+            decorateGeneric(table.getElementsBySelector('tbody'), _options['tbody']);
         }
-        if(footRows.length) {
-          footRows[0].addClassName('first');
-          footRows[footRows.length-1].addClassName('last');
+        if (_options['tbody tr']) {
+            decorateGeneric(table.getElementsBySelector('tbody tr'), _options['tbody tr']);
         }
-        if(allRows.length) {
-            for(var i=0;i<allRows.length;i++){
-                var cols =allRows[i].getElementsByTagName('TD');
-                if(cols.length) {
-                    Element.addClassName(cols[cols.length-1], 'last');
-                };
+        if (_options['thead tr']) {
+            decorateGeneric(table.getElementsBySelector('thead tr'), _options['thead tr']);
+        }
+        if (_options['tfoot tr']) {
+            decorateGeneric(table.getElementsBySelector('tfoot tr'), _options['tfoot tr']);
+        }
+        if (_options['tr td']) {
+            var allRows = table.getElementsBySelector('tr');
+            if (allRows.length) {
+                for (var i = 0; i < allRows.length; i++) {
+                    decorateGeneric(allRows[i].getElementsByTagName('TD'), _options['tr td']);
+                }
             }
         }
     }
@@ -107,6 +160,7 @@ function decorateTable(table){
 
 /**
  * Set "odd", "even" and "last" CSS classes for list items
+ * @see decorateGeneric()
  */
 function decorateList(list, nonRecursive) {
     if ($(list)) {
@@ -116,38 +170,19 @@ function decorateList(list, nonRecursive) {
         else {
             var items = $(list).childElements();
         }
-        if(items.length) items[items.length-1].addClassName('last');
-        for(var i=0; i<items.length; i++){
-            if((i+1)%2==0)
-                items[i].addClassName('even');
-            else
-                items[i].addClassName('odd');
-        }
+        decorateGeneric(items, ['odd', 'even', 'last']);
     }
 }
 
 /**
  * Set "odd", "even" and "last" CSS classes for list items
+ * @see decorateGeneric()
  */
-function decorateDataList(list){
-  list = $(list);
-    if(list){
-        var items = list.getElementsBySelector('dt')
-        if(items.length) items[items.length-1].addClassName('last');
-        for(var i=0; i<items.length; i++){
-            if((i+1)%2==0)
-                items[i].addClassName('even');
-            else
-                items[i].addClassName('odd');
-        }
-        var items = list.getElementsBySelector('dd')
-        if(items.length) items[items.length-1].addClassName('last');
-        for(var i=0; i<items.length; i++){
-            if((i+1)%2==0)
-                items[i].addClassName('even');
-            else
-                items[i].addClassName('odd');
-        }
+function decorateDataList(list) {
+    list = $(list);
+    if (list) {
+        decorateGeneric(list.getElementsBySelector('dt'), ['odd', 'even', 'last']);
+        decorateGeneric(list.getElementsBySelector('dd'), ['odd', 'even', 'last']);
     }
 }
 
@@ -185,7 +220,13 @@ function formatCurrency(price, format, showPlus){
 
     j = (j = i.length) > groupLength ? j % groupLength : 0;
     re = new RegExp("(\\d{" + groupLength + "})(?=\\d)", "g");
-    r = (j ? i.substr(0, j) + groupSymbol : "") + i.substr(j).replace(re, "$1" + groupSymbol) + (precision ? decimalSymbol + Math.abs(price - i).toFixed(precision).slice(2) : "")
+
+    /**
+     * replace(/-/, 0) is only for fixing Safari bug which appears
+     * when Math.abs(0).toFixed() executed on "0" number.
+     * Result is "0.-0" :(
+     */
+    r = (j ? i.substr(0, j) + groupSymbol : "") + i.substr(j).replace(re, "$1" + groupSymbol) + (precision ? decimalSymbol + Math.abs(price - i).toFixed(precision).replace(/-/, 0).slice(2) : "")
 
     if (format.pattern.indexOf('{sign}') == -1) {
         pattern = s + format.pattern;
@@ -197,14 +238,14 @@ function formatCurrency(price, format, showPlus){
 };
 
 function expandDetails(el, childClass) {
-	if (Element.hasClassName(el,'show-details')) {
-		$$(childClass).each(function(item){item.hide()});
-		Element.removeClassName(el,'show-details');
-	}
-	else {
-		$$(childClass).each(function(item){item.show()});
-		Element.addClassName(el,'show-details');
-	}
+    if (Element.hasClassName(el,'show-details')) {
+        $$(childClass).each(function(item){item.hide()});
+        Element.removeClassName(el,'show-details');
+    }
+    else {
+        $$(childClass).each(function(item){item.show()});
+        Element.addClassName(el,'show-details');
+    }
 }
 
 // Version 1.0
@@ -383,3 +424,22 @@ Validation.addAllThese([
         return elm.validate();
     }]
 ]);
+
+function truncateOptions() {
+    $$('.truncate-option').each(function(element){
+        Event.observe(element, 'mouseover', function(){
+            if ($(element.id+'_full_view')) {
+                $(element.id+'_full_view').style.display = 'block';
+            }
+        });
+        Event.observe(element, 'mouseout', function(){
+            if ($(element.id+'_full_view')) {
+                $(element.id+'_full_view').style.display = 'none';
+            }
+        });
+
+    });
+}
+Event.observe(window, 'load', function(){
+   truncateOptions();
+});

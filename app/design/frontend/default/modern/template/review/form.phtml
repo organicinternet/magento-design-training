@@ -18,12 +18,13 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
+<br />
 <div class="page-head">
     <h3><?php echo $this->__('Write Your Own Review') ?></h3>
 </div>
 <h4><?php echo $this->__("You're reviewing: %s", $this->htmlEscape($this->getProductInfo()->getName())) ?></h4>
 <form action="<?php echo $this->getAction() ?>" method="post" id="review-form">
-<div>
+<fieldset>
     <?php if( $this->getRatings() && $this->getRatings()->getSize()): ?>
     <strong><?php echo $this->__('How do you rate this product?') ?><span class="required">*</span></strong><br/>
     <span id="input-message-box"></span>
@@ -69,9 +70,10 @@
     <div class="button-set">
         <input type="image" src="<?php echo $this->getSkinUrl('images/btn_submit.gif');?>" alt="<?php echo $this->__('Submit Review') ?>"/>
     </div>
-</div>
+</fieldset>
 </form>
 <script type="text/javascript">
+//<![CDATA[
     var dataForm = new VarienForm('review-form');
 
     Validation.addAllThese(
@@ -103,4 +105,5 @@
             }]
     ]
     );
+//]]>
 </script>

@@ -61,6 +61,8 @@ class Mage_Catalog_Model_Convert_Adapter_Product
 
     protected $_inventoryOtherFields = array();
 
+    protected $_toNumber = array();
+
     /**
      * Load product collection Id(s)
      *
@@ -254,6 +256,9 @@ class Mage_Catalog_Model_Convert_Adapter_Product
             }
             if ($node->is('img')) {
                 $this->_imageFields[] = $code;
+            }
+            if ($node->is('to_number')) {
+                $this->_toNumber[] = $code;
             }
         }
 
@@ -532,6 +537,10 @@ class Mage_Catalog_Model_Convert_Adapter_Product
                 $setValue = array();
             }
 
+            if ($attribute->getBackendType() == 'decimal') {
+                $setValue = $this->getNumber($value);
+            }
+
             if ($attribute->usesSource()) {
                 $options = $attribute->getSource()->getAllOptions(false);
 
@@ -563,7 +572,12 @@ class Mage_Catalog_Model_Convert_Adapter_Product
         $inventoryFields = $product->getTypeId() == 'simple' ? $this->_inventorySimpleFields : $this->_inventoryOtherFields;
         foreach ($inventoryFields as $field) {
             if (isset($importData[$field])) {
-                $stockData[$field] = $importData[$field];
+                if (in_array($field, $this->_toNumber)) {
+                    $stockData[$field] = $this->getNumber($importData[$field]);
+                }
+                else {
+                    $stockData[$field] = $importData[$field];
+                }
             }
         }
         $product->setStockData($stockData);

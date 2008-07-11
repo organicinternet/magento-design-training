@@ -51,14 +51,14 @@ For checkout/onepage/shipping.phtml:
             id="<?php echo $this->getFieldId('prefix')?>"
             name="<?php echo $this->getFieldName('prefix')?>"
             value="<?php echo $this->htmlEscape($this->getObject()->getPrefix()) ?>"
-            prefix="<?php echo $this->__('Prefix') ?>"
+            title="<?php echo $this->__('Prefix') ?>"
             class="<?php if ($this->isPrefixRequired()):?>required-entry<?php endif ?> input-text"
             <?php echo $this->getFieldParams() ?> />
         <?php else: ?>
         <select
             id="<?php echo $this->getFieldId('prefix')?>"
             name="<?php echo $this->getFieldName('prefix')?>"
-            prefix="<?php echo $this->__('Prefix') ?>"
+            title="<?php echo $this->__('Prefix') ?>"
             <?php if ($this->isPrefixRequired()):?>class="required-entry"<?php endif ?>
             <?php echo $this->getFieldParams() ?> />
         <?php foreach ($this->getPrefixOptions() as $_option): ?>
@@ -81,7 +81,7 @@ For checkout/onepage/shipping.phtml:
             id="<?php echo $this->getFieldId('firstname')?>"
             name="<?php echo $this->getFieldName('firstname')?>"
             value="<?php echo $this->htmlEscape($this->getObject()->getFirstname()) ?>"
-            prefix="<?php echo $this->__('First Name') ?>"
+            title="<?php echo $this->__('First Name') ?>"
             class="required-entry input-text"
             <?php echo $this->getFieldParams() ?> />
     </div>
@@ -96,7 +96,7 @@ For checkout/onepage/shipping.phtml:
             id="<?php echo $this->getFieldId('middlename')?>"
             name="<?php echo $this->getFieldName('middlename')?>"
             value="<?php echo $this->htmlEscape($this->getObject()->getMiddlename()) ?>"
-            prefix="<?php echo $this->__('M.I.') ?>"
+            title="<?php echo $this->__('M.I.') ?>"
             class="input-text"
             <?php echo $this->getFieldParams() ?> />
      </div>
@@ -112,7 +112,7 @@ For checkout/onepage/shipping.phtml:
             id="<?php echo $this->getFieldId('lastname')?>"
             name="<?php echo $this->getFieldName('lastname')?>"
             value="<?php echo $this->htmlEscape($this->getObject()->getLastname()) ?>"
-            prefix="<?php echo $this->__('Last Name') ?>"
+            title="<?php echo $this->__('Last Name') ?>"
             class="required-entry input-text"
             <?php echo $this->getFieldParams() ?> />
     </div>
@@ -129,14 +129,14 @@ For checkout/onepage/shipping.phtml:
             id="<?php echo $this->getFieldId('suffix')?>"
             name="<?php echo $this->getFieldName('suffix')?>"
             value="<?php echo $this->htmlEscape($this->getObject()->getSuffix()) ?>"
-            prefix="<?php echo $this->__('Suffix') ?>"
+            title="<?php echo $this->__('Suffix') ?>"
             class="<?php if ($this->isSuffixRequired()):?>required-entry<?php endif ?> input-text"
             <?php echo $this->getFieldParams() ?> />
         <?php else: ?>
         <select
             id="<?php echo $this->getFieldId('suffix')?>"
             name="<?php echo $this->getFieldName('suffix')?>"
-            prefix="<?php echo $this->__('Suffix') ?>"
+            title="<?php echo $this->__('Suffix') ?>"
             <?php if ($this->isSuffixRequired()):?>class="required-entry"<?php endif ?>
             <?php echo $this->getFieldParams() ?> />
         <?php foreach ($this->getSuffixOptions() as $_option): ?>

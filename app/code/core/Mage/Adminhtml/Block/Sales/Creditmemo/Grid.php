@@ -57,6 +57,7 @@ class Mage_Adminhtml_Block_Sales_Creditmemo_Grid extends Mage_Adminhtml_Block_Wi
         $this->addColumn('increment_id', array(
             'header'    => Mage::helper('sales')->__('Credit Memo #'),
             'index'     => 'increment_id',
+            'type'      => 'number',
         ));
 
         $this->addColumn('created_at', array(
@@ -68,6 +69,7 @@ class Mage_Adminhtml_Block_Sales_Creditmemo_Grid extends Mage_Adminhtml_Block_Wi
         $this->addColumn('order_increment_id', array(
             'header'    => Mage::helper('sales')->__('Order #'),
             'index'     => 'order_increment_id',
+            'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(

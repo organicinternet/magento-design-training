@@ -63,6 +63,19 @@ var optionTemplate = '<div id="<?php echo $this->getFieldId() ?>_{{index}}"  cla
 <?php echo $this->getSelectionHtml() ?>
 
 <script type="text/javascript">
+
+function changeInputType(oldObject, oType) {
+    var newObject = document.createElement('input');
+    newObject.type = oType;
+    if(oldObject.size) newObject.size = oldObject.size;
+    if(oldObject.value) newObject.value = oldObject.value;
+    if(oldObject.name) newObject.name = oldObject.name;
+    if(oldObject.id) newObject.id = oldObject.id;
+    if(oldObject.className) newObject.className = oldObject.className;
+    oldObject.parentNode.replaceChild(newObject,oldObject);
+    return newObject;
+}
+
 Bundle.Option = Class.create();
 Bundle.Option.prototype = {
     idLabel : '<?php echo $this->getFieldId() ?>',
@@ -127,21 +140,61 @@ Bundle.Option.prototype = {
             inputs = $A($$('#' + bSelection.idLabel + '_box_' + i + ' tr.selection input.default'));
             inputs.each(
                 function(elem){
-                    elem.type = "checkbox";
+                    //elem.type = "checkbox";
+                    changeInputType(elem, 'checkbox');
                 }
             );
+            /**
+             * Hide not needed elements (user defined qty select box)
+             */
+            inputs = $A($$('#' + bSelection.idLabel + '_box_' + i + ' .qty-box'));
+            inputs.each(
+                function(elem){
+                    elem.hide();
+                }
+            );
+
         } else {
             inputs = $A($$('#' + bSelection.idLabel + '_box_' + i + ' tr.selection input.default'));
             have = false;
-            for (i=0; i< inputs.length; i++) {
-                inputs[i].type = "radio";
-                if (inputs[i].checked && have) {
-                    inputs[i].checked = false;
+            for (j=0; j< inputs.length; j++) {
+                //inputs[j].type = "radio";
+                changeInputType(inputs[j], 'radio');
+                if (inputs[j].checked && have) {
+                    inputs[j].checked = false;
                 } else {
                     have = true;
                 }
             }
+
+            /**
+             * Show user defined select box
+             */
+            inputs = $A($$('#' + bSelection.idLabel + '_box_' + i + ' .qty-box'));
+            inputs.each(
+                function(elem){
+                    elem.show();
+                }
+            );
         }
+    },
+
+    priceTypeFixed : function() {
+        inputs = $A($$('.price-type-box'));
+        inputs.each(
+            function(elem){
+                elem.show();
+            }
+        );
+    },
+
+    priceTypeDynamic : function() {
+        inputs = $A($$('.price-type-box'));
+        inputs.each(
+            function(elem){
+                elem.hide();
+            }
+        );
     }
 }
 
@@ -156,4 +209,19 @@ bSelection.addRow(optionIndex, <?php echo $_selection->toJson() ?>);
     <?php endforeach; ?>
 <?php endif; ?>
 <?php endforeach; ?>
+/**
+ * Adding event on price type select box of product to hide or show prices for selections
+ */
+function togglePriceType() {
+    if ($('price_type').value == '1') {
+        bOption.priceTypeFixed();
+    } else {
+        bOption.priceTypeDynamic();
+    }
+}
+
+togglePriceType();
+
+Event.observe('price_type', 'change', togglePriceType);
+
 </script>

@@ -53,6 +53,7 @@ class Mage_Admin_Model_Session extends Mage_Core_Model_Session_Abstract
         } else {
             if ($user->getId()) {
                 $session = Mage::getSingleton('admin/session');
+                $session->setIsFirstVisit(true);
                 $session->setUser($user);
                 $session->setAcl(Mage::getResourceModel('admin/acl')->loadAcl());
                 if ($request) {

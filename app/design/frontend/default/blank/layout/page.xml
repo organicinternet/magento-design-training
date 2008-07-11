@@ -42,11 +42,17 @@ Default layout, loads most of the pages
                 <action method="addJs"><script>mage/cookies.js</script></action>
                 <action method="addCss"><stylesheet>css/reset.css</stylesheet></action>
                 <action method="addCss"><stylesheet>css/boxes.css</stylesheet></action>
-				<action method="addCss"><stylesheet>css/menu.css</stylesheet></action>
-				<action method="addCss"><stylesheet>css/clears.css</stylesheet></action>
-				<action method="addItem"><type>skin_css</type><name>css/iestyles.css</name><params/><if>IE</if></action>
+                <action method="addCss"><stylesheet>css/clears.css</stylesheet></action>
+                <action method="addCss"><stylesheet>css/menu.css</stylesheet></action>
+
+                <action method="addItem"><type>skin_css</type><name>css/iestyles.css</name><params/><if>IE</if></action>
+                <action method="addItem"><type>skin_css</type><name>css/ie7.css</name><params/><if>IE 7</if></action>
+                <action method="addItem"><type>skin_css</type><name>css/ie7minus.css</name><params/><if>lt IE 7</if></action>
+
                 <action method="addItem"><type>js</type><name>lib/ds-sleight.js</name><params/><if>lt IE 7</if></action>
                 <action method="addItem"><type>js</type><name>varien/iehover-fix.js</name><params/><if>lt IE 7</if></action>
+
+                <action method="addCss"><stylesheet>css/print.css</stylesheet><params>media="print"</params></action>
             </block>
 
             <block type="page/html_header" name="header" as="header">
@@ -84,6 +90,8 @@ Default layout, loads most of the pages
             <block type="page/html_head" name="head" as="head">
                 <action method="addJs"><script>prototype/prototype.js</script></action>
                 <action method="addJs"><script>mage/translate.js</script></action>
+								<action method="addJs"><script>prototype/validation.js</script></action>
+								<action method="addJs"><script>varien/js.js</script></action>
 
                 <action method="addCss"><stylesheet>css/reset.css</stylesheet></action>
                 <action method="addCss"><stylesheet>css/boxes.css</stylesheet></action>

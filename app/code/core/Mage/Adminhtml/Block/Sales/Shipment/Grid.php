@@ -55,6 +55,7 @@ class Mage_Adminhtml_Block_Sales_Shipment_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('increment_id', array(
             'header'    => Mage::helper('sales')->__('Shipment #'),
             'index'     => 'increment_id',
+            'type'      => 'number',
         ));
 
         $this->addColumn('created_at', array(
@@ -66,6 +67,7 @@ class Mage_Adminhtml_Block_Sales_Shipment_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('order_increment_id', array(
             'header'    => Mage::helper('sales')->__('Order #'),
             'index'     => 'order_increment_id',
+            'type'      => 'number',
         ));
 
         $this->addColumn('order_created_at', array(

@@ -65,17 +65,36 @@ class Mage_Sales_Model_Order_Pdf_Items_Creditmemo_Default extends Mage_Sales_Mod
         $options = $item->getOrderItem()->getProductOptions();
         if (isset($options['options'])) {
             foreach ($options['options'] as $option) {
-                $optionTxt = strip_tags($option['label']).':'.strip_tags($option['value']);
+                $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_ITALIC), 7);
 
-                if (strlen($optionTxt) > 60) {
-                    $optionTxt = str_split($optionTxt, 60);
+                $optionTxt = strip_tags($option['label']);
+                if (strlen($optionTxt) > 80) {
+                    $optionTxt = str_split($optionTxt, 80);
                     foreach ($optionTxt as $_option) {
-                        $page->drawText($_option, 65, $pdf->y-$shift{1}, 'UTF-8');
+                        $page->drawText($_option, 60, $pdf->y-$shift{1}, 'UTF-8');
                         $shift{1} += 10;
                     }
                 } else {
-                    $page->drawText($optionTxt, 65, $pdf->y-$shift{1}, 'UTF-8');
+                    $page->drawText($optionTxt, 60, $pdf->y-$shift{1}, 'UTF-8');
                     $shift{1} += 10;
+                }
+
+                $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 7);
+
+                if ($option['value']) {
+                    $values = explode(', ', strip_tags($option['value']));
+                    foreach ($values as $value) {
+                        if (strlen($value) > 80) {
+                            $value = str_split($value, 80);
+                            foreach ($value as $_value) {
+                                $page->drawText($_value, 65, $pdf->y-$shift{1}, 'UTF-8');
+                                $shift{1} += 10;
+                            }
+                        } else {
+                            $page->drawText($value, 65, $pdf->y-$shift{1}, 'UTF-8');
+                            $shift{1} += 10;
+                        }
+                    }
                 }
             }
         }

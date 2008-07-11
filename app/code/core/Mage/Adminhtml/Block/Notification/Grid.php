@@ -69,7 +69,7 @@ class Mage_Adminhtml_Block_Notification_Grid extends Mage_Adminhtml_Block_Widget
         ));
 
         $this->addColumn('title', array(
-            'header'    => Mage::helper('adminnotification')->__('Notice'),
+            'header'    => Mage::helper('adminnotification')->__('Message'),
             'index'     => 'title',
             'renderer'  => 'adminhtml/notification_grid_renderer_notice',
         ));

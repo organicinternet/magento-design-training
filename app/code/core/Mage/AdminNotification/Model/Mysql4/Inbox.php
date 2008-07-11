@@ -38,6 +38,8 @@ class Mage_AdminNotification_Model_Mysql4_Inbox extends Mage_Core_Model_Mysql4_A
         $select = $this->_getReadAdapter()->select()
             ->from($this->getMainTable())
             ->order($this->getIdFieldName() . ' desc')
+            ->where('is_read <> 1')
+            ->where('is_remove <> 1')
             ->limit(1);
         $data = $this->_getReadAdapter()->fetchRow($select);
 

@@ -89,13 +89,16 @@ class Mage_Bundle_Block_Adminhtml_Sales_Order_View_Items_Renderer extends Mage_A
         return false;
     }
 
-    public function getBundleOptions() {
-        if ($options = $this->getItem()->getProductOptions()) {
-            if (isset($options['bundle_options'])) {
-                return $options['bundle_options'];
-            }
+    public function getSelectionAttributes($item) {
+        if ($item instanceof Mage_Sales_Model_Order_Item) {
+            $options = $item->getProductOptions();
+        } else {
+            $options = $item->getOrderItem()->getProductOptions();
         }
-        return array();
+        if (isset($options['bundle_selection_attributes'])) {
+            return unserialize($options['bundle_selection_attributes']);
+        }
+        return null;
     }
 
     public function getOrderOptions()
@@ -115,20 +118,20 @@ class Mage_Bundle_Block_Adminhtml_Sales_Order_View_Items_Renderer extends Mage_A
         return $result;
     }
 
-    public function getValueHtml($value, $item = null)
+    public function getValueHtml($item)
     {
-        if (is_array($value)) {
-            $result = $this->htmlEscape($value['title']);
-            if ($item && !$this->isShipmentSeparately($item)) {
-                $result =  sprintf('%d', $value['qty']) . ' x ' . $result;
+        $result = $this->htmlEscape($item->getName());
+        if (!$this->isShipmentSeparately($item)) {
+            if ($attributes = $this->getSelectionAttributes($item)) {
+                $result =  sprintf('%d', $attributes['qty']) . ' x ' . $result;
             }
-            if ($item && !$this->isChildCalculated($item)) {
-                $result .= " " . $this->getItem()->getOrder()->formatPrice($value['price']);
-            }
-            return $result;
-        } else {
-            return $this->htmlEscape($value);
         }
+        if (!$this->isChildCalculated($item)) {
+            if ($attributes = $this->getSelectionAttributes($item)) {
+                $result .= " " . $this->getItem()->getOrder()->formatPrice($attributes['price']);
+            }
+        }
+        return $result;
     }
 
     public function canShowPriceInfo($item)

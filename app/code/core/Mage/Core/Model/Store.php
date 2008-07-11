@@ -571,7 +571,7 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
      * @param   double $price
      * @return  double
      */
-    public function convertPrice($price, $format=false)
+    public function convertPrice($price, $format=false, $includeContainer = true)
     {
         if ($this->getCurrentCurrency() && $this->getBaseCurrency()) {
             $value = $this->getBaseCurrency()->convert($price, $this->getCurrentCurrency());
@@ -581,7 +581,7 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
         $value = $this->roundPrice($value);
 
         if ($this->getCurrentCurrency() && $format) {
-            $value = $this->formatPrice($value);
+            $value = $this->formatPrice($value, $includeContainer);
         }
         return $value;
     }
@@ -601,12 +601,13 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
      * Format price with currency filter (taking rate into consideration)
      *
      * @param   double $price
+     * @param   bool $includeContainer
      * @return  string
      */
-    public function formatPrice($price)
+    public function formatPrice($price, $includeContainer = true)
     {
         if ($this->getCurrentCurrency()) {
-            return $this->getCurrentCurrency()->format($price);
+            return $this->getCurrentCurrency()->format($price, array(), $includeContainer);
         }
         return $price;
     }
@@ -651,7 +652,7 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
      *
      * @param Mage_Core_Model_Store_Group $group
      */
-    public function setGroup(Mage_Core_Model_Store_Group $group)
+    public function setGroup($group)
     {
         $this->_group = $group;
     }

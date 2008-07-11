@@ -32,7 +32,7 @@ class Mage_Adminhtml_NotificationController extends Mage_Adminhtml_Controller_Ac
     {
         $this->loadLayout()
             ->_setActiveMenu('system/notification')
-            ->_addBreadcrumb(Mage::helper('adminnotification')->__('Notices Inbox'), Mage::helper('adminhtml')->__('Notices Inbox'))
+            ->_addBreadcrumb(Mage::helper('adminnotification')->__('Messages Inbox'), Mage::helper('adminhtml')->__('Messages Inbox'))
             ->_addContent($this->getLayout()->createBlock('adminhtml/notification_inbox'))
             ->renderLayout();
     }
@@ -53,7 +53,7 @@ class Mage_Adminhtml_NotificationController extends Mage_Adminhtml_Controller_Ac
             try {
                 $model->setIsRead(1)
                     ->save();
-                $session->addSuccess(Mage::helper('adminnotification')->__('Notice was successfully marked as read'));
+                $session->addSuccess(Mage::helper('adminnotification')->__('Message was successfully marked as read'));
             }
             catch (Mage_Core_Exception $e) {
                 $session->addError($e->getMessage());
@@ -73,7 +73,7 @@ class Mage_Adminhtml_NotificationController extends Mage_Adminhtml_Controller_Ac
         $session = Mage::getSingleton('adminhtml/session');
         $ids = $this->getRequest()->getParam('notification');
         if (!is_array($ids)) {
-            $session->addError(Mage::helper('adminnotification')->__('Please select notices'));
+            $session->addError(Mage::helper('adminnotification')->__('Please select messages'));
         }
         else {
             try {
@@ -114,7 +114,7 @@ class Mage_Adminhtml_NotificationController extends Mage_Adminhtml_Controller_Ac
             try {
                 $model->setIsRemove(1)
                     ->save();
-                $session->addSuccess(Mage::helper('adminnotification')->__('Notice was successfully removed'));
+                $session->addSuccess(Mage::helper('adminnotification')->__('Message was successfully removed'));
             }
             catch (Mage_Core_Exception $e) {
                 $session->addError($e->getMessage());
@@ -134,7 +134,7 @@ class Mage_Adminhtml_NotificationController extends Mage_Adminhtml_Controller_Ac
         $session = Mage::getSingleton('adminhtml/session');
         $ids = $this->getRequest()->getParam('notification');
         if (!is_array($ids)) {
-            $session->addError(Mage::helper('adminnotification')->__('Please select notices'));
+            $session->addError(Mage::helper('adminnotification')->__('Please select messages'));
         }
         else {
             try {

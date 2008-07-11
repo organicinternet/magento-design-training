@@ -79,11 +79,3 @@
 
 /************ 3RD+ LEVEL ************/
 #nav ul ul { top:5px; }
-
-/*
-#nav ul ul ul { left:-10000px; }
-#nav li.over ul li.over ul ul { left:-10000px; }
-#nav li.over ul li.over ul li.over ul { left:100px; }
-*/
-
-.debug {border:1px solid red !important; }

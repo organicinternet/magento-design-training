@@ -90,7 +90,7 @@ class Mage_Dataflow_Model_Batch extends Mage_Core_Model_Abstract
     {
         foreach ($row as $fieldName => $value) {
             if (!in_array($fieldName, $this->_fieldList)) {
-                $this->_fieldList[] = $fieldName;
+                $this->_fieldList[$fieldName] = $fieldName;
             }
         }
         unset($fieldName, $value, $row);
@@ -164,5 +164,31 @@ class Mage_Dataflow_Model_Batch extends Mage_Core_Model_Abstract
                 $adapter->finish();
             }
         }
+    }
+
+    /**
+     * Set additional params
+     * automatic convert to serialize data
+     *
+     * @param mixed $data
+     * @return Mage_Dataflow_Model_Batch_Abstract
+     */
+    public function setParams($data)
+    {
+        $this->setData('params', serialize($data));
+        return $this;
+    }
+
+    /**
+     * Retrieve additional params
+     * return unserialize data
+     *
+     * @return mixed
+     */
+    public function getParams()
+    {
+        $data = $this->_data['params'];
+        $data = unserialize($data);
+        return $data;
     }
 }

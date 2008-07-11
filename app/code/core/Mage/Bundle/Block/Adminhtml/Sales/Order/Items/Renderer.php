@@ -28,8 +28,6 @@
  */
 class Mage_Bundle_Block_Adminhtml_Sales_Order_Items_Renderer extends Mage_Adminhtml_Block_Sales_Items_Renderer_Default
 {
-    protected $_itemsArray = null;
-
     /**
      * Getting all available childs for Invoice, Shipmen or Creditmemo item
      *
@@ -38,28 +36,28 @@ class Mage_Bundle_Block_Adminhtml_Sales_Order_Items_Renderer extends Mage_Adminh
      */
     public function getChilds($item)
     {
-        if (!$this->_itemsArray) {
-            if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
-                $_items = $item->getInvoice()->getAllItems();
-            } else if ($item instanceof Mage_Sales_Model_Order_Shipment_Item) {
-                $_items = $item->getShipment()->getAllItems();
-            } else if ($item instanceof Mage_Sales_Model_Order_Creditmemo_Item) {
-                $_items = $item->getCreditmemo()->getAllItems();
-            }
+        $_itemsArray = array();
 
-            if ($_items) {
-                foreach ($_items as $_item) {
-                    if ($parentItem = $_item->getOrderItem()->getParentItem()) {
-                        $this->_itemsArray[$parentItem->getId()][$_item->getOrderItemId()] = $_item;
-                    } else {
-                        $this->_itemsArray[$_item->getOrderItem()->getId()][$_item->getOrderItemId()] = $_item;
-                    }
+        if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
+            $_items = $item->getInvoice()->getAllItems();
+        } else if ($item instanceof Mage_Sales_Model_Order_Shipment_Item) {
+            $_items = $item->getShipment()->getAllItems();
+        } else if ($item instanceof Mage_Sales_Model_Order_Creditmemo_Item) {
+            $_items = $item->getCreditmemo()->getAllItems();
+        }
+
+        if ($_items) {
+            foreach ($_items as $_item) {
+                if ($parentItem = $_item->getOrderItem()->getParentItem()) {
+                    $_itemsArray[$parentItem->getId()][$_item->getOrderItemId()] = $_item;
+                } else {
+                    $_itemsArray[$_item->getOrderItem()->getId()][$_item->getOrderItemId()] = $_item;
                 }
             }
         }
 
-        if (isset($this->_itemsArray[$item->getOrderItem()->getId()])) {
-            return $this->_itemsArray[$item->getOrderItem()->getId()];
+        if (isset($_itemsArray[$item->getOrderItem()->getId()])) {
+            return $_itemsArray[$item->getOrderItem()->getId()];
         } else {
             return null;
         }
@@ -132,14 +130,16 @@ class Mage_Bundle_Block_Adminhtml_Sales_Order_Items_Renderer extends Mage_Adminh
         return false;
     }
 
-    public function getBundleOptions($item = null) {
-
-        if ($options = $this->getOrderItem()->getProductOptions()) {
-            if (isset($options['bundle_options'])) {
-                return $options['bundle_options'];
-            }
+    public function getSelectionAttributes($item) {
+        if ($item instanceof Mage_Sales_Model_Order_Item) {
+            $options = $item->getProductOptions();
+        } else {
+            $options = $item->getOrderItem()->getProductOptions();
         }
-        return array();
+        if (isset($options['bundle_selection_attributes'])) {
+            return unserialize($options['bundle_selection_attributes']);
+        }
+        return null;
     }
 
     public function getOrderOptions($item = null)
@@ -169,20 +169,20 @@ class Mage_Bundle_Block_Adminhtml_Sales_Order_Items_Renderer extends Mage_Adminh
         }
     }
 
-    public function getValueHtml($value, $item = null)
+    public function getValueHtml($item)
     {
-        if (is_array($value)) {
-            $result = $this->htmlEscape($value['title']);
-            if ($item && !$this->isShipmentSeparately($item)) {
-                $result =  sprintf('%d', $value['qty']) . ' x ' . $result;
+        $result = $this->htmlEscape($item->getName());
+        if (!$this->isShipmentSeparately($item)) {
+            if ($attributes = $this->getSelectionAttributes($item)) {
+                $result =  sprintf('%d', $attributes['qty']) . ' x ' . $result;
             }
-            if ($item && !$this->isChildCalculated($item)) {
-                $result .= " " . $this->getOrderItem()->getOrder()->formatPrice($value['price']);
-            }
-            return $result;
-        } else {
-            return $this->htmlEscape($value);
         }
+        if (!$this->isChildCalculated($item)) {
+            if ($attributes = $this->getSelectionAttributes($item)) {
+                $result .= " " . $this->getOrderItem()->getOrder()->formatPrice($attributes['price']);
+            }
+        }
+        return $result;
     }
 
     public function canShowPriceInfo($item)

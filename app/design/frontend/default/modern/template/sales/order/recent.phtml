@@ -48,7 +48,7 @@
                     <td class="last a-center"><a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View Order') ?></a>
                         <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
                         	<span class="separator">|</span>
-                        	<a href="<?php echo $this->getReorderUrl($_order) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_reorder.gif') ?>" class="v-middle" alt="<?php echo $this->__('Reorder') ?>"/></a>
+                        	<a href="<?php echo $this->getReorderUrl($_order) ?>"><?php echo $this->__('Reorder') ?></a>
                         <?php endif ?>
                     </td>
                 </tr>

@@ -215,4 +215,9 @@ class Mage_Tax_Model_Calculation extends Mage_Core_Model_Abstract
     {
         return $this->getResource()->getRatesByCustomerTaxClass($customerTaxClass);
     }
+
+    public function getRatesByCustomerAndProductTaxClasses($customerTaxClass, $productTaxClass)
+    {
+        return $this->getResource()->getRatesByCustomerTaxClass($customerTaxClass, $productTaxClass);
+    }
 }

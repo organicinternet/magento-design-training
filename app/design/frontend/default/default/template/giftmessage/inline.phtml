@@ -35,11 +35,11 @@ if(!window.toogleVisibilityOnObjects) {
         } else {
             objects.each(function(item){
                 $(item).hide();
-                $(item).getElementsByClassName('input-text').each(function(sitem) {
+                $(item).getElementsBySelector('.input-text').each(function(sitem) {
                     sitem.addClassName('validation-passed');
                 });
 
-                 $(item).getElementsByClassName('giftmessage-area').each(function(sitem) {
+                 $(item).getElementsBySelector('.giftmessage-area').each(function(sitem) {
                     sitem.value = '';
                 });
             });

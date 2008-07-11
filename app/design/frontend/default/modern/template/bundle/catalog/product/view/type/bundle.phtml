@@ -24,11 +24,11 @@
 
 <?php echo $this->getPriceHtml($_product) ?>
 
+<?php if($_product->isSaleable()): ?>
+
 <script type="text/javascript">
 var bundle = new Product.Bundle(<?php echo $this->getJsonConfig() ?>);
 </script>
-
-<?php if($_product->isSaleable()): ?>
 
 <?php /* @see bundle/options.phtml */ ?>
 
@@ -37,73 +37,30 @@ var bundle = new Product.Bundle(<?php echo $this->getJsonConfig() ?>);
     <div class="product-pricing">
         <ul class="bare">
         <?php foreach($_tierPrices as $_price): ?>
-            <li>
-                <?php echo $this->__('Buy %s with %s%% discount each', $_price['price_qty'], $_price['price']*1) ?>
-            </li>
+            <li><?php echo $this->__('Buy %s with %s%% discount each', $_price['price_qty'], $_price['price']*1) ?></li>
         <?php endforeach ?>
         </ul>
     </div>
     <?php endif; ?>
 
-    <p><small><?php echo $this->__('Availability: In stock.') ?></small></p>
+    <p><?php echo $this->helper('catalog')->__('Availability: In stock.') ?></p>
 
     <?php $_finalPrice = Mage::helper('tax')->getPrice($_product, $_product->getFinalPrice()); ?>
     <?php $_finalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_product->getFinalPrice(), true); ?>
 
     <?php if ($this->helper('tax')->displayBothPrices()): ?>
         <span class="price-excluding-tax">
-            <span class="label"><?php echo $this->__('Excl. Tax:') ?></span>
-            <span class="price" id="price-excluding-tax-<?php echo $_product->getId() ?>">
-                <?php echo Mage::helper('core')->currency($_finalPrice) ?>
-            </span>
+            <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax') ?>:</span>
+            <span class="price" id="price-excluding-tax-<?php echo $_product->getId() ?>"><?php echo Mage::helper('core')->currency($_finalPrice,true,false) ?></span>
         </span>
         <span class="price-including-tax">
-            <span class="label"><?php echo $this->__('Incl. Tax:') ?></span>
-            <span class="price" id="price-including-tax-<?php echo $_product->getId() ?>">
-                <?php echo Mage::helper('core')->currency($_finalPriceInclTax) ?>
-            </span>
+            <span class="label"><?php echo $this->helper('tax')->__('Incl. Tax') ?>:</span>
+            <span class="price" id="price-including-tax-<?php echo $_product->getId() ?>"><?php echo Mage::helper('core')->currency($_finalPriceInclTax,true,false) ?></span>
         </span>
     <?php else: ?>
-    <span class="regular-price" id="product-price-<?php echo $_product->getId() ?>">
-        <?php echo Mage::helper('core')->currency($_finalPrice) ?>
-    </span>
+    <span class="regular-price" id="product-price-<?php echo $_product->getId() ?>"><?php echo Mage::helper('core')->currency($_finalPrice) ?></span>
     <?php endif; ?>
-
-    <br />
-    <br />
 <?php else: ?>
-    <p><small><?php echo $this->__('Availability: Out of stock.') ?></small></p>
+    <p><?php echo $this->helper('catalog')->__('Availability: Out of stock.') ?></p>
 <?php endif; ?>
-
-<?php if($_product->isSaleable()): ?>
-        <fieldset class="add-to-cart-box">
-            <legend><?php echo $this->__('Add Items to Cart') ?></legend>
-            <div class="f-left">
-                <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
-                <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>"/></span>
-                <a href="#" onclick="productAddToCartForm.submit()"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 10px 0 5px;" /></a>
-            </div>
-            <?php if ($this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ) : ?>
-                <ul class="add-to f-left">
-                <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                    <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
-                <?php endif; ?>
-                <?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
-                    <li><a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
-                <?php endif; ?>
-            </ul>
-            <?php endif; ?>
-    </fieldset>
-<?php endif; ?>
-
-<div class="add-to-box">
-<?php if ($this->helper('wishlist')->isAllow()) : ?>
-    <a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a><br/>
-<?php endif; ?>
-
-<?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
-    <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a>
-<?php endif; ?>
-</div>
-
 <script type="text/javascript">decorateTable('super-product-table')</script>

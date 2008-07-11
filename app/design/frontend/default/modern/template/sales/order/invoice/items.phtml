@@ -19,36 +19,28 @@
  */
 ?>
 <?php  $_order = $this->getOrder() ?>
-<a href="<?php echo $this->getPrintAllInvoicesUrl($_order) ?>" target="_blank"><?php echo $this->__('Print All Invoices') ?></a>
+<p class="a-right"><a href="<?php echo $this->getPrintAllInvoicesUrl($_order) ?>" onclick="this.target='_blank'"><strong><?php echo $this->__('Print All Invoices') ?></strong></a></p>
 <?php foreach ($_order->getInvoiceCollection() as $_invoice): ?>
-<br />
-<div class="head">
-    <h3><?php echo $this->__('Invoice #') ?><?php echo $_invoice->getIncrementId(); ?></h3>
-    <a href="<?php echo $this->getPrintInvoiceUrl($_invoice) ?>" target="_blank"><?php echo $this->__('Print Invoice') ?></a>
+<div class="head-alt2">
+    <h3 class="title"><?php echo $this->__('Invoice #') ?><?php echo $_invoice->getIncrementId(); ?></h3>
+    <a href="<?php echo $this->getPrintInvoiceUrl($_invoice) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print Invoice') ?></a>
 </div>
-<h4><?php echo $this->__('Items Invoiced') ?></h4><table cellspacing="0" class="data-table data-bundle" id="my-orders-table-<?php echo $_invoice->getId(); ?>">
+<h4><?php echo $this->__('Items Invoiced') ?></h4>
+<table cellspacing="0" class="data-table" id="my-invoice-table-<?php echo $_invoice->getId(); ?>">
     <col />
-    <col width="15%" />
-    <col width="10%" />
-    <col width="20%" />
+    <col width="25%" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
-            <th width="10%" class="a-center"><?php echo $this->__('SKU') ?></th>
-            <th width="10%" class="a-center"><?php echo $this->__('Price') ?></th>
-            <th class="a-center" width="10%"><?php echo $this->__('Qty Invoiced') ?></th>
-            <th class="a-center" width="15%"><?php echo $this->__('Subtotal') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <th class="a-center"><span class="nobr"><?php echo $this->__('Qty Invoiced') ?></span></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
         </tr>
     </thead>
-        <?php $_items = $_invoice->getAllItems(); ?>
-        <?php $_count = count($_items) ?>
-        <?php $_index = 0; ?>
-        <?php foreach ($_items as $_item): ?>
-    <?php if ($_item->getOrderItem()->getParentItem()) continue; else $_index++ ?>
-    <tbody class="<?php echo ($_index%2 ? 'even' : 'odd') ?>">
-        <?php echo $this->getItemHtml($_item) ?>
-    </tbody>
-        <?php endforeach; ?>
     <tfoot>
         <tr>
             <td colspan="4" class="a-right"><?php echo $this->__('Order Subtotal') ?></td>
@@ -77,6 +69,14 @@
             <td class="last a-right"><?php echo $_order->formatPrice($_invoice->getGrandTotal()) ?></td>
         </tr>
     </tfoot>
+		<?php $_items = $_invoice->getAllItems(); ?>
+    <?php $_count = count($_items) ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+    <tbody>
+        <?php echo $this->getItemHtml($_item) ?>
+    </tbody>
+        <?php endforeach; ?>
 </table>
-<script type="text/javascript">decorateTable('my-orders-table-<?php echo $_invoice->getId(); ?>')</script>
+<script type="text/javascript">decorateTable('my-invoice-table-<?php echo $_invoice->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
 <?php endforeach; ?>

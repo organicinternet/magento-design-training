@@ -54,6 +54,28 @@ class Mage_Sales_Model_Mysql4_Quote_Item_Collection extends Mage_Core_Model_Mysq
         return $this;
     }
 
+    /**
+     * Reset the collection and inner join it to quotes table
+     *
+     * Optionally can select items with specified product id only
+     *
+     * @param string $quotesTableName
+     * @param int $productId
+     * @return Mage_Sales_Model_Mysql4_Quote_Item_Collection
+     */
+    public function resetJoinQuotes($quotesTableName, $productId = null)
+    {
+        $this->getSelect()
+            ->reset()
+            ->from(array('qi' => $this->getResource()->getMainTable()), array('item_id', 'qty', 'quote_id'));
+        $this->getSelect()
+            ->joinInner(array('q' => $quotesTableName), 'qi.quote_id=q.entity_id', array('store_id', 'items_qty', 'items_count'));
+        if ($productId) {
+            $this->getSelect()->where('qi.product_id=?', $productId);
+        }
+        return $this;
+    }
+
     protected function _afterLoad()
     {
         parent::_afterLoad();

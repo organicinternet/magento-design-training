@@ -103,6 +103,8 @@ Default layout, loads most of the pages
             <block type="adminhtml/page_footer" name="footer" as="footer"/>
             <block type="core/profiler" name="profiler" as="profiler"/>
             <block type="core/text_list" name="before_body_end" as="before_body_end"/>
+
+            <block type="adminhtml/notification_window" name="notification_window" as="notification_window" acl="system/adminnotification/show_toolbar" template="notification/window.phtml" />
         </block>
     </default>
 

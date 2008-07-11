@@ -58,64 +58,114 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
     public function init(Mage_Catalog_Model_Product $product, $attributeName, $imageFile=null)
     {
         $this->_reset();
-        $this->_setModel( Mage::getModel('catalog/product_image') );
+        $this->_setModel(Mage::getModel('catalog/product_image'));
         $this->_getModel()->setDestinationSubdir($attributeName);
         $this->setProduct($product);
-        if( $imageFile ) {
-            $this->setImageFile( $imageFile );
+        if ($imageFile) {
+            $this->setImageFile($imageFile);
         }
         return $this;
     }
 
-    public function resize($width = null, $height = null, $keepAspectRatio = true)
+    /**
+     * Schedule resize of the image
+     * $width *or* $height can be null - in this case, lacking dimension will be calculated.
+     *
+     * @see Mage_Catalog_Model_Product_Image
+     * @param int $width
+     * @param int $height
+     * @return Mage_Catalog_Helper_Image
+     */
+    public function resize($width, $height = null)
     {
-        // $this->_getModel()->setSize("{$width}x{$height}");
-        $this->_getModel()
-            ->setWidth($width)
-            ->setHeight($height)
-            ->setKeepAspectRatio($keepAspectRatio)
-        ;
+        $this->_getModel()->setWidth($width)->setHeight($height);
         $this->_scheduleResize = true;
         return $this;
     }
 
+
     /**
-     * Enable filling with a color on resize.
+     * Guarantee, that image picture width/height will not be distorted.
+     * Applicable before calling resize()
+     * It is true by default.
      *
-     * The image frame will be as on resize() specified,
-     * and the picture will be constrained into that frame.
-     *
-     * By default it is enabled.
-     *
-     * @see setFillColor() for color to fill
-     * @see resize()
+     * @see Mage_Catalog_Model_Product_Image
      * @param bool $flag
      * @return Mage_Catalog_Helper_Image
      */
-    public function preserveFrameSize($flag = true)
+    public function keepAspectRatio($flag)
     {
-        $this->_getModel()->setFillOnResize($flag);
+        $this->_getModel()->setKeepAspectRatio($flag);
         return $this;
     }
 
     /**
-     * Set color, that will fill whitespace on resize.
+     * Guarantee, that image will have dimensions, set in $width/$height
+     * Applicable before calling resize()
+     * Not applicable, if keepAspectRatio(false)
      *
-     * If $alpha specified, it will try to apply alpha-transparency to the image
+     * $position - TODO, not used for now - picture position inside the frame.
      *
-     * By default it is white (array(255, 255, 255, null))
-     *
-     * @see resize()
-     * @see preserveFrameSize()
-     * @param int $r 0..255
-     * @param int $g 0..255
-     * @param int $b 0..255
-     * @param int $alpha 0..127
+     * @see Mage_Catalog_Model_Product_Image
+     * @param bool $flag
+     * @param array $position
      * @return Mage_Catalog_Helper_Image
      */
-    public function setFillColor($r, $g, $b, $alpha = null)
+    public function keepFrame($flag, $position = array('center', 'middle'))
     {
-        $this->_getModel()->setFillColorOnResize(array($r, $g, $b, $alpha));
+        $this->_getModel()->setKeepFrame($flag);
+        return $this;
+    }
+
+    /**
+     * Guarantee, that image will not lose transparency if any.
+     * Applicable before calling resize()
+     * It is true by default.
+     *
+     * $alphaOpacity - TODO, not used for now
+     *
+     * @see Mage_Catalog_Model_Product_Image
+     * @param bool $flag
+     * @param int $alphaOpacity
+     * @return Mage_Catalog_Helper_Image
+     */
+    public function keepTransparency($flag, $alphaOpacity = null)
+    {
+        $this->_getModel()->setKeepTransparency($flag);
+        return $this;
+    }
+
+    /**
+     * Guarantee, that image picture will not be bigger, than it was.
+     * Applicable before calling resize()
+     * It is false by default
+     *
+     * @param bool $flag
+     * @return Mage_Catalog_Helper_Image
+     */
+    public function constrainOnly($flag)
+    {
+        $this->_getModel()->setConstrainOnly($flag);
+        return $this;
+    }
+
+    /**
+     * Set color to fill image frame with.
+     * Applicable before calling resize()
+     * The keepTransparency(true) overrides this (if image has transparent color)
+     * It is white by default.
+     *
+     * @see Mage_Catalog_Model_Product_Image
+     * @param array $colorRGB
+     * @return Mage_Catalog_Helper_Image
+     */
+    public function backgroundColor($colorRGB)
+    {
+        // assume that 3 params were given instead of array
+        if (!is_array($colorRGB)) {
+            $colorRGB = func_get_args();
+        }
+        $this->_getModel()->setBackgroundColor($colorRGB);
         return $this;
     }
 
@@ -166,7 +216,7 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
                     $this->_getModel()->rotate( $this->getAngle() );
                 }
 
-                if( $this->_scheduleResize ) {
+                if ($this->_scheduleResize) {
                     $this->_getModel()->resize();
                 }
 
@@ -187,9 +237,6 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
                 $url = $this->_getModel()->saveFile()->getUrl();
             }
         } catch( Exception $e ) {
-            $url = '';
-        }
-        if (!$url) {
             $url = Mage::getDesign()->getSkinUrl($this->getPlaceholder());
         }
         return $url;

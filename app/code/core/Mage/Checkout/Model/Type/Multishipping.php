@@ -389,7 +389,7 @@ class Mage_Checkout_Model_Type_Multishipping extends Mage_Checkout_Model_Type_Ab
             $order->save();
 
             $order->sendNewOrderEmail();
-            $orderIds[] = $order->getIncrementId();
+            $orderIds[$order->getId()] = $order->getIncrementId();
         }
 
         Mage::getSingleton('core/session')->setOrderIds($orderIds);

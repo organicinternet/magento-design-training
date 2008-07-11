@@ -80,7 +80,7 @@ class Mage_Adminhtml_Block_Report_Review_Product_Grid extends Mage_Adminhtml_Blo
             'index'     =>'last_created',
             'type'      =>'datetime'
         ));
-        /*
+
         $this->addColumn('action', array(
             'header'    => Mage::helper('reports')->__('Action'),
             'width'     => '100px',
@@ -88,7 +88,7 @@ class Mage_Adminhtml_Block_Report_Review_Product_Grid extends Mage_Adminhtml_Blo
             'filter'    => false,
             'sortable'  => false,
             'renderer'  => 'adminhtml/report_grid_column_renderer_product'
-        )); */
+        ));
 
         $this->setFilterVisibility(false);
 

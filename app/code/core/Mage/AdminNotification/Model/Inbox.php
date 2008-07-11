@@ -31,6 +31,7 @@ class Mage_AdminNotification_Model_Inbox extends Mage_Core_Model_Abstract
     const SEVERITY_CRITICAL = 1;
     const SEVERITY_MAJOR    = 2;
     const SEVERITY_MINOR    = 3;
+    const SEVERITY_NOTICE   = 4;
 
     protected function _construct()
     {
@@ -48,6 +49,7 @@ class Mage_AdminNotification_Model_Inbox extends Mage_Core_Model_Abstract
             self::SEVERITY_CRITICAL => Mage::helper('adminnotification')->__('critical'),
             self::SEVERITY_MAJOR    => Mage::helper('adminnotification')->__('major'),
             self::SEVERITY_MINOR    => Mage::helper('adminnotification')->__('minor'),
+            self::SEVERITY_NOTICE   => Mage::helper('adminnotification')->__('notice'),
         );
 
         if (!is_null($severity)) {

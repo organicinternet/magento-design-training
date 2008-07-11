@@ -62,7 +62,7 @@
                 <td>
                     <input disabled="no-template" class="<?php echo $_htmlClass ?> required-entry validate-greater-than-zero" type="text" name="<?php echo $_htmlName ?>[__index__][price]" value="'#{price}'"/>
                 </td>
-                <td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value=""><button class="scalable delete icon-btn delete-product-option" onclick="tierPriceControl.deleteItem(event);return false"><span>Delete</span></button></td>
+                <td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value=""><button title="Delete Tier" class="scalable delete icon-btn delete-product-option" onclick="tierPriceControl.deleteItem(event);return false"><span>Delete</span></button></td>
             </tr>
         </thead>
         <tbody id="<?php echo $_htmlId ?>_container">

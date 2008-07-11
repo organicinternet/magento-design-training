@@ -30,6 +30,9 @@
 <p><?php echo $this->__($_product->isSaleable() && count($_associatedProducts) ? 'Availability: In stock' : 'Availability: Out of stock') ?></p>
 
 <table cellspacing="0" class="data-table" id="super-product-table">
+    <col />
+    <col />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
@@ -107,9 +110,10 @@
                     <?php foreach ($this->getTierPrices($_item) as $_tierPrice): ?>
                         <?php if($_tierPrice['price'] <= $_finalPriceInclTax): ?>
                             <?php if ($this->helper('tax')->displayBothPrices() && $_tierPrice['formated_price'] != $_tierPrice['formated_price_incl_tax']): ?>
-                                <span class="nobr"><?php echo $this->__('Buy %s for %s (%s incl. tax) each', $_tierPrice['price_qty'], $_tierPrice['formated_price'], $_tierPrice['formated_price_incl_tax']) ?></span>
+                                <?php echo $this->__('Buy %s for %s each', $_tierPrice['price_qty'], '<span class="regular-price">'.$_tierPrice['formated_price'].'</span>') ?>
+                                <span class="price-including-tax">(<?php echo $_tierPrice['formated_price_incl_tax'] ?> <span class="label"><?php echo $this->__('Incl. Tax') ?></span>)</span>
                             <?php else: ?>
-                                <span class="nobr"><?php echo $this->__('Buy %s for %s', $_tierPrice['price_qty']*1, $_tierPrice['formated_price']) ?></span>
+                                <?php echo $this->__('Buy %s for %s', $_tierPrice['price_qty']*1, '<span class="regular-price">'.$_tierPrice['formated_price'].'</span>') ?>
                             <?php endif; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -134,6 +138,7 @@
     </tbody>
 </table>
 <script type="text/javascript">decorateTable('super-product-table')</script>
+<?php /*
 <?php if($_product->isSaleable()): ?>
     <fieldset class="add-to-cart-box">
         <legend><?php echo $this->__('Add Items to Cart') ?></legend>
@@ -152,3 +157,4 @@
         <?php endif; ?>
     </fieldset>
 <?php endif; ?>
+*/ ?>

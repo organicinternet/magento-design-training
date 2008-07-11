@@ -22,7 +22,7 @@
 <div class="up-sell-block">
     <p><strong><?php echo $this->__('You may also be interested in the following product(s)') ?></strong></p>
     <table cellspacing="0" class="generic-product-grid catalog-listing" id="upsell-product-table">
-    <?php $this->setColumnCount(5);?>
+    <?php // $this->setColumnCount(5); // uncomment this line if you want to have another number of columns. also can be changed in layout ?>
     <?php $this->resetItemsIterator() ?>
     <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
         <tr>

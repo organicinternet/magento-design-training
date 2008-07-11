@@ -21,42 +21,49 @@
 <?php if ($this->isShow()): ?>
 <div class="notification-global">
 	<?php
+        $sParts = array();
+
 		if ($this->getCriticalCount()):
-			$sCrit = '<span class="critical"><strong>'.$this->getCriticalCount().'</strong> '.$this->__('critical,').'</span>';
-		else:
-			$sCrit = '';
+			$sParts[] = '<span class="critical"><strong>'.$this->getCriticalCount().'</strong> '.$this->__('critical').'</span>';
 		endif;
+
 		if ($this->getMajorCount()):
-			$sMajor = '<strong>'.$this->getMajorCount().'</strong> '.$this->__('major');
-		else:
-			$sMajor = '';
+            $sParts[] = '<strong>'.$this->getMajorCount().'</strong> '.$this->__('major');
 		endif;
+
 		if ($this->getMinorCount()):
-			$sMinor = '<strong>'.$this->getMinorCount().'</strong> '.$this->__('minor');
-		else:
-			$sMinor = '';
+		    $sParts[] = '<strong>'.$this->getMinorCount().'</strong> '.$this->__('minor');
 		endif;
-		if ($this->getMinorCount() && $this->getMajorCount()):
-			$sAnd = 'and';
-		else:
-			$sAnd = '';
-		endif;			
-	?>	
-    <span class="f-right"><?php echo $this->__('You have %s %s %s %s unread notice(s). <a href="%s">Go to notices inbox</a>.',
-        $sCrit,
-		$sMajor,
-		$sAnd,
-		$sMinor,
+
+		if ($this->getNoticeCount()):
+		    $sParts[] = '<strong>'.$this->getNoticeCount().'</strong> '.$this->__('notice');
+		endif;
+
+		$msgStats = '';
+		$c = count($sParts);
+		for ($i = 0; $i < $c; $i++) {
+		    $msgStats .= $sParts[$i] . ($i == $c-1 ? '' : ($i == $c-2 ? ' and ' : ', '));
+		}
+
+	?>
+    <span class="f-right"><?php echo $this->__('You have %s unread message(s). <a href="%s">Go to messages inbox</a>.',
+        $msgStats,
         $this->getNoticesInboxUrl()
     );?></span>
-<?php /* ********** temporary commented    	
-	<span class="f-right"><?php echo $this->__('You have %s, %s and %s unread notices. <a href="%s">Go to notices inbox</a>.',
+<?php /* ********** temporary commented
+	<span class="f-right"><?php echo $this->__('You have %s, %s and %s unread messages. <a href="%s">Go to messages inbox</a>.',
         '<span class="critical"><strong>'.$this->getCriticalCount().'</strong> '.$this->__('critical').'</span>',
         '<strong>'.$this->getMajorCount().'</strong> '.$this->__('major'),
         '<strong>'.$this->getMinorCount().'</strong> '.$this->__('minor'),
         $this->getNoticesInboxUrl()
     );?></span>
-******** */?>	
-    <strong class="label"><?php echo $this->__('Latest Notice:') ?></strong> <?php echo $this->getLatestNotice() ?> <a target="_blank" href="<?php echo $this->getLatestNoticeUrl() ?>"><?php echo $this->__('Read details') ?></a>
+******** */?>
+    <?php if ($this->isMessageWindowAvailable()): ?>
+        <strong class="label clickable" onclick="openMessagePopupWindow()">
+    <?php else: ?>
+        <strong class="label">
+    <?php endif; ?>
+
+    <?php echo $this->__('Latest Message:') ?></strong> <?php echo $this->getLatestNotice() ?> <a href="<?php echo $this->getLatestNoticeUrl() ?>" onclick="this.target='_blank';"><?php echo $this->__('Read details') ?></a>
 </div>
 <?php endif; ?>

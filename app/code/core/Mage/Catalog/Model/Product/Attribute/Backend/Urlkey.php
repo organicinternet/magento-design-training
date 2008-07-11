@@ -33,7 +33,7 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Urlkey extends Mage_Eav_Model
         $attributeName = $this->getAttribute()->getName();
 
         $urlKey = $object->getData($attributeName);
-        if ($urlKey=='') {
+        if ($urlKey == '') {
             $urlKey = $object->getName();
         }
 

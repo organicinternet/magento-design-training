@@ -41,9 +41,9 @@
                       Event.observe($('<?php echo $_randomId?>'), 'mouseover', function(){ $('<?php echo $_randomId?>_full_value').style.display="block"; });
                       Event.observe($('<?php echo $_randomId?>'), 'mouseout', function(){ $('<?php echo $_randomId?>_full_value').style.display="none"; });
                     </script>
-                <? else: ?>
+                <?php else: ?>
                     <?php echo $_truncatedValue; ?>
-                <? endif; ?>
+                <?php endif; ?>
                 </li>
     <?php endforeach; ?>
     </ul>

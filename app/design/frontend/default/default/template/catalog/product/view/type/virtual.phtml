@@ -33,26 +33,3 @@
 <?php endif; ?>
 
 <?php echo $this->getPriceHtml($_product) ?>
-
-<?php if($_product->isSaleable()): ?>
-    <fieldset class="add-to-cart-box">
-        <legend><?php echo $this->__('Add Items to Cart') ?></legend>
-        <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
-        <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>" /></span>
-        <button class="form-button" onclick="productAddToCartForm.submit()"><span><?php echo $this->__('Add to Cart') ?></span></button>
-        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
-            <strong><?php echo $this->__('OR') ?></strong>
-        <?php endif; ?>
-    </fieldset>
-<?php endif; ?>
-
-<div class="add-to-box">
-<?php if ($this->helper('wishlist')->isAllow()) : ?>
-    <a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a><br/>
-<?php endif; ?>
-
-<?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
-    <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a>
-<?php endif; ?>
-</div>
-

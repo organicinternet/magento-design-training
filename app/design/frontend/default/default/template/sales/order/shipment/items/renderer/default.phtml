@@ -21,16 +21,14 @@
 <?php $_item = $this->getItem() ?>
 <?php $_order = $this->getItem()->getOrderItem()->getOrder() ?>
 <tr class="border" id="order-item-row-<?php echo $_item->getId() ?>">
-    <td>
-        <?php echo $this->htmlEscape($_item->getName()) ?>
+    <td><h5 class="title"><?php echo $this->htmlEscape($_item->getName()) ?></h5>
         <?php if($_options = $this->getItemOptions()): ?>
-        <ul class="item-options">
+        <dl class="item-options">
         <?php foreach ($_options as $_option): ?>
-            <li><strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong><br />
-                <?php echo $this->htmlEscape($_option['value']); ?>
-            </li>
+            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+						<dd><?php echo $this->htmlEscape($_option['value']); ?></dd>
         <?php endforeach; ?>
-        </ul>
+        </dl>
         <?php endif; ?>
         <?php echo $_item->getDescription() ?>
         <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item->getOrderItem()) && $_item->getGiftMessageId()): ?>

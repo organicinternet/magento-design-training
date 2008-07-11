@@ -41,6 +41,9 @@ class Mage_CatalogIndex_Model_Mysql4_Price extends Mage_CatalogIndex_Model_Mysql
 
     public function getRate()
     {
+        if (!$this->_rate) {
+            $this->_rate = 1;
+        }
         return $this->_rate;
     }
 

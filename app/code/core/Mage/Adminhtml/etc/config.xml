@@ -446,6 +446,16 @@
                 </catalog>
             </updates>
         </layout>
+        <sales>
+            <order>
+                <create>
+                    <available_product_types>
+                        <simple/>
+                        <virtual/>
+                    </available_product_types>
+                </create>
+            </order>
+        </sales>
     </adminhtml>
     <default>
         <system>
@@ -468,4 +478,16 @@
             </design>
         </admin>
     </stores>
+    <websites>
+        <admin>
+            <web>
+                <routers>
+                    <frontend><disabled>true</disabled></frontend>
+                </routers>
+                <default>
+                    <no_route>admin/index/noRoute</no_route>
+                </default>
+            </web>
+        </admin>
+    </websites>
 </config>

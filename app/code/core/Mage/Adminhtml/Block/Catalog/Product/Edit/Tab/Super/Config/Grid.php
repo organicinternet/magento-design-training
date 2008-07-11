@@ -111,7 +111,8 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Super_Config_Grid extends Ma
             ->addAttributeToSelect('type_id')
             ->addAttributeToSelect('price')
             ->addFieldToFilter('attribute_set_id',$product->getAttributeSetId())
-            ->addFieldToFilter('type_id', $allowProductTypes);
+            ->addFieldToFilter('type_id', $allowProductTypes)
+            ->addFilterByRequiredOptions();
 
         Mage::getModel('cataloginventory/stock_item')->addCatalogInventoryToProductCollection($collection);
 

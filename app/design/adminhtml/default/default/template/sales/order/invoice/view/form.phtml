@@ -69,11 +69,9 @@
     <div class="entry-edit-head">
         <h4 class="icon-head head-products"><?php echo $this->helper('sales')->__('Items Invoiced') ?></h4>
     </div>
-    <div id="invoice_item_container">
-        <?php echo $this->getChildHtml('invoice_items') ?>
-    </div>
+    <?php echo $this->getChildHtml('invoice_items') ?>
 </div>
-<br/>
+
 <div class="box-left entry-edit">
     <div class="entry-edit-head"><h4><?php echo $this->__('Invoice History') ?></h4></div>
     <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>

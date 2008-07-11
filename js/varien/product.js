@@ -482,6 +482,7 @@ Product.OptionsPrice.prototype = {
         this.productPrice       = config.productPrice;
         this.showIncludeTax     = config.showIncludeTax;
         this.productPrice       = config.productPrice;
+        this.skipCalculate      = config.skipCalculate;
 
         this.optionPrices = {};
         this.containers = {};
@@ -520,12 +521,20 @@ Product.OptionsPrice.prototype = {
                     if (this.showIncludeTax) {
                         price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
                     } else {
-                        price = this.getPriceWithoutTax(optionPrices+parseFloat(this.productPrice));
+                        if (!this.skipCalculate) {
+                            price = this.getPriceWithoutTax(optionPrices+parseFloat(this.productPrice));
+                        } else {
+                            price = optionPrices+parseFloat(this.productPrice);
+                        }
                     }
                 }
                 if (price < 0) price = 0;
                 formattedPrice = this.formatPrice(price);
-                $(pair.value).innerHTML = formattedPrice;
+                if ($(pair.value).getElementsBySelector('.price')[0]) {
+                    $(pair.value).getElementsBySelector('.price')[0].innerHTML = formattedPrice;
+                } else {
+                    $(pair.value).innerHTML = formattedPrice;
+                }
             };
         }.bind(this));
     },
@@ -543,7 +552,6 @@ Product.OptionsPrice.prototype = {
         }
         return price;
     },
-
     formatPrice: function(price) {
         return formatCurrency(price, this.priceFormat);
     }

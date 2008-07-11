@@ -31,6 +31,7 @@ class Mage_Adminhtml_Block_Promo_Widget_Chooser_Sku extends Mage_Adminhtml_Block
     public function __construct($arguments=array())
     {
         parent::__construct($arguments);
+        $this->setId('skuChooserGrid');
         $form = $this->getJsFormObject();
         $this->setRowClickCallback("$form.chooserGridRowClick.bind($form)");
         $this->setCheckboxCheckCallback("$form.chooserGridCheckboxCheck.bind($form)");

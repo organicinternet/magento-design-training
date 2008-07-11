@@ -71,9 +71,8 @@
         <h4 class="icon-head head-products"><?php echo $this->helper('sales')->__('Items Shipped') ?></h4>
         </div>
 </div>
-<div>
-    <?php echo $this->getChildHtml('shipment_items') ?>
-</div>
+<div id="shipment_items_container"><?php echo $this->getChildHtml('shipment_items') ?></div>
+<br />
 <div class="box-left entry-edit">
     <div class="entry-edit-head"><h4><?php echo $this->__('Shipment History') ?></h4></div>
     <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>

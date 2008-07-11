@@ -94,16 +94,21 @@ class Maged_Model_Pear extends Maged_Model
                 $result = $pear->run('list-upgrades', array('channel'=>$channel));
                 $output = $pear->getOutput();
     
-                if (empty($output) || empty($output[0]['output']['data']) || !is_array($output[0]['output']['data'])) {
+                if (empty($output)) {
                     continue;
                 }
     
-                foreach ($output[0]['output']['data'] as $pkg) {
-                    $pkgName = $pkg[1];
-                    if (!isset($packages[$channel][$pkgName])) {
+                foreach ($output as $channelData) {
+                    if (empty($channelData['output']['data']) || !is_array($channelData['output']['data'])) {
                         continue;
                     }
-                    $packages[$channel][$pkgName]['upgrade_latest'] = $pkg[3].' ('.$pkg[4].')';
+                    foreach ($channelData['output']['data'] as $pkg) {
+                        $pkgName = $pkg[1];
+                        if (!isset($packages[$channel][$pkgName])) {
+                            continue;
+                        }
+                        $packages[$channel][$pkgName]['upgrade_latest'] = $pkg[3].' ('.$pkg[4].')';
+                    }
                 }
             }
         }

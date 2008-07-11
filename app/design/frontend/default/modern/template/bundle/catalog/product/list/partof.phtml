@@ -21,7 +21,7 @@
 <?php if($this->getItemCollection()->getSize()): ?>
 <div class="up-sell-block">
     <p><strong><?php echo $this->__('This product is also part of bundle(s)') ?></strong></p>
-    <table cellspacing="0" class="generic-product-grid catalog-listing" id="upsell-product-table">
+    <table cellspacing="0" class="generic-product-grid catalog-listing" id="bundle-product-table">
     <?php $this->setColumnCount(5);?>
     <?php $this->resetItemsIterator() ?>
     <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
@@ -41,6 +41,6 @@
         </tr>
     <?php endfor; ?>
     </table>
-    <script type="text/javascript">decorateTable('upsell-product-table')</script>
+    <script type="text/javascript">decorateTable('bundle-product-table')</script>
 </div>
 <?php endif ?>

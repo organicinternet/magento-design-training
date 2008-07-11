@@ -70,15 +70,20 @@ class Mage_Bundle_Model_Product_Price extends Mage_Catalog_Model_Product_Type_Pr
                 }
             }
         } else {
-            foreach ($this->getOptions($product) as $option) {
-                $selectionCount = count($option->getSelections());
-                foreach ($option->getSelections() as $selection) {
-                    if (($selection->getIsDefault() || ($selectionCount == 1 && $option->getDefault())) && $selection->isSalable()) {
-                        $finalPrice = $finalPrice + $this->getSelectionPrice($product, $selection);
+            if ($options = $this->getOptions($product)) {
+                foreach ($options as $option) {
+                    $selectionCount = count($option->getSelections());
+                    if ($selectionCount) {
+                        foreach ($option->getSelections() as $selection) {
+                            if (($selection->getIsDefault() || ($selectionCount == 1 && $option->getDefault())) && $selection->isSalable()) {
+                                $finalPrice = $finalPrice + $this->getSelectionPrice($product, $selection);
+                            }
+                        }
                     }
                 }
             }
         }
+
         $finalPrice = $this->_applyTierPrice($product, $qty, $finalPrice);
         $finalPrice = $this->_applySpecialPrice($product, $finalPrice);
         $finalPrice = $this->_applyOptionsPrice($product, $qty, $finalPrice);
@@ -184,7 +189,7 @@ class Mage_Bundle_Model_Product_Price extends Mage_Catalog_Model_Product_Type_Pr
                 $product->getTypeInstance()->getOptionsIds()
             );
 
-        return $optionCollection->appendSelections($selectionCollection);
+        return $optionCollection->appendSelections($selectionCollection, false, false);
     }
 
     /**

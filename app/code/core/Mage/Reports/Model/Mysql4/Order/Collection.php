@@ -46,6 +46,7 @@ class Mage_Reports_Model_Mysql4_Order_Collection extends Mage_Sales_Model_Entity
             ->addExpressionAttributeToSelect('range', $this->_getRangeExpression($range), 'created_at')
             ->addAttributeToFilter('created_at', $this->getDateRange($range, $customStart, $customEnd))
             ->groupByAttribute('range')
+            ->addAttributeToFilter('state', array('neq' => Mage_Sales_Model_Order::STATE_CANCELED))
             ->getSelect()->order('range', 'asc');
 
         return $this;

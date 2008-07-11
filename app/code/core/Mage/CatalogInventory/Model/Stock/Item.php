@@ -233,30 +233,6 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Check quantity for options
-     *
-     * @param Mage_Sales_Model_Quote_Item $item
-     * @param int $qty
-     * @return bool
-     */
-    public function checkOptionQty(Mage_Sales_Model_Quote_Item $item, $qty)
-    {
-        if ($options = $item->getQtyOptions()) {
-            foreach ($options as $option) {
-                /* @var $option Mage_Sales_Model_Quote_Item_Option */
-                $optionQty = $option->getData('value');
-                var_dump($optionQty, $qty, $option->getProduct()->getStockItem()->getQty());
-                $option->getProduct()->getQty();
-                die();
-//This option is not available in the requested quantity.
-            }
-//            $optionQty =
-        }
-
-        return true;
-    }
-
-    /**
      * Checking quote item quantity
      *
      * @param   mixed $qty
@@ -375,6 +351,13 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
 
     protected function _beforeSave()
     {
+        if ($this->getBackorders() == Mage_CatalogInventory_Model_Stock::BACKORDERS_NO
+            && $this->getQty() <= $this->getMinQty()) {
+            if(!$this->getProduct() || !$this->getProduct()->isComposite()) {
+                $this->setIsInStock(false);
+            }
+        }
+
         /**
          * if qty is below notify qty, update the low stock date to today date otherwise set null
          */

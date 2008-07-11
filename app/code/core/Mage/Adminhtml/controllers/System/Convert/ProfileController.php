@@ -219,6 +219,7 @@ class Mage_Adminhtml_System_Convert_ProfileController extends Mage_Adminhtml_Con
             $importIds = $batchImportModel->getIdCollection();
 
             $adapter = Mage::getModel($batchModel->getAdapter());
+            $adapter->setBatchParams($batchModel->getParams());
 
             $errors = array();
             $saved  = 0;

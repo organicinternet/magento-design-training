@@ -20,19 +20,23 @@
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-    <td>
-        <?php echo $this->htmlEscape($this->getProductName()) ?>
+    <td><h5 class="title"><?php echo $this->htmlEscape($this->getProductName()) ?></h5>
         <?php if ($_options = $this->getOptionList()): ?>
-        <ul class="super-product-attributes">
+        <dl class="item-options">
             <?php foreach ($_options as $_option): ?>
-            <li><strong><?php echo $_option['label'] ?>:</strong><br />
-            <? if (is_array($_option['value'])): ?>
-                <?php echo implode('<br />', $_option['value']) ?>
-            <? else: ?>
-                <?php echo $this->htmlEscape($_option['value']) ?>
-            <? endif; ?>
+            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
+            <?php $randomId =  str_replace('.', '_', 'trunc_' . microtime(true)) ?>
+            <dt class="truncate-option" id="<?php echo $randomId ?>"><?php echo $this->htmlEscape($_option['label']) ?></dt>
+            <dd class="truncated truncate-option" id="<?php echo $randomId ?>">
+                <?php echo $_formatedOptionValue['value'] ?>
+                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                <div id="<?php echo $randomId ?>_full_view" class="truncated_value">
+                    <strong><?php echo $this->htmlEscape($_option['label']) ?>:</strong><br /> <?php echo $_formatedOptionValue['full_view'] ?>
+                </div>
+                <?php endif; ?>
+            </dd>
             <?php endforeach; ?>
-        </ul>
+        </dl>
         <?php endif; ?>
     </td>
     <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>

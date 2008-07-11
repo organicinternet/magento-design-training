@@ -123,5 +123,21 @@ Product.Bundle.prototype = {
             this.config.options[optionId].selections[selectionId].qty = element.value*1;
             this.reloadPrice();
         }
+    },
+
+    validationCallback: function (elmId, result){
+        if (typeof elmId == 'undefined') {
+            return;
+        }
+        var container = $(elmId).up('ul.options-list');
+        if (typeof container != 'undefined') {
+            if (result == 'failed') {
+                container.removeClassName('validation-passed');
+                container.addClassName('validation-failed');
+            } else {
+                container.removeClassName('validation-failed');
+                container.addClassName('validation-passed');
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@
             <?php echo $this->trackingInfo->getErrorMessage() ?>
         <?php else: ?>
             <?php if ($this->trackingInfo->getUrl()): ?>
-                Please, visit for more info: <a href="<?php echo $this->trackingInfo->getUrl() ?>" target="_blank"><?php echo $this->trackingInfo->getCarrierTitle() ?></a><br/>
+                Please, visit for more info: <a href="<?php echo $this->trackingInfo->getUrl() ?>" onclick="this.target='_blank'"><?php echo $this->trackingInfo->getCarrierTitle() ?></a><br/>
             <?php endif; ?>
 
             <?php if ($this->trackingInfo->getStatus()): ?>

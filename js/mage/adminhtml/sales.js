@@ -664,6 +664,19 @@ AdminOrder.prototype = {
         var el = $(elId);
         var parentEl = el.up(1);
         var parentPos = Position.cumulativeOffset(parentEl);
+        if (show) {
+            parentEl.removeClassName('ignore-validate');
+        }
+        else {
+            parentEl.addClassName('ignore-validate');
+        }
+        
+        if (Prototype.Browser.IE) {
+            parentEl.getElementsBySelector('select').each(function (elem) {
+                show ? elem .show() : elem.hide();
+            });
+        }
+        
         el.setStyle({
             display: show ? 'none' : '',
             position: 'absolute',

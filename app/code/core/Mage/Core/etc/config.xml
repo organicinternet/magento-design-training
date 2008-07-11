@@ -171,6 +171,10 @@
         </trans_email>
 
         <web>
+            <routers> <!-- declare default routers-->
+                <admin><area>admin</area><class>Mage_Core_Controller_Varien_Router_Admin</class></admin>
+                <standard><area>frontend</area><class>Mage_Core_Controller_Varien_Router_Standard</class></standard>
+            </routers>
             <url>
                 <use_store>0</use_store>
             </url>
@@ -213,4 +217,14 @@
             </url>
         </admin>
     </default>
+    <stores> <!-- declare routers for installation process -->
+        <default>
+            <web>
+                <routers>
+                    <admin><area>admin</area><class>Mage_Core_Controller_Varien_Router_Admin</class></admin>
+                    <standard><area>frontend</area><class>Mage_Core_Controller_Varien_Router_Standard</class></standard>
+                </routers>
+            </web>
+        </default>
+    </stores>
 </config>

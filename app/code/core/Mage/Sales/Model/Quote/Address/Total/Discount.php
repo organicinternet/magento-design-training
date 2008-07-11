@@ -112,7 +112,6 @@ class Mage_Sales_Model_Quote_Address_Total_Discount extends Mage_Sales_Model_Quo
                     if ($item->getDiscountAmount() || $item->getFreeShipping()) {
                         $hasDiscount = true;
                     }
-
                     $totalDiscountAmount += $item->getDiscountAmount();
                     $baseTotalDiscountAmount += $item->getBaseDiscountAmount();
 
@@ -124,14 +123,13 @@ class Mage_Sales_Model_Quote_Address_Total_Discount extends Mage_Sales_Model_Quo
                 }
             }
         }
-
         $address->setDiscountAmount($totalDiscountAmount);
         $address->setSubtotalWithDiscount($subtotalWithDiscount);
         $address->setBaseDiscountAmount($baseTotalDiscountAmount);
         $address->setBaseSubtotalWithDiscount($baseSubtotalWithDiscount);
 
         if (!$hasDiscount && !$address->getFreeShipping()) {
-            $quote->setCouponCode(null);
+            $quote->setCouponCode('');
         }
         $address->setGrandTotal($address->getGrandTotal() - $address->getDiscountAmount());
         $address->setBaseGrandTotal($address->getBaseGrandTotal()-$address->getBaseDiscountAmount());

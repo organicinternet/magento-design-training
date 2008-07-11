@@ -57,10 +57,6 @@ class Mage_Sales_Model_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Ad
              * We calculate parent tax amount as sum of children's tax amounts
              */
 
-            if ($_option = $item->getOptionByCode('product_calculations')) {
-                $calculations = $_option->getValue();
-            }
-
             if ($item->getHasChildren() && $item->isChildrenCalculated()) {
                 foreach ($item->getChildren() as $child) {
                     $discountBefore = $item->getDiscountAmount();

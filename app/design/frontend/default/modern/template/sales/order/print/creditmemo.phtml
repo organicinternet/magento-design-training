@@ -51,7 +51,7 @@
         </div>
     <?php if (!$_order->getIsVirtual()): ?>
     </div>
-    <br/>
+    <br />
     <div class="col2-set">
         <div class="col-1">
             <h4><?php echo $this->__('Shipping Method') ?></h4>
@@ -63,31 +63,29 @@
             <?php echo $this->getPaymentInfoHtml() ?>
         </div>
     </div>
-    <br/>
+    <br />
     <h4><?php echo $this->__('Items Refunded') ?></h4>
-    <table cellspacing="0" class="data-table data-bundle" id="my-orders-table">
-    <thead>
-        <tr>
+    <table cellspacing="0" class="data-table" id="my-refund-table-<?php echo $_creditmemo->getId(); ?>">
+      <col />
+      <col width="25%" />
+      <col width="1" />
+      <col width="1" />
+      <col width="1" />
+      <col width="1" />
+      <col width="1" />
+      <thead>
+          <tr>
             <th><?php echo $this->__('Product Name') ?></th>
-            <th width="10%"><?php echo $this->__('SKU') ?></th>
-            <th width="10%"><?php echo $this->__('Price') ?></th>
-            <th class="a-center" width="5%"><?php echo $this->__('Qty') ?></th>
-            <th><?php echo $this->__('Subtotal') ?></th>
-            <th class="wrap" width="7%"><?php echo $this->__('Discount Amount') ?></th>
-            <th class="wrap"><?php echo $this->__('Row Total') ?></th>
-        </tr>
-    </thead>
-        <?php $_items = $_creditmemo->getAllItems(); ?>
-        <?php $_count = count($_items); ?>
-        <?php $_index = 0; ?>
-        <?php foreach ($_items as $_item): ?>
-    <?php if ($_item->getOrderItem()->getParentItem()) continue; else $_index++ ?>
-    <tbody class="<?php echo ($_index%2 ? 'even' : 'odd') ?>">
-        <?php echo $this->getItemHtml($_item) ?>
-    </tbody>
-        <?php endforeach; ?>
-    <tfoot>
-            <?php if ((float) $_creditmemo->getSubtotal()): ?>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
+            <th class="a-center wrap"><?php echo $this->__('Discount Amount') ?></th>
+            <th class="a-center wrap"><?php echo $this->__('Row Total') ?></th>
+          </tr>
+      </thead>
+      <tfoot>
+        <?php if ((float) $_creditmemo->getSubtotal()): ?>
         <tr>
             <td colspan="6" class="a-right"><?php echo $this->__('Subtotal') ?></td>
             <td class="last a-right"><?php echo $_order->formatPrice($_creditmemo->getSubtotal()) ?></td>
@@ -134,45 +132,37 @@
         </tr>
         <?php endif; ?>
          <tr>
-            <td colspan="6" class="a-right">
-                <strong><?php echo $this->__('Grand Total') ?></strong>
-            </td>
-            <td class="last a-right">
-                <strong><?php echo $_order->formatPrice($_creditmemo->getGrandTotal()) ?></strong>
-            </td>
+            <td colspan="6" class="a-right"><strong><?php echo $this->__('Grand Total') ?></strong></td>
+            <td class="last a-right"><strong><?php echo $_order->formatPrice($_creditmemo->getGrandTotal()) ?></strong></td>
         </tr>
         <?php if ($this->getCanDisplayTotalPaid()): ?>
         <tr>
-            <td colspan="6" class="a-right">
-                <strong><?php echo $this->__('Total Paid') ?></strong>
-            </td>
-            <td class="last a-right">
-                <strong><?php echo $_order->formatPrice($_creditmemo->getTotalPaid()) ?></strong>
-            </td>
+            <td colspan="6" class="a-right"><strong><?php echo $this->__('Total Paid') ?></strong></td>
+            <td class="last a-right"><strong><?php echo $_order->formatPrice($_creditmemo->getTotalPaid()) ?></strong></td>
         </tr>
         <?php endif; ?>
         <?php if ($this->getCanDisplayTotalRefunded()): ?>
         <tr>
-            <td colspan="6" class="a-right">
-                <strong><?php echo $this->__('Total Refunded') ?></strong>
-            </td>
-            <td class="last a-right">
-                <strong><?php echo $_order->formatPrice($_creditmemo->getTotalRefunded()) ?></strong>
-            </td>
+            <td colspan="6" class="a-right"><strong><?php echo $this->__('Total Refunded') ?></strong></td>
+            <td class="last a-right"><strong><?php echo $_order->formatPrice($_creditmemo->getTotalRefunded()) ?></strong></td>
         </tr>
         <?php endif; ?>
         <?php if ($this->getCanDisplayTotalDue()): ?>
         <tr>
-            <td colspan="6" class="a-right">
-                <strong><?php echo $this->__('Total Due') ?></strong>
-            </td>
-            <td class="last a-right">
-                <strong><?php echo $_order->formatPrice($_creditmemo->getTotalDue()) ?></strong>
-            </td>
+            <td colspan="6" class="a-right"><strong><?php echo $this->__('Total Due') ?></strong></td>
+            <td class="last a-right"><strong><?php echo $_order->formatPrice($_creditmemo->getTotalDue()) ?></strong></td>
         </tr>
         <?php endif; ?>
     </tfoot>
+    <?php $_items = $_creditmemo->getAllItems(); ?>
+    <?php $_count = count($_items); ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getOrderItem()->getParentItem()) continue; ?>
+    <tbody>
+        <?php echo $this->getItemHtml($_item) ?>
+    </tbody>
+    <?php endforeach; ?>
 </table>
-    <br/>
+<script type="text/javascript">decorateTable('my-refund-table-<?php echo $_creditmemo->getId(); ?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
 <?php endforeach; ?>
 <script type="text/javascript">window.print();</script>

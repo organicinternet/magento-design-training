@@ -23,8 +23,8 @@
 <?php $shipItems = $this->getChilds($_item) ?>
 <?php $_count = count ($items) ?>
 <?php $_index = 0 ?>
-<?php $bundleOptions = $this->getBundleOptions($this->getItem()->getOrderItem()) ?>
-<?php $_prevOptionLabel = '' ?>
+
+<?php $_prevOptionId = '' ?>
 
 <?php if($this->getOrderOptions() || $_item->getDescription()): ?>
     <?php $_showlastRow = true ?>
@@ -34,32 +34,26 @@
 
 <?php foreach ($items as $_item): ?>
     <?php $this->setPriceDataObject($_item) ?>
-    <?php if (empty($_option['value'])): ?>
-        <?php $_option = array_shift($bundleOptions); ?>
-    <?php endif; ?>
     <?php if ($_item->getParentItem()): ?>
-        <?php if ($_prevOptionLabel != $_option['label']): ?>
+        <?php $attributes = $this->getSelectionAttributes($_item) ?>
+        <?php if ($_prevOptionId != $attributes['option_id']): ?>
         <tr>
-            <td class="indent">
-                <strong><?php echo $_option['label'] ?></strong>
-            </td>
-            <td class="last"></td>
+            <td><div class="option-label"><?php echo $attributes['option_label'] ?></div></td>
+            <td class="last">&nbsp;</td>
         </tr>
-        <?php $_prevOptionLabel = $_option['label'] ?>
+        <?php $_prevOptionId = $attributes['option_id'] ?>
         <?php endif; ?>
     <?php endif; ?>
-    <tr class="<?php echo (++$_index==$_count && !$_showlastRow)?'border':'' ?>">
+    <tr<?php echo (++$_index==$_count && !$_showlastRow)?' class="border"':'' ?>>
         <?php if (!$_item->getParentItem()): ?>
         <td>
-            <div><?php echo $this->htmlEscape($_item->getName()) ?></div>
+            <h5 class="title"><?php echo $this->htmlEscape($_item->getName()) ?></h5>
             <div class="nobr"><strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> <?php echo $_item->getSku() ?></div>
         </td>
         <?php else: ?>
-        <td class="indent">
-            <?php echo $this->getValueHtml(array_shift($_option['value']), $_item)?>
-        </td>
+        <td><div class="option-value"><?php echo $this->getValueHtml($_item)?></div></td>
         <?php endif; ?>
-        <td class="last">
+        <td class="a-center last">
             <?php if (($this->isShipmentSeparately() && $_item->getParentItem()) || (!$this->isShipmentSeparately() && !$_item->getParentItem())): ?>
                 <?php if (isset($shipItems[$_item->getId()])): ?>
                     <?php echo $shipItems[$_item->getId()]->getQty()*1 ?>
@@ -74,18 +68,17 @@
 <?php endforeach; ?>
 <?php if($_showlastRow): ?>
     <tr class="border">
-        <td class="indent">
+        <td>
             <?php if ($this->getOrderOptions($_item->getOrderItem())): ?>
-                <ul class="item-options-bundle">
+                <dl class="item-options">
                 <?php foreach ($this->getOrderOptions($_item->getOrderItem()) as $option): ?>
-                    <li><strong><?php echo $option['label'] ?>:</strong><br />
-                        <?php echo $this->htmlEscape($option['value']); ?>
-                    </li>
+                    <dt><?php echo $option['label'] ?></dt>
+                                        <dd><?php echo $this->htmlEscape($option['value']); ?></dd>
                 <?php endforeach; ?>
-                </ul>
+                </dl>
             <?php endif; ?>
             <?php echo $_item->getDescription() ?>
         </td>
-        <td class="last"></td>
+        <td class="last">&nbsp;</td>
     </tr>
 <?php endif; ?>

@@ -39,8 +39,13 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Option extends Mage_Core_Mo
         $titleTable = $this->getTable('catalog/product_option_title');
 
         //better to check param 'price' and 'price_type' for saving. If there is not price scip saving price
-        if ($object->getType() == 'field' || $object->getType() == 'area' || $object->getType() == 'file'
-            || $object->getType() == 'date' || $object->getType() == 'date_time' || $object->getType() == 'time') {
+        if ($object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_FIELD
+            || $object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_AREA
+            || $object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_FILE
+            || $object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE
+            || $object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE_TIME
+            || $object->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_TIME
+        ) {
 
             //save for store_id = 0
             if (!$object->getData('scope', 'price')) {

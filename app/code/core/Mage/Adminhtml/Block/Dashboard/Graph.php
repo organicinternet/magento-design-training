@@ -288,7 +288,13 @@ class Mage_Adminhtml_Block_Dashboard_Graph extends Mage_Adminhtml_Block_Dashboar
 
                     }
 
-                    $valueBuffer[] = $indexid . ":|" . str_replace('/', '\\', implode('|', $this->_axisLabels[$idx]));
+                    if ($directUrl) {
+                        $tmpstring = implode('|', $this->_axisLabels[$idx]);
+                    } else {
+                        $tmpstring = str_replace('/', '\\', implode('|', $this->_axisLabels[$idx]));
+                    }
+
+                    $valueBuffer[] = $indexid . ":|" . $tmpstring;
                     if (sizeof($this->_axisLabels[$idx]) > 1) {
                         $deltaX = 100/(sizeof($this->_axisLabels[$idx])-1);
                     } else {
@@ -324,6 +330,9 @@ class Mage_Adminhtml_Block_Dashboard_Graph extends Mage_Adminhtml_Block_Dashboar
             }
             return self::API_URL . '?' . implode('&', $p);
         } else {
+            foreach ($params as $name => $value) {
+                $params[$name] = urlencode($value);
+            }
             return $this->getUrl('*/*/tunnel', $params);
         }
     }

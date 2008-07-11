@@ -36,34 +36,39 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle_Option extends Mage_Bun
         return $this->getData('product');
     }
 
-    public function getSelectionQtyTitlePrice($_selection)
+    public function getSelectionQtyTitlePrice($_selection, $includeContainer = true)
     {
         $price = $this->getProduct()->getPriceModel()->getSelectionPreFinalPrice($this->getProduct(), $_selection);
-        return $_selection->getSelectionQty()*1 . ' x ' . $_selection->getName() . ' &nbsp; (+' .
-            $this->formatPriceString($price) . ')';
+        return $_selection->getSelectionQty()*1 . ' x ' . $_selection->getName() . ' &nbsp; ' .
+            ($includeContainer ? '<span class="price-notice">':'') . '+' .
+            $this->formatPriceString($price, $includeContainer) . ($includeContainer ? '</span>':'');
     }
 
-    public function getSelectionTitlePrice($_selection)
+    public function getSelectionTitlePrice($_selection, $includeContainer = true)
     {
         $price = $this->getProduct()->getPriceModel()->getSelectionPreFinalPrice($this->getProduct(), $_selection, 1);
-        return $_selection->getName() . ' &nbsp; (+' . $this->formatPriceString($price) . ')';
+        return $_selection->getName() . ' &nbsp; ' . ($includeContainer ? '<span class="price-notice">':'') . '+' .
+            $this->formatPriceString($price, $includeContainer) . ($includeContainer ? '</span>':'');
     }
 
     public function setValidationContainer($elementId, $containerId)
     {
-        return '<script type="text/javascript">$(\'' . $elementId . '\').advaiceContainer = $(\'' . $containerId . '\');</script>';
+        return '<script type="text/javascript">
+            $(\'' . $elementId . '\').advaiceContainer = \'' . $containerId . '\';
+            $(\'' . $elementId . '\').callbackFunction  = \'bundle.validationCallback\';
+            </script>';
     }
 
-    public function formatPriceString($price)
+    public function formatPriceString($price, $includeContainer = true)
     {
         $priceTax = Mage::helper('tax')->getPrice($this->getProduct(), $price);
         $priceIncTax = Mage::helper('tax')->getPrice($this->getProduct(), $price, true);
 
         if (Mage::helper('tax')->displayBothPrices() && $priceTax != $priceIncTax) {
-            $formated = Mage::helper('core')->currency($priceTax);
-            $formated .= ' (+'.Mage::helper('core')->currency($priceIncTax).' '.Mage::helper('tax')->__('Incl. Tax').')';
+            $formated = Mage::helper('core')->currency($priceTax, true, $includeContainer);
+            $formated .= ' (+'.Mage::helper('core')->currency($priceIncTax, true, $includeContainer).' '.Mage::helper('tax')->__('Incl. Tax').')';
         } else {
-            $formated = $this->helper('core')->currency($priceTax);
+            $formated = $this->helper('core')->currency($priceTax, true, $includeContainer);
         }
 
         return $formated;

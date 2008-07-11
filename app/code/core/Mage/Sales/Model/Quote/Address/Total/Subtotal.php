@@ -105,6 +105,7 @@ class Mage_Sales_Model_Quote_Address_Total_Subtotal extends Mage_Sales_Model_Quo
             $item->calcRowTotal();
             $address->setSubtotal($address->getSubtotal() + $item->getRowTotal());
             $address->setBaseSubtotal($address->getBaseSubtotal() + $item->getBaseRowTotal());
+            $address->setTotalQty($address->getTotalQty() + $item->getQty());
         }
 
         return true;

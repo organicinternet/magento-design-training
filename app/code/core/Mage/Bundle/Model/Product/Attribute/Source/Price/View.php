@@ -33,7 +33,7 @@ class Mage_Bundle_Model_Product_Attribute_Source_Price_View extends Mage_Eav_Mod
         if (is_null($this->_options)) {
             $this->_options = array(
                 array(
-                    'label' => Mage::helper('bundle')->__('As Low As'),
+                    'label' => Mage::helper('bundle')->__('As low as'),
                     'value' =>  1
                 ),
                 array(
