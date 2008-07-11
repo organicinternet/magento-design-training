@@ -28,6 +28,34 @@ FIXED BUGS:
     #5324: Payflow Pro Proxy for Godaddy.com
     #5223: 'Read Details' hyperlink is brought to magento community site in the same window
     #5267: Free shipping - Minimum order amount bug with multiple currency
+    #5356: Import All Products: prices over 1000 are saved as 1 or 10
+    #5320: Price alert is not sent to someone who signed up for 'Sign up for price alert' on the frontend
+    #5368: Global Customer Account and Cart
+    #4703: Imported configurable products don't work
+    #4878: ID column should have range for search
+    #5419: Selecting Custom Option doesn't update product price at all
+    #5379: Shopping cart rule defective for payments
+    #5441: Configurable product image is always used in Cart regardless configuration
+    #5432: Inconsistent SEO URL's
+    #5478: Shipping address in onepage
+    #4346: make tax_class_id attribute applicable only to simple, configurable, virtual by default
+    #5479: catalog product image placeholder failed to load, if skin had no placeholder image.
+    #5050: Product Browsing / list.phtml doesnt support transparency 
+    #5250: Magento (or underlying software) is damaging transparent images, replacing transparency with black 
+    #5491: Unable to cancel coupon code.
+    #5504: Cart price rules: Total Items Qty condition doesn't work
+    #5117 - removed type hinting from setGroup()
+    #5614: Short tag endif error
+    #5570: Backoffice : create new order , problem with payment method under Windows 
+    #5483: Shorttag <?endif;?> makes an error in admin. 
+    #5517: "About Us", "Customer Service" error 404 page
+    #5512: Order number shold be a link
+    #5506: Cannot add SKU from products list in Condition and Action subselection if pagination options were used
+    #5587: IE bug in decorateGeneric()
+    #5588: & encoding on Cart page
+    #5466: Payment method is disabled in admin checkout
+    #5516: place order button kept disabled after error
+    #5608: Trouble after double adding product to s.cart
     Fixed dynamic SKU & weight, fixed SKU for products with custom options, multiselect options
     Fixed admin notifications URL
     Fixed cache management issues
@@ -60,6 +88,11 @@ FIXED BUGS:
     Fixed custom options validation
     Fixed email templates (added custom options, bundle options)
     Fixed onepage checkout payment information
+    Fixed email and cms templates store directive
+    Fixed mixed (virtual/not virtual) order creation
+    Fixed price calculation on product view page, displaying custom options price, javascript price updating and formatting, non-required options validation
+    Fixed error in crontab backend model for Currency, Sitemap, ProductAlert
+    Fixed displayin bundle products in related block
 
 
 CHANGES:
@@ -97,6 +130,14 @@ CHANGES:
     Added 'non-recursive' param to js/varien/js.js/decorateList()
     Modified catalog product edit page categories tree (to load only assigned categories by default)
     Added taxes on options, fixed js script to update price on product view page
+    Additional items can be added to upsell list through events
+    Fixed catalog/product/image helper and model, rewritten Varien image lib, made setBaseFile() independent from heading slash in filename, fixed image __destruct() issue
+    Added configuration option to remove space between currency sign and price value
+    Added optional parameter to control if span container is included or not for price
+    Added hasOptions() to products view blocks of each type, updated product view container template.
+    Moved product descriptions and additional data in separate blocks, moved "Add to cart" and "Add to wishlist / compare" to blocks
+    Simplified decorateTable(), decorateList() and decorateDataList()
+
 
 NOTES:
 
