@@ -31,27 +31,26 @@
         <br />
         (<span><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?></span> <?php echo Mage::helper('tax')->__('Incl. Tax') ?>)
         <?php endif;?>
-        <?php $_randomId = str_replace('.', '_', 'truncated_' . microtime(true)); ?>
-        <?php if ($_options = $this->getOptionList()): ?>
+        <!-- item custom options -->
+        <?php if ($_options = $this->getOptionList()):?>
         <div class="truncated">
-            <div class="truncated_value" id="<?php echo $_randomId?>_full_view">
-                <ul class="super-product-attributes">
+          <div class="truncated_full_value">
+            <dl class="item-options">
                 <?php foreach ($_options as $_option) : ?>
-                <?php
-                if (is_array($_option['value'])) {
-                    $_truncatedValue = implode('<br />', $_option['value']);
-                } else {
-                    $_truncatedValue = nl2br($this->htmlEscape($_option['value']));
-                }
-                ?>
-                    <li><strong><?php echo $this->htmlEscape($_option['label']) ?></strong><br />
-                        <?php echo $_truncatedValue; ?>
-                    </li>
+                <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+                <dd>
+                    <?php if (is_array($_option['value'])): ?>
+                    <?php echo nl2br(implode("\n", $_option['value'])) ?>
+                    <?php else: ?>
+                    <?php echo $_option['value'] ?>
+                    <?php endif; ?>
+                </dd>
                 <?php endforeach; ?>
-                </ul>
-            </div>
-            <a href="javascript:void(0);" class="truncate-option" id="<?php echo $_randomId?>"><?php echo $this->__('Details') ?></a>
+            </dl>
+          </div>
+        <a href="#" onclick="return false;" class="details"><?php echo $this->__('Details') ?></a>
         </div>
-        <?php endif; ?>
+        <?php endif;?>
+        <!-- / -->
     </div>
 </li>

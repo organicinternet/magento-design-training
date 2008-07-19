@@ -166,7 +166,7 @@ class Mage_Wishlist_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->_getUrl('wishlist/index/cart', array(
             'item'=>$item->getWishlistItemId(),
-            Mage_Core_Controller_Front_Action::PARAM_NAME_BASE64_URL => base64_encode(
+            Mage_Core_Controller_Front_Action::PARAM_NAME_BASE64_URL => Mage::helper('core')->urlEncode(
                $this->_getUrl('*/*/*', array('_current'=>true))
             )
         ));

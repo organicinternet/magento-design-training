@@ -411,7 +411,7 @@ var Shipping = Class.create();
 
     setSameAsBilling: function(flag) {
         $('shipping:same_as_billing').checked = flag;
-        $('billing:use_for_shipping_yes').checked = flag;
+//        $('billing:use_for_shipping_yes').checked = flag;
         if (flag) {
             this.syncWithBilling();
         }

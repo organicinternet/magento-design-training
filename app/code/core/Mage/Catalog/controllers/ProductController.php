@@ -57,6 +57,13 @@ class Mage_Catalog_ProductController extends Mage_Core_Controller_Front_Action
             $product->setCategory($category);
             Mage::register('current_category', $category);
         }
+        elseif ($categoryId = Mage::getSingleton('catalog/session')->getLastVisitedCategoryId()) {
+            if ($product->canBeShowInCategory($categoryId)) {
+                $category = Mage::getModel('catalog/category')->load($categoryId);
+                $product->setCategory($category);
+                Mage::register('current_category', $category);
+            }
+        }
 
 
         Mage::register('current_product', $product);

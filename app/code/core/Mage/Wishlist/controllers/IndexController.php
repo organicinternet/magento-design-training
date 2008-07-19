@@ -65,6 +65,9 @@ class Mage_Wishlist_IndexController extends Mage_Core_Controller_Front_Action
     {
         $this->_getWishlist();
         $this->loadLayout();
+        $this->_initLayoutMessages('customer/session');
+        $this->_initLayoutMessages('catalog/session');
+
         if ($block = $this->getLayout()->getBlock('customer.wishlist')) {
             $block->setRefererUrl($this->_getRefererUrl());
         }
@@ -216,7 +219,7 @@ class Mage_Wishlist_IndexController extends Mage_Core_Controller_Front_Action
         } else {
             if ($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL)) {
                 $this->getResponse()->setRedirect(
-                    base64_decode($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL))
+                    Mage::helper('core')->urlDecode($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL))
                 );
             } else {
                 $this->_redirect('*/*/');

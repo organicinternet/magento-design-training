@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Checkout>
-            <version>0.9.1</version>
+            <version>0.9.2</version>
         </Mage_Checkout>
     </modules>
     <global>
@@ -83,12 +83,6 @@
                 </connection>
             </checkout_read>
         </resources>
-        <cache>
-            <types>
-                <checkout_quote><label>Shopping Cart data</label></checkout_quote>
-            </types>
-        </cache>
-
     </global>
     <frontend>
           <secure_url>
@@ -156,7 +150,7 @@
                 <children>
                     <checkoutagreement translate="title" module="salesrule">
                         <sort_order>100</sort_order>
-                        <title>Checkout agreements</title>
+                        <title>Terms and conditions</title>
                         <action>adminhtml/checkout_agreement/</action>
                         <resource>checkout/agreement</resource>
                     </checkoutagreement>

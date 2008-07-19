@@ -27,6 +27,10 @@
  */
 class Mage_Catalog_Model_Layer_Filter_Item extends Varien_Object
 {
+    /**
+     * Get filter instance
+     * @return Mage_Catalog_Model_Layer_Filter_Abstract
+     */
     public function getFilter()
     {
         $filter = $this->getData('filter');
@@ -35,17 +39,21 @@ class Mage_Catalog_Model_Layer_Filter_Item extends Varien_Object
         }
         return $filter;
     }
-    
+
     public function getUrl()
     {
         return Mage::getUrl('*/*/*', array('_current'=>true, $this->getFilter()->getRequestVar()=>$this->getValue()));
     }
-    
+
     public function getRemoveUrl()
     {
-        return Mage::getUrl('*/*/*', array('_current'=>true, $this->getFilter()->getRequestVar()=>null));
+        return Mage::getUrl('*/*/*',
+            array(
+                '_current'=>true,
+                $this->getFilter()->getRequestVar()=>$this->getFilter()->getResetValue()
+        ));
     }
-    
+
     public function getName()
     {
         return $this->getFilter()->getName();

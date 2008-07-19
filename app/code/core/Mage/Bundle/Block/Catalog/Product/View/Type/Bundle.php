@@ -42,7 +42,6 @@ class Mage_Bundle_Block_Catalog_Product_View_Type_Bundle extends Mage_Catalog_Bl
                     $this->getProduct()->getTypeInstance()->getOptionsIds()
                 );
 
-
             $this->_options = $optionCollection->appendSelections($selectionCollection, false, false);
         }
         return $this->_options;

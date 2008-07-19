@@ -81,7 +81,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Address extends Mage_Adminhtm
                     $element = $fieldset->addField($attribute->getAttributeCode(), $inputType,
                         array(
                             'name'  => $attribute->getAttributeCode(),
-                            'label' => $attribute->getFrontend()->getLabel(),
+                            'label' => $this->__($attribute->getFrontend()->getLabel()),
                             'class' => $attribute->getFrontend()->getClass(),
                             'required' => $attribute->getIsRequired(),
                         )

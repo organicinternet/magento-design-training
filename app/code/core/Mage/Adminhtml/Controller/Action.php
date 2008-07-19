@@ -106,6 +106,7 @@ class Mage_Adminhtml_Controller_Action extends Mage_Core_Controller_Varien_Actio
     public function preDispatch()
     {
         Mage::getDesign()->setArea('adminhtml')
+            // [bug] this value will be overriden by defaults, how can it be set in adminhtml/etc/config.xml?
             ->setPackageName((string)Mage::getConfig()->getNode('stores/admin/design/package/name'))
             ->setTheme((string)Mage::getConfig()->getNode('stores/admin/design/theme/default'));
 

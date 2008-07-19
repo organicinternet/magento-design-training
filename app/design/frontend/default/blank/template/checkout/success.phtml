@@ -22,6 +22,7 @@
 <div class="page-head-container">
     <h2 class="page-head"><?php echo $this->__('Your order has been received') ?></h2>
 </div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <p><strong><?php echo $this->__('Thank you for your purchase!') ?></strong></p>
 <p>
     <?php echo $this->__('Your order # is: %s', $this->getOrderId()) ?>.<br/>

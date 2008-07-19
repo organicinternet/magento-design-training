@@ -74,6 +74,7 @@ class Mage_Adminhtml_Block_System_Config_Tabs extends Mage_Adminhtml_Block_Widge
         $configFields = Mage::getSingleton('adminhtml/config');
         $sections = $configFields->getSections($current);
         $tabs     = (array)$configFields->getTabs()->children();
+       
 
         $sections = (array)$sections;
 

@@ -85,7 +85,7 @@ class Mage_Adminhtml_Block_Review_Edit_Form extends Mage_Adminhtml_Block_Widget_
             'label'     => Mage::helper('review')->__('Status'),
             'required'  => true,
             'name'      => 'status_id',
-            'values'    => $statuses,
+            'values'    => Mage::helper('review')->translateArray($statuses),
         ));
 
         /**

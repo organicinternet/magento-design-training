@@ -106,6 +106,11 @@ class Mage_Customer_Model_Address_Abstract extends Mage_Core_Model_Abstract
         return $this->getData('street');
     }
 
+    public function setStreetFull($street)
+    {
+        return $this->setStreet($street);
+    }
+
     /**
      * set address street informa
      *

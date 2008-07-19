@@ -45,7 +45,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
     {
         return $this->getQuote()->getShippingAddress();
     }
-    
+
     /**
      * Retrieve array of shipping rates groups
      *
@@ -55,7 +55,9 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
     {
         if (empty($this->_rates)) {
             $groups = $this->getAddress()->getGroupedAllShippingRates();
+            /*
             if (!empty($groups)) {
+
                 $ratesFilter = new Varien_Filter_Object_Grid();
                 $ratesFilter->addFilter($this->getStore()->getPriceFilter(), 'price');
 
@@ -63,11 +65,12 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
                 	$groups[$code] = $ratesFilter->filter($groupItems);
                 }
             }
+            */
             return $this->_rates = $groups;
         }
         return $this->_rates;
     }
-    
+
     /**
      * Rertrieve carrier name from store configuration
      *
@@ -81,7 +84,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
         }
         return $carrierCode;
     }
-    
+
     /**
      * Retrieve current selected shipping method
      *
@@ -91,7 +94,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
     {
         return $this->getAddress()->getShippingMethod();
     }
-    
+
     /**
      * Check activity of method by code
      *
@@ -102,7 +105,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
     {
         return $code===$this->getShippingMethod();
     }
-    
+
     /**
      * Retrieve rate of active shipping method
      *
@@ -122,9 +125,14 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Shipping_Method_Form extends Mage_
         }
         return false;
     }
-    
+
     public function getIsRateRequest()
     {
         return $this->getRequest()->getParam('collect_shipping_rates');
+    }
+
+    public function getShippingPrice($price, $flag)
+    {
+        return $this->getQuote()->getStore()->convertPrice(Mage::helper('tax')->getShippingPrice($price, $flag, $this->getAddress()), true);
     }
 }

@@ -145,6 +145,18 @@ class Mage_Adminhtml_Block_Customer_Edit_Tab_View extends Mage_Adminhtml_Block_T
         return Mage::helper('customer')->__('Online');
     }
 
+    public function getIsConfirmedStatus()
+    {
+        $this->getCustomer();
+        if (!$this->_customer->getConfirmation()) {
+            return Mage::helper('customer')->__('Confirmed');
+        }
+        if ($this->_customer->isConfirmationRequired()) {
+            return Mage::helper('customer')->__('Not confirmed, cannot login');
+        }
+        return Mage::helper('customer')->__('Not confirmed, can login');
+    }
+
     public function getCreatedInStore()
     {
         return Mage::app()->getStore($this->getCustomer()->getStoreId())->getName();

@@ -273,19 +273,25 @@ class Mage_Sales_Model_Order_Invoice extends Mage_Core_Model_Abstract
         foreach ($this->getAllItems() as $item) {
             $item->cancel();
         }
-        $this->getOrder()->setTotalPaid(
-            $this->getOrder()->getTotalPaid()-$this->getGrandTotal()
-        );
-        $this->getOrder()->setBaseTotalPaid(
-            $this->getOrder()->getBaseTotalPaid()-$this->getBaseGrandTotal()
-        );
 
-        $this->getOrder()->setTotalInvoiced(
-            $this->getOrder()->getTotalInvoiced()-$this->getGrandTotal()
-        );
-        $this->getOrder()->setBaseTotalInvoiced(
-            $this->getOrder()->getBaseTotalInvoiced()-$this->getBaseGrandTotal()
-        );
+        /**
+         * Unregister order totals only for invoices in state PAID
+         */
+        if ($this->getState() == self::STATE_PAID) {
+            $this->getOrder()->setTotalPaid(
+                $this->getOrder()->getTotalPaid()-$this->getGrandTotal()
+            );
+            $this->getOrder()->setBaseTotalPaid(
+                $this->getOrder()->getBaseTotalPaid()-$this->getBaseGrandTotal()
+            );
+
+            $this->getOrder()->setTotalInvoiced(
+                $this->getOrder()->getTotalInvoiced()-$this->getGrandTotal()
+            );
+            $this->getOrder()->setBaseTotalInvoiced(
+                $this->getOrder()->getBaseTotalInvoiced()-$this->getBaseGrandTotal()
+            );
+        }
         $this->getOrder()->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
         Mage::dispatchEvent('sales_order_invoice_cancel', array($this->_eventObject=>$this));
         return $this;

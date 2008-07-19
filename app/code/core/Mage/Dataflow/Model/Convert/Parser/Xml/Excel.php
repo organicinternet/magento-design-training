@@ -457,7 +457,7 @@ class Mage_Dataflow_Model_Convert_Parser_Xml_Excel extends Mage_Dataflow_Model_C
     protected function _getXmlString(array $fields = array())
     {
         $xmlHeader = '<'.'?xml version="1.0"?'.'>' . "\n";
-        $xmlRegexp = '/^<cell><row>(.*)?<\/row><\/cell>\s?$/';
+        $xmlRegexp = '/^<cell><row>(.*)?<\/row><\/cell>\s?$/ms';
 
         if (is_null($this->_xmlElement)) {
             $xmlString = $xmlHeader . '<cell><row></row></cell>';
@@ -474,6 +474,9 @@ class Mage_Dataflow_Model_Convert_Parser_Xml_Excel extends Mage_Dataflow_Model_C
             if (is_numeric($value)) {
                 $dataType = "Number";
             }
+            $value = str_replace("\r\n", '&#10;', $value);
+            $value = str_replace("\r", '&#10;', $value);
+            $value = str_replace("\n", '&#10;', $value);
 
             $xmlData[] = '<Cell><Data ss:Type="'.$dataType.'">'.$value.'</Data></Cell>';
         }

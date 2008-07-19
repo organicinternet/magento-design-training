@@ -112,7 +112,7 @@ function giftMessageToogle(giftMessageIdentifier)
             <td><?php echo $_order->formatBasePrice($_order->getBaseGrandTotal()) ?></td>
         </tr>
         <?php endif; ?>
-    </tfoot>	
+    </tfoot>
     <tbody>
         <?php $_items = $_order->getItemsCollection(); ?>
         <?php $_count = $_items->count(); ?>
@@ -126,7 +126,7 @@ function giftMessageToogle(giftMessageIdentifier)
                         <br /><a href="#" id="order-item-gift-message-link-<?php echo $_item->getId() ?>" class="giftmessage-preview-link expand" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>')"><?php echo $this->__('Gift Message') ?></a>
                     <?php endif; ?>
                 </td>
-                <td><?php echo $_item->getSku() ?> </td>
+                <td><?php echo Mage::helper('core/string')->truncate($_item->getSku(), 50) ?> </td>
                 <td><?php echo $_order->formatPrice($_item->getPrice()) ?> </td>
                 <td><?php echo $_item->getQtyOrdered()*1 ?> </td>
                 <td><?php echo $_item->getQtyShipped()*1 ?> </td>

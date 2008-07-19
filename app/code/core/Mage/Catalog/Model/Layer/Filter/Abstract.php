@@ -58,6 +58,16 @@ abstract class Mage_Catalog_Model_Layer_Filter_Abstract extends Varien_Object
     }
 
     /**
+     * Get filter value for reset current filter state
+     *
+     * @return mixed
+     */
+    public function getResetValue()
+    {
+        return null;
+    }
+
+    /**
      * Apply filter to collection
      *
      * @param  Zend_Controller_Request_Abstract $request
@@ -123,6 +133,11 @@ abstract class Mage_Catalog_Model_Layer_Filter_Abstract extends Varien_Object
     protected function _getFilterEntityIds()
     {
         return $this->getLayer()->getProductCollection()->getAllIdsCache();
+    }
+
+    protected function _getBaseCollectionSql()
+    {
+        return $this->getLayer()->getProductCollection()->getSelect();
     }
 
     public function setAttributeModel($attribute)

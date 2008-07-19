@@ -226,6 +226,32 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
     }
 
     /**
+     * Get categories fieldset block
+     *
+     */
+    public function categoriesAction()
+    {
+        $this->_initProduct();
+
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('adminhtml/catalog_product_edit_tab_categories')->toHtml()
+        );
+    }
+
+    /**
+     * Get options fieldset block
+     *
+     */
+    public function optionsAction()
+    {
+        $this->_initProduct();
+
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('adminhtml/catalog_product_edit_tab_options', 'admin.product.options')->toHtml()
+        );
+    }
+
+    /**
      * Get related products grid and serializer block
      */
     public function relatedAction()
@@ -327,6 +353,20 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
         );
     }
 
+    /**
+     * Load bundle items fieldset
+     *
+     */
+    public function bundlesAction()
+    {
+        $product = $this->_initProduct();
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('bundle/adminhtml_catalog_product_edit_tab_bundle', 'admin.product.bundle.items')
+                ->setProductId($product->getId())
+                ->toHtml()
+        );
+    }
+
     public function validateAction()
     {
         $response = new Varien_Object();
@@ -338,7 +378,12 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
                 ->addData($this->getRequest()->getPost('product'))
                 ->validate();
         }
-        catch (Exception $e){
+        catch (Mage_Eav_Model_Entity_Attribute_Exception $e) {
+            $response->setError(true);
+            $response->setAttribute($e->getAttributeCode());
+            $response->setMessage($e->getMessage());
+        }
+        catch (Exception $e) {
             $this->_getSession()->addError($e->getMessage());
             $this->_initLayoutMessages('adminhtml/session');
             $response->setError(true);
@@ -387,10 +432,12 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
         /**
          * Initialize product categories
          */
-        if ($categoryIds = $this->getRequest()->getPost('category_ids')) {
+        $categoryIds = $this->getRequest()->getPost('category_ids');
+        if (null !== $categoryIds) {
+            if (empty($categoryIds)) {
+                $categoryIds = array();
+            }
             $product->setCategoryIds($categoryIds);
-        } else {
-            $product->setCategoryIds(array());
         }
 
         /**
@@ -466,7 +513,8 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
                 $redirectBack = true;
             }
             catch (Exception $e) {
-                $this->_getSession()->addException($e, $this->__('Product saving error.'));
+//                $this->_getSession()->addException($e, $this->__('Product saving error.'));
+                $this->_getSession()->addException($e, $e->getMessage());
                 $redirectBack = true;
             }
         }

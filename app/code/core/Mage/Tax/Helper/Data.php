@@ -390,4 +390,12 @@ class Mage_Tax_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON, $store);
     }
+
+    public function applyTaxOnCustomPrice($store = null) {
+        return ((int) Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON, $store) == 0);
+    }
+
+    public function applyTaxOnOriginalPrice($store = null) {
+        return ((int) Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON, $store) == 1);
+    }
 }

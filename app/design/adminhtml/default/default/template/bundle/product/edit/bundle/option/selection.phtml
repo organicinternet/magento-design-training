@@ -18,7 +18,8 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-<div id="bundle_selection_box_template" class="grid tier form-list hor-scroll">
+<div id="bundle_selection_box_template" class="grid tier form-list">
+  <div class="hor-scroll">
     <table class="border" cellpadding="0" cellspacing="0">
         <thead>
             <tr class="headings">
@@ -54,10 +55,10 @@
             </tr>
         </tbody>
     </table>
+  </div>
 </div>
-
 <script type="text/javascript">
-
+//<![CDATA[
 Bundle.Selection = Class.create();
 Bundle.Selection.prototype = {
     idLabel : '<?php echo $this->getFieldId() ?>',
@@ -249,14 +250,16 @@ Bundle.Selection.prototype = {
 
     productGridCheckboxCheck : function(grid, element) {
         var id = element.up('table').id.split('_')[4];
-        if (element.checked) {
-            var tr = element.parentNode.parentNode;
-            this.gridSelection[id][element.value] = $H({});
-            this.gridSelection[id][element.value]['name'] = tr.getElementsByClassName('name')[0].innerHTML;
-            this.gridSelection[id][element.value]['qty'] = tr.getElementsByClassName('qty')[0].value;
-            this.gridSelection[id][element.value]['sku'] = tr.getElementsByClassName('sku')[0].innerHTML;
-        } else {
-            this.gridSelection[id].remove(element.value);
+        if (element.value > 0) {
+            if (element.checked) {
+                var tr = element.parentNode.parentNode;
+                this.gridSelection[id][element.value] = $H({});
+                this.gridSelection[id][element.value]['name'] = tr.getElementsByClassName('name')[0].innerHTML;
+                this.gridSelection[id][element.value]['qty'] = tr.getElementsByClassName('qty')[0].value;
+                this.gridSelection[id][element.value]['sku'] = tr.getElementsByClassName('sku')[0].innerHTML;
+            } else {
+                this.gridSelection[id].remove(element.value);
+            }
         }
     },
 
@@ -282,6 +285,6 @@ Bundle.Selection.prototype = {
     }
 }
 
-var bSelection = new Bundle.Selection();
-
+bSelection = new Bundle.Selection();
+//]]>
 </script>

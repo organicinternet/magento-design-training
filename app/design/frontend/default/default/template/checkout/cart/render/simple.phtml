@@ -20,18 +20,11 @@
 ?>
 <?php $_item = $this->getItem() ?>
 <tr>
-    <td class="a-center">
-        <a href="<?php echo $this->getItemDeleteUrl($_item) ?>">
-            <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="Remove item" />
-        </a>
-    </td>
-    <td>
-        <a href="<?php echo $this->getItemUrl($_item) ?>">
-            <img src="<?php echo $this->helper('catalog/image')->init($this->getItemProductForThumbnail($_item), 'thumbnail')->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" width="75" />
-        </a>
+    <td class="a-center"><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="Remove item" /></a></td>
+    <td><a href="<?php echo $this->getItemUrl($_item) ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getItemProductForThumbnail($_item), 'thumbnail')->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" width="75" /></a>
     </td>
     <td class="attributes-col">
-        <p class="pname"><a href="<?php echo $this->getItemUrl($_item) ?>"><strong><?php echo $this->getItemName($_item) ?></strong></a></p>
+        <h4 class="title"><a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $this->getItemName($_item) ?></a></h4>
         <?php echo $this->getItemDescription($_item) ?>
         <?php if($_item->getMessage()): ?>
         <div style="font-size:95%;margin-top:6px;" class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
@@ -51,7 +44,7 @@
     <?php endif; ?>
     <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
-        <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?>
+        <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()+$_item->getTaxAmount()/$_item->getQty()) ?>
     </td>
     <?php endif; ?>
     <td class="a-center">
@@ -64,7 +57,7 @@
     <?php endif; ?>
     <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
     <td class="a-right">
-        <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?>
+        <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()+$_item->getTaxAmount()) ?>
     </td>
     <?php endif; ?>
 </tr>

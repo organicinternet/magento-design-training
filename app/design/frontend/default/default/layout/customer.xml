@@ -27,6 +27,7 @@ Supported layout update handles (action):
 - customer_account_logoutsuccess
 - customer_account_create
 - customer_account_forgotpassword
+- customer_account_confirmation
 - customer_account_edit
 
 Supported layout update handles (special):
@@ -133,6 +134,19 @@ New customer registration
             <block type="customer/account_forgotpassword" name="forgotPassword" template="customer/form/forgotpassword.phtml"/>
         </reference>
     </customer_account_forgotpassword>
+
+    <customer_account_confirmation>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <action method="setHeaderTitle" translate="title" module="customer"><title>Send confirmation link</title></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="accountConfirmation" template="customer/form/confirmation.phtml"/>
+        </reference>
+    </customer_account_confirmation>
 
     <customer_account_edit>
         <update handle="customer_account"/>

@@ -554,7 +554,14 @@ abstract class Mage_Eav_Model_Entity_Abstract
                     $instance = $attribute->getSource();
                     break;
             }
-            $results[$attrCode] = call_user_func_array(array($instance, $method), $args);
+            try {
+                $results[$attrCode] = call_user_func_array(array($instance, $method), $args);
+            }
+            catch (Exception $e) {
+                $exception = new Mage_Eav_Model_Entity_Attribute_Exception($e->getMessage());
+                $exception->setAttributeCode($attrCode)->setPart($part);
+                throw $exception;
+            }
         }
         return $results;
     }

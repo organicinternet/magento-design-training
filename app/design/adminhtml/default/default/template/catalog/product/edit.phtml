@@ -48,6 +48,22 @@
 <script type="text/javascript" language="javascript">
 
     var productForm = new varienForm('product_edit_form', '<?php echo $this->getValidationUrl() ?>');
+    productForm._processValidationResult = function(transport) {
+        var response = transport.responseText.evalJSON();
+        if (response.error){
+            if (response.attribute && $(response.attribute)) {
+                $(response.attribute).setHasError(true, productForm);
+                Validation.ajaxError($(response.attribute), response.message);
+                $(response.attribute).focus();
+            }
+            else if ($('messages')) {
+                $('messages').innerHTML = response.message;
+            }
+        }
+        else{
+            productForm._submit();
+        }
+    };
     function saveAndContinueEdit(){
         productForm.submit($('product_edit_form').action+'back/edit/tab/' + product_info_tabsJsTabs.activeTab.id);
     }

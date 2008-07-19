@@ -372,6 +372,26 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
     }
 
     /**
+     * Change column
+     *
+     * @param string $tableName
+     * @param string $oldColumnName
+     * @param string $newColumnName
+     * @param string $definition
+     */
+    public function changeColumn($tableName, $oldColumnName, $newColumnName, $definition)
+    {
+        if (!$this->tableColumnExists($tableName, $oldColumnName)) {
+            Mage::throwException('Column "' . $oldColumnName . '" does not exists on table "' . $tableName . '"');
+        }
+
+        $sql = 'ALTER TABLE ' . $this->quoteIdentifier($tableName)
+            . 'CHANGE COLUMN ' . $this->quoteIdentifier($oldColumnName)
+            . ' ' . $this->quoteIdentifier($newColumnName) . ' ' . $definition;
+        return $this->raw_query($sql);
+    }
+
+    /**
      * Creates and returns a new Zend_Db_Select object for this adapter.
      *
      * @return Varien_Db_Select
@@ -441,6 +461,10 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
      */
     protected function _debugException(Exception $e)
     {
+        if (!$this->_debug) {
+            throw $e;
+        }
+
         $nl   = "\n";
         $code = 'EXCEPTION ' . $e->getMessage() . $nl
             . 'E TRACE: ' . print_r($e->getTrace(), true) . $nl . $nl;

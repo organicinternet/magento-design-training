@@ -26,6 +26,7 @@
 class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
 {
     protected $_itemCollection;
+    protected $_hasItems = null;
 
     /**
      * Retrieve compare list url
@@ -74,7 +75,7 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getAddToWishlistUrl($product)
     {
-        $beforeCompareUrl = base64_encode(Mage::getSingleton('catalog/session')->getBeforeCompareUrl());
+        $beforeCompareUrl = $this->urlEncode(Mage::getSingleton('catalog/session')->getBeforeCompareUrl());
 
         $params = array(
             'product'=>$product->getId(),
@@ -92,7 +93,7 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getAddToCartUrl($product)
     {
-        $beforeCompareUrl = base64_encode(Mage::getSingleton('catalog/session')->getBeforeCompareUrl());
+        $beforeCompareUrl = $this->urlEncode(Mage::getSingleton('catalog/session')->getBeforeCompareUrl());
         $params = array(
             'product'=>$product->getId(),
             Mage_Core_Controller_Front_Action::PARAM_NAME_BASE64_URL => $beforeCompareUrl
@@ -163,6 +164,20 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getItemCount()
     {
-        return $this->getItemCollection()->getSize();
+        if ($this->hasItems()) {
+        	return $this->getItemCollection()->getSize();
+        }
+        return 0;
+    }
+
+    public function hasItems()
+    {
+        if (is_null($this->_hasItems)) {
+            $this->_hasItems = Mage::getModel('catalog/product_compare_list')->hasItems(
+                Mage::getSingleton('customer/session')->getCustomerId(),
+                Mage::getSingleton('log/visitor')->getId()
+            );
+        }
+        return $this->_hasItems;
     }
 }

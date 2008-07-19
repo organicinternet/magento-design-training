@@ -1,5 +1,5 @@
 <?php  $_order = $this->getOrder() ?>
-
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <div class="page-head button-level">
     <h3><?php echo $this->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h3>
     <?php if($this->helper('rss/order')->isStatusNotificationAllow()): ?>

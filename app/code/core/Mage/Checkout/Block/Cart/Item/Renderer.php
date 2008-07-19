@@ -119,7 +119,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
                     }
                     $options[] = array(
                         'label' => $option->getTitle(),
-                        'value' => $formatedValue,
+                        'value' => $this->htmlEscape($formatedValue),
                     );
                 }
             }
@@ -212,8 +212,8 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
             $_truncatedValue = nl2br($_truncatedValue);
             return array('value' => $_truncatedValue);
         } else {
-            $_truncatedValue = Mage::helper('core/string')->truncate($optionValue, 100, '');
-            $_truncatedValue = nl2br($this->htmlEscape($_truncatedValue));
+            $_truncatedValue = Mage::helper('core/string')->truncate($optionValue, 55, '');
+            $_truncatedValue = nl2br($_truncatedValue);
         }
 
         $formateOptionValue = array(
@@ -221,8 +221,8 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
         );
 
         if (Mage::helper('core/string')->strlen($optionValue) > 100) {
-            $formateOptionValue['value'] = $formateOptionValue['value'] . '...';
-            $optionValue = nl2br($this->htmlEscape($optionValue));
+            $formateOptionValue['value'] = $formateOptionValue['value'] . ' <a href="#" class="dots" onclick="return false">...</a>';
+            $optionValue = nl2br($optionValue);
             $formateOptionValue = array_merge($formateOptionValue, array('full_view' => $optionValue));
 
         }

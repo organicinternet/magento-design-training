@@ -450,6 +450,7 @@ class Mage_Core_Model_Layout extends Varien_Simplexml_Config
         }
         return $block;
     }
+    
 
     /**
      * Retrieve all blocks from registry as array

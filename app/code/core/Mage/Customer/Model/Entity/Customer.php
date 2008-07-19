@@ -72,6 +72,18 @@ class Mage_Customer_Model_Entity_Customer extends Mage_Eav_Model_Entity_Abstract
             Mage::throwException(Mage::helper('customer')->__('Customer email already exists'));
         }
 
+        // set confirmation key logic
+        if ($customer->getForceConfirmed()) {
+            $customer->setConfirmation(null);
+        }
+        elseif ((!$customer->getId()) && ($customer->isConfirmationRequired())) {
+            $customer->setConfirmation($customer->getRandomConfirmationKey());
+        }
+        // remove customer confirmation key from database, if empty
+        if (!$customer->getConfirmation()) {
+            $customer->setConfirmation(null);
+        }
+
         return $this;
     }
 

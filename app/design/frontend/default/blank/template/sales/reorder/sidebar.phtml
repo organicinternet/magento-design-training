@@ -33,25 +33,31 @@
 <form method="post" action="<?php echo $this->getUrl('checkout/cart/addgroup') ?>" id="reorder-validate-detail">
     <h3><?php echo $this->__('My Orders') ?><span> | </span><a href="<?php echo $this->getUrl('customer/account') ?>">View All</a></h3>
     <h4><?php echo $this->__('Last ordered items') ?></h4>
-<ol id="cart-sidebar-reorder">
 
-	 <?php $_showAddButtonFlag = false ?>
-     <?php foreach($_order->getItemsRandomCollection(5) as $_item): ?>
-     <?php if ($_item->getProduct() && is_null($_item->getParentItem())): ?>
-        <li>
-        		<?php if ($_item->getProduct()->getStockItem()->getIsInStock()): ?>
-        		<?php $_showAddButtonFlag = true ?>
-        			<input type="checkbox" name="order_items[]" value="<?php echo $_item->getId() ?>" class="validate-one-required-by-name" />
-        		<?php endif; ?>
-                <label><a href="<?php echo $_item->getProduct()->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></label>
-        </li>
-        <?php endif; ?>
-    <?php endforeach; ?>
+    <ol id="cart-sidebar-reorder" class="options-list">
+        <?php $_showAddButtonFlag = false ?>
+        <?php foreach ($_order->getItemsRandomCollection(5) as $_item): ?>
+            <?php if ($_item->getProduct() && is_null($_item->getParentItem())): ?>
+                <li>
+                    <?php if ($_item->getProduct()->getStockItem()->getIsInStock()): ?>
+                        <?php $_showAddButtonFlag = true ?>
+                        <input type="checkbox" name="order_items[]" id="reorder-item-<?php echo $_item->getId() ?>" value="<?php echo $_item->getId() ?>" class="validate-one-required-by-name" />
+                        <script type="text/javascript">
+                            $('reorder-item-<?php echo $_item->getId() ?>').advaiceContainer = 'cart-sidebar-reorder-advice-container';
+                        </script>
+                    <?php endif; ?>
+                    <label><a href="<?php echo $_item->getProduct()->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></label>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </ol>
+
+    <div id="cart-sidebar-reorder-advice-container"></div>
+
     <?php if ($_showAddButtonFlag): ?>
-    	<p class="actions">
-        	<button class="form-button" type="submit"><span><?php echo $this->__('Add to Cart') ?></span></button><br />
-    	</p>
+        <p class="actions">
+            <button class="form-button" type="submit"><span><?php echo $this->__('Add to Cart') ?></span></button><br />
+        </p>
     <?php endif; ?>
 </form>
 </div>

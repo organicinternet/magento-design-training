@@ -102,8 +102,8 @@ class Mage_Backup_Model_Db
         $backup->write($this->getResource()->getHeader());
 
         foreach ($tables as $table) {
-            $backup->write("\n" . $this->getResource()->getTableDropSql($table) . "\n");
-            $backup->write($this->getResource()->getTableCreateSql($table, false) . "\n\n");
+            $backup->write($this->getResource()->getTableHeader($table) . $this->getResource()->getTableDropSql($table) . "\n");
+            $backup->write($this->getResource()->getTableCreateSql($table, false) . "\n");
 
             $tableStatus = $this->getResource()->getTableStatus($table);
 

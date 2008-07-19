@@ -33,35 +33,24 @@
     <td>
         <h3 class="product-name"><a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a></h3>
 
-        <!-- item custom options -->
+       <!-- item custom options -->
         <?php if ($_options = $this->getOptionList()):?>
-        <ul>
+        <dl class="item-options">
             <?php foreach ($_options as $_option) : ?>
-            <?php
-            $_randomId = str_replace('.', '_', 'trunc_' . microtime(true));
-            $_truncatedRemainder = '';
-            if (is_array($_option['value'])) {
-                $_truncatedValue = implode('<br />', $_option['value']);
-            } else {
-                $_truncatedValue = Mage::helper('core/string')->truncate($_option['value'], 100, '', $_truncatedRemainder);
-                $_truncatedValue     = nl2br($this->htmlEscape($_truncatedValue));
-                $_truncatedRemainder = nl2br($this->htmlEscape($_truncatedRemainder));
-            }
-            ?>
-            <li<?php if ($_truncatedRemainder):?> id="<?php echo $_randomId?>" class="truncated"<?php endif; ?>><strong><?php echo $_option['label'] ?></strong><br />
-                <?php if ($_truncatedRemainder):?>
-                <?php echo $_truncatedValue . '...'; ?>
-                <div class="truncated_value" id="<?php echo $_randomId?>_full_value"><strong><?php echo $_option['label'] ?>:</strong> <?php echo $_truncatedValue . $_truncatedRemainder ; ?></div>
-                <script type="text/javascript">
-                  Event.observe($('<?php echo $_randomId?>'), 'mouseover', function(){ $('<?php echo $_randomId?>_full_value').style.display="block"; });
-                  Event.observe($('<?php echo $_randomId?>'), 'mouseout', function(){ $('<?php echo $_randomId?>_full_value').style.display="none"; });
-                </script>
-                <?php else : ?>
-                <?php echo $_truncatedValue; ?>
-                <?php endif;?>
-            </li>
-            <?php endforeach;?>
-        </ul>
+            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
+            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?php echo $_formatedOptionValue['value'] ?>
+                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                <div class="truncated_full_value">
+                    <dl class="item-options">
+                        <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+                        <dd><?php echo $_formatedOptionValue['full_view'] ?></dd>
+                    </dl>
+                </div>
+                <?php endif; ?>
+            </dd>
+            <?php endforeach; ?>
+        </dl>
         <?php endif;?>
         <!-- / -->
 

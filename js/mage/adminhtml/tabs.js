@@ -113,6 +113,7 @@ varienTabs.prototype = {
         if (tabContentElement) {
             Element.show(tabContentElement);
             Element.addClassName(tab, 'active');
+            Element.removeClassName(tab, 'notloaded');
             this.activeTab = tab;
         }
         if (varienGlobalEvents) {

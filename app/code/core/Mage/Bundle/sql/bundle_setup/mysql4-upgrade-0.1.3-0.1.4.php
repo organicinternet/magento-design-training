@@ -1,3 +1,4 @@
+<?php
 /**
  * Magento
  *
@@ -11,12 +12,21 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * @category   Mage
+ * @package    Mage_Bundle
  * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-function switchDisplay(elementToHide, elementToShow)
-{
-    var display = elementToHide.style.display;
-    elementToHide.style.display = 'none';
-    elementToShow.style.display = display;
-}
+
+$installer = $this;
+/* @var $installer Mage_Catalog_Model_Resource_Eav_Mysql4_Setup */
+$installer->startSetup();
+
+$installer->run("
+    UPDATE `{$installer->getTable('catalog/product_entity')}` SET `has_options` = '1'
+    WHERE (entity_id IN (
+        SELECT parent_product_id FROM `{$installer->getTable('catalog/product_bundle_selection')}` GROUP BY parent_product_id
+    ));
+");
+
+$installer->endSetup();

@@ -70,7 +70,9 @@
     </div>
 </div>
 <?php if (count($_items)): ?>
-<div id="creditmemo_items_container"><?php echo $this->getChildHtml('creditmemo_items') ?></div>
+<div id="creditmemo_items_container">
+    <?php echo $this->getChildHtml('creditmemo_items') ?>
+</div>
 <?php else: ?>
 <div class="entry-edit">
     <fieldset><center><?php echo $this->helper('sales')->__('No Items') ?></center></fieldset>

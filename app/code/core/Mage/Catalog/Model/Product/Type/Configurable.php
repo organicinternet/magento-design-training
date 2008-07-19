@@ -262,6 +262,17 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
         return $collection;
     }
 
+    public function beforeSave()
+    {
+        parent::beforeSave();
+
+        if ($data = $this->getProduct()->getConfigurableAttributesData()) {
+            if (!empty($data)) {
+                $this->getProduct()->setHasOptions(true);
+            }
+        }
+    }
+
     /**
      * Save configurable product depended data
      *
@@ -350,19 +361,19 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
             $usedAttributes = $this->getUsedProductAttributes();
 
             foreach ($data as $attributeId => $attributeValue) {
-            	if (isset($usedAttributes[$attributeId])) {
-            	    $attribute = $usedAttributes[$attributeId];
-            	    $label = $attribute->getFrontend()->getLabel();
+                if (isset($usedAttributes[$attributeId])) {
+                    $attribute = $usedAttributes[$attributeId];
+                    $label = $attribute->getFrontend()->getLabel();
 
-            	    if ($attribute->getSourceModel()) {
-            	        $value = $attribute->getSource()->getOptionText($attributeValue);
-            	    }
-            	    else {
-            	        $value = '';
-            	    }
+                    if ($attribute->getSourceModel()) {
+                        $value = $attribute->getSource()->getOptionText($attributeValue);
+                    }
+                    else {
+                        $value = '';
+                    }
 
-            	    $attributes[] = array('label'=>$label, 'value'=>$value);
-            	}
+                    $attributes[] = array('label'=>$label, 'value'=>$value);
+                }
             }
         }
         Varien_Profiler::stop('CONFIGURABLE:'.__METHOD__);
@@ -427,4 +438,5 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
         }
         return parent::isVirtual();
     }
+
 }

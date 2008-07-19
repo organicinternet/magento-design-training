@@ -530,6 +530,7 @@ abstract class Mage_Core_Controller_Varien_Action
         if (empty($refererUrl)) {
             $refererUrl = empty($defaultUrl) ? Mage::getBaseUrl() : $defaultUrl;
         }
+
         $this->getResponse()->setRedirect($refererUrl);
         return $this;
     }
@@ -541,12 +542,12 @@ abstract class Mage_Core_Controller_Varien_Action
      */
     protected function _getRefererUrl()
     {
-        $refererUrl = $this->getRequest()->getServer('HTTP_REFERER');
+    	$refererUrl = $this->getRequest()->getServer('HTTP_REFERER');
         if ($url = $this->getRequest()->getParam(self::PARAM_NAME_REFERER_URL)) {
             $refererUrl = $url;
         }
         if ($url = $this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL)) {
-            $refererUrl = base64_decode($url);
+            $refererUrl = Mage::helper('core')->urlDecode($url);
         }
         if ($url = $this->getRequest()->getParam(self::PARAM_NAME_URL_ENCODED)) {
             $refererUrl = Mage::helper('core')->urlDecode($url);

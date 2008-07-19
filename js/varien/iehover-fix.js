@@ -46,6 +46,17 @@ ieHover = function() {
     		ieULs[j].style.zIndex="1";
     	}
 	}
+	var truncated=$$('.truncated_full_value .item-options');
+	for (var i=0; i<truncated.length; i++) {
+		    iframe = document.createElement('IFRAME');
+    		iframe.src = BLANK_URL;
+    		iframe.scrolling = 'no';
+    		iframe.frameBorder = 0;
+    		iframe.style.width = truncated[i].offsetWidth+"px";
+    		iframe.style.height = truncated[i].offsetHeight+"px";
+    		truncated[i].insertBefore(iframe, truncated[i].firstChild);
+    		truncated[i].style.zIndex="1";
+	}
 }
 
 Event.observe(window, 'load', ieHover);

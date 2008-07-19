@@ -35,9 +35,14 @@ class Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tabs extends Mage_Adminht
 
         $this->addTab('bundle_items', array(
             'label'     => Mage::helper('bundle')->__('Bundle Items'),
+/*
+// to load statically
             'content'   => $this->getLayout()->createBlock('bundle/adminhtml_catalog_product_edit_tab_bundle', 'admin.product.bundle.items')
                 ->setProductId($this->getRequest()->getParam('id'))
                 ->toHtml(),
+*/
+            'url'   => $this->getUrl('*/*/bundles', array('_current' => true)),
+            'class' => 'ajax',
         ));
     }
 }

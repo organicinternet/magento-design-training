@@ -26,26 +26,6 @@
 ?>
 <?php $_product = $this->getProduct() ?>
 
-<?php $_tierPrices = $this->getTierPrices() ?>
-<?php if(count($_tierPrices)>0): ?>
-    <div class="product-pricing">
-        <ul class="bare">
-        <?php foreach($_tierPrices as $_price): ?>
-            <?php if ($this->helper('tax')->displayBothPrices() && $_price['formated_price'] != $_price['formated_price_incl_tax']): ?>
-                <li><?php echo $this->__('Buy %s for %s (%s incl. tax) each', $_price['price_qty'], $_price['formated_price'], $_price['formated_price_incl_tax']) ?>
-            <?php else: ?>
-                <li><?php echo $this->__('Buy %s for %s each', $_price['price_qty'], $_price['formated_price']) ?>
-            <?php endif; ?>
-            <?php if(($_product->getPrice() == $_product->getFinalPrice() && $_product->getPrice() > $_price['price'])
-            || ($_product->getPrice() != $_product->getFinalPrice() &&  $_product->getFinalPrice() > $_price['price'])): ?>
-                <?php echo $this->__('and') ?> <strong><?php echo $this->__('save %s%%', $_price['savePercent']) ?>
-            <?php endif ?></strong>
-            </li>
-        <?php endforeach ?>
-        </ul>
-    </div>
-<?php endif; ?>
-
 <?php if($_product->isSaleable()): ?>
     <p><?php echo $this->__('Availability: In stock.') ?></p>
 <?php else: ?>
@@ -53,26 +33,3 @@
 <?php endif; ?>
 
 <?php echo $this->getPriceHtml($_product) ?>
-
-<?php /*
-<?php if($_product->isSaleable()): ?>
-    <fieldset class="add-to-cart-box">
-        <legend><?php echo $this->__('Add Items to Cart') ?></legend>
-        <div class="f-left">
-            <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
-            <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>"/></span>
-            <a href="#" onclick="productAddToCartForm.submit()"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 10px 0 5px;"/></a>
-        </div>
-        <?php if ($this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ) : ?>
-            <ul class="add-to  f-left">
-            <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
-            <?php endif; ?>
-            <?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
-                <li><a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
-            <?php endif; ?>
-        </ul>
-        <?php endif; ?>
-    </fieldset>
-<?php endif; ?>
-*/ ?>

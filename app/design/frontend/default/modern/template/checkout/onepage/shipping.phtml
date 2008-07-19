@@ -75,7 +75,7 @@
         <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()):?>
             <li><input type="checkbox" name="shipping[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="shipping:save_in_address_book" onchange="shipping.setSameAsBilling(false);"<?php if ($this->getAddress()->getSaveInAddressBook()):?> checked="checked"<?php endif;?> /> <label for="shipping:save_in_address_book"><?php echo $this->__('Save in address book') ?></label></li>
         <?php else:?>
-            <input type="hidden" name="shipping[save_in_address_book]" value="1" />
+            <li><input type="hidden" name="shipping[save_in_address_book]" value="1" /></li>
         <?php endif;?>
     </ul>
 </fieldset>
@@ -84,11 +84,11 @@
 <div class="button-set">
     <p class="required"><?php echo $this->__('* Required Fields') ?></p>
     <span id="shipping-buttons-container">
-        <a href="#" class="f-left" onclick="checkout.back(); return false;">&laquo; <?php echo $this->__('Back') ?></a>
+        <a href="#" class="left" onclick="checkout.back(); return false;">&laquo; <?php echo $this->__('Back') ?></a>
         <span id="shipping-please-wait" style="display:none;" class="opc-please-wait">
             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt=""/> &nbsp; <?php echo $this->__('Loading next step...') ?> &nbsp;
         </span>
-        <a href="#" onclick="shipping.save()"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif');?>" alt="<?php echo $this->__('Continue') ?>" class="v-middle"/></a>
+        <a href="#" onclick="shipping.save(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif');?>" alt="<?php echo $this->__('Continue') ?>" class="v-middle"/></a>
     </span>
 </div>
 

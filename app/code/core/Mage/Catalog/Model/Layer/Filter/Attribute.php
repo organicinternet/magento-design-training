@@ -45,16 +45,23 @@ class Mage_Catalog_Model_Layer_Filter_Attribute extends Mage_Catalog_Model_Layer
         $filter = $request->getParam($this->_requestVar);
         $text = $this->_getOptionText($filter);
         if ($filter && $text) {
-            $entityIds = Mage::getSingleton('catalogindex/attribute')->getFilteredEntities($this->getAttributeModel(), $filter, $this->_getFilterEntityIds());
+            /*$entityIds = Mage::getSingleton('catalogindex/attribute')->getFilteredEntities($this->getAttributeModel(), $filter, $this->_getFilterEntityIds());
             if ($entityIds) {
                 $this->getLayer()->getProductCollection()
-                    ->addFieldToFilter('entity_id', $entityIds);
+                    ->addFieldToFilter('entity_id', array('in' => $entityIds));
 
                 $this->getLayer()->getState()->addFilter(
                     $this->_createItem($text, $filter)
                 );
                 $this->_items = array();
-            }
+            }*/
+            Mage::getSingleton('catalogindex/attribute')->applyFilterToCollection(
+                $this->getLayer()->getProductCollection(),
+                $this->getAttributeModel(),
+                $filter
+            );
+            $this->getLayer()->getState()->addFilter($this->_createItem($text, $filter));
+            $this->_items = array();
         }
         return $this;
     }
@@ -64,7 +71,8 @@ class Mage_Catalog_Model_Layer_Filter_Attribute extends Mage_Catalog_Model_Layer
         $attribute = $this->getAttributeModel();
         $options = $attribute->getFrontend()->getSelectOptions();
 
-        $optionsCount = Mage::getSingleton('catalogindex/attribute')->getCount($attribute, $this->_getFilterEntityIds());
+        //$optionsCount = Mage::getSingleton('catalogindex/attribute')->getCount($attribute, $this->_getFilterEntityIds());
+        $optionsCount = Mage::getSingleton('catalogindex/attribute')->getCount($attribute, $this->_getBaseCollectionSql());
         $this->_requestVar = $attribute->getAttributeCode();
 
         $items=array();

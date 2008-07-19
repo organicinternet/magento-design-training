@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_Sales>
-            <version>0.9.11</version>
+            <version>0.9.13</version>
         </Mage_Sales>
     </modules>
     <global>
@@ -451,6 +451,7 @@
                         <after>subtotal,shipping</after>
                         <before>grand_total</before>
                         <renderer>checkout/total_tax</renderer>
+                        <admin_renderer>adminhtml/sales_order_create_totals_tax</admin_renderer>
                     </tax>
                     <grand_total>
                         <class>sales/quote_address_total_grand</class>

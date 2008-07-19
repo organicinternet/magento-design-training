@@ -97,7 +97,7 @@ Product.Bundle.prototype = {
 
     populateQty: function(optionId, selectionId){
         if (selectionId == '' || selectionId == 'none') {
-            this.showQtyInput(optionId, '', false);
+            this.showQtyInput(optionId, '0', false);
             return;
         }
         if (this.config.options[optionId].selections[selectionId].customQty == 1) {
@@ -108,8 +108,14 @@ Product.Bundle.prototype = {
     },
 
     showQtyInput: function(optionId, value, canEdit) {
-        $('bundle-option-' + optionId + '-qty-input').value = value;
-        $('bundle-option-' + optionId + '-qty-input').disabled = !canEdit;
+        elem = $('bundle-option-' + optionId + '-qty-input');
+        elem.value = value;
+        elem.disabled = !canEdit;
+        if (canEdit) {
+            elem.removeClassName('qty-disabled');
+        } else {
+            elem.addClassName('qty-disabled');
+        }
     },
 
     changeOptionQty: function (element) {

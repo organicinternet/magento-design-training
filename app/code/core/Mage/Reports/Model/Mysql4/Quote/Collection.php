@@ -28,21 +28,40 @@
  */
 class Mage_Reports_Model_Mysql4_Quote_Collection extends Mage_Sales_Model_Mysql4_Quote_Collection
 {
+    protected $_joinedFields = array();
 
-    public function prepareForAbandonedReport($storeIds)
+    public function prepareForAbandonedReport($storeIds, $filter = null)
     {
         $this->addFieldToFilter('items_count', array('neq' => '0'))
             ->addFieldToFilter('main_table.is_active', '1')
-            ->addSubtotal($storeIds)
-            ->addCustomerData()
+            ->addSubtotal($storeIds, $filter)
+            ->addCustomerData($filter)
             ->setOrder('updated_at');
+
+        $this->_joinedFields['created_at'] = '(main_table.created_at)';
+        $this->_joinedFields['updated_at'] = '(main_table.updated_at)';
+
         if (is_array($storeIds)) {
-            $collection->addFieldToFilter('store_id', array('in' => $storeIds));
+            $this->addFieldToFilter('main_table.store_id', array('in' => $storeIds));
+        }
+
+        if ($filter && is_array($filter)) {
+
+            if (isset($filter['created_at']) && (isset($filter['created_at']['from']) || isset($filter['created_at']['to']))) {
+                $filter['created_at']['date'] = '1';
+                $this->addFieldToFilter($this->_joinedFields['created_at'], $filter['created_at']);
+            }
+
+            if (isset($filter['updated_at']) && (isset($filter['updated_at']['from']) || isset($filter['updated_at']['to']))) {
+                $filter['updated_at']['date'] = '1';
+                $this->addFieldToFilter($this->_joinedFields['updated_at'], $filter['updated_at']);
+            }
+
         }
         return $this;
     }
 
-    public function addCustomerData()
+    public function addCustomerData($filter = null)
     {
         $customerEntity = Mage::getResourceSingleton('customer/customer');
         $attrFirstname = $customerEntity->getAttribute('firstname');
@@ -69,31 +88,46 @@ class Mage_Reports_Model_Mysql4_Quote_Collection extends Mage_Sales_Model_Mysql4
             )
             ->joinInner(
                 array('cust_lname'=>$attrLastnameTableName),
-                'cust_lname.entity_id=main_table.customer_id and cust_lname.attribute_id='.$attrFirstnameId,
+                'cust_lname.entity_id=main_table.customer_id and cust_lname.attribute_id='.$attrLastnameId,
                 array(
                     'lastname'=>'cust_lname.value',
                     'customer_name' => new Zend_Db_Expr('CONCAT(cust_fname.value, " ", cust_lname.value)')
                 )
             );
 
+        $this->_joinedFields['customer_name'] = 'CONCAT(cust_fname.value, " ", cust_lname.value)';
+        $this->_joinedFields['email'] = 'cust_email.email';
+
+        if ($filter) {
+            if (isset($filter['customer_name'])) {
+                $this->getSelect()->where($this->_joinedFields['customer_name'] . ' LIKE "%' . $filter['customer_name'] . '%"');
+            }
+            if (isset($filter['email'])) {
+                $this->getSelect()->where($this->_joinedFields['email'] . ' LIKE "%' . $filter['email'] . '%"');
+            }
+        }
+
         return $this;
     }
 
-    public function addSubtotal($storeIds = '')
+    public function addSubtotal($storeIds = '', $filter = null)
     {
-        $this->getSelect()
-            ->joinInner(array('quote_addr' => $this->getTable('sales/quote_address')),
-                "quote_addr.quote_id=main_table.entity_id",
-                array())
-            ->joinInner(array('quote_addr_subtotal' => $this->getTable('sales/quote_address')),
-                "quote_addr_subtotal.quote_id=quote_addr.quote_id",
-                 array());
-        if ($storeIds == '') {
-            $this->getSelect()->from("", array("subtotal" => "SUM(IFNULL(quote_addr_subtotal.base_subtotal_with_discount/main_table.store_to_base_rate, 0))"));
+        if (is_array($storeIds)) {
+            $this->getSelect()->from("", array("subtotal" => "(main_table.base_subtotal_with_discount/main_table.store_to_base_rate)"));
+            $this->_joinedFields['subtotal'] = '(main_table.base_subtotal_with_discount/main_table.store_to_base_rate)';
         } else {
-            $this->getSelect()->from("", array("subtotal" => "SUM(IFNULL(quote_addr_subtotal.base_subtotal_with_discount, 0))"));
+            $this->getSelect()->from("", array("subtotal" => "main_table.base_subtotal_with_discount"));
+            $this->_joinedFields['subtotal'] = 'main_table.base_subtotal_with_discount';
         }
-        $this->getSelect()->group('main_table.entity_id');
+
+        if ($filter && is_array($filter) && isset($filter['subtotal'])) {
+            if (isset($filter['subtotal']['from'])) {
+                $this->getSelect()->where($this->_joinedFields['subtotal'] . ' >= ' . $filter['subtotal']['from']);
+            }
+            if (isset($filter['subtotal']['to'])) {
+                $this->getSelect()->where($this->_joinedFields['subtotal'] . ' <= ' . $filter['subtotal']['to']);
+            }
+        }
 
         return $this;
     }
@@ -106,8 +140,10 @@ class Mage_Reports_Model_Mysql4_Quote_Collection extends Mage_Sales_Model_Mysql4
         $countSelect->reset(Zend_Db_Select::LIMIT_OFFSET);
         $countSelect->reset(Zend_Db_Select::COLUMNS);
         $countSelect->reset(Zend_Db_Select::GROUP);
+
         $countSelect->from("", "count(DISTINCT main_table.entity_id)");
         $sql = $countSelect->__toString();
+
         return $sql;
     }
 }

@@ -356,12 +356,27 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
         }
     }
 
-    public function setPrice($value)
+    public function setCustomPrice($value)
     {
-        return $this->setData('price', $this->_calculatePrice($value));
+        if (is_null($value)) {
+            return $this->setData('custom_price', $value);
+        }
+
+        $excludingTax = $this->_calculatePrice($value, Mage::helper('tax')->applyTaxOnCustomPrice());
+        $this->setData('original_custom_price', $value);
+        return $this->setData('custom_price', $excludingTax);
     }
 
-    protected function _calculatePrice($value)
+    public function setPrice($value)
+    {
+        $saveTaxes = true;
+        if (Mage::helper('tax')->applyTaxOnCustomPrice() && $this->hasCustomPrice()) {
+            $saveTaxes = false;
+        }
+        return $this->setData('price', $this->_calculatePrice($value, $saveTaxes));
+    }
+
+    protected function _calculatePrice($value, $saveTaxes = true)
     {
         $store = $this->getQuote()->getStore();
 
@@ -389,20 +404,22 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
             $priceExcludingTax = Mage::helper('tax')->getPrice($this->getProduct()->setTaxPercent(null), $value, false, $sAddress, $bAddress, $this->getQuote()->getCustomerTaxClassId(), $store);
             $priceIncludingTax = Mage::helper('tax')->getPrice($this->getProduct()->setTaxPercent(null), $value, true, $sAddress, $bAddress, $this->getQuote()->getCustomerTaxClassId(), $store);
 
-            $taxAmount = $priceIncludingTax - $priceExcludingTax;
-            $this->setTaxPercent($this->getProduct()->getTaxPercent());
+            if ($saveTaxes) {
+                $taxAmount = $priceIncludingTax - $priceExcludingTax;
+                $this->setTaxPercent($this->getProduct()->getTaxPercent());
 
-            $qty = $this->getQty();
-            if ($this->getParentItem()) {
-                $qty = $qty*$this->getParentItem()->getQty();
+                $qty = $this->getQty();
+                if ($this->getParentItem()) {
+                    $qty = $qty*$this->getParentItem()->getQty();
+                }
+                $totalBaseTax = $taxAmount*$qty;
+                $totalTax = $this->getStore()->convertPrice($totalBaseTax);
+                $this->setTaxBeforeDiscount($totalTax);
+                $this->setBaseTaxBeforeDiscount($totalBaseTax);
+
+                $this->setTaxAmount($totalTax);
+                $this->setBaseTaxAmount($totalBaseTax);
             }
-            $totalBaseTax = $taxAmount*$qty;
-            $totalTax = $this->getStore()->convertPrice($totalBaseTax);
-            $this->setTaxBeforeDiscount($totalTax);
-            $this->setBaseTaxBeforeDiscount($totalBaseTax);
-
-            $this->setTaxAmount($totalTax);
-            $this->setBaseTaxAmount($totalBaseTax);
 
             $value = $priceExcludingTax;
         }

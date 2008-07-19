@@ -63,7 +63,7 @@ function __autoload($class)
     //$a = explode('_', $class);
     //Varien_Profiler::start('AUTOLOAD');
     //Varien_Profiler::start('AUTOLOAD: '.$a[0]);
-
+	
     include($classFile);
 
     //Varien_Profiler::stop('AUTOLOAD');

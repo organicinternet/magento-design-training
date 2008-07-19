@@ -187,14 +187,5 @@
     overflow:hidden;
     }
 
-
-/* Fix for the IE fix bug */
-
-#nav iframe {
-position: absolute;
-left: 0px;
-top: -1px;
-z-index: -1;
-background:red;
-filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);
-}
+/* Fix for IE hover bug */
+#nav iframe { position:absolute; left:0px; top:-1px; z-index:-1; background:red; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0); }

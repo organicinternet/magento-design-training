@@ -94,7 +94,7 @@ function imagePreview(element){
 function toggleValueElements(checkbox, container){
     if(container && checkbox){
         //var elems = container.getElementsBySelector('select', 'input');
-        var elems = Element.getElementsBySelector(container, ['select', 'input', 'textarea', 'button']);
+        var elems = Element.getElementsBySelector(container, ['select', 'input', 'textarea', 'button', 'img']);
         elems.each(function (elem) {
             if(elem!=checkbox) {
                 elem.disabled=checkbox.checked;
@@ -102,6 +102,9 @@ function toggleValueElements(checkbox, container){
                     elem.addClassName('disabled');
                 } else {
                     elem.removeClassName('disabled');
+                }
+                if(elem.tagName == 'IMG') {
+                    checkbox.checked ? elem.hide() : elem.show();
                 }
             };
         })

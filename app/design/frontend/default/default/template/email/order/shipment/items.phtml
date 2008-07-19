@@ -32,7 +32,7 @@
 
     <?php $i=0; foreach ($_shipment->getAllItems() as $_item): ?>
     <?php if($_item->getOrderItem()->getParentItem()) continue; else $i++; ?>
-    <tbody <?php echo $i%2 ? 'bgcolor="#eeeded"' : '' ?>>
+    <tbody<?php echo $i%2 ? ' bgcolor="#eeeded"' : '' ?>>
         <?php echo $this->getItemHtml($_item) ?>
     </tbody>
     <?php endforeach; ?>

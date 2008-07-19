@@ -89,7 +89,7 @@
             <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()):?>
                 <li><input type="checkbox" name="billing[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="billing:save_in_address_book" onchange="shipping.setSameAsBilling(false);"<?php if ($this->getAddress()->getSaveInAddressBook()):?> checked="checked"<?php endif;?> /> <label for="billing:save_in_address_book"><?php echo $this->__('Save in address book') ?></label></li>
             <?php else:?>
-                <input type="hidden" name="billing[save_in_address_book]" value="1" />
+                <li><input type="hidden" name="billing[save_in_address_book]" value="1" /></li>
             <?php endif;?>
         </ul>
     </fieldset>

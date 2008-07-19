@@ -138,19 +138,7 @@ class Mage_Ideal_AdvancedController extends Mage_Core_Controller_Front_Action
                 $this->getCheckout()->getQuote()->setIsActive(false)->save();
 
                 if ($order->canInvoice()) {
-                    $convertor = Mage::getModel('sales/convert_order');
-                    $invoice = $convertor->toInvoice($order);
-
-                    foreach ($order->getAllItems() as $orderItem) {
-                        if (!$orderItem->getQtyToInvoice()) {
-                            continue;
-                        }
-                        $item = $convertor->itemToInvoiceItem($orderItem);
-                        $item->setQty($orderItem->getQtyToInvoice());
-                        $invoice->addItem($item);
-                    }
-
-                    $invoice->collectTotals();
+                    $invoice = $order->prepareInvoice();
                     $invoice->register()->capture();
                     Mage::getModel('core/resource_transaction')
                         ->addObject($invoice)

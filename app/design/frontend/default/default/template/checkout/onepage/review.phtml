@@ -22,9 +22,8 @@
     <?php echo $this->getChildHtml('info') ?>
 </div>
 
+<?php echo $this->getChildHtml('agreements') ?>
 <div class="content button-set">
-    <?php echo $this->getChildHtml('agreements') ?>
-
     <p class="left"><?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $this->__('Edit Your Cart') ?></a></p>
     <p>
         <span id="review-please-wait" style="display:none;" class="opc-please-wait">

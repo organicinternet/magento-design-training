@@ -90,6 +90,7 @@ class Mage_Adminhtml_Model_Config extends Varien_Simplexml_Config
                 if ($disableLocalModules && ('local' === (string)$module->codePool)) {
                     continue;
                 }
+
                 $configFile = $config->getModuleDir('etc', $modName).DS.'system.xml';
 
                 if ($mergeConfig->loadFile($configFile)) {
@@ -98,8 +99,8 @@ class Mage_Adminhtml_Model_Config extends Varien_Simplexml_Config
             }
         }
         #$config->applyExtends();
-
         $this->_sections = $config->getNode('sections');
+        
         $this->_tabs = $config->getNode('tabs');
     }
 

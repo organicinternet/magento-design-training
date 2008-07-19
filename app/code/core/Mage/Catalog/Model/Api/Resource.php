@@ -90,6 +90,32 @@ class Mage_Catalog_Model_Api_Resource extends Mage_Api_Model_Resource_Abstract
     }
 
     /**
+     *  Return loaded product instance
+     *
+     *  @param    int|string $productId (SKU or ID)
+     *  @param    int|string $store
+     *  @return	  object Mage_Catalog_Model_Product instance
+     */
+    protected function _getProduct ($productId, $store = null)
+    {
+        $product = Mage::getModel('catalog/product');
+
+        /* @var $product Mage_Catalog_Model_Product */
+
+        if (is_string($productId)) {
+            $idBySku = $product->getIdBySku($productId);
+            if ($idBySku) {
+                $productId = $idBySku;
+            }
+        }
+        if ($store !== null) {
+            $product->setStoreId($this->_getStoreId($store));
+        }
+        $product->load($productId);
+        return $product;
+    }
+
+    /**
      * Set current store for catalog.
      *
      * @param string|int $store

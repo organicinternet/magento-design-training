@@ -63,4 +63,13 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Compare_Item extends Mage_C
         return true;
     }
 
+    public function getCount($customerId, $visitorId)
+    {
+        $select = $this->_getReadAdapter()->select()->from($this->getMainTable(), 'COUNT(*)')
+            ->where('visitor_id=?',  $visitorId);
+        if ($customerId) {
+            $select->where('customer_id=?', $customerId);
+        }
+        return $this->_getReadAdapter()->fetchOne($select);
+    }
 }

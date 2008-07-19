@@ -25,7 +25,7 @@
  * @package    Mage_Catalog
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Catalog_Model_Product_Compare_List extends Varien_Object 
+class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
 {
     public function addProduct($product)
     {
@@ -39,7 +39,7 @@ class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
         }
         return $this;
     }
-    
+
     public function addProducts($productIds)
     {
         if (is_array($productIds)) {
@@ -49,17 +49,17 @@ class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
         }
         return $this;
     }
-    
+
     public function getItemCollection()
     {
         return Mage::getResourceModel('catalog/product_compare_item_collection');
     }
-    
+
     public function removeProduct()
     {
-        
+
     }
-    
+
     protected function _addVisitorToItem($item)
     {
         if(Mage::getSingleton('customer/session')->isLoggedIn()) {
@@ -68,5 +68,10 @@ class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
             $item->addVisitorId(Mage::getSingleton('log/visitor')->getId());
         }
         return $this;
+    }
+
+    public function hasItems($customerId, $visitorId)
+    {
+        return Mage::getResourceSingleton('catalog/product_compare_item')->getCount($customerId, $visitorId);
     }
 }

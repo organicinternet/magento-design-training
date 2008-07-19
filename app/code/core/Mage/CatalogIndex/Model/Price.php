@@ -39,9 +39,9 @@ class Mage_CatalogIndex_Model_Price extends Mage_Core_Model_Abstract
         return $this->_getResource()->getMaxValue($attribute, $entityIdsFilter);
     }
 
-    public function getCount($attribute, $range, $entityIdsFilter)
+    public function getCount($attribute, $range, $entitySelect)
     {
-        return $this->_getResource()->getCount($range, $attribute, $entityIdsFilter);
+        return $this->_getResource()->getCount($range, $attribute, $entitySelect);
     }
 
     public function getFilteredEntities($attribute, $range, $index, $entityIdsFilter)
@@ -51,13 +51,13 @@ class Mage_CatalogIndex_Model_Price extends Mage_Core_Model_Abstract
 
     public function addMinimalPrices(Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection $collection)
     {
-        $productIds = $collection->getAllIdsCache();
-
-        if (!count($productIds)) {
-            return;
-        }
-
-        $minimalPrices = $this->_getResource()->getMinimalPrices($productIds);
+//        $productIds = $collection->getAllIdsCache();
+//
+//        if (!count($productIds)) {
+//            return;
+//        }
+//
+        $minimalPrices = $this->_getResource()->getMinimalPrices($collection->getSelect());
 
         $indexValues = array();
         foreach ($minimalPrices as $row) {

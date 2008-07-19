@@ -230,16 +230,10 @@ class Mage_Sales_Model_Order_Payment extends Mage_Payment_Model_Info
      */
     protected function _invoice()
     {
-        $convertor = Mage::getModel('sales/convert_order');
-        $invoice = $convertor->toInvoice($this->getOrder());
-        foreach ($this->getOrder()->getAllItems() as $orderItem) {
-            $invoiceItem = $convertor->itemToInvoiceItem($orderItem)
-               ->setQty($orderItem->getQtyToInvoice());
-            $invoice->addItem($invoiceItem);
-        }
-        $invoice->collectTotals()
-            ->register()
-            ->capture();
+        $invoice = $this->getOrder()->prepareInvoice();
+
+        $invoice->register()->capture();
+
         $this->getOrder()->addRelatedObject($invoice);
         return $invoice;
     }

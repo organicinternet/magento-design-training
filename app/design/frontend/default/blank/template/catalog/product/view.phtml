@@ -45,12 +45,34 @@
                 </fieldset>
 
                 <?php echo $this->getChildHtml('alert_urls') ?>
-
-                <?php echo $this->getChildHtml('container1') ?>
-
                 <?php echo $this->getChildHtml('product_type_data') ?>
 
-            <?php echo $this->getChildHtml('container2') ?>
+                <?php if (!$this->hasOptions()):?>
+                    <?php echo $this->getChildHtml('tierprices') ?>
+                    <div class="add-to-holder">
+                        <?php if($_product->isSaleable()): ?>
+                            <?php echo $this->getChildHtml('addtocart') ?>
+                            <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                                <span class="add-or"><?php echo $this->__('OR') ?></span>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php echo $this->getChildHtml('addto') ?>
+                    </div>
+                <?php else:?>
+                    <?php echo $this->getChildHtml('addto') ?>
+                <?php endif; ?>
+
+                <div class="divider"></div>
+                <h3><?php echo $this->__('Quick Overview') ?></h3>
+                <p><?php echo nl2br($_product->getShortDescription()) ?></p>
+
+                <?php if ($this->hasOptions()):?>
+                    <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                <?php endif;?>
+
+                <?php if ($this->hasOptions()):?>
+                    <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                <?php endif;?>
             </form>
 
             <script type="text/javascript">
@@ -61,10 +83,6 @@
                     }
                 }.bind(productAddToCartForm);
             </script>
-
-            <h3><?php echo $this->__('Quick Overview') ?></h3>
-            <p><?php echo nl2br($_product->getShortDescription()) ?></p>
-
         </div>
 
         <div class="product-media">
@@ -77,9 +95,9 @@
         <h3><?php echo $this->__('Product Description') ?></h3>
         <?php echo $this->getChildHtml('description') ?>
 
-        <?php if($_additional = $this->getAdditionalData()): ?>
+        <?php if($_additional = $this->getChildHtml('additional')): ?>
             <h3><?php echo $this->__('Additional Information') ?></h3>
-            <?php echo $this->getChildHtml('additional') ?>
+            <?php echo $_additional ?>
         <?php endif; ?>
 
         <?php echo $this->getChildHtml('upsell_products') ?>

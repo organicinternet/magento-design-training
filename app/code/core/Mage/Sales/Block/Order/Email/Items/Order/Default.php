@@ -48,6 +48,9 @@ class Mage_Sales_Block_Order_Email_Items_Order_Default extends Mage_Core_Block_T
             if (isset($options['additional_options'])) {
                 $result = array_merge($result, $options['additional_options']);
             }
+            if (isset($options['attributes_info'])) {
+                $result = array_merge($result, $options['attributes_info']);
+            }
         }
 
         return $result;

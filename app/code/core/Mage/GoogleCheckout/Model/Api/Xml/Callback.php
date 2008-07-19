@@ -445,15 +445,7 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
     {
         $order = $this->getOrder();
 
-        $convertor  = Mage::getModel('sales/convert_order');
-        $invoice    = $convertor->toInvoice($order);
-
-        foreach ($order->getAllItems() as $orderItem) {
-            $item = $convertor->itemToInvoiceItem($orderItem);
-            $item->setQty($orderItem->getQtyOrdered());
-            $invoice->addItem($item);
-        }
-        $invoice->collectTotals();
+        $invoice = $order->prepareInvoice();
 
         if (!empty($data['comment_text'])) {
             $invoice->addComment(Mage::helper('googlecheckout')->__('Auto-generated from GoogleCheckout Charge'));

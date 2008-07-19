@@ -18,14 +18,18 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
+<?php if ($this->helper('tax')->displayCartBothPrices()): $colspan = $rowspan = 2; else: $colspan = $rowspan = 1; endif; ?>
 <table cellspacing="0" class="data-table" id="checkout-review-table">
-    <?php if ($this->helper('tax')->displayCartBothPrices()): $colspan = $rowspan = 2; else: $colspan = $rowspan = 1; endif; ?>
+    <col />
+    <col width="10%" />
+    <col width="5%" />
+    <col width="10%" />
     <thead>
         <tr>
             <th rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Product Name') ?></th>
-            <th class="a-center" colspan="<?php echo $colspan ?>" width="10%"><?php echo $this->__('Price') ?></th>
-            <th class="a-center" rowspan="<?php echo $rowspan ?>" width="5%"><?php echo $this->__('Qty') ?></th>
-            <th class="a-center" colspan="<?php echo $colspan ?>" width="10%"><?php echo $this->__('Subtotal') ?></th>
+            <th class="a-center" colspan="<?php echo $colspan ?>"><?php echo $this->__('Price') ?></th>
+            <th class="a-center" rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Qty') ?></th>
+            <th class="a-center" colspan="<?php echo $colspan ?>"><?php echo $this->__('Subtotal') ?></th>
         </tr>
         <?php if ($this->helper('tax')->displayCartBothPrices()):?>
         <tr>

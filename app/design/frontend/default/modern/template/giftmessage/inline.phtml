@@ -225,6 +225,7 @@ billing.onSave = function(evt){
                 <h5 class="giftmessage-product-info"><?php echo $this->htmlEscape($_product->getName()) ?></h5>
                 <fieldset class="group-select no-padding no-border">
                     <input type="hidden" name="giftmessage[<?php echo $_item->getId() ?>][type]"  value="quote_address_item"/>
+                    <input type="hidden" name="giftmessage[<?php echo $_item->getId() ?>][address]" value="<?php echo $this->getEntity()->getId()?>" />
                     <ul class="no-padding">
                         <li>
                             <div class="input-box">

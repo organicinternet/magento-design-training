@@ -35,11 +35,11 @@ var payment = new Payment('co-payment-form', '<?php echo $this->getUrl('checkout
 <div class="button-set">
     <p class="required"><?php echo $this->__('* Required Fields') ?></p>
     <span id="payment-buttons-container">
-        <a href="#" class="f-left" onclick="checkout.back(); return false;">&laquo; <?php echo $this->__('Back') ?></a>
+        <a href="#" class="left" onclick="checkout.back(); return false;">&laquo; <?php echo $this->__('Back') ?></a>
         <span id="payment-please-wait" style="display:none;" class="opc-please-wait">
             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt=""/> &nbsp; <?php echo $this->__('Loading next step...') ?> &nbsp;
         </span>
-        <a href="#" onclick="payment.save()"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif');?>" alt="<?php echo $this->__('Continue') ?>" class="v-middle"/></a>
+        <a href="#" onclick="payment.save(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif');?>" alt="<?php echo $this->__('Continue') ?>" class="v-middle"/></a>
     </span>
 </div>
 

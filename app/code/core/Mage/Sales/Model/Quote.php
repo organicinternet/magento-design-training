@@ -584,6 +584,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     public function addProduct(Mage_Catalog_Model_Product $product, $request=null)
     {
+
         if ($request === null) {
             $request = 1;
         }
@@ -599,6 +600,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         /**
          * Error message
          */
+
         if (is_string($cartCandidates)) {
             return $cartCandidates;
         }
@@ -610,9 +612,15 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
             $cartCandidates = array($cartCandidates);
         }
 
+
+
+
         $parentItem = null;
         foreach ($cartCandidates as $candidate) {
+
             $item = $this->_addCatalogProduct($candidate, $candidate->getCartQty());
+
+
 
             /**
              * As parent item we should always use the item of first added product
@@ -623,9 +631,14 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
             if ($parentItem && $candidate->getParentProductId()) {
                 $item->setParentItem($parentItem);
             }
+
             if ($item->getHasError()) {
+
                 Mage::throwException($item->getMessage());
+
             }
+
+
         }
         return $item;
     }
@@ -638,6 +651,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     protected function _addCatalogProduct(Mage_Catalog_Model_Product $product, $qty=1)
     {
+
         $item = $this->getItemByProduct($product);
         if (!$item) {
             $item = Mage::getModel('sales/quote_item');
@@ -777,17 +791,37 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
      */
     public function collectTotals()
     {
+        $this->setSubtotal(0);
+        $this->setBaseSubtotal(0);
+
+        $this->setSubtotalWithDiscount(0);
+        $this->setBaseSubtotalWithDiscount(0);
+
         $this->setGrandTotal(0);
         $this->setBaseGrandTotal(0);
+
         foreach ($this->getAllAddresses() as $address) {
+            $address->setSubtotal(0);
+            $address->setBaseSubtotal(0);
+
+            $address->setSubtotalWithDiscount(0);
+            $address->setBaseSubtotalWithDiscount(0);
+
             $address->setGrandTotal(0);
             $address->setBaseGrandTotal(0);
 
             $address->collectTotals();
 
+            $this->setSubtotal((float) $this->getSubtotal()+$address->getSubtotal());
+            $this->setBaseSubtotal((float) $this->getBaseSubtotal()+$address->getBaseSubtotal());
+
+            $this->setSubtotalWithDiscount((float) $this->getSubtotalWithDiscount()+$address->getSubtotalWithDiscount());
+            $this->setBaseSubtotalWithDiscount((float) $this->getBaseSubtotalWithDiscount()+$address->getBaseSubtotalWithDiscount());
+
             $this->setGrandTotal((float) $this->getGrandTotal()+$address->getGrandTotal());
             $this->setBaseGrandTotal((float) $this->getBaseGrandTotal()+$address->getBaseGrandTotal());
         }
+
         Mage::helper('sales')->checkQuoteAmount($this, $this->getGrandTotal());
         Mage::helper('sales')->checkQuoteAmount($this, $this->getBaseGrandTotal());
 
@@ -881,7 +915,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         $countItems = 0;
         foreach ($this->getItemsCollection() as $_item) {
             /* @var $_item Mage_Sales_Model_Quote_Item */
-            if ($_item->isDeleted()) {
+            if ($_item->isDeleted() || $_item->getParentItemId()) {
                 continue;
             }
             $countItems ++;
@@ -911,6 +945,9 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
     {
         $hasVirtual = false;
         foreach ($this->getItemsCollection() as $_item) {
+            if ($_item->getParentItemId()) {
+                continue;
+            }
             if ($_item->getProduct()->getTypeInstance()->isVirtual()) {
                 $hasVirtual = true;
             }

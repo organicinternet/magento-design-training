@@ -225,12 +225,14 @@ function toggleSelectsUnderBlock(block, flag){
             if(flag){
                 if(selects[i].needShowOnSuccess){
                     selects[i].needShowOnSuccess = false;
-                    Element.show(selects[i])
+                    // Element.show(selects[i])
+                    selects[i].style.visibility = '';
                 }
             }
             else{
                 if(Element.visible(selects[i])){
-                    Element.hide(selects[i]);
+                    // Element.hide(selects[i]);
+                    selects[i].style.visibility = 'hidden';
                     selects[i].needShowOnSuccess = true;
                 }
             }

@@ -69,7 +69,9 @@
     <div class="entry-edit-head">
         <h4 class="icon-head head-products"><?php echo $this->helper('sales')->__('Items Invoiced') ?></h4>
     </div>
-    <?php echo $this->getChildHtml('invoice_items') ?>
+    <div id="invoice_item_container">
+        <?php echo $this->getChildHtml('invoice_items') ?>
+    </div>
 </div>
 
 <div class="box-left entry-edit">

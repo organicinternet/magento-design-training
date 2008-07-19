@@ -238,7 +238,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
      * @param   mixed $qty
      * @return  Varien_Object
      */
-    public function checkQuoteItemQty($qty)
+    public function checkQuoteItemQty($qty, $summaryQty)
     {
         $result = new Varien_Object();
         $result->setHasError(false);
@@ -276,7 +276,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
             return $result;
         }
 
-        if ($this->getMinSaleQty() && $qty < $this->getMinSaleQty()) {
+        if ($this->getMinSaleQty() && $summaryQty < $this->getMinSaleQty()) {
             $result->setHasError(true)
                 ->setMessage($helper->__('The minimum quantity allowed for purchase is %s.', $this->getMinSaleQty() * 1))
                 ->setQuoteMessage($helper->__('Some of the products cannot be ordered in the requested quantity'))
@@ -284,7 +284,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
             return $result;
         }
 
-        if ($this->getMaxSaleQty() && $qty>$this->getMaxSaleQty()) {
+        if ($this->getMaxSaleQty() && $summaryQty>$this->getMaxSaleQty()) {
             $result->setHasError(true)
                 ->setMessage($helper->__('The maximum quantity allowed for purchase is %s.', $this->getMaxSaleQty() * 1))
                 ->setQuoteMessage($helper->__('Some of the products can not be ordered in requested quantity'))
@@ -292,8 +292,8 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
             return $result;
         }
 
-        if ($this->checkQty($qty)) {
-            if (($this->getQty() - $qty < 0) && ($this->getBackorders() == Mage_CatalogInventory_Model_Stock::BACKORDERS_YES)) {
+        if ($this->checkQty($summaryQty)) {
+            if (($this->getQty() - $summaryQty < 0) && ($this->getBackorders() == Mage_CatalogInventory_Model_Stock::BACKORDERS_YES)) {
                 if ($this->getProduct()) {
                     $result->setMessage('set_data', $helper->__('This product is not available in the requested quantity. %s of the items will be backordered.',
                         ($this->getQty() > 0) ? ($qty - $this->getQty()) * 1 : $qty * 1,

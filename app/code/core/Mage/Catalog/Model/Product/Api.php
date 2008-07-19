@@ -92,22 +92,7 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function info($productId, $store = null, $attributes = null)
     {
-        $product = Mage::getModel('catalog/product');
-
-        /* @var $product Mage_Catalog_Model_Product */
-
-        if (is_string($productId)) {
-            $idBySku = $product->getIdBySku($productId);
-            if ($idBySku) {
-                $productId = $idBySku;
-            }
-        }
-
-
-        $product->setStoreId($this->_getStoreId($store))
-            ->load($productId);
-
-
+        $product = $this->_getProduct($productId, $store);
 
         if (!$product->getId()) {
             $this->_fault('not_exists');
@@ -189,19 +174,7 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function update($productId, $productData = array(), $store = null)
     {
-        $product = Mage::getModel('catalog/product');
-        /* @var $product Mage_Catalog_Model_Product */
-
-        if (is_string($productId)) {
-            $idBySku = $product->getIdBySku($productId);
-            if ($idBySku) {
-                $productId = $idBySku;
-            }
-        }
-
-
-        $product->setStoreId($this->_getStoreId($store))
-            ->load($productId);
+        $product = $this->_getProduct($productId, $store);
 
         if (!$product->getId()) {
             $this->_fault('not_exists');
@@ -288,17 +261,7 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function delete($productId)
     {
-        $product = Mage::getModel('catalog/product');
-
-        if (is_string($productId)) {
-            $idBySku = $product->getIdBySku($productId);
-            if ($idBySku) {
-                $productId = $idBySku;
-            }
-        }
-
-        /* @var $product Mage_Catalog_Model_Product */
-        $product->load($productId);
+        $product = $this->_getProduct($productId);
 
         if (!$product->getId()) {
             $this->_fault('not_exists');

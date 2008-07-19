@@ -57,14 +57,14 @@ class Mage_Adminhtml_Block_Extensions_Custom_Edit_Tab_Package
 
         $fieldset->addField('summary', 'textarea', array(
             'name' => 'summary',
-            'label' => 'Summary',
+            'label' => Mage::helper('adminhtml')->__('Summary'),
             'style' => 'height:50px;',
             'required' => true,
         ));
 
         $fieldset->addField('description', 'textarea', array(
             'name' => 'description',
-            'label' => 'Description',
+            'label' => Mage::helper('adminhtml')->__('Description'),
             'style' => 'height:200px;',
             'required' => true,
         ));

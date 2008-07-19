@@ -159,6 +159,7 @@ class Mage_Checkout_OnepageController extends Mage_Core_Controller_Front_Action
 
         Mage::getSingleton('checkout/session')->clear();
         $this->loadLayout();
+        $this->_initLayoutMessages('checkout/session');
         Mage::dispatchEvent('checkout_onepage_controller_success_action');
         $this->renderLayout();
     }

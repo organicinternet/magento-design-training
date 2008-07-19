@@ -25,6 +25,20 @@ class Mage_Checkout_Model_Mysql4_Agreement extends Mage_Core_Model_Mysql4_Abstra
         $this->_init('checkout/agreement', 'agreement_id');
     }
 
+    protected function _beforeSave(Mage_Core_Model_Abstract $object)
+    {
+        // format height
+        $height = $object->getContentHeight();
+        if (!$height) {
+            $height = '';
+        }
+        if ($height && preg_match('/[0-9]$/', $height)) {
+            $height .= 'px';
+        }
+        $object->setContentHeight($height);
+        return parent::_beforeSave($object);
+    }
+
     protected function _afterSave(Mage_Core_Model_Abstract $object)
     {
         $condition = $this->_getWriteAdapter()->quoteInto('agreement_id = ?', $object->getId());

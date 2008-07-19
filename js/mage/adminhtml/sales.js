@@ -43,12 +43,16 @@ AdminOrder.prototype = {
     setCustomerId : function(id){
         this.customerId = id;
         this.loadArea('header', true);
+        $(this.getAreaId('header')).callback = 'setCustomerAfter';
         $('back_order_top_button').hide();
         $('reset_order_top_button').show();
+    },
+
+    setCustomerAfter : function () {
         this.customerSelectorHide();
         if (this.storeId) {
             $(this.getAreaId('data')).callback = 'dataShow';
-            this.loadArea(['header', 'data'], true);
+            this.loadArea(['data'], true);
         }
         else {
             this.storeSelectorShow();
@@ -670,13 +674,13 @@ AdminOrder.prototype = {
         else {
             parentEl.addClassName('ignore-validate');
         }
-        
+
         if (Prototype.Browser.IE) {
             parentEl.getElementsBySelector('select').each(function (elem) {
                 show ? elem .show() : elem.hide();
             });
         }
-        
+
         el.setStyle({
             display: show ? 'none' : '',
             position: 'absolute',

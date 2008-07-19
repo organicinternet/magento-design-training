@@ -27,8 +27,8 @@
  */
 class Mage_Flo2Cash_Model_Web extends Mage_Payment_Model_Method_Cc
 {
-    const WSDL_URL_DEMO = 'http://demo.paynz.co.nz/ws/paynzws.asmx?wsdl';
-    const WSDL_URL_LIVE = 'https://www.paynz.co.nz/ws/paynzws.asmx?wsdl';
+    const WSDL_URL_DEMO = 'http://demo.flo2cash.co.nz/ws/paynzws.asmx?wsdl';
+    const WSDL_URL_LIVE = 'https://secure.flo2cash.co.nz/ws/paynzws.asmx?wsdl';
 
     protected $_code  = 'flo2cash_web';
 

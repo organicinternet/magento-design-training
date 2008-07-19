@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Mage_CatalogIndex>
-            <version>0.7.4</version>
+            <version>0.7.5</version>
         </Mage_CatalogIndex>
     </modules>
 
@@ -42,9 +42,6 @@
                     <virtual>
                         <index_data_retreiver>catalogindex/data_virtual</index_data_retreiver>
                     </virtual>
-                    <bundle>
-                        <index_data_retreiver>catalogindex/data_bundle</index_data_retreiver>
-                    </bundle>
                 </type>
             </product>
         </catalog>

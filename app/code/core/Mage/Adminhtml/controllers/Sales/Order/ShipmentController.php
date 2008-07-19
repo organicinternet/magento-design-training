@@ -397,7 +397,7 @@ class Mage_Adminhtml_Sales_Order_ShipmentController extends Mage_Adminhtml_Contr
     }
 
     /**
-     * Decides if we need to create dummy invoice item or not
+     * Decides if we need to create dummy shipment item or not
      * for eaxample we don't need create dummy parent if all
      * children are not in process
      *

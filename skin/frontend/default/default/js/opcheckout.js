@@ -403,7 +403,8 @@ Shipping.prototype = {
 
     setSameAsBilling: function(flag) {
         $('shipping:same_as_billing').checked = flag;
-        $('billing:use_for_shipping_yes').checked = flag;
+// #5599. Also it hangs up, if the flag is not false
+//        $('billing:use_for_shipping_yes').checked = flag;
         if (flag) {
             this.syncWithBilling();
         }

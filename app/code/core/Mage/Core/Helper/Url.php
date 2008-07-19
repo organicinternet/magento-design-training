@@ -42,7 +42,7 @@ class Mage_Core_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getCurrentBase64Url()
     {
-        return base64_encode($this->getCurrentUrl());
+        return $this->urlEncode($this->getCurrentUrl());
     }
 
     public function getEncodedUrl($url=null)

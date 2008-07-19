@@ -191,12 +191,19 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
     public function addCategoryFilter(Mage_Catalog_Model_Category $category, $renderAlias=false)
     {
         if ($category->getIsAnchor()) {
-            $categoryCondition = $this->getConnection()->quoteInto('{{table}}.category_id IN (?)', explode(',', $category->getAllChildren()));
-            $this->getSelect()->group('e.entity_id');
-        }
-        else {
             $categoryCondition = $this->getConnection()->quoteInto('{{table}}.category_id=?', $category->getId());
         }
+        else {
+            $categoryCondition = $this->getConnection()->quoteInto('{{table}}.category_id=? AND {{table}}.is_parent=1', $category->getId());
+        }
+
+//        if ($category->getIsAnchor()) {
+//            $categoryCondition = $this->getConnection()->quoteInto('{{table}}.category_id IN (?)', explode(',', $category->getAllChildren()));
+//            $this->getSelect()->group('e.entity_id');
+//        }
+//        else {
+//            $categoryCondition = $this->getConnection()->quoteInto('{{table}}.category_id=?', $category->getId());
+//        }
         if ($renderAlias) {
             $alias = 'category_'.$category->getId();
         }
@@ -204,7 +211,7 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
             $alias = 'position';
         }
 
-        $this->joinField($alias, 'catalog/category_product', 'position', 'product_id=entity_id', $categoryCondition);
+        $this->joinField($alias, 'catalog/category_product_index', 'position', 'product_id=entity_id', $categoryCondition);
         return $this;
     }
 
@@ -600,4 +607,21 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
         return $this;
     }
 
+    /**
+     * Set cillection product visibility filter for enabled products
+     *
+     * @param   array $visibility
+     * @return  Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
+     */
+    public function setVisibility($visibility)
+    {
+        $condition = $this->getConnection()->quoteInto('enabled_index.visibility IN (?)', $visibility);
+        $storeCondition = $this->getConnection()->quoteInto('enabled_index.store_id=?', $this->getStoreId());
+        $this->getSelect()->join(
+            array('enabled_index'=>$this->getTable('catalog/product_enabled_index')),
+            'enabled_index.product_id=e.entity_id AND '.$storeCondition.' AND '.$condition,
+            array()
+        );
+        return $this;
+    }
 }

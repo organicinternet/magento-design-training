@@ -52,7 +52,7 @@ class Mage_Shipping_Model_Carrier_Flatrate
             $shippingPrice = $request->getPackageQty() * $this->getConfigData('price');
 
             foreach ($request->getAllItems() as $item) {
-                if ($item->getFreeShipping()) {
+                if ($item->getFreeShipping() && !$item->getProduct()->getTypeInstance()->isVirtual()) {
                     $shippingPrice -= $item->getQty() * $this->getConfigData('price');
                 }
             }

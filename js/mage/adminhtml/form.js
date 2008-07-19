@@ -141,11 +141,17 @@ var varienElementMethods = {
 Element.addMethods(varienElementMethods);
 
 // Global bind changes
-function varienWindowOnload(){
+varienWindowOnloadCache = {};
+function varienWindowOnload(useCache){
     var dataElements = $$('input', 'select', 'textarea');
     for(var i=0; i<dataElements.length;i++){
         if(dataElements[i] && dataElements[i].id){
-            Event.observe(dataElements[i], 'change', dataElements[i].setHasChanges.bind(dataElements[i]));
+            if ((!useCache) || (!varienWindowOnloadCache[dataElements[i].id])) {
+                Event.observe(dataElements[i], 'change', dataElements[i].setHasChanges.bind(dataElements[i]));
+                if (useCache) {
+                    varienWindowOnloadCache[dataElements[i].id] = true;
+                }
+            }
         }
     }
 }

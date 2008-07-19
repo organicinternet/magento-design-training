@@ -277,7 +277,6 @@ class Mage_Customer_Model_Convert_Parser_Customer
             }
             else {
                 $customerAddress->load($defaultBillingId);
-                $customerAddress->explodeStreetAddress();
 
                 foreach ($this->getFields() as $code=>$node) {
                     if ($node->is('billing')) {
@@ -296,7 +295,6 @@ class Mage_Customer_Model_Convert_Parser_Customer
             else {
                 if ($defaultShippingId != $defaultBillingId) {
                     $customerAddress->load($defaultShippingId);
-                    $customerAddress->explodeStreetAddress();
                 }
                 foreach ($this->getFields() as $code=>$node) {
                     if ($node->is('shipping')) {

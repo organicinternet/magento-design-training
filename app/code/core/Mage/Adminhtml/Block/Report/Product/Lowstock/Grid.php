@@ -54,6 +54,10 @@ class Mage_Adminhtml_Block_Report_Product_Lowstock_Grid extends Mage_Adminhtml_B
             ->addAttributeToSelect('*')
             ->setStoreId($storeId)
             ->addStoreFilter($storeId)
+            ->addAttributeToFilter('type_id', array(
+                Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
+                Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
+            ))
             ->joinField('qty',
                 'cataloginventory/stock_item',
                 'qty',

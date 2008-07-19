@@ -20,13 +20,6 @@
 ?>
 
 <?php $_options = Mage::helper('core')->decorateArray($this->getOptions()) ?>
-<?php if ($_options): ?>
-      <dl<?php if ($this->decoratedIsLast){?> class="last"<?php }?>>
-      <?php foreach($_options as $_option): ?>
-          <?php echo $this->getOptionHtml($_option) ?>
-      <?php endforeach; ?>
-      </dl>
-      <p class="required">* Required Fields</p>
     <script type="text/javascript">
     //<![CDATA[
     var optionFileUpload = {
@@ -106,18 +99,13 @@
     Product.Options = Class.create();
     Product.Options.prototype = {
         initialize : function(config){
-            this.config     = config;
-            this.elements   = $$('.product-custom-option');
-            this.elements.each(function(element){
-                Event.observe(element, 'change', this.reloadPrice.bind(this));
-            }.bind(this));
-            //try to add itself to calculator stack
+            this.config = config;
             this.reloadPrice();
         },
         reloadPrice : function(){
             price = new Number();
             config = this.config;
-            this.elements.each(function(element){
+            $$('.product-custom-option').each(function(element){
                 var optionId = 0;
                 element.name.sub(/[0-9]+/, function(match){
                     optionId = match[0];
@@ -167,4 +155,11 @@
 		//]]>
     var opConfig = new Product.Options(<?php echo $this->getJsonConfig() ?>);
 </script>
+<?php if ($_options): ?>
+      <dl<?php if ($this->decoratedIsLast){?> class="last"<?php }?>>
+      <?php foreach($_options as $_option): ?>
+          <?php echo $this->getOptionHtml($_option) ?>
+      <?php endforeach; ?>
+      </dl>
+      <p class="required">* Required Fields</p>
 <?php endif; ?>

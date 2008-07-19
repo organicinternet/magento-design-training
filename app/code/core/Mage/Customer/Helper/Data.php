@@ -165,5 +165,13 @@ class Mage_Customer_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->_getUrl('customer/account/forgotpassword');
     }
 
+    public function isConfirmationRequired()
+    {
+        return $this->getCustomer()->isConfirmationRequired();
+    }
 
+    public function getEmailConfirmationUrl($email = null)
+    {
+        return $this->_getUrl('customer/account/confirmation', array('email' => $email));
+    }
 }

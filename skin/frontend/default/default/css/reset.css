@@ -56,7 +56,7 @@ input, select, button { vertical-align:middle; }
 
 /* Lists */
 dt { display:block; font-weight:bold; }
-li { list-style:none; }
+ul,ol { list-style:none; }
 
 /* Size */
 small { font-size:.92em; }

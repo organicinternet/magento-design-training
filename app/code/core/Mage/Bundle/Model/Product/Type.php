@@ -38,6 +38,8 @@ class Mage_Bundle_Model_Product_Type extends Mage_Catalog_Model_Product_Type_Abs
     protected $_usedOptions = null;
     protected $_usedOptionsIds = null;
 
+    protected $_optionsCount = null;
+
     /**
      * Return product sku based on sku_type attribute
      *
@@ -87,6 +89,42 @@ class Mage_Bundle_Model_Product_Type extends Mage_Catalog_Model_Product_Type_Abs
             }
             return $weight;
         }
+    }
+
+    /**
+     * Check is virtual product
+     *
+     * @return bool
+     */
+    public function isVirtual()
+    {
+        if ($this->getProduct()->hasCustomOptions()) {
+            $customOption = $this->getProduct()->getCustomOption('bundle_selection_ids');
+            $selectionIds = unserialize($customOption->getValue());
+            $selections = $this->getSelectionsByIds($selectionIds);
+            $virtualCount = 0;
+            foreach ($selections->getItems() as $selection) {
+                if ($selection->getTypeInstance()->IsVirtual()) {
+                    $virtualCount++;
+                }
+            }
+            if ($virtualCount == count($selections)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function beforeSave()
+    {
+        parent::beforeSave();
+
+        if ($selections = $this->getProduct()->getBundleSelectionsData()) {
+            if (!empty($selections)) {
+                $this->getProduct()->setHasOptions(true);
+            }
+        }
+
     }
 
     public function save()

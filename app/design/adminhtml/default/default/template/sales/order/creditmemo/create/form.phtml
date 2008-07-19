@@ -71,10 +71,11 @@
     <div class="clear"></div>
 
     <div class="entry-edit">
-        <div class="entry-edit-head">
-            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items to Refund') ?></h4>
-        </div>
+      <div class="entry-edit-head">
+          <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items to Refund') ?></h4>
+      </div>
     </div>
-
-    <div id="creditmemo_item_container"><?php echo $this->getChildHtml('order_items') ?></div>
+    <div id="creditmemo_item_container">
+      <?php echo $this->getChildHtml('order_items') ?>
+    </div>
 </form>

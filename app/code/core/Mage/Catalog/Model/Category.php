@@ -370,11 +370,12 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
     public function getPathInStore()
     {
         $result = array();
-        $path = $this->getTreeModelInstance()->getPath($this->getId());
-        foreach ($path as $item) {
-            if ($item->getId() == Mage::app()->getStore()->getRootCategoryId())
+        //$path = $this->getTreeModelInstance()->getPath($this->getId());
+        $path = array_reverse($this->getPathIds());
+        foreach ($path as $itemId) {
+            if ($itemId == Mage::app()->getStore()->getRootCategoryId())
                 break;
-            $result[] = $item->getId();
+            $result[] = $itemId;
         }
         return implode(',', $result);
     }

@@ -25,7 +25,6 @@
  * @package    Mage_Adminhtml
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-
 class Mage_Adminhtml_Block_Sales_Order_Invoice_Create_Form extends Mage_Adminhtml_Block_Sales_Order_Abstract
 {
     /**
@@ -60,22 +59,25 @@ class Mage_Adminhtml_Block_Sales_Order_Invoice_Create_Form extends Mage_Adminhtm
 
     protected function _prepareLayout()
     {
-//        $infoBlock = $this->getLayout()->createBlock('adminhtml/sales_order_view_info')
-//            ->setOrder($this->getInvoice()->getOrder());
-//        $this->setChild('order_info', $infoBlock);
+      /*  $infoBlock = $this->getLayout()->createBlock('adminhtml/sales_order_view_info')
+           ->setOrder($this->getInvoice()->getOrder());
+       $this->setChild('order_info', $infoBlock);
+*/
+     /*  $this->setChild(
+          'items',
+            $this->getLayout()->createBlock('adminhtml/sales_order_invoice_create_items')
+        );
+        */
+        $trackingBlock = $this->getLayout()->createBlock('adminhtml/sales_order_invoice_create_tracking');
+       //$this->setChild('order_tracking', $trackingBlock);
+          $this->setChild('tracking', $trackingBlock);
 
-//        $this->setChild(
-//            'items',
-//            $this->getLayout()->createBlock('adminhtml/sales_order_invoice_create_items')
-//        );
 
-//        $trackingBlock = $this->getLayout()->createBlock('adminhtml/sales_order_invoice_create_tracking');
-//        $this->setChild('tracking', $trackingBlock);
-
-//        $paymentInfoBlock = $this->getLayout()->createBlock('adminhtml/sales_order_payment')
-//            ->setPayment($this->getInvoice()->getOrder()->getPayment());
-//        $this->setChild('payment_info', $paymentInfoBlock);
-
+              /*
+        $paymentInfoBlock = $this->getLayout()->createBlock('adminhtml/sales_order_payment')
+           ->setPayment($this->getInvoice()->getOrder()->getPayment());
+        $this->setChild('payment_info', $paymentInfoBlock);
+        */
         return parent::_prepareLayout();
     }
 
@@ -87,10 +89,20 @@ class Mage_Adminhtml_Block_Sales_Order_Invoice_Create_Form extends Mage_Adminhtm
     public function canCreateShipment()
     {
         foreach ($this->getInvoice()->getAllItems() as $item) {
-        	if ($item->getOrderItem()->getQtyToShip()) {
-        	    return true;
-        	}
+            if ($item->getOrderItem()->getQtyToShip()) {
+                return true;
+            }
         }
         return false;
     }
+
+    public function hasInvoiceShipmentTypeMismatch() {
+        foreach ($this->getInvoice()->getAllItems() as $item) {
+            if ($item->getOrderItem()->isChildrenCalculated() && !$item->getOrderItem()->isShipSeparately()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -32,13 +32,13 @@ class Mage_Catalog_Model_Product_Status extends Varien_Object
 
     public function addVisibleFilterToCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
     {
-        $collection->addAttributeToFilter('status', array('in'=>$this->getVisibleStatusIds()));
+        //$collection->addAttributeToFilter('status', array('in'=>$this->getVisibleStatusIds()));
         return $this;
     }
 
     public function addSaleableFilterToCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
     {
-        $collection->addAttributeToFilter('status', array('in'=>$this->getSaleableStatusIds()));
+        //$collection->addAttributeToFilter('status', array('in'=>$this->getSaleableStatusIds()));
         return $this;
     }
 

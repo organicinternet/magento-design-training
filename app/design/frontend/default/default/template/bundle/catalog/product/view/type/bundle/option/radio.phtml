@@ -31,14 +31,14 @@
             <?php $_canChangeQty = ($_default->getSelectionCanChangeQty() || (count($_selections) == 1 && $_option->getRequired())) ?>
         <?php else: ?>
             <?php if (!$_showSingle): ?>
-                <?php $_defaultQty = '' ?>
+                <?php $_defaultQty = '0' ?>
                 <?php $_canChangeQty = false ?>
             <?php else: ?>
                 <?php $_defaultQty = $_selections[0]->getSelectionQty()*1 ?>
                 <?php $_canChangeQty = $_selections[0]->getSelectionCanChangeQty() ?>
             <?php endif; ?>
         <?php endif; ?>
-        <label for="bundle-option-<?php echo $_option->getId() ?>-qty-input"><?php echo $this->__('Qty:') ?>&nbsp;</label><input onkeyup="bundle.changeOptionQty(this)" <?php echo $_canChangeQty?'':'disabled="disabled"' ?> id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
+        <label for="bundle-option-<?php echo $_option->getId() ?>-qty-input"><?php echo $this->__('Qty:') ?>&nbsp;</label><input onkeyup="bundle.changeOptionQty(this)" <?php echo $_canChangeQty?'':'disabled="disabled"' ?> id="bundle-option-<?php echo $_option->getId() ?>-qty-input" class="input-text qty<?php echo $_canChangeQty?'':' qty-disabled' ?>" type="text" name="bundle_option_qty[<?php echo $_option->getId() ?>]" value="<?php echo $_defaultQty ?>" />
     </span>
 </dt>
 <dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>

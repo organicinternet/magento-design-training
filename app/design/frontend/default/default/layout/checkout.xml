@@ -52,9 +52,6 @@ Default layout, loads most of the pages
         <reference name="root">
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
-        <reference name="head">
-            <action method="addJs"><name>lib/switchDisplay.js</name></action>
-        </reference>
         <reference name="content">
             <block type="checkout/cart" name="checkout.cart">
                 <action method="setCartTemplate"><value>checkout/cart.phtml</value></action>

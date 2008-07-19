@@ -18,7 +18,6 @@
 /****************************************************/
 /****************[ Mage_CSS_B Clears ]***************/
 /****************************************************/
-.product-options dt:after,
 .page-head:after,
 .page-head-alt:after,
 .clear:after,
@@ -51,13 +50,8 @@
 .listing-type-list .listing-item:after,
 .listing-type-list .product-info .product-reviews:after,
 .my-review-detail:after,
-.shopping-cart-totals .checkout-types:after {
-	content:".";
-	display:block;
-	clear:both;
-	height:0;
-	font-size:0;
-	line-height:0em;
-	visibility:hidden;
-	overflow:hidden;
-	}
+.product-options dt:after,
+.product-options-bottom:after,
+.product-options dd ul.options-list li:after,
+.add-to-holder:after,
+.shopping-cart-totals .checkout-types:after { content:"."; display:block; clear:both; height:0; font-size:0; line-height:0; visibility:hidden; overflow:hidden;	}

@@ -81,14 +81,14 @@
 <input type="hidden" name="creditmemo[do_offline]" id="creditmemo_do_offline" value="0" />
 
 <div class="box-left entry-edit">
-    <div class="entry-edit-head"><h4>Credit Memo Comments</h4></div>
+    <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Credit Memo Comments') ?></h4></div>
     <fieldset id="history_form">
     <label class="normal" for="creditmemo_comment_text"><?php echo Mage::helper('sales')->__('Credit Memo Comments') ?></label><br/>
-    <textarea id="creditmemo_comment_text" name="creditmemo[comment_text]" rows="3" cols="5" style="width:95%;"></textarea>
+    <textarea id="creditmemo_comment_text" name="creditmemo[comment_text]" rows="3" cols="5" style="width:98%;"></textarea>
     </fieldset>
 </div>
 <div class="box-right entry-edit">
-    <div class="entry-edit-head"><h4>Refund Totals</h4></div>
+    <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Refund Totals') ?></h4></div>
     <div class="order-totals">
 				<?php echo $this->getChildHtml('order_totals') ?>
         <div class="order-totals-bottom">

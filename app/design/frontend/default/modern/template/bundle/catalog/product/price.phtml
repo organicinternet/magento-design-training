@@ -59,7 +59,7 @@
                 <?php endif; ?>
             <?php else: ?>
                 <?php if ($this->helper('tax')->displayBothPrices() && ($_minimalPriceTax != $_minimalPriceInclTax)): ?>
-										<span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
+                    <span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>
                     <span class="price-including-tax">(<?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?> <span class="label"><?php echo Mage::helper('tax')->__('Incl. Tax') ?></span>)</span>
                 <?php else: ?>
                     <span class="regular-price"><?php echo Mage::helper('core')->currency($_minimalPriceTax) ?></span>

@@ -130,9 +130,14 @@ class Mage_Customer_Model_Entity_Setup extends Mage_Eav_Model_Entity_Setup
                     ),
                     'taxvat' => array(
                         'label'         => 'Tax/VAT number',
-                        'visible'       => 1,
-                        'required'      => 0,
+                        'visible'       => true,
+                        'required'      => false,
                         'position'      => 1,
+                    ),
+                    'confirmation' => array(
+                        'label'         => 'Is confirmed',
+                        'visible'       => false,
+                        'required'      => false,
                     ),
                 ),
             ),

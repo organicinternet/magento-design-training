@@ -46,11 +46,35 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
             $storeIds = '';
         }
 
-        $collection = Mage::getResourceModel('reports/quote_collection')
-            ->prepareForAbandonedReport($storeIds);
+        $collection = Mage::getResourceModel('reports/quote_collection');
+
+        $filter = $this->getParam($this->getVarNameFilter(), array());
+        if ($filter) {
+            $filter = base64_decode($filter);
+            parse_str(urldecode($filter), $data);
+        }
+
+        if (!empty($data)) {
+            $collection->prepareForAbandonedReport($storeIds, $data);
+        } else {
+            $collection->prepareForAbandonedReport($storeIds);
+        }
 
         $this->setCollection($collection);
         return parent::_prepareCollection();
+    }
+
+    protected function _addColumnFilterToCollection($column)
+    {
+        $field = ( $column->getFilterIndex() ) ? $column->getFilterIndex() : $column->getIndex();
+        $skip = array('subtotal', 'customer_name', 'email', 'created_at', 'updated_at');
+
+        if (in_array($field, $skip)) {
+            return $this;
+        }
+
+        parent::_addColumnFilterToCollection($column);
+        return $this;
     }
 
     protected function _prepareColumns()
@@ -132,7 +156,6 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
     public function getRowClickCallback(){
         return "function(grid, evt) {
             var trElement = Event.findElement(evt, 'tr');
-            console.log(trElement);
             if(trElement){
                 var newWindow = window.open(trElement.id, '_blank');
                 newWindow.focus();

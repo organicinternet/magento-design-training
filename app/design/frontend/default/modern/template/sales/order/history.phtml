@@ -19,6 +19,7 @@
  */
 ?>
 <div class="padder">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php $_orders = $this->getOrders(); ?>
 <div class="page-head">
     <h3><?php echo $this->__('My Orders') ?></h3>

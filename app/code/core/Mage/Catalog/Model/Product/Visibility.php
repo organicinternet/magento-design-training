@@ -40,19 +40,22 @@ class Mage_Catalog_Model_Product_Visibility extends Varien_Object
 
     public function addVisibleInCatalogFilterToCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
     {
-        $collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInCatalogIds()));
+        $collection->setVisibility($this->getVisibleInCatalogIds());
+        //$collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInCatalogIds()));
         return $this;
     }
 
     public function addVisibleInSearchFilterToCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
     {
-        $collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInSearchIds()));
+        $collection->setVisibility($this->getVisibleInSearchIds());
+        //$collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInSearchIds()));
         return $this;
     }
 
     public function addVisibleInSiteFilterToCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
     {
-        $collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInSiteIds()));
+        $collection->setVisibility($this->getVisibleInSiteIds());
+        //$collection->addAttributeToFilter('visibility', array('in'=>$this->getVisibleInSiteIds()));
         return $this;
     }
 

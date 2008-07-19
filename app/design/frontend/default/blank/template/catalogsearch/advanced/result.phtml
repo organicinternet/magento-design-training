@@ -21,7 +21,7 @@
 <div class="page-head-container">
     <h2 class="page-head"><?php echo $this->__('Catalog Advanced Search') ?></h2>
 </div>
-
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if($this->getResultCount()): ?>
     <p>
         <?php echo $this->helper('catalogsearch')
@@ -45,7 +45,7 @@
 
     <?php if($this->getResultCount()): ?>
         <p class="note-msg">
-            Don't see what you're looking for? 
+            Don't see what you're looking for?
             <a href="<?php echo $this->getFormUrl(); ?>"><?php echo $this->helper('catalogsearch')->__('Modify your search'); ?></a>
         </p>
     <?php endif; ?>

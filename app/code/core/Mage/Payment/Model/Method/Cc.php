@@ -142,12 +142,12 @@ class Mage_Payment_Model_Method_Cc extends Mage_Payment_Model_Method_Abstract
     protected function _validateExpDate($expYear, $expMonth)
     {
         $date = Mage::app()->getLocale()->date();
-        if (!$expYear || !$expMonth || !($date->compareYear($expYear)<0) || ($date->compareYear($expYear) == 0 && $date->compareMonth($expMonth)>0)) {
+        if (!$expYear || !$expMonth || ($date->compareYear($expYear)==1) || ($date->compareYear($expYear) == 0 && ($date->compareMonth($expMonth)==1 )  )) {
             return false;
         }
         return true;
     }
-
+    
     public function OtherCcType($type)
     {
         return $type=='OT';

@@ -37,6 +37,7 @@
 </ol>
 
 <script type="text/javascript">
+//<![CDATA[
     var accordion = new Accordion('checkoutSteps', '.head', true);
     <?php if($this->getActiveStep()): ?>
     accordion.openSection('opc-<?php echo $this->getActiveStep() ?>');
@@ -48,4 +49,5 @@
         saveMethod: '<?php echo $this->getUrl('checkout/onepage/saveMethod') ?>',
         failure: '<?php echo $this->getUrl('checkout/cart') ?>'}
     );
+//]]>
 </script>

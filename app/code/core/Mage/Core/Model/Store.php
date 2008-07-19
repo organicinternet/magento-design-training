@@ -364,8 +364,8 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
         if ($this->isAdmin()
             || !$this->getConfig(self::XML_PATH_USE_REWRITES)
             || !Mage::app()->isInstalled()) {
-            $url .= basename($_SERVER['SCRIPT_FILENAME']).'/';
-            #$url .= 'index.php/';
+            #$url .= basename($_SERVER['SCRIPT_FILENAME']).'/';
+            $url .= 'index.php/';
         }
         return $url;
     }

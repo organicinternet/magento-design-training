@@ -349,17 +349,7 @@ class Mage_Paypal_Model_Standard extends Mage_Payment_Model_Method_Abstract
                            //need to save transaction id
                            $order->getPayment()->setTransactionId($this->getIpnFormData('txn_id'));
                            //need to convert from order into invoice
-                           $convertor = Mage::getModel('sales/convert_order');
-                           $invoice = $convertor->toInvoice($order);
-                           foreach ($order->getAllItems() as $orderItem) {
-                               if (!$orderItem->getQtyToInvoice()) {
-                                   continue;
-                               }
-                               $item = $convertor->itemToInvoiceItem($orderItem);
-                               $item->setQty($orderItem->getQtyToInvoice());
-                               $invoice->addItem($item);
-                           }
-                           $invoice->collectTotals();
+                           $invoice = $order->prepareInvoice();
                            $invoice->register()->capture();
                            Mage::getModel('core/resource_transaction')
                                ->addObject($invoice)

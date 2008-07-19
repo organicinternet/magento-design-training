@@ -46,52 +46,68 @@
 
             <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
-            <h4><?php echo $this->__('Quick Overview') ?></h4>
-            <div class="short-description"><?php echo nl2br($_product->getShortDescription()) ?></div>
-
-            <div class="divider"></div>
-
-            <fieldset>
+            <fieldset class="no-display">
               <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
               <input type="hidden" name="related_product" id="related-products-field" value="" />
             </fieldset>
 
-                <?php echo $this->getChildHtml('alert_urls') ?>
+            <?php echo $this->getChildHtml('alert_urls') ?>
+            <?php echo $this->getChildHtml('product_type_data') ?>
 
-                <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php if (!$this->hasOptions()):?>
+                <?php echo $this->getChildHtml('tierprices') ?>
+                <div class="add-to-holder">
+                    <?php if($_product->isSaleable()): ?>
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                            <span class="add-or"><?php echo $this->__('OR') ?></span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php echo $this->getChildHtml('addto') ?>
+                </div>
+            <?php else:?>
+                <?php echo $this->getChildHtml('addto') ?>
+            <?php endif; ?>
 
-                <?php echo $this->getChildHtml('container1') ?>
+            <div class="divider"></div>
+            <h4><?php echo $this->__('Quick Overview') ?></h4>
+            <div class="short-description"><?php echo nl2br($_product->getShortDescription()) ?></div>
+
+            <?php if ($this->hasOptions()):?>
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+            <?php endif;?>
 
         </div>
         <div class="clear"></div>
-				<?php echo $this->getChildHtml('container2') ?>
+        <?php if ($this->hasOptions()):?>
+            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+        <?php endif;?>
     </form>
     <script type="text/javascript">
-			var productAddToCartForm = new VarienForm('product_addtocart_form');
-			productAddToCartForm.submit = function(){
-					if (this.validator.validate()) {
-							this.form.submit();
-					}
-			}.bind(productAddToCartForm);
+            var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(){
+                    if (this.validator.validate()) {
+                            this.form.submit();
+                    }
+            }.bind(productAddToCartForm);
     </script>
     </div>
 
     <div class="product-collateral">
-        <?php if($_additional = $this->getAdditionalData()): ?>
         <div class="collateral-box">
             <div class="head">
-              <h4><?php echo $this->__('Product Description') ?></h4>
+                <h4><?php echo $this->__('Product Description') ?></h4>
             </div>
             <?php echo $this->getChildHtml('description') ?>
         </div>
-        <div class="collateral-box attribute-specs">
-            <div class="head">
-                <h4><?php echo $this->__('Additional Information') ?></h4>
-                <?php //echo $this->getChildHtml('product_options') ?>
+        <?php if ($_additional = $this->getChildHtml('additional')):?>
+            <div class="collateral-box">
+                <div class="head">
+                    <h4><?php echo $this->__('Additional Information') ?></h4>
+                </div>
+                <?php echo $_additional ?>
             </div>
-            <?php echo $this->getChildHtml('additional') ?>
-        </div>
-        <?php endif; ?>
+        <?php endif;?>
         <?php echo $this->getChildHtml('upsell_products') ?>
         <?php echo $this->getChildHtml('product_additional_data') ?>
     </div>

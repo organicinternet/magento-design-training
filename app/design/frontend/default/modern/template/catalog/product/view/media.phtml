@@ -29,7 +29,8 @@
 <p class="main-product-img">
     <img id="image" src="<?php echo $this->helper('catalog/image')->init($_product, 'image'); ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/>
 </p>
-<p class="a-center">Double click on above image to view full picture</p>
+<p class="a-center">
+<?php echo $this->__('Double click on above image to view full picture') ?></p>
 <div class="image-zoom" id="track_outer">
     <img id="zoom_out" src="<?php echo $this->getSkinUrl('images/slider_btn_zoom_out.gif') ?>" alt="<?php echo $this->__('Zoom Out') ?>" class="btn-zoom-out"/>
     <div id="track">

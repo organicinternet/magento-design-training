@@ -34,7 +34,7 @@
 
         if($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL)) {
             Mage::getSingleton('catalog/session')->setBeforeCompareUrl(
-                base64_decode($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL))
+                Mage::helper('core')->urlDecode($this->getRequest()->getParam(self::PARAM_NAME_BASE64_URL))
             );
         }
 

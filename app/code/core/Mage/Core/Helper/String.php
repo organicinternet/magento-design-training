@@ -85,6 +85,9 @@ class Mage_Core_Helper_String extends Mage_Core_Helper_Abstract
      */
     public function substr($str, $offset, $length = null)
     {
+        if (is_null($length)) {
+            $length = iconv_strlen($str, self::ICONV_CHARSET) - $offset;
+        }
         return iconv_substr($str, $offset, $length, self::ICONV_CHARSET);
     }
 }

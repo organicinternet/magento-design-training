@@ -28,6 +28,8 @@ class Mage_Catalog_Model_Observer
             Mage::app()->reinitStores();
             Mage::getModel('catalog/url')->refreshRewrites($store->getId());
         }
+        Mage::getResourceModel('catalog/product')->refreshEnabledIndex($store);
+        return $this;
     }
 
     public function storeAdd($observer)
@@ -37,6 +39,8 @@ class Mage_Catalog_Model_Observer
         Mage::app()->reinitStores();
         Mage::getConfig()->reinit();
         Mage::getModel('catalog/url')->refreshRewrites($store->getId());
+        Mage::getResourceModel('catalog/product')->refreshEnabledIndex($store);
+        return $this;
     }
 
     public function storeGroupSave($observer)
@@ -49,16 +53,19 @@ class Mage_Catalog_Model_Observer
                 Mage::getModel('catalog/url')->refreshRewrites($store->getId());
             }
         }
+        return $this;
     }
 
     public function categoryMove($observer)
     {
         $categoryId = $observer->getEvent()->getCategoryId();
         Mage::getModel('catalog/url')->refreshCategoryRewrite($categoryId);
+        return $this;
     }
 
     public function catalogProductImportAfter($observer)
     {
         Mage::getModel('catalog/url')->refreshRewrites();
+        return $this;
     }
 }

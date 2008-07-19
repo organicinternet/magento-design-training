@@ -28,6 +28,8 @@
  */
 class Mage_Protx_StandardController extends Mage_Core_Controller_Front_Action
 {
+    public $isValidResponse = false;
+
     /**
      * Get singleton with protx strandard
      *
@@ -167,16 +169,8 @@ class Mage_Protx_StandardController extends Mage_Core_Controller_Front_Action
     protected function saveInvoice (Mage_Sales_Model_Order $order)
     {
         if ($order->canInvoice()) {
-            $convertor = Mage::getModel('sales/convert_order');
-            $invoice = $convertor->toInvoice($order);
-            foreach ($order->getAllItems() as $orderItem) {
-               if (!$orderItem->getQtyToInvoice()) {
-                   continue;
-               }
-               $item = $convertor->itemToInvoiceItem($orderItem);
-               $item->setQty($orderItem->getQtyToInvoice());
-               $invoice->addItem($item);
-            }
+            $invoice = $order->prepareInvoice();
+
             $invoice->collectTotals();
             $invoice->register()->capture();
             Mage::getModel('core/resource_transaction')

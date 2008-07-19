@@ -44,7 +44,7 @@ class Mage_CatalogSearch_AdvancedController extends Mage_Core_Controller_Front_A
             Mage::getSingleton('catalogsearch/session')->addError($e->getMessage());
             $this->_redirectError(Mage::getURL('*/*/'));
         }
-
+        $this->_initLayoutMessages('catalog/session');
         $this->renderLayout();
     }
 }

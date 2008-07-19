@@ -808,6 +808,7 @@ class Mage_Core_Model_App
         if (!$this->_frontController) {
             $this->_initFrontController();
         }
+        
         return $this->_frontController;
     }
 
@@ -1084,6 +1085,7 @@ class Mage_Core_Model_App
                 continue;
             }
             foreach ($events[$eventName]['observers'] as $obsName=>$obs) {
+            
                 $observer->setData(array('event'=>$event));
                 Varien_Profiler::start('OBSERVER: '.$obsName);
                 switch ($obs['type']) {

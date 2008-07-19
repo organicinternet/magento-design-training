@@ -337,6 +337,16 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
     }
 
     /**
+     * Before save type related data
+     *
+     * @return unknown
+     */
+    public function beforeSave()
+    {
+        return $this;
+    }
+
+    /**
      * Check if product is composite (grouped, configurable, etc)
      *
      * @return bool
@@ -396,4 +406,18 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
     {
         return $this->getProduct()->getData('weight');
     }
+
+    /**
+     * Return true if product has options
+     *
+     * @return bool
+     */
+    public function hasOptions()
+    {
+        if ($this->getProduct()->getHasOptions()) {
+            return true;
+        }
+        return false;
+    }
+
 }

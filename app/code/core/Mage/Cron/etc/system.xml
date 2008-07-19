@@ -23,7 +23,7 @@
     <sections>
         <system>
             <groups>
-                <cron translate="label" module="core">
+                <cron translate="label comment" module="core">
                     <label>Cron (Scheduled Tasks) - all the times are in minutes</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>15</sort_order>

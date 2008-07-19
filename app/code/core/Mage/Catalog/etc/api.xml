@@ -157,6 +157,12 @@
                         <title>Delete product</title>
                         <acl>catalog/product/delete</acl>
                     </delete>
+                    <getSpecialPrice translate="title" module="catalog">
+                        <title>Get special price</title>
+                    </getSpecialPrice>
+                    <setSpecialPrice translate="title" module="catalog">
+                        <title>Set special price</title>
+                    </setSpecialPrice>
                 </methods>
                 <faults module="catalog">
                     <store_not_exists>

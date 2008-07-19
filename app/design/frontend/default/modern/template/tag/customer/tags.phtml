@@ -19,10 +19,10 @@
  */
 ?>
 <div class="padder">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <div class="page-head">
     <h3><?php echo $this->__('My Tags') ?></h3>
 </div>
-<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if($this->getTags()): ?>
     <p><?php echo $this->__('Click on a tag to view your corresponding products.') ?></p>
         <div class="content">

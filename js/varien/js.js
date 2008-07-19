@@ -426,15 +426,15 @@ Validation.addAllThese([
 ]);
 
 function truncateOptions() {
-    $$('.truncate-option').each(function(element){
+    $$('.truncated').each(function(element){
         Event.observe(element, 'mouseover', function(){
-            if ($(element.id+'_full_view')) {
-                $(element.id+'_full_view').style.display = 'block';
+            if (element.down('div.truncated_full_value')) {
+                element.down('div.truncated_full_value').addClassName('show')
             }
         });
         Event.observe(element, 'mouseout', function(){
-            if ($(element.id+'_full_view')) {
-                $(element.id+'_full_view').style.display = 'none';
+            if (element.down('div.truncated_full_value')) {
+                element.down('div.truncated_full_value').removeClassName('show')
             }
         });
 

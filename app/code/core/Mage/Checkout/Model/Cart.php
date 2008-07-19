@@ -201,13 +201,16 @@ class Mage_Checkout_Model_Cart extends Varien_Object
         $product = $this->_getProduct($product);
         $request = $this->_getProductRequest($info);
 
-
+	
         if ($product->getId()) {
+        	
             $result = $this->getQuote()->addProduct($product, $request);
+       
             /**
              * String we can get if prepare process has error
              */
             if (is_string($result)) {
+            	
                 $this->getCheckoutSession()->setRedirectUrl($product->getProductUrl());
                 $this->getCheckoutSession()->setUseNotice(true);
                 Mage::throwException($result);

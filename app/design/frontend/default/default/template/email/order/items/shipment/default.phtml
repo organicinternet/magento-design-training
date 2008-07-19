@@ -23,11 +23,12 @@
     <td align="left" valign="top" style="padding:3px 9px">
         <?php echo $this->htmlEscape($_item->getName()) ?>
         <?php if ($this->getItemOptions()): ?>
-        <ul style="list-style:none;margin:0; padding:0;">
+        <dl style="margin:0; padding:0;">
             <?php foreach ($this->getItemOptions() as $option): ?>
-            <li><strong><?php echo $option['label'] ?>:</strong><br /><?php echo $option['value'] ?></li>
+            <dt><strong><em><?php echo $option['label'] ?></em></strong></dt>
+						<dd style="margin:0; padding:0 0 0 9px;"><?php echo $option['value'] ?></dd>
             <?php endforeach; ?>
-        </ul>
+        </dl>
         <?php endif; ?>
         <?php echo $_item->getDescription() ?>
     </td>

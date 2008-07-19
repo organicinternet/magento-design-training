@@ -89,6 +89,7 @@ class Mage_Core_Helper_Js extends Mage_Core_Helper_Abstract
 //Mage_Rule
 
             'Your session has been expired, you will be relogged in now.' => $this->__('Your session has been expired, you will be relogged in now.'),
+            'Incorrect credit card expiration date' => $this->__('Incorrect credit card expiration date'),
         );
     }
 

@@ -448,7 +448,12 @@ class Mage_Checkout_Model_Type_Onepage
                 $shipping->setCustomerId($customer->getId())->setCustomerAddressId($customerShippingId);
             }
 
-            $customer->sendNewAccountEmail();
+            if ($customer->isConfirmationRequired()) {
+                $customer->sendNewAccountEmail('confirmation');
+            }
+            else {
+                $customer->sendNewAccountEmail();
+            }
         }
 
         /**
@@ -489,7 +494,14 @@ class Mage_Checkout_Model_Type_Onepage
              * it would not create new quotes and merge it with old one.
              */
             $this->getQuote()->save();
-            Mage::getSingleton('customer/session')->loginById($customer->getId());
+            if ($customer->isConfirmationRequired()) {
+                Mage::getSingleton('checkout/session')->addSuccess(Mage::helper('customer')->__('Account confirmation is required. Please, check your e-mail for confirmation link. To resend confirmation email please <a href="%s">click here</a>.',
+                    Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail())
+                ));
+            }
+            else {
+                Mage::getSingleton('customer/session')->loginById($customer->getId());
+            }
         }
 
         $this->getQuote()->setIsActive(false);

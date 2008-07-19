@@ -75,18 +75,41 @@
         <?php endif; ?>
         
 				<?php if($product->isSaleable()): ?>
-        <p><?php echo $this->__('Availability: In stock.') ?></p>
+        <p class="availability"><?php echo $this->__('Availability: In stock.') ?></p>
         <?php else: ?>
-        <p><?php echo $this->__('Availability: Out of stock.') ?></p>
+        <p class="availability"><?php echo $this->__('Availability: Out of stock.') ?></p>
         <?php endif; ?>
+        
+        <div class="add-to">
+					<?php if($_product->isSaleable()): ?>
+          <fieldset class="add-to-cart-box">
+              <legend><?php echo $this->__('Add Items to Cart') ?></legend>
+              <?php if(!$_product->isGrouped()): ?>
+              <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
+              <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>" /></span>
+              <?php endif; ?>
+              <button class="form-button" onclick="productAddToCartForm.submit()"><span><?php echo $this->__('Add to Cart') ?></span></button>
+          </fieldset>
+              <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+              <span class="add-or"><?php echo $this->__('OR') ?></span>
+              <?php endif; ?>
+          <?php endif; ?>
+          <ul class="add-to-box">
+          <?php if ($this->helper('wishlist')->isAllow()) : ?>
+            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
+          <?php endif; ?>
+          
+          <?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
+            <li><span class="pipe">|</span> <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
+          <?php endif; ?>
+          </ul>
+        </div>
         
         <div class="divider"></div>
 
         <p><a href="<?php echo $product->getProductUrl() ?>">&laquo; <?php echo $this->__('Back to Main Product Info') ?></a></p>
         </div>
         <div class="clear"></div>
-        <?php echo $this->getChildHtml('addto') ?>
-        <?php echo $this->getChildHtml('addtocart') ?>
         </form>
         <script type="text/javascript">
 					var productAddToCartForm = new VarienForm('product_addtocart_form');

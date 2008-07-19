@@ -229,4 +229,21 @@ abstract class Mage_Sales_Model_Order_Pdf_Items_Abstract extends Mage_Core_Model
 
         return array($description);
     }
+
+    public function getItemOptions() {
+        $result = array();
+        if ($options = $this->getItem()->getOrderItem()->getProductOptions()) {
+            if (isset($options['options'])) {
+                $result = array_merge($result, $options['options']);
+            }
+            if (isset($options['additional_options'])) {
+                $result = array_merge($result, $options['additional_options']);
+            }
+            if (isset($options['attributes_info'])) {
+                $result = array_merge($result, $options['attributes_info']);
+            }
+        }
+        return $result;
+    }
+
 }
