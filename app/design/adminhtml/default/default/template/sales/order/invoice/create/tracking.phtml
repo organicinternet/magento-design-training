@@ -78,14 +78,14 @@ trackingControl = {
     <tbody id="track_row_container">
         <tr id="track_row_template" class="template no-display">
             <td>
-                <select name="tracking[__index__][carrier_code]" class="select carrier" style="width:110px;" disabled="disabled">
+                <select name="tracking[__index__][carrier_code]" class="select carrier" style="width:110px;" >
                     <?php foreach ($this->getCarriers() as $_code=>$_name): ?>
                     <option value="<?php echo $_code ?>"><?php echo $_name ?></option>
                     <?php endforeach; ?>
                 </select>
             </td>
-            <td><input class="input-text number-title" type="text" name="tracking[__index__][title]" value="" disabled="disabled" /></td>
-            <td><input class="input-text" type="text" name="tracking[__index__][number]" value="" disabled="disabled" /></td>
+            <td><input class="input-text number-title" type="text" name="tracking[__index__][title]" value=""  /></td>
+            <td><input class="input-text" type="text" name="tracking[__index__][number]" value=""  /></td>
             <td class="last"><a href="#" onclick="trackingControl.deleteRow(event);return false"><?php echo $this->__('Delete') ?></a></td>
         </tr>
     </tbody>

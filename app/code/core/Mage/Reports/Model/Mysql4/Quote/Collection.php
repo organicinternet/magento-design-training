@@ -38,25 +38,8 @@ class Mage_Reports_Model_Mysql4_Quote_Collection extends Mage_Sales_Model_Mysql4
             ->addCustomerData($filter)
             ->setOrder('updated_at');
 
-        $this->_joinedFields['created_at'] = '(main_table.created_at)';
-        $this->_joinedFields['updated_at'] = '(main_table.updated_at)';
-
         if (is_array($storeIds)) {
             $this->addFieldToFilter('main_table.store_id', array('in' => $storeIds));
-        }
-
-        if ($filter && is_array($filter)) {
-
-            if (isset($filter['created_at']) && (isset($filter['created_at']['from']) || isset($filter['created_at']['to']))) {
-                $filter['created_at']['date'] = '1';
-                $this->addFieldToFilter($this->_joinedFields['created_at'], $filter['created_at']);
-            }
-
-            if (isset($filter['updated_at']) && (isset($filter['updated_at']['from']) || isset($filter['updated_at']['to']))) {
-                $filter['updated_at']['date'] = '1';
-                $this->addFieldToFilter($this->_joinedFields['updated_at'], $filter['updated_at']);
-            }
-
         }
         return $this;
     }

@@ -75,18 +75,19 @@ class Mage_Adminhtml_Sales_Order_ShipmentController extends Mage_Adminhtml_Contr
                 if (!$orderItem->isDummy(true) && !$orderItem->getQtyToShip()) {
                     continue;
                 }
-
                 if ($orderItem->isDummy(true) && !$this->_needToAddDummy($orderItem, $savedQtys)) {
                     continue;
                 }
-
                 if ($orderItem->getIsVirtual()) {
                     continue;
                 }
-
                 $item = $convertor->itemToShipmentItem($orderItem);
                 if (isset($savedQtys[$orderItem->getId()])) {
-                    $qty = $savedQtys[$orderItem->getId()];
+                    if ($savedQtys[$orderItem->getId()] > 0) {
+                        $qty = $savedQtys[$orderItem->getId()];
+                    } else {
+                        continue;
+                    }
                 }
                 else {
                     if ($orderItem->isDummy(true)) {
@@ -98,7 +99,6 @@ class Mage_Adminhtml_Sales_Order_ShipmentController extends Mage_Adminhtml_Contr
                 $item->setQty($qty);
                 $shipment->addItem($item);
             }
-
             if ($tracks = $this->getRequest()->getPost('tracking')) {
                 foreach ($tracks as $data) {
                     $track = Mage::getModel('sales/order_shipment_track')
@@ -408,14 +408,20 @@ class Mage_Adminhtml_Sales_Order_ShipmentController extends Mage_Adminhtml_Contr
     protected function _needToAddDummy($item, $qtys) {
         if ($item->getHasChildren()) {
             foreach ($item->getChildrenItems() as $child) {
-                if ((isset($qtys[$child->getId()]) && $qtys[$child->getId()] > 0) || $child->getQtyToShip()) {
+                if ($child->getIsVirtual()) {
+                    continue;
+                }
+                if ((isset($qtys[$child->getId()]) && $qtys[$child->getId()] > 0) || (!isset($qtys[$child->getId()]) && $child->getQtyToShip())) {
                     return true;
                 }
             }
             return false;
         } else if($item->getParentItem()) {
+            if ($item->getIsVirtual()) {
+                return false;
+            }
             if ((isset($qtys[$item->getParentItem()->getId()]) && $qtys[$item->getParentItem()->getId()] > 0)
-                || $item->getParentItem()->getQtyToShip()) {
+                || (!isset($qtys[$item->getParentItem()->getId()]) && $item->getParentItem()->getQtyToShip())) {
                 return true;
             }
             return false;

@@ -48,9 +48,16 @@
 .account-nav li,
 .listing-type-list .listing-item,
 #nav li,
-.truncated,
 .product-options dt,
+.product-options dd ul.options-list li,
+.product-options dd ul.options-list .label,
+.product-options-bottom,
+.truncated_full_value,
 .error-msg, .success-msg, .notice-msg, .note-msg { zoom:1; }
+
+input.form-radio,
+input.form-checkbox { width:13px; height:13px; }
+.product-options dd ul.options-list input.form-radio { margin-top:4px; }
 
 .footer .footer-callout { position:relative; zoom:1; }
 .login-box .content     { height:180px; }

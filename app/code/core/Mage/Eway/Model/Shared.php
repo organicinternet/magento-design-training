@@ -111,6 +111,9 @@ class Mage_Eway_Model_Shared extends Mage_Payment_Model_Method_Abstract
         $invoiceDesc = '';
         $lengs = 0;
         foreach ($this->getOrder()->getAllItems() as $item) {
+            if ($item->getParentItem()) {
+                continue;
+            }
             if (Mage::helper('core/string')->strlen($invoiceDesc.$item->getName()) > 10000) {
                 break;
             }

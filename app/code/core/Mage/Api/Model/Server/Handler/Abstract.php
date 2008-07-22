@@ -262,7 +262,7 @@ abstract class Mage_Api_Model_Server_Handler_Abstract
             return $this->_fault($e->getMessage(), $resourceName, $e->getCustomMessage());
         } catch (Exception $e) {
             Mage::logException($e);
-            return $this->_fault('internal');
+            return $this->_fault('internal', null, $e->getMessage());
         }
     }
 

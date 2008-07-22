@@ -64,14 +64,18 @@ class Mage_Page_Block_Switch extends Mage_Core_Block_Template
             $websiteStores = Mage::app()->getWebsite()->getStores();
             $stores = array();
             foreach ($websiteStores as $store) {
+                /* @var $store Mage_Core_Model_Store */
                 if (!$store->getIsActive()) {
                     continue;
                 }
                 $store->setLocaleCode(Mage::getStoreConfig('general/locale/code', $store->getId()));
-                $baseUrl = $store->getBaseUrl();
+
+                $params = array();
                 if (!$this->isStoreInUrl()) {
-                    $baseUrl .= '?___store='.$store->getCode();
+                    $params['___store'] = $store->getCode();
                 }
+                $baseUrl = $store->getUrl('', $params);
+
                 $store->setHomeUrl($baseUrl);
                 $stores[$store->getGroupId()][$store->getId()] = $store;
             }

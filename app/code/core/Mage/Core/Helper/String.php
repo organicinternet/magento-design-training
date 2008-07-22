@@ -90,4 +90,30 @@ class Mage_Core_Helper_String extends Mage_Core_Helper_Abstract
         }
         return iconv_substr($str, $offset, $length, self::ICONV_CHARSET);
     }
+
+    /**
+     * Split string and appending $insert string after $needle
+     *
+     * @param string $str
+     * @param integer $length
+     * @param string $needle
+     * @param string $insert
+     * @return string
+     */
+    public function splitInjection($str, $length = 50, $needle = '-', $insert = ' ')
+    {
+        $str = str_split($str, $length);
+        $newStr = '';
+        foreach ($str as $part) {
+            if ($this->strlen($part) >= $length) {
+                $lastDelimetr = strpos(strrev($part), $needle);
+                $tmpNewStr = '';
+                $tmpNewStr = $this->substr(strrev($part), 0, $lastDelimetr).$insert.substr(strrev($part), $lastDelimetr);
+                $newStr .= strrev($tmpNewStr);
+            } else {
+                $newStr .= $part;
+            }
+        }
+        return $newStr;
+    }
 }

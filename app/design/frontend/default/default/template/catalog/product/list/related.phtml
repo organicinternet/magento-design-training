@@ -43,12 +43,8 @@
             <div class="product-details">
                     <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
                     <?php echo $this->getPriceHtml($_item) ?>
-                    <?php if($_item->isComposite()): ?>
-                        <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a><br/>
-                    <?php else: ?>
-                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                        <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="link-cart"><?php echo $this->__('Add to Wishlist') ?></a>
-                        <?php endif; ?>
+                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                    <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="link-cart"><?php echo $this->__('Add to Wishlist') ?></a>
                     <?php endif; ?>
             </div>
         </li>

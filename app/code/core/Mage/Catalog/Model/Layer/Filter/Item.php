@@ -42,16 +42,18 @@ class Mage_Catalog_Model_Layer_Filter_Item extends Varien_Object
 
     public function getUrl()
     {
-        return Mage::getUrl('*/*/*', array('_current'=>true, $this->getFilter()->getRequestVar()=>$this->getValue()));
+        $query = array($this->getFilter()->getRequestVar()=>$this->getValue());
+        return Mage::getUrl('*/*/*', array('_current'=>true, '_use_rewrite'=>true, '_query'=>$query));
     }
 
     public function getRemoveUrl()
     {
-        return Mage::getUrl('*/*/*',
-            array(
-                '_current'=>true,
-                $this->getFilter()->getRequestVar()=>$this->getFilter()->getResetValue()
-        ));
+        $query = array($this->getFilter()->getRequestVar()=>$this->getFilter()->getResetValue());
+        $params = $query;
+        $params['_current'] = true;
+        $params['_use_rewrite'] = true;
+        $params['_query']   = $query;
+        return Mage::getUrl('*/*/*', $params);
     }
 
     public function getName()

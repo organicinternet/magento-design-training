@@ -28,7 +28,7 @@
         <?php echo $this->getSelectionQtyTitlePrice($_selections[0]) ?>
         <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>" />
     <?php else:?>
-        <select onchange="bundle.changeSelection(this)" multiple="multiple" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>][]" class="bundle-option-<?php echo $_option->getId() ?><?php if ($_option->getRequired()) echo ' required-entry' ?> bundle-option-select multiselect">
+        <select onchange="bundle.changeSelection(this)" multiple="multiple" size="5" id="bundle-option-<?php echo $_option->getId() ?>" name="bundle_option[<?php echo $_option->getId() ?>][]" class="bundle-option-<?php echo $_option->getId() ?><?php if ($_option->getRequired()) echo ' required-entry' ?> bundle-option-select multiselect">
             <?php if(!$_option->getRequired()): ?>
             <option value=""><?php echo $this->__('None') ?></option>
             <?php endif; ?>

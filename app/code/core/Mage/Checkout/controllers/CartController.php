@@ -99,17 +99,14 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         $cart = $this->_getCart();
-        Varien_Profiler::start(__METHOD__ . 'cart_init');
-        $cart->init();
-        Varien_Profiler::stop(__METHOD__ . 'cart_init');
+        if ($cart->getQuote()->getItemsCount()) {
+            $cart->init();
+            $cart->save();
 
-        Varien_Profiler::start(__METHOD__ . 'cart_save');
-        $cart->save();
-        Varien_Profiler::stop(__METHOD__ . 'cart_save');
-
-        if (!$this->_getQuote()->validateMinimumAmount()) {
-            $warning = Mage::getStoreConfig('sales/minimum_order/description');
-            $cart->getCheckoutSession()->addNotice($warning);
+            if (!$this->_getQuote()->validateMinimumAmount()) {
+                $warning = Mage::getStoreConfig('sales/minimum_order/description');
+                $cart->getCheckoutSession()->addNotice($warning);
+            }
         }
 
         foreach ($cart->getQuote()->getMessages() as $message) {

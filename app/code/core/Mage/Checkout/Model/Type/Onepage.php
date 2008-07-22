@@ -148,7 +148,11 @@ class Mage_Checkout_Model_Type_Onepage
 
         if (!$this->getQuote()->getCustomerId() && 'register' == $this->getQuote()->getCheckoutMethod()) {
             $email = $address->getEmail();
-            $customer = Mage::getModel('customer/customer')->loadByEmail($email);
+            /**
+             * Fix for #5076
+             * @see Mage_Customer_Model_Entity_Customer::loadByEmail()
+             */
+            $customer = Mage::getModel('customer/customer')->setWebsiteId(Mage::app()->getWebsite()->getId())->loadByEmail($email);
             if ($customer->getId()) {
                 $res = array(
                     'error' => 1,

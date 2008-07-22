@@ -68,6 +68,9 @@ EOT;
 EOT;
         $weightUnit = 'LB';
         foreach ($this->getQuote()->getAllItems() as $item) {
+            if ($item->getParentItem()) {
+                continue;
+            }
             $taxClass = ($item->getTaxClassId() == 0 ? 'none' : $item->getTaxClassId());
             $weight = (float) $item->getWeight();
             $digital = $item->getIsVirtual() ? 'true' : 'false';

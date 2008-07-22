@@ -439,4 +439,13 @@ class Mage_Sales_Model_Order_Shipment extends Mage_Core_Model_Abstract
         }
         return false;
     }
+
+    protected function _beforeSave()
+    {
+        if (!count($this->getAllItems())) {
+            Mage::throwException(
+                Mage::helper('sales')->__('Can not create empty shipment')
+            );
+        }
+    }
 }

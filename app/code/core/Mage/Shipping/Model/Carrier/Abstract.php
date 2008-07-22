@@ -235,4 +235,19 @@ abstract class Mage_Shipping_Model_Carrier_Abstract extends Varien_Object
         }
         return $weight;
     }
+
+    public function isStateProvinceRequired()
+    {
+        return false;
+    }
+
+    public function isCityRequired()
+    {
+        return false;
+    }
+
+    public function isZipCodeRequired()
+    {
+        return false;
+    }
 }

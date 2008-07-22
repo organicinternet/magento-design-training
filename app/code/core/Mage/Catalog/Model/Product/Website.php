@@ -43,7 +43,7 @@ class Mage_Catalog_Model_Product_Website extends Mage_Core_Model_Abstract
     {
         try {
             $this->_getResource()->removeProducts($websiteIds, $productIds);
-            $this->_refreshRewrites($productsIds);
+            $this->_refreshRewrites($productIds);
         }
         catch (Exception $e) {
             Mage::throwException(

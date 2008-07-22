@@ -532,7 +532,7 @@ Product.OptionsPrice.prototype = {
                     if (this.showIncludeTax) {
                         price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
                     } else {
-                        if (!this.skipCalculate) {
+                        if (!this.skipCalculate || this.productPrice == 0) {
                             price = this.getPriceWithoutTax(optionPrices+parseFloat(this.productPrice));
                         } else {
                             price = optionPrices+parseFloat(this.productPrice);

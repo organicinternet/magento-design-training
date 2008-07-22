@@ -22,8 +22,9 @@
 <script type="text/javascript">
 //<![CDATA[
 OptionTemplateSelect = '<table class="border" cellpadding="0" cellspacing="0">'+
+
         '<thead>'+
-        '<tr class="headings" id="select_option_type_row_{{option_id}}">'+
+        '<tr class="headings">'+
             '<th class="type-title"><?php echo Mage::helper('catalog')->__('Title') ?> <span class="required">*</span></th>'+
             '<th class="type-price"><?php echo Mage::helper('catalog')->__('Price') ?></th>'+
             '<th class="type-type"><?php echo Mage::helper('catalog')->__('Price Type') ?></th>'+
@@ -32,6 +33,8 @@ OptionTemplateSelect = '<table class="border" cellpadding="0" cellspacing="0">'+
             '<th class="type-butt last">&nbsp;</th>'+
         '</tr>'+
         '</thead>'+
+        '<tbody id="select_option_type_row_{{option_id}}">'+
+        '</tbody>'+
         '<tfoot>'+
         '<tr>'+
         '<td colspan="100" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>'+
@@ -39,9 +42,9 @@ OptionTemplateSelect = '<table class="border" cellpadding="0" cellspacing="0">'+
         '</tfoot>'+
     '</table>';
 
-OptionTemplateSelectRow = '<tr id="product_option_{{id}}_select_{{select_id}}">'+
-            '<input type="hidden" name="product[options][{{id}}][values][{{select_id}}][option_type_id]" value="{{option_type_id}}">'+
+OptionTemplateSelectRow = '<input type="hidden" name="product[options][{{id}}][values][{{select_id}}][option_type_id]" value="{{option_type_id}}">'+
             '<input type="hidden" id="product_option_{{id}}_select_{{select_id}}_is_delete" name="product[options][{{id}}][values][{{select_id}}][is_delete]" value="">'+
+            '<tr id="product_option_{{id}}_select_{{select_id}}">'+
             '<td><input type="text" class="required-entry input-text" id="product_option_{{id}}_select_{{select_id}}_title" name="product[options][{{id}}][values][{{select_id}}][title]" value="{{title}}">{{checkboxScopeTitle}}</td>'+
             '<td><input type="text" class="input-text validate-number product-option-price" id="product_option_{{id}}_select_{{select_id}}_price" name="product[options][{{id}}][values][{{select_id}}][price]" value="{{price}}"></td>'+
             '<td><?php echo $this->getPriceTypeSelectHtml() ?>{{checkboxScopePrice}}</td>'+
@@ -60,7 +63,7 @@ selectOptionType = {
         this.template = new Template(this.templateText, this.templateSyntax);
 
         if (data.target || data.srcElement) {//data is Event (work in IE and Firefox)
-            element = $(Event.element(data));
+            element = $(Event.findElement(data, 'button'));
             optionId = element.readAttribute('id').sub('add_select_row_button_', '');
             data = {};
             data.option_type_id = '-1';
@@ -78,8 +81,12 @@ selectOptionType = {
         if ($('product_option_'+data.id+'_select_'+lastSelectId)) {
             afterElm = 'product_option_'+data.id+'_select_'+lastSelectId;
         }
-		new Insertion.After(
-			$(afterElm),
+//		new Insertion.After(
+//			$(afterElm),
+//			this.template.evaluate(data)
+//		);
+		new Insertion.Bottom(
+			$(this.div+'_'+data.id),
 			this.template.evaluate(data)
 		);
 
@@ -127,7 +134,7 @@ selectOptionType = {
     },
     bindAddButton : function()
     {
-        var buttons = $$('.add-select-row-psw');
+        var buttons = $$('.add-select-row');
         for(var i=0;i<buttons.length;i++){
             if(!$(buttons[i]).binded){
                 $(buttons[i]).binded = true;

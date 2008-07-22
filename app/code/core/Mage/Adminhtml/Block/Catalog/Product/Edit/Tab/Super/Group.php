@@ -76,6 +76,7 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Super_Group extends Mage_Adm
             ->getProductCollection()
             ->setProduct($this->_getProduct())
             ->addAttributeToSelect('*')
+            ->addFilterByRequiredOptions()
             ->addAttributeToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
 
         $this->setCollection($collection);

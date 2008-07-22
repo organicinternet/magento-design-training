@@ -32,6 +32,9 @@
     <p class="availability"><?php echo $this->__('Availability: Out of stock.') ?></p>
 <?php endif; ?>
 <table cellspacing="0" class="data-table" id="super-product-table">
+    <col />
+    <col />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
@@ -71,7 +74,7 @@
                     <?php endif; ?>
                 <?php else: ?>
                     <p class="old-price">
-                        <span class="price-label"><?php echo $this->__('Price:') ?></span>
+                        <span class="price-label"><?php echo $this->__('Regular Price:') ?></span>
                         <?php echo Mage::helper('core')->currency($_regularPrice) ?>
                     </p>
 

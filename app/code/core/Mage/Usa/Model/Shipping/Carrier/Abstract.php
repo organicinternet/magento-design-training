@@ -58,4 +58,13 @@ abstract class Mage_Usa_Model_Shipping_Carrier_Abstract extends Mage_Shipping_Mo
         return true;
     }
 
+    public function isCityRequired()
+    {
+        return true;
+    }
+
+    public function isZipCodeRequired()
+    {
+        return true;
+    }
 }

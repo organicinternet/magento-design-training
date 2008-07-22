@@ -67,7 +67,7 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
     protected function _addColumnFilterToCollection($column)
     {
         $field = ( $column->getFilterIndex() ) ? $column->getFilterIndex() : $column->getIndex();
-        $skip = array('subtotal', 'customer_name', 'email', 'created_at', 'updated_at');
+        $skip = array('subtotal', 'customer_name', 'email'/*, 'created_at', 'updated_at'*/);
 
         if (in_array($field, $skip)) {
             return $this;
@@ -131,6 +131,7 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
             'width'     =>'170px',
             'type'      =>'datetime',
             'index'     =>'created_at',
+            'filter_index'=>'main_table.created_at',
             'sortable'  =>false
         ));
 
@@ -139,6 +140,7 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
             'width'     =>'170px',
             'type'      =>'datetime',
             'index'     =>'updated_at',
+            'filter_index'=>'main_table.updated_at',
             'sortable'  =>false
         ));
 
@@ -156,7 +158,7 @@ class Mage_Adminhtml_Block_Report_Shopcart_Abandoned_Grid extends Mage_Adminhtml
     public function getRowClickCallback(){
         return "function(grid, evt) {
             var trElement = Event.findElement(evt, 'tr');
-            if(trElement){
+            if(trElement && trElement.id != ''){
                 var newWindow = window.open(trElement.id, '_blank');
                 newWindow.focus();
             }}";

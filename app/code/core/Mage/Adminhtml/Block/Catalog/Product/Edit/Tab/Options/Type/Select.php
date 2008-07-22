@@ -41,7 +41,7 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Options_Type_Select extends
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label' => Mage::helper('catalog')->__('Add New Row'),
-                    'class' => 'add add-select-row-psw',
+                    'class' => 'add add-select-row',
                     'id'    => 'add_select_row_button_{{option_id}}',
                 ))
         );

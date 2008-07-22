@@ -76,7 +76,6 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Upsell extends Mage_Adminhtm
     {
         $collection = Mage::getModel('catalog/product_link')->useUpSellLinks()
             ->getProductCollection()
-            ->addFilterByRequiredOptions()
             ->setProduct($this->_getProduct())
             ->addAttributeToSelect('*');
         $this->setCollection($collection);

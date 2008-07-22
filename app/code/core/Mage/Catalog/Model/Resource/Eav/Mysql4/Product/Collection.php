@@ -435,12 +435,15 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
                 ->from($this->getTable('core/url_rewrite'), array('product_id', 'request_path'))
                 ->where('store_id=?', Mage::app()->getStore()->getId())
                 ->where('is_system=?', 1)
-                ->where('category_id=?', $this->_urlRewriteCategory)
-                ->where('product_id IN(?)', $productIds);
+                ->where('category_id=? OR category_id is NULL', $this->_urlRewriteCategory)
+                ->where('product_id IN(?)', $productIds)
+                ->order('category_id DESC'); // more priority is data with category id
             $urlRewrites = array();
 
             foreach ($this->getConnection()->fetchAll($select) as $row) {
-                $urlRewrites[$row['product_id']] = $row['request_path'];
+                if (!isset($urlRewrites[$row['product_id']])) {
+                	$urlRewrites[$row['product_id']] = $row['request_path'];
+                }
             }
 
             if ($this->_cacheConf) {

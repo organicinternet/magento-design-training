@@ -25,16 +25,18 @@
     <p class="price-as-configured">
         <span class="price-label"><?php echo $this->helper('tax')->__('Price as configured') ?>:</span>
         <?php if ($this->helper('tax')->displayBothPrices()): ?>
-        <span class="price-excluding-tax">
-            <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax') ?>:</span>
-            <span class="price" id="price-excluding-tax-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPrice,true,false) ?></span>
-        </span>
-        <span class="price-including-tax">
-            <span class="label"><?php echo $this->helper('tax')->__('Incl. Tax') ?>:</span>
-            <span class="price" id="price-including-tax-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPriceInclTax,true,false) ?></span>
+        <span class="price-tax">
+            <span class="price-excluding-tax">
+                <span class="label"><?php echo $this->helper('tax')->__('Excl. Tax') ?>:</span>
+                <span class="price" id="price-excluding-tax-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPrice,true,false) ?></span>
+            </span>
+            <span class="price-including-tax">
+                <span class="label"><?php echo $this->helper('tax')->__('Incl. Tax') ?>:</span>
+                <span class="price" id="price-including-tax-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPriceInclTax,true,false) ?></span>
+            </span>
         </span>
         <?php else: ?>
-        <span id="product-price-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPrice) ?></span>
+        <span class="price" id="product-price-<?php echo $_product->getId() ?><?php echo $this->getIdSuffix() ?>"><?php echo Mage::helper('core')->currency($_finalPrice,true,false) ?></span>
     <?php endif; ?>
     </p>
 </div>

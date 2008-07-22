@@ -99,4 +99,13 @@ class Mage_SalesRule_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
         }
         return $this->getData('value_select_options');
     }
+    
+    public function validate(Varien_Object $object)
+    {
+        switch ($this->getAttribute()) {
+        default:
+            $obj = $object->getQuote()->getShippingAddress();
+        }
+        return parent::validate($obj);
+    }
 }

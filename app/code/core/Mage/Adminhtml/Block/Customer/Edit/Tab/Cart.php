@@ -54,6 +54,8 @@ class Mage_Adminhtml_Block_Customer_Edit_Tab_Cart extends Mage_Adminhtml_Block_W
             $collection = new Varien_Data_Collection();
         }
 
+        $collection->addFieldToFilter('parent_item_id', array('null' => true));
+
         $this->setCollection($collection);
 
         return parent::_prepareCollection();

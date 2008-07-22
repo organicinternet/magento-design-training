@@ -42,6 +42,11 @@ class Mage_CatalogIndex_Model_Attribute extends Mage_Core_Model_Abstract
         return $this->_getResource()->getCount($attribute, $entityFilter);
     }
 
+    public function checkCount($optionIds, $attribute, $entityFilter)
+    {
+        return $this->_getResource()->checkCount($optionIds, $attribute, $entityFilter);
+    }
+
     public function applyFilterToCollection($collection, $attribute, $value)
     {
         $this->_getResource()->applyFilterToCollection($collection, $attribute, $value);

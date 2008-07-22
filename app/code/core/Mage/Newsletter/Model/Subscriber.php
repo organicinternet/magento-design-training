@@ -169,6 +169,11 @@ class Mage_Newsletter_Model_Subscriber extends Varien_Object
     	return $this->_isStatusChanged;
     }
 
+    /**
+     * Return customer subscription status
+     *
+     * @return bool
+     */
     public function isSubscribed()
     {
     	if($this->getId() && $this->getStatus()==self::STATUS_SUBSCRIBED) {

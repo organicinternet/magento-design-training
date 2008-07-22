@@ -33,7 +33,7 @@ class Mage_Adminhtml_Block_Promo_Quote_Grid extends Mage_Adminhtml_Block_Widget_
     {
         parent::__construct();
         $this->setId('promo_quote_grid');
-        $this->setDefaultSort('name');
+        $this->setDefaultSort('sort_order');
         $this->setDefaultDir('ASC');
         $this->setSaveParametersInSession(true);
     }
@@ -95,6 +95,12 @@ class Mage_Adminhtml_Block_Promo_Quote_Grid extends Mage_Adminhtml_Block_Widget_
                 1 => 'Active',
                 0 => 'Inactive',
             ),
+        ));
+        
+        $this->addColumn('sort_order', array(
+            'header'    => Mage::helper('salesrule')->__('Priority'),
+            'align'     => 'right',
+            'index'     => 'sort_order',
         ));
 
         return parent::_prepareColumns();

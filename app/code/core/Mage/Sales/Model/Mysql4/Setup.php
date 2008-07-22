@@ -216,6 +216,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
                     'subtotal_with_discount' => array('type'=>'static'),
                     'tax_amount'        => array('type'=>'static'),
                     'shipping_amount'   => array('type'=>'static'),
+                    'shipping_tax_amount'   => array('type'=>'static'),
                     'discount_amount'   => array('type'=>'static'),
                     'custbalance_amount'=> array('type'=>'static'),
                     'grand_total'       => array('type'=>'static'),
@@ -224,6 +225,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
                     'base_subtotal_with_discount' => array('type'=>'static'),
                     'base_tax_amount'           => array('type'=>'static'),
                     'base_shipping_amount'      => array('type'=>'static'),
+                    'base_shipping_tax_amount'      => array('type'=>'static'),
                     'base_discount_amount'      => array('type'=>'static'),
                     'base_custbalance_amount'   => array('type'=>'static'),
                     'base_grand_total'          => array('type'=>'static'),
@@ -359,6 +361,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
 
                     'tax_amount'        => array('type'=>'static'),
                     'shipping_amount'   => array('type'=>'static'),
+                    'shipping_tax_amount'   => array('type'=>'static'),
                     'discount_amount'   => array('type'=>'static'),
                     'giftcert_amount'   => array('type'=>'decimal'),
                     'custbalance_amount'=> array('type'=>'decimal'),
@@ -378,6 +381,7 @@ class Mage_Sales_Model_Mysql4_Setup extends Mage_Eav_Model_Entity_Setup
 
                     'base_tax_amount'        => array('type'=>'static'),
                     'base_shipping_amount'   => array('type'=>'static'),
+                    'base_shipping_tax_amount'   => array('type'=>'static'),
                     'base_discount_amount'   => array('type'=>'static'),
                     'base_giftcert_amount'   => array('type'=>'decimal'),
                     'base_custbalance_amount'=> array('type'=>'decimal'),

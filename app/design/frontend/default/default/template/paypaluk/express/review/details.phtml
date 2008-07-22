@@ -33,6 +33,7 @@
     </thead>
     <tbody>
     <?php foreach ($this->getItems() as $_item): ?>
+        <?php if ($_item->getParentItem()) continue ?>
         <tr>
             <td>
                 <?php echo $this->helper('checkout')->getQuoteItemProductName($_item) ?>

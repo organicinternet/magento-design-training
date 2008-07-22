@@ -188,7 +188,7 @@
         <jobs>
             <catalogindex_reindex_all>
                 <schedule><cron_expr>0 2 * * *</cron_expr></schedule>
-                <run><model>catalogindex/indexer::plainReindex</model></run>
+                <run><model>catalogindex/observer::reindexAll</model></run>
             </catalogindex_reindex_all>
         </jobs>
     </crontab>

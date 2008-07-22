@@ -71,16 +71,18 @@ class Mage_Bundle_Model_Product_Price extends Mage_Catalog_Model_Product_Type_Pr
             }
         } else {
             if ($options = $this->getOptions($product)) {
+                /* some strange thing
                 foreach ($options as $option) {
                     $selectionCount = count($option->getSelections());
                     if ($selectionCount) {
                         foreach ($option->getSelections() as $selection) {
-                            if (($selection->getIsDefault() || ($selectionCount == 1 && $option->getDefault())) && $selection->isSalable()) {
+                            if ($selection->isSalable() && ($selection->getIsDefault() || ($option->getRequired() &&)) {
                                 $finalPrice = $finalPrice + $this->getSelectionPrice($product, $selection);
                             }
                         }
                     }
                 }
+                */
             }
         }
 

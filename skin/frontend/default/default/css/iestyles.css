@@ -61,7 +61,8 @@
 .form-button,
 .form-button-alt { padding:1px 10px 0; }
 input.form-radio,
-input.form-checkbox { width:1.1em; height:1.1em; }
+input.form-checkbox { width:13px; height:13px; }
+.product-options dd ul.options-list input.form-radio { margin-top:4px; }
 .multi-address-checkout-box .box { zoom:1; }
 .multi-address-checkout-box .legend { zoom:1; position:relative; margin-left:8px; }
 .quick-access li { padding-right:4px; padding-left:6px;}

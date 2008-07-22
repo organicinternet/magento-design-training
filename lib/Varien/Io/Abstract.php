@@ -104,4 +104,9 @@ abstract class Varien_Io_Abstract implements Varien_Io_Interface
 
         return $pathTokR . implode('/', $realPathParts);
     }
+
+    public function allowedPath($haystackPath, $needlePath)
+    {
+        return strpos($this->getCleanPath($haystackPath), $this->getCleanPath($needlePath)) === 0;
+    }
 }

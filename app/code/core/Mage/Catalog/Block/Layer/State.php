@@ -27,12 +27,12 @@
  */
 class Mage_Catalog_Block_Layer_State extends Mage_Core_Block_Template
 {
-    public function __construct() 
+    public function __construct()
     {
         parent::__construct();
         $this->setTemplate('catalog/layer/state.phtml');
     }
-    
+
     public function getActiveFilters()
     {
         $filters = Mage::getSingleton('catalog/layer')->getState()->getFilters();
@@ -41,9 +41,17 @@ class Mage_Catalog_Block_Layer_State extends Mage_Core_Block_Template
         }
         return $filters;
     }
-    
+
     public function getClearUrl()
     {
-        return Mage::getUrl('*/*/*', array('id'=>$this->getRequest()->getParam('id')));
+        $filterState = array();
+        foreach ($this->getActiveFilters() as $item) {
+            $filterState[$item->getFilter()->getRequestVar()] = $item->getFilter()->getResetValue();
+        }
+        $params = $filterState;
+        $params['_current'] = true;
+        $params['_use_rewrite'] = true;
+        $params['_query']   = $filterState;
+        return Mage::getUrl('*/*/*', $params);
     }
 }

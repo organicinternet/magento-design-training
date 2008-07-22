@@ -38,6 +38,11 @@ class Mage_Customer_Block_Account_Dashboard_Info extends Mage_Core_Block_Templat
         return Mage::getUrl('*/account/edit/changepass/1');
     }
 
+    /**
+     * Get Customer Subscription Object Information
+     *
+     * @return Mage_Newsletter_Model_Subscriber
+     */
 	public function getSubscriptionObject()
     {
     	if(is_null($this->_subscription)) {
@@ -47,6 +52,11 @@ class Mage_Customer_Block_Account_Dashboard_Info extends Mage_Core_Block_Templat
     	return $this->_subscription;
     }
 
+    /**
+     * Gets Customer subscription status
+     *
+     * @return bool
+     */
     public function getIsSubscribed()
     {
     	return $this->getSubscriptionObject()->isSubscribed();

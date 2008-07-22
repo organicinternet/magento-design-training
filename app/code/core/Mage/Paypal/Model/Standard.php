@@ -204,8 +204,11 @@ class Mage_Paypal_Model_Standard extends Mage_Payment_Model_Method_Abstract
             if ($items) {
                 $i = 1;
                 foreach($items as $item){
-                     //echo "<pre>"; print_r($item->getData()); echo"</pre>";
-                     $sArr = array_merge($sArr, array(
+                    if ($item->getParentItem()) {
+                        continue;
+                    }
+                    //echo "<pre>"; print_r($item->getData()); echo"</pre>";
+                    $sArr = array_merge($sArr, array(
                         'item_name_'.$i      => $item->getName(),
                         'item_number_'.$i      => $item->getSku(),
                         'quantity_'.$i      => $item->getQty(),

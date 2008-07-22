@@ -125,13 +125,18 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      * @param array $productData
      * @return int
      */
-    public function create($type, $set, $productData)
+    public function create($type, $set, $sku, $productData)
     {
+        if (!$type || !$set || !$sku) {
+            $this->_fault('data_invalid');
+        }
+
         $product = Mage::getModel('catalog/product');
         /* @var $product Mage_Catalog_Model_Product */
         $product->setStoreId($this->_getStoreId($store))
             ->setAttributeSetId($set)
-            ->setTypeId($type);
+            ->setTypeId($type)
+            ->setSku($sku);
 
         foreach ($product->getTypeInstance()->getEditableAttributes() as $attribute) {
             if ($this->_isAllowedAttribute($attribute)

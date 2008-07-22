@@ -79,7 +79,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                     $type = 'radio';
                     $class = 'form-radio';
                     if (!$_option->getIsRequire()) {
-                        $selectHtml .= '<li><label for="options_'.$_option->getId().'"><input type="radio" class="form-radio product-custom-option" name="options['.$_option->getId().']" value="" checked="checked" />' . $this->__('None') . '</label></li>';
+                        $selectHtml .= '<li><input type="radio" id="options_'.$_option->getId().'" class="form-radio product-custom-option" name="options['.$_option->getId().']" onclick="opConfig.reloadPrice()" value="" checked="checked" /><div class="label"><label for="options_'.$_option->getId().'">' . $this->__('None') . '</label></div></li>';
                     }
                     break;
                 case Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX:

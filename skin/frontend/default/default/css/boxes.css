@@ -676,6 +676,7 @@ a.minimal-price-link .price { font-weight:normal; color:#1e7ec8; }
 .price-as-configured { margin:0; }
 .price-as-configured .price-label { font-weight:bold; white-space:nowrap; }
 
+.price-box-bundle { padding:0 0 10px 0; }
 .price-box-bundle .price-box { margin:0 !important; padding:0 !important; }
 .price-box-bundle .price { color:#555;}
 
@@ -890,15 +891,17 @@ table.recently-list td {width:20%;}
     }*/
 
 .advanced-search-summary-box ul li span {
-    background-image: url(../images/search_criteria.gif);
-    background-repeat: no-repeat;
-    background-position: left;
-
+    background:url(../images/search_criteria.gif) 0 0 no-repeat;
     padding-left: 15px;
-
     font-weight: bold;
     color: #E17C24;
     }
+
+/* Inline translation fix */
+.advanced-search-summary-box ul li span.translate-inline { background:0 !important; }
+
+
+
 /********************** Catalog Listing */
 
 /* List Type */
@@ -984,22 +987,21 @@ table.recently-list td {width:20%;}
 .product-options dt .qty-holder { float:right; margin-right:15px; }
 .product-options dt .qty-holder label { vertical-align:middle; }
 .product-options dt .qty-disabled { background:none; border:0; padding:3px; color:#2f2f2f; }
-.product-options dt .bundle-option { float:left; }
 .product-options dd { padding:5px 10px 15px; margin:0 0 5px; border-bottom:1px solid #e4e4e4; }
 .product-options dl.last dd.last { border-bottom:0; padding-bottom:5px; margin-bottom:0; }
 .product-options dd input.input-text { width:98%; }
 .product-options dd textarea { width:98%; height:8em; }
 .product-options dd select { width:99%; }
-.product-options dd .multiselect { width:99%; line-height:1.4em; height:9.8em; }
+.product-options dd .multiselect { width:99%; }
 .product-options dd .multiselect option { white-space:normal; border-bottom:1px dotted #d9e5ee; padding:2px 4px; }
 .product-options dd ul.options-list { margin-right:5px; }
 .product-options dd ul.options-list li { line-height:1.5; padding:2px 0; }
-.product-options dd ul.options-list input.form-radio,
+.product-options dd ul.options-list input.form-radio { float:left; margin:3px 0 0 0; }
 .product-options dd ul.options-list input.form-checkbox { float:left; margin:4px 0 0 0; }
-.product-options dd ul.options-list .label { margin-left:1.5em; }
+.product-options dd ul.options-list .label { margin-left:18px; }
 .product-options dd ul.options-list label { font-weight:normal; }
 .product-options dd ul.validation-failed { padding:0 7px; }
-.product-options p.required { margin-bottom:0; padding-top:15px; }
+.product-options p.required { margin-bottom:0; padding:15px 0 0; }
 
 .product-options-bottom { background-color:#fffada; padding:15px 20px; border:1px solid #e4e4e4; border-top:0; }
 .product-options-bottom .product-pricing { margin:0; padding:0 0 10px; border:0; background:0; }
@@ -1009,8 +1011,9 @@ table.recently-list td {width:20%;}
 .product-options-bottom .price-box { float:left; margin:0; padding:0; }
 .product-options-bottom .price-label { float:left; padding-right:5px; }
 .product-options-bottom .price-tax { float:left; }
-
 .product-shop .product-options-bottom .price-box { float:none; }
+.product-shop .product-options-bottom .price-label { float:none; padding-right:0; }
+.product-shop .product-options-bottom .price-tax { float:none; }
 .product-shop .product-options-bottom .add-to-cart-box { clear:both; float:left; padding-top:12px; }
 
 /* Product Options */
@@ -1024,8 +1027,8 @@ dl.item-options dd { padding-left:10px; }
 .truncated .truncated_full_value dl { position:absolute; top:-99999em; z-index:999; width:250px; padding:8px; border:1px solid #ccc; border-bottom-color:#bbb; border-right-color:#bbb; background-color:#f6f6f6; }
 .truncated .truncated_full_value dl dt { margin-top:0; }
 .truncated .show dl { top:-20px; left:50%; }
-.col-left .truncated .show dl { left:35px; top:15px; }
-.col-right .truncated .show dl  { left:-240px; top:15px; }
+.col-left .truncated .show dl { left:35px; top:10px; }
+.col-right .truncated .show dl  { left:-240px; top:10px; }
 
 /* Product Collateral */
 .product-collateral { background:url(../images/product_collateral_bg.gif) repeat-x #faf7ee; }
@@ -1071,9 +1074,11 @@ dl.item-options dd { padding-left:10px; }
 .mini-related-items .product-images .checkbox-container { float:left; width:15px; }
 .mini-related-items .product-details { margin-left:80px; padding-left:5px; }
 .mini-related-items ol li { padding-left:0 ; padding-right:0; }
-/********************** Checkout */
 
-select.address-select {width:630px}
+
+
+/********************** Checkout */
+select.address-select { width:630px; }
 
 .shipment-methods dd { margin-bottom:13px; }
 .payment-methods dt { margin-bottom:5px; }

@@ -432,12 +432,20 @@ class Varien_Io_File extends Varien_Io_Abstract
         return $result;
     }
 
-    public function fileExists($file)
+    public function fileExists($file, $onlyFile = true)
     {
         @chdir($this->_cwd);
-        $result = file_exists($file) && is_file($file);
+        $result = file_exists($file);
+        if ($result && $onlyFile) {
+            $result = is_file($file);
+        }
         @chdir($this->_iwd);
         return $result;
+    }
+
+    public function isWriteable($path)
+    {
+        return is_writeable($path);
     }
 
     public function getDestinationFolder($filepath)

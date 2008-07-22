@@ -50,7 +50,7 @@ class Mage_Adminhtml_Block_Backup_Grid extends Mage_Adminhtml_Block_Widget_Grid
      */
     protected function _prepareColumns()
     {
-        $url7zip = Mage::helper('adminhtml')->__('For unpack on windows system you have to use <a href="%s">%s</a>', 'http://www.7-zip.org/', '7-Zip');
+        $url7zip = Mage::helper('adminhtml')->__('The archive can be uncompressed with <a href="%s">%s</a> on Windows systems', 'http://www.7-zip.org/', '7-Zip');
 
         $gridUrl = $this->getUrl('*/*/');
 

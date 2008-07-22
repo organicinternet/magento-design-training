@@ -1007,4 +1007,9 @@ class Mage_Usa_Model_Shipping_Carrier_Dhl
         }
         return $arr;
     }
+
+    public function isStateProvinceRequired()
+    {
+        return true;
+    }
 }

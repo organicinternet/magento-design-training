@@ -30,14 +30,15 @@
 </head>
 
 <body <?php echo $this->getBodyClass()?'class="'.$this->getBodyClass().'"':'' ?>>
-	<div class="no-display">
-		<h4>Skip to Store Area:</h4>
-		<ul>
-			<li><a href="#main"><?php echo $this->__('Skip to Main Content') ?></a></li>
-			<li><a href="#footer"><?php echo $this->__('Skip to Footer') ?></a></li>
-		</ul>
-	</div>
-	<div class="container">
+<?php /*<p class="demo-notice"><?php echo $this->__('This is a demo store. Any orders placed through this store will not be honored or fulfilled.') ?></p>*/ ?>
+    <div class="no-display">
+        <h4>Skip to Store Area:</h4>
+        <ul>
+            <li><a href="#main"><?php echo $this->__('Skip to Main Content') ?></a></li>
+            <li><a href="#footer"><?php echo $this->__('Skip to Footer') ?></a></li>
+        </ul>
+    </div>
+    <div class="container">
         <?php echo $this->getChildHtml('header') ?>
         <!-- [end] header -->
         <div class="outline-creator">
@@ -56,13 +57,10 @@
                 <!-- [end] content -->
             </div>
         </div>
-		<div class="footer" id="footer">
+        <div class="footer" id="footer">
             <?php echo $this->getChildHtml('footer') ?>
-		</div>
+        </div>
     </div>
     <?php echo $this->getChildHtml('before_body_end') ?>
 </body>
 </html>
-
-
-

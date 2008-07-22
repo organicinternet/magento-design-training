@@ -165,4 +165,17 @@ class Mage_Catalog_Model_Product_Option_Value extends Mage_Core_Model_Abstract
         return $this;
     }
 
+    /**
+     * Prepare array of option values for duplicate
+     *
+     * @return array
+     */
+    public function prepareValueForDuplicate()
+    {
+        $this->setOptionId(null);
+        $this->setOptionTypeId(null);
+
+        return $this->__toArray();
+    }
+
 }

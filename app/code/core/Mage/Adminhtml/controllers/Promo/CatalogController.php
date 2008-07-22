@@ -33,7 +33,7 @@ class Mage_Adminhtml_Promo_CatalogController extends Mage_Adminhtml_Controller_A
     public function indexAction()
     {
         if (Mage::app()->loadCache('catalog_rules_dirty')) {
-            Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('catalogrule')->__('There are rules that have been changed but not applied. Please, click Apply Rules in order to see immediate effect in catalogue.'));
+            Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('catalogrule')->__('There are rules that have been changed but not applied. Please, click Apply Rules in order to see immediate effect in catalog.'));
         }
 
         $this->_initAction()

@@ -705,10 +705,17 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
      */
     public function getCurrentUrl($fromStore = true)
     {
-        $url = $this->getBaseUrl() . ltrim(Mage::app()->getRequest()->getRequestString(), '/');
+        $query = ltrim(Mage::app()->getRequest()->getRequestString(), '/');
 
-        $parsedUrl = parse_url($url);
-        $parsedQuery = isset($parsedUrl['query']) ? parse_str($parsedUrl['query']) : array();
+        $parsedUrl = parse_url($this->getUrl(''));
+        $parsedQuery = array();
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $parsedQuery);
+        }
+
+        foreach (Mage::app()->getRequest()->getParams() as $k => $v) {
+            $parsedQuery[$k] = $v;
+        }
 
         if (!Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_STORE_IN_URL, $this->getCode())) {
             $parsedQuery['___store'] = $this->getCode();
@@ -719,7 +726,7 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
 
         return $parsedUrl['scheme'] . '://' . $parsedUrl['host']
             . (isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '')
-            . $parsedUrl['path']
+            . $parsedUrl['path'] . $query
             . ($parsedQuery ? '?'.http_build_query($parsedQuery, '', '&amp;') : '');
     }
 

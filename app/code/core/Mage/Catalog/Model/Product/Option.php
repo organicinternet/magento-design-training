@@ -360,4 +360,25 @@ class Mage_Catalog_Model_Product_Option extends Mage_Core_Model_Abstract
         return $collection;
     }
 
+    /**
+     * Prepare array of options for duplicate
+     *
+     * @return array
+     */
+    public function prepareOptionForDuplicate()
+    {
+        $this->setProductId(null);
+        $this->setOptionId(null);
+        $newOption = $this->__toArray();
+        if ($_values = $this->getValues()) {
+            $newValuesArray = array();
+            foreach ($_values as $_value) {
+                $newValuesArray[] = $_value->prepareValueForDuplicate();
+            }
+            $newOption['values'] = $newValuesArray;
+        }
+
+        return $newOption;
+    }
+
 }

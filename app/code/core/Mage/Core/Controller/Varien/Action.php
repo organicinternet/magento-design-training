@@ -498,6 +498,9 @@ abstract class Mage_Core_Controller_Varien_Action
         if (empty($successUrl)) {
             $successUrl = $defaultUrl;
         }
+        if (!$this->_isUrlInternal($successUrl)) {
+        	$successUrl = Mage::app()->getStore()->getBaseUrl();
+        }
         $this->getResponse()->setRedirect($successUrl);
         return $this;
     }
@@ -512,6 +515,9 @@ abstract class Mage_Core_Controller_Varien_Action
         $errorUrl = $this->getRequest()->getParam(self::PARAM_NAME_ERROR_URL);
         if (empty($errorUrl)) {
             $errorUrl = $defaultUrl;
+        }
+        if (!$this->_isUrlInternal($errorUrl)) {
+        	$errorUrl = Mage::app()->getStore()->getBaseUrl();
         }
         $this->getResponse()->setRedirect($errorUrl);
         return $this;
@@ -552,7 +558,20 @@ abstract class Mage_Core_Controller_Varien_Action
         if ($url = $this->getRequest()->getParam(self::PARAM_NAME_URL_ENCODED)) {
             $refererUrl = Mage::helper('core')->urlDecode($url);
         }
+
+        if (!$this->_isUrlInternal($refererUrl)) {
+        	$refererUrl = Mage::app()->getStore()->getBaseUrl();
+        }
         return $refererUrl;
+    }
+
+    protected function _isUrlInternal($url)
+    {
+        if (strpos($url, 'http') !== false
+            && strpos($url, Mage::app()->getStore()->getBaseUrl()) !== 0) {
+        	return false;
+        }
+        return true;
     }
 
     /**
