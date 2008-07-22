@@ -194,7 +194,9 @@ class Mage_Admin_Model_User extends Mage_Core_Model_Abstract
 
     public function reload()
     {
-        $this->load($this->getId());
+        $id = $this->getId();
+        $this->setId(null);
+        $this->load($id);
         return $this;
     }
 

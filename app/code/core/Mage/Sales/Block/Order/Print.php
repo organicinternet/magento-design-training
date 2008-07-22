@@ -48,5 +48,12 @@ class Mage_Sales_Block_Order_Print extends Mage_Sales_Block_Items_Abstract
         return Mage::registry('current_order');
     }
 
+    protected function _prepareItem(Mage_Core_Block_Abstract $renderer)
+    {
+        $renderer->setPrintStatus(true);
+
+        return parent::_prepareItem($renderer);
+    }
+
 }
 

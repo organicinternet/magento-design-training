@@ -220,7 +220,7 @@ class Mage_Checkout_Block_Cart_Item_Renderer extends Mage_Core_Block_Template
             'value' => $_truncatedValue
         );
 
-        if (Mage::helper('core/string')->strlen($optionValue) > 100) {
+        if (Mage::helper('core/string')->strlen($optionValue) > 55) {
             $formateOptionValue['value'] = $formateOptionValue['value'] . ' <a href="#" class="dots" onclick="return false">...</a>';
             $optionValue = nl2br($optionValue);
             $formateOptionValue = array_merge($formateOptionValue, array('full_view' => $optionValue));

@@ -184,14 +184,22 @@ class Mage_SalesRule_Model_Validator extends Mage_Core_Model_Abstract
 					$baseDiscountAmount= $free*$item->getBaseCalculationPrice();
 		            break;
 			}
-            
-            Mage::dispatchEvent('salesrule_validator_process', array(
-                'rule' => $rule,
-                'item' => $item,
-                'qty'  => &$qty,
-                'discountAmount'     => &$discountAmount,
-                'baseDiscountAmount' => &$baseDiscountAmount,
+
+            $result = new Varien_Object(array(
+                'discount_amount'      => $discountAmount, 
+                'base_discount_amount' => $baseDiscountAmount,
             ));
+            Mage::dispatchEvent('salesrule_validator_process', array(
+                'rule'    => $rule,
+                'item'    => $item,
+                'address' => $address,
+                'quote'   => $quote,
+                'qty'     => $qty,
+                'result'  => $result,
+            ));
+            
+            $discountAmount = $result->getDiscountAmount();
+            $baseDiscountAmount = $result->getBaseDiscountAmount();
 
             $discountAmount     = $quote->getStore()->roundPrice($discountAmount);
             $baseDiscountAmount = $quote->getStore()->roundPrice($baseDiscountAmount);

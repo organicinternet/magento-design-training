@@ -111,6 +111,7 @@ class Mage_Catalog_Model_Product_Attribute_Tierprice_Api extends Mage_Catalog_Mo
         }
 
         try {
+        	$product->setData(self::ATTRIBUTE_CODE ,$updateValue);
             $product->validate();
             $product->save();
         } catch (Mage_Core_Exception $e) {

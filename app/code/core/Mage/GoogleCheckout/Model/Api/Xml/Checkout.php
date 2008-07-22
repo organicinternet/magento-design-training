@@ -74,6 +74,7 @@ EOT;
             $taxClass = ($item->getTaxClassId() == 0 ? 'none' : $item->getTaxClassId());
             $weight = (float) $item->getWeight();
             $digital = $item->getIsVirtual() ? 'true' : 'false';
+
             $xml .= <<<EOT
             <item>
                 <merchant-item-id><![CDATA[{$item->getSku()}]]></merchant-item-id>
@@ -479,7 +480,7 @@ EOT;
 
                 $xml .= <<<EOT
                         <{$type}-tax-table>
-                            <{$type}-tax-rules>
+                            <tax-rules>
                                 <{$type}-tax-rule>
                                     <tax-area>
                                         <world-area/>
@@ -487,7 +488,7 @@ EOT;
                                     <rate>{$taxRate}</rate>
                                     <shipping-taxed>true</shipping-taxed>
                                 </{$type}-tax-rule>
-                            </{$type}-tax-rules>
+                            </tax-rules>
                         </{$type}-tax-table>
 EOT;
             }

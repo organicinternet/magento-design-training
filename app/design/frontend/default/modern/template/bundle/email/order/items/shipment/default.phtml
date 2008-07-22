@@ -54,12 +54,14 @@
     <td align="center" valign="top" style="padding:3px 9px">
         <?php if (($this->isShipmentSeparately() && $_item->getParentItem()) || (!$this->isShipmentSeparately() && !$_item->getParentItem())): ?>
             <?php if (isset($shipItems[$_item->getId()])): ?>
-                    <?php echo $shipItems[$_item->getId()]->getQty()*1 ?>
-                <?php else: ?>
-                    0
-                <?php endif; ?>
+                <?php echo $shipItems[$_item->getId()]->getQty()*1 ?>
+            <?php elseif ($_item->getIsVirtual()): ?>
+                <?php echo $this->__('N/A') ?>
             <?php else: ?>
-            &nbsp;
+                0
+            <?php endif; ?>
+        <?php else: ?>
+        &nbsp;
         <?php endif; ?>
     </td>
 </tr>
@@ -72,7 +74,7 @@
         <dl style="margin:0; padding:0;">
             <?php foreach ($this->getItemOptions() as $option): ?>
             <dt><strong><em><?php echo $option['label'] ?></em></strong>
-						<dd style="margin:0; padding:0 0 0 9px;"><?php echo $option['value'] ?></dd>
+                        <dd style="margin:0; padding:0 0 0 9px;"><?php echo $option['value'] ?></dd>
             <?php endforeach; ?>
         </dl>
         <?php endif; ?>

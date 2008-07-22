@@ -57,6 +57,8 @@
             <?php if (($this->isShipmentSeparately() && $_item->getParentItem()) || (!$this->isShipmentSeparately() && !$_item->getParentItem())): ?>
                 <?php if (isset($shipItems[$_item->getId()])): ?>
                     <?php echo $shipItems[$_item->getId()]->getQty()*1 ?>
+                <?php elseif ($_item->getIsVirtual()): ?>
+                    <?php echo $this->__('N/A') ?>
                 <?php else: ?>
                     0
                 <?php endif; ?>

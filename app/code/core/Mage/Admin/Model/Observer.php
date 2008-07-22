@@ -36,7 +36,10 @@ class Mage_Admin_Model_Observer
 
         if ($request->getActionName() == 'forgotpassword') {
             $request->setDispatched(true);
-        } elseif (!$user) {
+        } elseif($user) {
+            $user->reload();
+        }
+        if (!$user || !$user->getId()) {
             if ($request->getPost('login')) {
                 $postLogin  = $request->getPost('login');
                 $username   = $postLogin['username'];
@@ -58,8 +61,6 @@ class Mage_Admin_Model_Observer
                 }
                 return false;
             }
-        } else {
-            $user->reload();
         }
 
         $session->refreshAcl();

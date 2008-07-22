@@ -44,8 +44,8 @@ class Mage_Tag_Model_Mysql4_Tag extends Mage_Core_Model_Mysql4_Abstract
             }
 
             $select->from($this->getMainTable())
-                ->where('name = ?', $name);
-            $data = $read->fetchRow($select);
+                ->where('name = :tag_name');
+            $data = $read->fetchRow($select, array('tag_name'=>$name));
 
             $model->setData( ( is_array($data) ) ? $data : array() );
         } else {

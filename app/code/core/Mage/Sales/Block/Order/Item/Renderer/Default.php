@@ -76,4 +76,30 @@ class Mage_Sales_Block_Order_Item_Renderer_Default extends Mage_Core_Block_Templ
 
         return $result;
     }
+
+    public function getFormatedOptionValue($optionValue)
+    {
+        $formateOptionValue = array();
+        if (is_array($optionValue)) {
+            $_truncatedValue = implode("\n", $optionValue);
+            $_truncatedValue = nl2br($_truncatedValue);
+            return array('value' => $_truncatedValue);
+        } else {
+            $_truncatedValue = Mage::helper('core/string')->truncate($optionValue, 55, '');
+            $_truncatedValue = nl2br($_truncatedValue);
+        }
+
+        $formateOptionValue = array(
+            'value' => $_truncatedValue
+        );
+
+        if (Mage::helper('core/string')->strlen($optionValue) > 55) {
+            $formateOptionValue['value'] = $formateOptionValue['value'] . ' <a href="#" class="dots" onclick="return false">...</a>';
+            $optionValue = nl2br($optionValue);
+            $formateOptionValue = array_merge($formateOptionValue, array('full_view' => $optionValue));
+
+        }
+
+        return $formateOptionValue;
+    }
 }

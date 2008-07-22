@@ -181,6 +181,8 @@ class Mage_CatalogInventory_Model_Observer
 
                 if ($result->getHasError()) {
                     $option->setHasError(true);
+                    $item->setHasError(true)
+                        ->setMessage($result->getQuoteMessage());
                     $item->getQuote()->setHasError(true)
                         ->addMessage($result->getQuoteMessage(), $result->getQuoteMessageIndex());
                 }
@@ -192,7 +194,14 @@ class Mage_CatalogInventory_Model_Observer
             if (!$stockItem instanceof Mage_CatalogInventory_Model_Stock_Item) {
                 Mage::throwException(Mage::helper('cataloginventory')->__('Stock item for Product is not valid'));
             }
-            $qtyForCheck = $this->_getProductQtyForCheck($item->getProduct()->getId(), $qty);
+
+            if ($item->getParentItem()) {
+            	$qtyForCheck = $item->getParentItem()->getQty()*$qty;
+            }
+            else {
+            	$qtyForCheck = $this->_getProductQtyForCheck($item->getProduct()->getId(), $qty);
+            }
+
             $result = $stockItem->checkQuoteItemQty($qty, $qtyForCheck);
             if (!is_null($result->getItemIsQtyDecimal())) {
                 $item->setIsQtyDecimal($result->getItemIsQtyDecimal());

@@ -70,16 +70,11 @@ class Mage_Sales_Block_Order_Print_Creditmemo extends Mage_Sales_Block_Items_Abs
         return Mage::registry('current_creditmemo');
     }
 
-    public function getOrderOptions($item)
+    protected function _prepareItem(Mage_Core_Block_Abstract $renderer)
     {
-        if($options = $item->getOrderItem()->getProductOptions()) {
-            if (isset($options['options'])) {
-                return $options['options'];
-            } elseif (isset($options['admin_options'])) {
-                return $options['admin_options'];
-            }
-        }
-        return array();
+        $renderer->setPrintStatus(true);
+
+        return parent::_prepareItem($renderer);
     }
 }
 

@@ -620,8 +620,6 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
 
             $item = $this->_addCatalogProduct($candidate, $candidate->getCartQty());
 
-
-
             /**
              * As parent item we should always use the item of first added product
              */
@@ -632,13 +630,16 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
                 $item->setParentItem($parentItem);
             }
 
+            /**
+             * We specify qty after we know about parent (for stocj)
+             */
+            $item->addQty($candidate->getCartQty());
+
             if ($item->getHasError()) {
 
                 Mage::throwException($item->getMessage());
 
             }
-
-
         }
         return $item;
     }
@@ -666,8 +667,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         }
 
         $item->setOptions($product->getCustomOptions())
-            ->setProduct($product)
-            ->addQty($qty);
+            ->setProduct($product);
 
         $this->addItem($item);
 
