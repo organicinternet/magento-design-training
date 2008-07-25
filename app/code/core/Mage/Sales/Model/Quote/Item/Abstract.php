@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Sales
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -345,10 +345,12 @@ abstract class Mage_Sales_Model_Quote_Item_Abstract extends Mage_Core_Model_Abst
     public function getPrice()
     {
         if ($this->getHasChildren() && $this->getProduct()->getPriceType() == Mage_Catalog_Model_Product_Type_Abstract::CALCULATE_CHILD) {
-            $price = 0;
+            $price = $this->_getData('price');
+            /*
             foreach ($this->getChildren() as $child) {
-                $price+= $child->getPrice();
+                $price+= $child->getPrice()*$child->getQty();
             }
+            */
             return $price;
         }
         else {

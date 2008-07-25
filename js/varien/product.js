@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 if(typeof Product=='undefined') {
@@ -27,11 +27,12 @@ Product.Zoom = Class.create();
  * @author      Magento Core Team <core@magentocommerce.com>
  */
 Product.Zoom.prototype = {
-    initialize: function(imageEl, trackEl, handleEl, zoomInEl, zoomOutEl){
+    initialize: function(imageEl, trackEl, handleEl, zoomInEl, zoomOutEl, hintEl){
         this.containerEl = $(imageEl).parentNode;
         this.imageEl = $(imageEl);
         this.handleEl = $(handleEl);
         this.trackEl = $(trackEl);
+        this.hintEl = $(hintEl);
 
         this.containerDim = Element.getDimensions(this.containerEl);
         this.imageDim = Element.getDimensions(this.imageEl);
@@ -49,6 +50,7 @@ Product.Zoom.prototype = {
         if (this.imageDim.width < this.containerDim.width
             && this.imageDim.height < this.containerDim.height) {
             this.trackEl.up().hide();
+            this.hintEl.hide();
             this.containerEl.removeClassName('main-product-img');
             return;
         }
@@ -526,19 +528,33 @@ Product.OptionsPrice.prototype = {
         var optionPrices = this.getOptionPrices();
         $H(this.containers).each(function(pair) {
             if ($(pair.value)) {
+
+                var price = optionPrices+parseFloat(this.productPrice)
+                if (this.includeTax == 'true') {
+                    // tax = tax included into product price by admin
+                    var tax = price / (100 + this.defaultTax) * this.defaultTax;
+                    var excl = price - tax;
+                    var incl = excl*(1+(this.currentTax/100));
+                } else {
+                    var tax = price * (this.defaultTax / 100);
+                    var excl = price;
+                    var incl = excl + tax;
+                }
+
                 if (pair.value == 'price-including-tax-'+this.productId) {
-                    price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
+                    price = incl;
                 } else {
                     if (this.showIncludeTax) {
-                        price = this.getPriceWithTax(optionPrices+parseFloat(this.productPrice));
+                        price = incl;
                     } else {
                         if (!this.skipCalculate || this.productPrice == 0) {
-                            price = this.getPriceWithoutTax(optionPrices+parseFloat(this.productPrice));
+                            price = excl;
                         } else {
                             price = optionPrices+parseFloat(this.productPrice);
                         }
                     }
                 }
+
                 if (price < 0) price = 0;
                 formattedPrice = this.formatPrice(price);
                 if ($(pair.value).getElementsBySelector('.price')[0]) {
@@ -554,20 +570,6 @@ Product.OptionsPrice.prototype = {
                 }
             };
         }.bind(this));
-    },
-
-    getPriceWithoutTax: function(price) {
-        if (this.includeTax == 'true') {
-            price = ((price-(price/(1+(this.defaultTax))*this.defaultTax))*this.currentTax);
-        }
-        return price;
-    },
-
-    getPriceWithTax: function(price) {
-        if (this.includeTax == 'false') {
-            price += price*(this.currentTax/100);
-        }
-        return price;
     },
     formatPrice: function(price) {
         return formatCurrency(price, this.priceFormat);

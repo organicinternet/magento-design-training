@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Tag
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -30,9 +30,9 @@ class Mage_Tag_ProductController extends Mage_Core_Controller_Front_Action
 {
     public function listAction()
     {
-        //$tagId = $this->getRequest()->getParam('tagId');
-        $tagName = urldecode($this->getRequest()->getParam('tag'));
-        $tag = Mage::getModel('tag/tag')->loadByName($tagName);
+        $tagId = $this->getRequest()->getParam('tagId');
+        $tag = Mage::getModel('tag/tag')->load($tagId);
+
         if(!$tag->getId()) {
             $this->_redirectReferer();
             return;

@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Sales
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -696,7 +696,17 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         if (is_null($qty)) {
             $qty = 0;
             foreach ($this->getAllItems() as $item) {
-                $qty+= $item->getQty();
+                if ($item->getParentItem()) {
+                    continue;
+                }
+
+                if (($children = $item->getChildren()) && $item->isShipSeparately()) {
+                    foreach ($children as $child) {
+                        $qty+= $child->getQty()*$item->getQty();
+                    }
+                } else {
+                    $qty+= $item->getQty();
+                }
             }
             $this->setData('all_items_qty', $qty);
         }
@@ -709,8 +719,20 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         if (is_null($qty)) {
             $qty = 0;
             foreach ($this->getAllItems() as $item) {
-                if ($item->getProduct()->getIsVirtual()) {
-                    $qty+= $item->getQty();
+                if ($item->getParentItem()) {
+                    continue;
+                }
+
+                if (($children = $item->getChildren()) && $item->isShipSeparately()) {
+                    foreach ($children as $child) {
+                        if ($child->getProduct()->getIsVirtual()) {
+                            $qty+= $child->getQty();
+                        }
+                    }
+                } else {
+                    if ($item->getProduct()->getIsVirtual()) {
+                        $qty+= $item->getQty();
+                    }
                 }
             }
             $this->setData('virtual_items_qty', $qty);
@@ -830,11 +852,33 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         $this->setVirtualItemsQty(0);
 
         foreach ($this->getAllVisibleItems() as $item) {
-            if ($item->getProduct()->getIsVirtual()) {
-                $this->setVirtualItemsQty($this->getVirtualItemsQty() + $item->getQty());
+
+            //if ($item->getProduct()->getIsVirtual()) {
+            //    $this->setVirtualItemsQty($this->getVirtualItemsQty() + $item->getQty());
+            //}
+
+            if ($item->getParentItem()) {
+                continue;
             }
-            $this->setItemsCount($this->getItemsCount()+1);
-            $this->setItemsQty((float) $this->getItemsQty()+$item->getQty());
+
+            if (($children = $item->getChildren()) && $item->isShipSeparately()) {
+                foreach ($children as $child) {
+                    if ($child->getProduct()->getIsVirtual()) {
+                        $this->setVirtualItemsQty($this->getVirtualItemsQty() + $child->getQty()*$item->getQty());
+                    }
+                    $this->setItemsCount($this->getItemsCount()+1);
+                    $this->setItemsQty((float) $this->getItemsQty()+$child->getQty()*$item->getQty());
+                }
+            } else {
+                if ($item->getProduct()->getIsVirtual()) {
+                    $this->setVirtualItemsQty($this->getVirtualItemsQty() + $item->getQty());
+                }
+                $this->setItemsCount($this->getItemsCount()+1);
+                $this->setItemsQty((float) $this->getItemsQty()+$item->getQty());
+            }
+
+            //$this->setItemsCount($this->getItemsCount()+1);
+            //$this->setItemsQty((float) $this->getItemsQty()+$item->getQty());
         }
         return $this;
     }

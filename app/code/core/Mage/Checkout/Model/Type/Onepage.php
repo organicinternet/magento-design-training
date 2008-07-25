@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Checkout
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -423,7 +423,11 @@ class Mage_Checkout_Model_Type_Onepage
         $order->setPayment($convertQuote->paymentToOrderPayment($this->getQuote()->getPayment()));
 
         foreach ($this->getQuote()->getAllItems() as $item) {
-            $order->addItem($convertQuote->itemToOrderItem($item));
+            $orderItem = $convertQuote->itemToOrderItem($item);
+            if ($item->getParentItem()) {
+                $orderItem->setParentItem($order->getItemByQuoteItemId($item->getParentItem()->getId()));
+            }
+            $order->addItem($orderItem);
         }
 
         /**

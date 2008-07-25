@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -27,24 +27,12 @@
 ?>
 <div class="page-head-alt button-level">
     <div class="category-head" style="padding-left:5px;"><h2><?php echo $this->__('Shopping Cart') ?></h2></div>
-    <?php if(!$this->hasError()): ?>
-    <ul class="checkout-types">
-        <?php //echo $this->getChildHtml('top_methods') ?>
-    </ul>
-    <?php endif; ?>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
 <table cellspacing="0" id="shopping-cart-table" class="data-table box-table shopping-cart">
-    <!-- col width="75" />
-    <col />
-    <col width="80" />
-    <col width="130" />
-    <col width="1" />
-    <col width="130" / -->
     <thead>
         <tr>
-			<!-- th>&nbsp;</th -->
 			<th class="a-center"><?php echo $this->__('Qty') ?></th>
             <th class="a-center"><?php echo $this->__('Product') ?></th>
             <th class="a-center"><?php echo $this->__('Rem') ?></th>
@@ -60,50 +48,13 @@
         </tr>
     </tfoot>
     <tbody>
-    <?php foreach($this->getItems() as $_item): ?>
-			<!-- td><p align="center"><a href="<?php echo $this->getItemUrl($_item) ?>">
-                    <img src="<?php echo $this->helper('catalog/image')->init($this->getItemProductForThumbnail($_item), 'thumbnail')->resize(35); ?>" alt="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" width="35" />
-                </a></p>
-			</td -->
-			<td class="a-center" style="text-align:center;">
-                <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getItemQty($_item) ?>" size="4" class="input-text qty" maxlength="8" />
-            </td>
-            <td class="attributes-col">
-                <a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $this->getItemName($_item) ?></a>
-                <?php //echo $this->getItemDescription($_item) ?>
-                <?php if($_item->getMessage()): ?>
-                <div style="font-size:95%;margin-top:6px;" class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
-                    * <?php echo $_item->getMessage() ?>
-                </div>
-                <?php endif; ?>
-            </td>
-            <td class="a-center" style="text-align:center;">
-                <a href="<?php echo $this->getItemDeleteUrl($_item) ?>">
-                    <img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="Remove item" />
-                </a>
-            </td>
-            <td class="a-right">
-                <span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?></span>
-            </td>
-            <td class="a-right">
-                <span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></span>
-            </td>
-        </tr>
+	<?php foreach($this->getItems() as $_item): ?>
+        <?php echo $this->getItemHtml($_item) ?>
     <?php endforeach ?>
     </tbody>
 </table>
 <script type="text/javascript">decorateTable('shopping-cart-table')</script>
 </form>
-<div class="shopping-cart-collaterals">
-    <div class="col2-set">
-        <?php //echo $this->getChildHtml('crosssell') ?>
-        <div class="col-2">
-            <?php //echo $this->getChildHtml('coupon') ?>
-            <?php //echo $this->getChildHtml('shipping') ?>
-        </div>
-    </div>
-</div>
-
 <div class="shopping-cart-totals">
     <table cellspacing="0" id="shoping-cart-totals-table" align="right">
         <tfoot>
@@ -129,6 +80,8 @@
     </table>
     <script type="text/javascript">decorateTable('shoping-cart-totals-table')</script>
 </div>
+<div class="clear"></div>
+<?php echo $this->getChildHtml('coupon') ?>
 <div class="clear"></div>
 <?php if(!$this->hasError()): ?>
 <div class="p-methods">

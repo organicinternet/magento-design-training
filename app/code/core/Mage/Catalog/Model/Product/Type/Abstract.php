@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Catalog
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -33,6 +33,7 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
     protected $_setAttributes;
     protected $_editableAttributes;
     protected $_isComposite = false;
+    protected $_storeFilter     = null;
 
     const CALCULATE_CHILD = 0;
     const CALCULATE_PARENT = 1;
@@ -343,6 +344,7 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
      */
     public function beforeSave()
     {
+        $this->getProduct()->canAffectOptions(true);
         return $this;
     }
 
@@ -420,4 +422,38 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
         return false;
     }
 
+
+    /**
+     * Check if product has required options
+     *
+     * @return bool
+     */
+    public function hasRequiredOptions()
+    {
+        if ($this->getProduct()->getRequiredOptions()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Retrive store filter for associated products
+     *
+     * @return int|Mage_Core_Model_Store
+     */
+    public function getStoreFilter()
+    {
+        return $this->_storeFilter;
+    }
+
+    /**
+     * Set store filter for associated products
+     *
+     * @param $store int|Mage_Core_Model_Store
+     * @return Mage_Catalog_Model_Product_Type_Configurable
+     */
+    public function setStoreFilter($store=null) {
+        $this->_storeFilter = $store;
+        return $this;
+    }
 }

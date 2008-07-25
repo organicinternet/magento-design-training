@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Customer
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -475,7 +475,7 @@ class Mage_Customer_Model_Customer extends Mage_Core_Model_Abstract
     public function isConfirmationRequired()
     {
         if (null === self::$_isConfirmationRequired) {
-            self::$_isConfirmationRequired = 1 == Mage::getStoreConfig(self::XML_PATH_IS_CONFIRM);
+            self::$_isConfirmationRequired = 1 == Mage::getStoreConfig(self::XML_PATH_IS_CONFIRM, ($this->getStoreId() ? $this->getStoreId() : null));
         }
         return self::$_isConfirmationRequired;
     }

@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -41,14 +41,7 @@
         </div>
         <ul>
             <li>
-                <div class="input-box">
-                    <label for="firstname"><?php echo $this->__('First Name') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="firstname" id="firstname" title="<?php echo $this->__('First Name') ?>" value="<?php echo ($this->getAddress()->getFirstname()) ? $this->htmlEscape($this->getAddress()->getFirstname()) : $this->htmlEscape($this->getCustomer()->getFirstname()) ?>" class="required-entry input-text" />
-                </div>
-                <div class="input-box">
-                    <label for="lastname"><?php echo $this->__('Last Name') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="lastname" id="lastname" title="<?php echo $this->__('Last Name') ?>" value="<?php echo ($this->getAddress()->getLastname()) ? $this->htmlEscape($this->getAddress()->getLastname()) : $this->htmlEscape($this->getCustomer()->getLastname()) ?>" class="required-entry input-text" />
-                </div>
+                <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getAddress()->getFirstname() ? $this->getAddress() : $this->getCustomer())->toHtml() ?>
             </li>
             <li>
                 <label for="company"><?php echo $this->__('Company') ?></label><br />

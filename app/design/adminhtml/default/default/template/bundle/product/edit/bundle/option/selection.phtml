@@ -14,51 +14,48 @@
  *
  * @category   design_default
  * @package    Mage_Bundle
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-<div id="bundle_selection_box_template" class="grid tier form-list">
-  <div class="hor-scroll">
-    <table class="border" cellpadding="0" cellspacing="0">
-        <thead>
-            <tr class="headings">
-                <th><?php echo Mage::helper('catalog')->__('Name') ?></th>
-                <th class="type-price price-type-box"><?php echo Mage::helper('catalog')->__('Price') ?></th>
-                <th class="type-type price-type-box"><?php echo Mage::helper('bundle')->__('Price Type') ?></th>
-                <th class="type-price"><?php echo Mage::helper('bundle')->__('Default Qty') ?></th>
-                <th class="type-uqty qty-box"><?php echo Mage::helper('bundle')->__('User Defined Qty') ?></th>
-                <th class="type-order"><?php echo Mage::helper('bundle')->__('Position') ?></th>
-                <th style="width:1px"><?php echo Mage::helper('bundle')->__('Default') ?></th>
-                <th class="last">&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr id="bundle_selection_row_template">
-                <td>
-                    <input type="hidden" id="<?php echo $this->getFieldId() ?>_id_{{index}}" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_id]" value="{{selection_id}}">
-                    <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][option_id]" value="{{option_id}}">
-                    <input type="hidden" class="product" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][product_id]" value="{{product_id}}">
-                    <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][delete]" value="" class="delete">
-                    {{name}}<br />
-                    <div  class="nobr">
-                        <strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> {{sku}}
-                    </div>
-                </td>
-                <td class="price-type-box"><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_price_value]" value="{{selection_price_value}}"></td>
-                <td class="price-type-box"><?php echo $this->getPriceTypeSelectHtml() ?></td>
-                <td><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_qty]" value="{{selection_qty}}"></td>
-                <td class="qty-box"><?php echo $this->getQtyTypeSelectHtml() ?></td>
-                <td><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][position]" value="{{position}}"></td>
-                <td class="a-center"><input onchange="bSelection.checkGroup(event)" type="{{option_type}}" class="default" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][is_default]" value="1" {{checked}}></td>
-                <td class="last"><span title="Delete Row"><?php echo $this->getSelectionDeleteButtonHtml() ?></span></td>
-            </tr>
-        </tbody>
-    </table>
-  </div>
-</div>
 <script type="text/javascript">
 //<![CDATA[
+
+var bundleTemplateBox = '<table class="border" cellpadding="0" cellspacing="0">' +
+    '    <thead>' +
+    '        <tr class="headings">' +
+    '            <th><?php echo Mage::helper('catalog')->__('Name') ?></th>' +
+    '            <th class="type-price price-type-box"><?php echo Mage::helper('catalog')->__('Price') ?></th>' +
+    '            <th class="type-type price-type-box"><?php echo Mage::helper('bundle')->__('Price Type') ?></th>' +
+    '            <th class="type-price"><?php echo Mage::helper('bundle')->__('Default Qty') ?></th>' +
+    '            <th class="type-uqty qty-box"><?php echo Mage::helper('bundle')->__('User Defined Qty') ?></th>' +
+    '             <th class="type-order"><?php echo Mage::helper('bundle')->__('Position') ?></th>' +
+    '            <th style="width:1px"><?php echo Mage::helper('bundle')->__('Default') ?></th>' +
+    '            <th class="last">&nbsp;</th>' +
+    '        </tr>' +
+    '    </thead> ' +
+    '    <tbody>' +
+    '    </tbody>' +
+    '</table>';
+
+var bundleTemplateRow ='<td>' +
+                '    <input type="hidden" id="<?php echo $this->getFieldId() ?>_id_{{index}}" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_id]" value="{{selection_id}}">' +
+                '    <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][option_id]" value="{{option_id}}">' +
+                '    <input type="hidden" class="product" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][product_id]" value="{{product_id}}">' +
+                '    <input type="hidden" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][delete]" value="" class="delete">' +
+                '    {{name}}<br />' +
+                '   <div  class="nobr">' +
+                '        <strong><?php echo $this->helper('sales')->__('SKU') ?>:</strong> {{sku}}' +
+                '    </div>' +
+                '</td>' +
+                '<td class="price-type-box"><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_price_value]" value="{{selection_price_value}}"></td>' +
+                '<td class="price-type-box"><?php echo $this->getPriceTypeSelectHtml() ?></td>' +
+                '<td><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][selection_qty]" value="{{selection_qty}}"></td>' +
+                '<td class="qty-box"><?php echo $this->getQtyTypeSelectHtml() ?></td>' +
+                '<td><input class="input-text required-entry validate-zero-or-greater" type="text" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][position]" value="{{position}}"></td>' +
+                '<td class="a-center"><input onclick="bSelection.checkGroup(event)" type="{{option_type}}" class="default" name="<?php echo $this->getFieldName() ?>[{{parentIndex}}][{{index}}][is_default]" value="1" {{checked}}></td>' +
+                '<td class="last"><span title="Delete Row"><?php echo $this->getSelectionDeleteButtonHtml() ?></span></td>';
+
 Bundle.Selection = Class.create();
 Bundle.Selection.prototype = {
     idLabel : '<?php echo $this->getFieldId() ?>',
@@ -70,13 +67,9 @@ Bundle.Selection.prototype = {
     gridSelection : $H({}),
 
     initialize : function() {
-        var tBox = $(this.idLabel + '_box_template');
-        this.templateBox = '<div class="' + tBox.className + '" id="' + this.idLabel + '_box_{{parentIndex}}">' + tBox.innerHTML + '<div>';
+        this.templateBox = '<div class="grid tier form-list" id="' + this.idLabel + '_box_{{parentIndex}}">' + bundleTemplateBox + '</div>';
 
-        var tRow = $(this.idLabel + '_row_template');
-        this.templateRow = '<tr class="' + tRow.className + ' selection" id="' + this.idLabel + '_row_{{index}}" class="">' + tRow.innerHTML + '<div>';
-
-        tBox.remove();
+        this.templateRow = '<tr class="selection" id="' + this.idLabel + '_row_{{index}}">' + bundleTemplateRow + '</tr>';
     },
 
     showSearch : function(event) {
@@ -134,6 +127,7 @@ Bundle.Selection.prototype = {
 
         this.template = new Template(this.templateRow, this.templateSyntax);
         var tbody = $$('#' + this.idLabel + '_box_' + parentIndex + ' tbody');
+
         new Insertion.Bottom(
             tbody[0],
             this.template.evaluate(data)
@@ -184,7 +178,6 @@ Bundle.Selection.prototype = {
             div,
             this.template.evaluate(data)
         );
-        $(this.idLabel + '_row_template').remove();
     },
 
     remove : function(event) {
@@ -195,9 +188,12 @@ Bundle.Selection.prototype = {
             Element.getElementsBySelector(element, ['input', 'select']).each(function(elem){elem.hide()});
             Element.removeClassName(element, 'selection');
             Element.hide(element);
+
             if (container) {
-                if (!$$('#' + container.id + ' tr.selection').length) {
-                    container.hide();
+                if ($$('#' + container.id + ' tr.selection')) {
+                    if (!$$('#' + container.id + ' tr.selection').length) {
+                        container.hide();
+                    }
                 }
             }
         }
@@ -207,10 +203,13 @@ Bundle.Selection.prototype = {
         var element = Event.element(event);
         if (element.type == 'radio') {
             var box = element.up('div');
-            var inputs = $A($$('#' + box.id + ' tr.selection input.default'));
-            for (i=0; i< inputs.length; i++) {
-                if (inputs[i].checked && inputs[i].name != element.name) {
-                    inputs[i].checked = false;
+
+            var inputs = $$('div#' + box.id + ' input.default');
+            if (inputs) {
+                for (i=0; i< inputs.length; i++) {
+                    if (inputs[i].name != element.name) {
+                        inputs[i].checked = false;
+                    }
                 }
             }
         }

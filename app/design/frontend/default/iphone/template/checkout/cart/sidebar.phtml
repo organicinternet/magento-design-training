@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -57,7 +57,16 @@
                 <a href="<?php echo $this->getRemoveItemUrl($_item) ?>" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove this item from the shopping cart?') ?>');" class="widget-btn"><img src="<?php echo $this->getSkinUrl('images/list_remove_btn.gif') ?>" alt="<?php echo $this->__('Remove Product') ?>" /></a>
                 <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $_item->getProductName() ?></a>
                 <?php echo $_item->getProductDescription() ?>
-                <br /><strong><?php echo 1*$_item->getQty() ?></strong> x <?php echo Mage::helper('core')->currency($_item->getPrice()) ?>
+                <br /><strong><?php echo 1*$_item->getQty() ?></strong> x
+
+                <?php $_excl = $_item->getPrice(); ?>
+                <?php $_incl = $this->helper('checkout')->getPriceInclTax($_item); ?>
+                <?php if ($this->helper('tax')->displayCartPriceInclTax()): $_excl = $_incl; endif; ?>
+
+                <?php echo $this->helper('checkout')->formatPrice($_excl); ?>
+                <?php if ($this->helper('tax')->displayCartBothPrices() && $_incl != $_excl): ?>
+                    <br />(<span><?php echo $this->helper('checkout')->formatPrice($_incl); ?></span> <?php echo Mage::helper('tax')->__('Incl. Tax') ?>)
+                <?php endif; ?>
             </div>
         </li>
     <?php endforeach; ?>

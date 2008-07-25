@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -621,6 +621,7 @@ a.minimal-price-link .price { font-weight:normal; color:#444; }
     color:#fff;
     font-size:1.1em;
     }
+.narrowed-category li {clear:both;}	
 .layered-nav .narrow-by dt { border-top:1px solid #fff; padding:8px 8px 0 8px; font-size:1.1em; }
 .layered-nav .narrow-by dd { padding:0 8px 8px 8px; border-bottom:1px solid #ddd;}
 .layered-nav .narrow-by a,
@@ -1105,6 +1106,71 @@ tr.grand_total td, p.grand_total { padding-top:5px; padding-bottom:5px; }
 .giftmessages .group-select li .input-box select { width:256px;}
 
 /********************** Customer */
+
+/* Customer Name */
+
+.customer-name-prefix .name-prefix { width:60px !important; }
+.customer-name-prefix .name-prefix input { width:45px !important; }
+.customer-name-prefix .name-prefix select { width:51px !important; }
+.customer-name-prefix .name-firstname { width:215px !important; }
+.customer-name-prefix .name-firstname input { width:190px !important; }
+
+.customer-name-middlename .name-firstname { width:215px !important; }
+.customer-name-middlename .name-firstname input { width:200px !important; }
+.customer-name-middlename .name-middlename { width:60px !important; }
+.customer-name-middlename .name-middlename input { width:35px !important; }
+
+.customer-name-suffix .name-lastname { width:205px !important; }
+.customer-name-suffix .name-lastname input { width:190px !important; }
+.customer-name-suffix .name-suffix { width:60px !important; }
+.customer-name-suffix .name-suffix input { width:45px !important; }
+.customer-name-suffix .name-suffix select { width:51px !important; }
+
+.customer-name-prefix-middlename .name-prefix { width:60px !important; }
+.customer-name-prefix-middlename .name-prefix input { width:45px !important; }
+.customer-name-prefix-middlename .name-prefix select { width:51px !important; }
+.customer-name-prefix-middlename .name-firstname { width:215px !important; }
+.customer-name-prefix-middlename .name-firstname input { width:190px !important; }
+.customer-name-prefix-middlename .name-middlename { width:50px !important; }
+.customer-name-prefix-middlename .name-middlename input { width:35px !important; }
+.customer-name-prefix-middlename .name-lastname { width:200px !important; }
+.customer-name-prefix-middlename .name-lastname input { width:200px !important; }
+
+.customer-name-prefix-suffix .name-prefix { width:60px !important; }
+.customer-name-prefix-suffix .name-prefix input { width:45px !important; }
+.customer-name-prefix-suffix .name-prefix select { width:51px !important; }
+.customer-name-prefix-suffix .name-firstname { width:215px !important; }
+.customer-name-prefix-suffix .name-firstname input { width:190px !important; }
+.customer-name-prefix-suffix .name-lastname { width:205px !important; }
+.customer-name-prefix-suffix .name-lastname input { width:190px !important; }
+.customer-name-prefix-suffix .name-suffix { width:60px !important; }
+.customer-name-prefix-suffix .name-suffix input { width:45px !important; }
+.customer-name-prefix-suffix .name-suffix select { width:51px !important; }
+
+.customer-name-middlename-suffix .name-firstname { width:215px !important; }
+.customer-name-middlename-suffix .name-firstname input { width:200px !important; }
+.customer-name-middlename-suffix .name-middlename { width:60px !important; }
+.customer-name-middlename-suffix .name-middlename input { width:35px !important; }
+.customer-name-middlename-suffix .name-lastname { width:205px !important; }
+.customer-name-middlename-suffix .name-lastname input { width:190px !important; }
+.customer-name-middlename-suffix .name-suffix { width:60px !important; }
+.customer-name-middlename-suffix .name-suffix input { width:45px !important; }
+.customer-name-middlename-suffix .name-suffix select { width:51px !important; }
+
+
+.customer-name-prefix-middlename-suffix .name-prefix { width:60px !important; }
+.customer-name-prefix-middlename-suffix .name-prefix input { width:45px !important; }
+.customer-name-prefix-middlename-suffix .name-prefix select { width:51px !important; }
+.customer-name-prefix-middlename-suffix .name-firstname { width:155px !important; }
+.customer-name-prefix-middlename-suffix .name-firstname input { width:140px !important; }
+.customer-name-prefix-middlename-suffix .name-middlename { width:60px !important; }
+.customer-name-prefix-middlename-suffix .name-middlename input { width:35px !important; }
+.customer-name-prefix-middlename-suffix .name-lastname { width:205px !important; }
+.customer-name-prefix-middlename-suffix .name-lastname input { width:190px !important; }
+.customer-name-prefix-middlename-suffix .name-suffix { width:60px !important; }
+.customer-name-prefix-middlename-suffix .name-suffix input { width:45px !important; }
+.customer-name-prefix-middlename-suffix .name-suffix select { width:51px !important; }
+
 
 /* My Account navigation */
 .account-nav .head { border:none; background:#666; }

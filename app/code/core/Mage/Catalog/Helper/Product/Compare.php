@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Catalog
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -35,17 +35,17 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getListUrl()
     {
- 	    $itemIds = array();
- 	    foreach ($this->getItemCollection() as $item) {
- 	    	$itemIds[] = $item->getId();
- 	    }
+         $itemIds = array();
+         foreach ($this->getItemCollection() as $item) {
+             $itemIds[] = $item->getId();
+         }
 
- 	    $params = array(
+         $params = array(
             'items'=>implode(',', $itemIds),
             Mage_Core_Controller_Front_Action::PARAM_NAME_BASE64_URL => $this->getCurrentBase64Url()
- 	    );
+         );
 
- 		return $this->_getUrl('catalog/product_compare', $params);
+         return $this->_getUrl('catalog/product_compare', $params);
     }
 
     /**
@@ -56,15 +56,15 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getAddUrl($product)
     {
-	    if ($product->isSuper()) {
-	        return false;
-	    }
+//        if ($product->isSuper()) {
+//            return false;
+//        }
 
-	    $params = array(
+        $params = array(
             'product'=>$product->getId(),
             Mage_Core_Controller_Front_Action::PARAM_NAME_BASE64_URL => $this->getCurrentBase64Url()
         );
-	    return $this->_getUrl('catalog/product_compare/add', $params);
+        return $this->_getUrl('catalog/product_compare/add', $params);
     }
 
     /**
@@ -138,22 +138,24 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
     public function getItemCollection()
     {
         if (!$this->_itemCollection) {
- 			$this->_itemCollection = Mage::getResourceModel('catalog/product_compare_item_collection')
- 			    ->useProductItem(true)
- 				->setStoreId(Mage::app()->getStore()->getId());
+            $this->_itemCollection = Mage::getResourceModel('catalog/product_compare_item_collection')
+                ->useProductItem(true)
+                ->setStoreId(Mage::app()->getStore()->getId());
 
- 			if(Mage::getSingleton('customer/session')->isLoggedIn()) {
-				$this->_itemCollection->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId());
-			} else {
-				$this->_itemCollection->setVisitorId(Mage::getSingleton('log/visitor')->getId());
-			}
+            if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                $this->_itemCollection->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId());
+            }
+            else {
+                $this->_itemCollection->setVisitorId(Mage::getSingleton('log/visitor')->getId());
+            }
 
-			Mage::getSingleton('catalog/product_visibility')->addVisibleInSiteFilterToCollection($this->_itemCollection);
+            Mage::getSingleton('catalog/product_visibility')->addVisibleInSiteFilterToCollection($this->_itemCollection);
 
-			$this->_itemCollection->addAttributeToSelect('name')
+            $this->_itemCollection->addAttributeToSelect('name')
                 ->addUrlRewrite()
-				->load();
+                ->load();
         }
+
         return $this->_itemCollection;
     }
 
@@ -164,20 +166,11 @@ class Mage_Catalog_Helper_Product_Compare extends Mage_Core_Helper_Url
      */
     public function getItemCount()
     {
-        if ($this->hasItems()) {
-        	return $this->getItemCollection()->getSize();
-        }
-        return 0;
+        return $this->getItemCollection()->getSize();
     }
 
     public function hasItems()
     {
-        if (is_null($this->_hasItems)) {
-            $this->_hasItems = Mage::getModel('catalog/product_compare_list')->hasItems(
-                Mage::getSingleton('customer/session')->getCustomerId(),
-                Mage::getSingleton('log/visitor')->getId()
-            );
-        }
-        return $this->_hasItems;
+        return $this->getItemCollection()->getSize() > 0;
     }
 }

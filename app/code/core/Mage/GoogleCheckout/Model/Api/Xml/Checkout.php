@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_GoogleCheckout
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -188,10 +188,24 @@ EOT;
         return $xml;
     }
 
+    protected function _getVirtualOrderShippingXml()
+    {
+        $title = Mage::helper('googlecheckout')->__('Free Shipping');
+
+        $xml = <<<EOT
+            <shipping-methods>
+                <flat-rate-shipping name="{$title}">
+                    <price currency="{$this->getCurrency()}">0</price>
+                </flat-rate-shipping>
+            </shipping-methods>
+EOT;
+        return $xml;
+    }
+
     protected function _getShippingMethodsXml()
     {
         if ($this->_isOrderVirtual()) {
-            return '';
+            return $this->_getVirtualOrderShippingXml();
         }
 
         $xml = <<<EOT

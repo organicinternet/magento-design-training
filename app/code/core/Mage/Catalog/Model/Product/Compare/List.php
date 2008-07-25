@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Catalog
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -31,9 +31,10 @@ class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
     {
         $item = Mage::getModel('catalog/product_compare_item');
         $this->_addVisitorToItem($item);
+
         $item->loadByProduct($product);
 
-        if(!$item->getId()) {
+        if (!$item->getId()) {
             $item->addProductData($product);
             $item->save();
         }
@@ -62,9 +63,10 @@ class Mage_Catalog_Model_Product_Compare_List extends Varien_Object
 
     protected function _addVisitorToItem($item)
     {
-        if(Mage::getSingleton('customer/session')->isLoggedIn()) {
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
             $item->addCustomerData(Mage::getSingleton('customer/session')->getCustomer());
-        } else {
+        }
+        else {
             $item->addVisitorId(Mage::getSingleton('log/visitor')->getId());
         }
         return $this;

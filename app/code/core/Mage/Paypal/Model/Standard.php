@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Paypal
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -216,7 +216,7 @@ class Mage_Paypal_Model_Standard extends Mage_Payment_Model_Method_Abstract
                     ));
                     if($item->getBaseTaxAmount()>0){
                         $sArr = array_merge($sArr, array(
-                        'tax_'.$i      => sprintf('%.2f',$item->getBaseTaxAmount()),
+                        'tax_'.$i      => sprintf('%.2f',$item->getBaseTaxAmount()/$item->getQty()),
                         ));
                     }
                     $i++;

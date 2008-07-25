@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -28,6 +28,6 @@
         <span class="qty-box"><label for="qty"><?php echo $this->__('Qty') ?>:</label>
         <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>"/></span>
         <?php endif; ?>
-        <a href="#" onclick="productAddToCartForm.submit(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 0 0 5px;" /></a>
+        <a href="#" onclick="productAddToCartForm.submit(); return false;"<?php if($_product->isGrouped()): ?> class="right"<?php endif;?>><img src="<?php echo $this->getSkinUrl('images/btn_add_to_cart.gif');?>" alt="<?php echo $this->__('Add to Cart') ?>" class="v-middle" style="margin:0 0 0 5px;" /></a>
     </fieldset>
 <?php endif; ?>

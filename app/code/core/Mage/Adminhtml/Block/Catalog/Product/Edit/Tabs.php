@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Adminhtml
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -148,11 +148,18 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tabs extends Mage_Adminhtml_Bloc
                 ));
             }
 
-            $this->addTab('customer_options', array(
-                'label' => Mage::helper('catalog')->__('Custom Options'),
-                'url'   => $this->getUrl('*/*/options', array('_current' => true)),
-                'class' => 'ajax',
-            ));
+            /**
+             * Do not change this tab id
+             * @see Mage_Adminhtml_Block_Catalog_Product_Edit_Tabs_Configurable
+             * @see Mage_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tabs
+             */
+            if ($this->getProduct()->getTypeId() != Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+                $this->addTab('customer_options', array(
+                    'label' => Mage::helper('catalog')->__('Custom Options'),
+                    'url'   => $this->getUrl('*/*/options', array('_current' => true)),
+                    'class' => 'ajax',
+                ));
+            }
 
         }
         else {

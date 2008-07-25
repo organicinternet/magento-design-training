@@ -51,7 +51,8 @@ Product.Bundle.prototype = {
         }
 
         if (this.config.specialPrice) {
-            calculatedPrice = (calculatedPrice*this.config.specialPrice)/100;
+            var newPrice = (calculatedPrice*this.config.specialPrice)/100;
+            calculatedPrice = Math.min(newPrice, calculatedPrice);
         }
 
         optionsPrice.changePrice('bundle', calculatedPrice);
@@ -65,7 +66,7 @@ Product.Bundle.prototype = {
             return 0;
         }
 
-        if (this.config.options[optionId].selections[selectionId].customQty == 1 && this.config['options'][optionId].isMulti) {
+        if (this.config.options[optionId].selections[selectionId].customQty == 1 && !this.config['options'][optionId].isMulti) {
             if ($('bundle-option-' + optionId + '-qty-input')) {
                 qty = $('bundle-option-' + optionId + '-qty-input').value;
             } else {

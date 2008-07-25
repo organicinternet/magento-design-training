@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -1387,61 +1387,67 @@ tr.grand_total td, p.grand_total { padding-top:5px; padding-bottom:5px; }
 
 /* Customer Name */
 
-.customer-name-prefix .name-prefix { width:50px !important; }
-.customer-name-prefix .name-prefix input,
-.customer-name-prefix .name-prefix select { width:45px !important; }
-.customer-name-prefix .name-firstname { width:225px !important; }
-.customer-name-prefix .name-firstname input { width:210px !important; }
+.customer-name-prefix .name-prefix { width:60px !important; }
+.customer-name-prefix .name-prefix input { width:45px !important; }
+.customer-name-prefix .name-prefix select { width:51px !important; }
+.customer-name-prefix .name-firstname { width:215px !important; }
+.customer-name-prefix .name-firstname input { width:190px !important; }
 
-.customer-name-middlename .name-firstname { width:225px !important; }
-.customer-name-middlename .name-firstname input { width:210px !important; }
-.customer-name-middlename .name-middlename { width:50px !important; }
+.customer-name-middlename .name-firstname { width:215px !important; }
+.customer-name-middlename .name-firstname input { width:200px !important; }
+.customer-name-middlename .name-middlename { width:60px !important; }
 .customer-name-middlename .name-middlename input { width:35px !important; }
 
-.customer-name-suffix .name-firstname { width:225px !important; }
-.customer-name-suffix .name-firstname input { width:210px !important; }
+.customer-name-suffix .name-lastname { width:205px !important; }
+.customer-name-suffix .name-lastname input { width:190px !important; }
 .customer-name-suffix .name-suffix { width:50px !important; }
-.customer-name-suffix .name-suffix input,
-.customer-name-suffix .name-suffix select { width:45px !important; }
+.customer-name-suffix .name-suffix input { width:45px !important; }
+.customer-name-suffix .name-suffix select { width:51px !important; }
 
-.customer-name-prefix-middlename .name-prefix { width:50px !important; }
-.customer-name-prefix-middlename .name-prefix input,
-.customer-name-prefix-middlename .name-prefix select { width:45px !important; }
-.customer-name-prefix-middlename .name-firstname { width:175px !important; }
-.customer-name-prefix-middlename .name-firstname input { width:160px !important; }
+.customer-name-prefix-middlename .name-prefix { width:60px !important; }
+.customer-name-prefix-middlename .name-prefix input { width:45px !important; }
+.customer-name-prefix-middlename .name-prefix select { width:51px !important; }
+.customer-name-prefix-middlename .name-firstname { width:215px !important; }
+.customer-name-prefix-middlename .name-firstname input { width:190px !important; }
 .customer-name-prefix-middlename .name-middlename { width:50px !important; }
 .customer-name-prefix-middlename .name-middlename input { width:35px !important; }
+.customer-name-prefix-middlename .name-lastname { width:200px !important; }
+.customer-name-prefix-middlename .name-lastname input { width:200px !important; }
 
-.customer-name-prefix-suffix .name-prefix { width:50px !important; }
-.customer-name-prefix-suffix .name-prefix input,
-.customer-name-prefix-suffix .name-prefix select { width:45px !important; }
-.customer-name-prefix-suffix .name-firstname { width:175px !important; }
-.customer-name-prefix-suffix .name-firstname input { width:160px !important; }
+.customer-name-prefix-suffix .name-prefix { width:60px !important; }
+.customer-name-prefix-suffix .name-prefix input { width:45px !important; }
+.customer-name-prefix-suffix .name-prefix select { width:51px !important; }
+.customer-name-prefix-suffix .name-firstname { width:215px !important; }
+.customer-name-prefix-suffix .name-firstname input { width:190px !important; }
+.customer-name-prefix-suffix .name-lastname { width:205px !important; }
+.customer-name-prefix-suffix .name-lastname input { width:190px !important; }
 .customer-name-prefix-suffix .name-suffix { width:50px !important; }
-.customer-name-prefix-suffix .name-suffix input,
-.customer-name-prefix-suffix .name-suffix select { width:45px !important; }
+.customer-name-prefix-suffix .name-suffix input { width:45px !important; }
+.customer-name-prefix-suffix .name-suffix select { width:51px !important; }
 
-.customer-name-middlename-suffix .name-firstname { width:175px !important; }
-.customer-name-middlename-suffix .name-firstname input { width:160px !important; }
-.customer-name-middlename-suffix .name-middlename { width:50px !important; }
+.customer-name-middlename-suffix .name-firstname { width:215px !important; }
+.customer-name-middlename-suffix .name-firstname input { width:200px !important; }
+.customer-name-middlename-suffix .name-middlename { width:60px !important; }
 .customer-name-middlename-suffix .name-middlename input { width:35px !important; }
+.customer-name-middlename-suffix .name-lastname { width:205px !important; }
+.customer-name-middlename-suffix .name-lastname input { width:190px !important; }
 .customer-name-middlename-suffix .name-suffix { width:50px !important; }
-.customer-name-middlename-suffix .name-suffix input,
-.customer-name-middlename-suffix .name-suffix select { width:45px !important; }
+.customer-name-middlename-suffix .name-suffix input { width:45px !important; }
+.customer-name-middlename-suffix .name-suffix select { width:51px !important; }
 
 
-.customer-name-prefix-middlename-suffix .name-prefix { width:50px !important; }
-.customer-name-prefix-middlename-suffix .name-prefix input,
-.customer-name-prefix-middlename-suffix .name-prefix select { width:45px !important; }
-.customer-name-prefix-middlename-suffix .name-firstname { width:175px !important; }
-.customer-name-prefix-middlename-suffix .name-firstname input { width:160px !important; }
-.customer-name-prefix-middlename-suffix .name-middlename { width:50px !important; }
+.customer-name-prefix-middlename-suffix .name-prefix { width:60px !important; }
+.customer-name-prefix-middlename-suffix .name-prefix input { width:45px !important; }
+.customer-name-prefix-middlename-suffix .name-prefix select { width:51px !important; }
+.customer-name-prefix-middlename-suffix .name-firstname { width:155px !important; }
+.customer-name-prefix-middlename-suffix .name-firstname input { width:140px !important; }
+.customer-name-prefix-middlename-suffix .name-middlename { width:60px !important; }
 .customer-name-prefix-middlename-suffix .name-middlename input { width:35px !important; }
-.customer-name-prefix-middlename-suffix .name-lastname { width:175px !important; }
-.customer-name-prefix-middlename-suffix .name-lastname input { width:160px !important; }
+.customer-name-prefix-middlename-suffix .name-lastname { width:205px !important; }
+.customer-name-prefix-middlename-suffix .name-lastname input { width:190px !important; }
 .customer-name-prefix-middlename-suffix .name-suffix { width:50px !important; }
-.customer-name-prefix-middlename-suffix .name-suffix input,
-.customer-name-prefix-middlename-suffix .name-suffix select { width:45px !important; }
+.customer-name-prefix-middlename-suffix .name-suffix input { width:45px !important; }
+.customer-name-prefix-middlename-suffix .name-suffix select { width:51px !important; }
 
 /* My Account navigation */
 .account-nav { border:1px solid #bbb; }

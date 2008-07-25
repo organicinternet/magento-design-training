@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Catalog
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -40,7 +40,6 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
     protected $_configurableAttributes  = null;
     protected $_usedProductIds  = null;
     protected $_usedProducts    = null;
-    protected $_storeFilter     = null;
 
     protected $_isComposite = true;
 
@@ -61,27 +60,6 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
             }
         }
         return $this->_editableAttributes;
-    }
-
-    /**
-     * Retrive store filter for associated products
-     *
-     * @return int|Mage_Core_Model_Store
-     */
-    public function getStoreFilter()
-    {
-        return $this->_storeFilter;
-    }
-
-    /**
-     * Set store filter for associated products
-     *
-     * @param $store int|Mage_Core_Model_Store
-     * @return Mage_Catalog_Model_Product_Type_Configurable
-     */
-    public function setStoreFilter($store=null) {
-        $this->_storeFilter = $store;
-        return $this;
     }
 
     /**
@@ -229,7 +207,8 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
 
             $this->_usedProducts = array();
             $collection = $this->getUsedProductCollection()
-                ->addAttributeToSelect('*');
+                ->addAttributeToSelect('*')
+                ->addFilterByRequiredOptions();
 
             if (is_array($requiredAttributeIds)) {
                 foreach ($requiredAttributeIds as $attributeId) {
@@ -266,9 +245,20 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
     {
         parent::beforeSave();
 
-        if ($data = $this->getProduct()->getConfigurableAttributesData()) {
-            if (!empty($data)) {
-                $this->getProduct()->setHasOptions(true);
+        $this->getProduct()->canAffectOptions(false);
+
+        if ($this->getProduct()->getCanSaveConfigurableAttributes()) {
+            $this->getProduct()->canAffectOptions(true);
+            if ($data = $this->getProduct()->getConfigurableAttributesData()) {
+                if (!empty($data)) {
+                    foreach ($data as $attribute) {
+                        if (!empty($attribute['values'])) {
+                            $this->getProduct()->setTypeHasOptions(true);
+                            $this->getProduct()->setTypeHasRequiredOptions(true);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -439,4 +429,27 @@ class Mage_Catalog_Model_Product_Type_Configurable extends Mage_Catalog_Model_Pr
         return parent::isVirtual();
     }
 
+    /**
+     * Return true if product has options
+     *
+     * @return bool
+     */
+    public function hasOptions()
+    {
+        if ($this->getProduct()->getOptions()) {
+            return true;
+        }
+
+        $attributes = $this->getConfigurableAttributes();
+        if (count($attributes)) {
+            foreach ($attributes as $key => $attribute) {
+                /** @var Mage_Catalog_Model_Product_Type_Configurable_Attribute $attribute */
+                if ($attribute->getData('prices')) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

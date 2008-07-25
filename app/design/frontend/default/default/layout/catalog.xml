@@ -15,7 +15,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -181,6 +181,7 @@ Product view
                 -->
                 <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
                 <block type="core/text_list" name="alert.urls" as="alert_urls" />
+                <block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
 
                 <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml">
                     <action method="setColumnCount"><columns>4</columns></action>
@@ -202,7 +203,7 @@ Product view
                     </block>
                 </block>
                 <block type="catalog/product_view" name="product.info.options.wrapper.bottom" as="product_options_wrapper_bottom" template="catalog/product/view/options/wrapper/bottom.phtml">
-                    <block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
+                    <action method="insert"><block>product.tierprices</block></action>
                     <block type="catalog/product_view" name="product.clone_prices" as="prices" template="catalog/product/view/price_clone.phtml"/>
                     <action method="append"><block>product.info.addtocart</block></action>
                 </block>

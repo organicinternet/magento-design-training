@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -31,7 +31,7 @@
             <td style="padding-right:5px;" valign="top">
                 <p class="product-image"><a href="<?php echo $_link->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(90) ?>" width="90" height="90" alt="<?php echo $this->htmlEscape($_link->getName()) ?>" /></a></p>
                 <h5><a href="<?php echo $_link->getProductUrl() ?>"><?php echo $this->htmlEscape($_link->getName()) ?></a></h5>
-                <strong style="display:block;margin:5px 0;" class="nobr"><?php echo $this->helper('catalog/product')->getPriceHtml($_link, true) ?></strong>
+                <strong style="display:block;margin:5px 0;" class="nobr"><?php echo $this->getPriceHtml($_link, true) ?></strong>
             </td>
             <?php else: ?>
             <td class="empty-product">&nbsp;</td>

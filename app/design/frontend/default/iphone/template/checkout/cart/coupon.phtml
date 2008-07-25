@@ -14,25 +14,35 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
 <div class="discount-codes box">
     <form id="discount-coupon-form" action="<?php echo $this->getUrl('checkout/cart/couponPost') ?>" method="post">
-    <fieldset>
-    <h4><?php echo $this->__('Discount Codes') ?></h4>
-    <p><?php echo $this->__('Enter your coupon code if you have one.') ?></p>
-    <input type="hidden" name="remove" id="remove-coupone" value="0"/>
-    <?php if(!strlen($this->getCouponCode())): ?>
-    <div class="left" style="padding-bottom:5px;"><input class="input-text left" id="coupon_code" name="coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" /></div>
-    <div class="left">&nbsp;<button class="form-button-alt" onclick="discountForm.submit(false)" type="button" value="<?php echo $this->__('Apply Coupon') ?>"><span><?php echo $this->__('Apply Coupon') ?></span></button></div>
-    <?php else: ?>
-    <div style="padding-bottom:5px;"><input class="input-text" id="coupon_code" name="coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" style="width:207px;" /></div>
-    <button class="form-button-alt" onclick="discountForm.submit(false)" type="button"  value="<?php echo $this->__('Apply Coupon') ?>"><span><?php echo $this->__('Apply Coupon') ?></span></button>&nbsp;<button class="form-button-alt" type="button" onclick="discountForm.submit(true)" value="<?php echo $this->__('Cancel Coupon') ?>"><span><?php echo $this->__('Cancel Coupon') ?></span></button>
-    <?php endif;?>
-    <div class="clear"></div>
-    </fieldset>
+	<table align="center">
+		<tr>
+			<td valign="middle"><h4><?php echo $this->__('Discount Codes') ?></h4></td>
+			<td valign="middle">
+				<input type="hidden" name="remove" id="remove-coupone" value="0"/>
+				<?php if(!strlen($this->getCouponCode())): ?>
+				<div><input class="input-text" style="width:70px;" id="coupon_code" name="coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" /></div>
+				<?php else: ?>
+				<div><input class="input-text" style="width:70px;" id="coupon_code" name="coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" /></div>
+				<?php endif;?>
+				<div class="clear"></div>
+			</td>
+			<td valign="middle">
+				<?php if(!strlen($this->getCouponCode())): ?>
+					&nbsp;<button class="form-button-alt" onclick="discountForm.submit(false)" type="button" value="<?php echo $this->__('Apply Coupon') ?>"><span><?php echo $this->__('Apply') ?></span></button>
+				<?php else: ?>
+					&nbsp;<button class="form-button-alt" onclick="discountForm.submit(false)" type="button"  value="<?php echo $this->__('Apply Coupon') ?>"><span><?php echo $this->__('Apply') ?></span></button>
+					&nbsp;<button class="form-button-alt" type="button" onclick="discountForm.submit(true)" value="<?php echo $this->__('Cancel Coupon') ?>"><span><?php echo $this->__('Cancel') ?></span></button>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr><td colspan="3" align="center"><?php echo $this->__('Enter your coupon code if you have one.') ?></td></tr>
+	</table>
 </form>
 <script type="text/javascript">
 var discountForm = new VarienForm('discount-coupon-form');

@@ -14,7 +14,7 @@
  *
  * @category   design_default
  * @package    Mage
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -42,7 +42,6 @@
 	<li>
 	<div class="col2-alt-set">
 		<div class="col-1">
-			<!-- div class="listing-item <?php if( ++$_iterator == sizeof($_productCollection) ): ?>last<?php endif; ?>" -->
 			<?php // Product Image ?>
 			<div class="product-image">
 				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
@@ -54,14 +53,13 @@
 			<?php // Product description ?>
 			<div class="product-shop">
 				<h5><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName())?></a></h5>
-				<span class="product-price"><?php echo $this->helper('catalog/product')->getPriceHtml($_product, true) ?></span>
+				<span class="product-price"><?php echo $this->getPriceHtml($_product, true) ?></span>
 				<?php if($_product->isSaleable()): ?>
 					<button class="form-button" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><?php echo $this->__('Add to Cart') ?></span></button>
 				<?php else: ?>
 					<div class="out-of-stock"><?php echo $this->__('Out of stock') ?></div>
 				<?php endif; ?>
 			</div>
-			<!-- /div -->
 		</div><div class="clear"></div>
 		<div class="description">
 			<?php echo nl2br($_product->getShortDescription()) ?>

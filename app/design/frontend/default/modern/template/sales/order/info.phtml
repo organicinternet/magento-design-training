@@ -42,7 +42,11 @@
         <div class="head-alt3">
             <h5 class="title"><?php echo $this->__('Shipping Method') ?><?php /* | <a href="#"><?php echo $this->__('Track Order') ?></a>*/ ?></h5>
         </div>
-        <?php echo $_order->getShippingDescription() ?>
+        <?php if ($_order->getShippingDescription()): ?>
+            <?php echo $_order->getShippingDescription() ?>
+        <?php else: ?>
+            <?php echo $this->helper('sales')->__('No shipping information available'); ?>
+        <?php endif; ?>
     </div>
 </div><br/>
 <?php endif; ?>

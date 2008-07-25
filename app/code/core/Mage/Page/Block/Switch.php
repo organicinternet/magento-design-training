@@ -14,7 +14,7 @@
  *
  * @category   Mage
  * @package    Mage_Core
- * @copyright  Copyright (c) 2004-2007 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -70,9 +70,11 @@ class Mage_Page_Block_Switch extends Mage_Core_Block_Template
                 }
                 $store->setLocaleCode(Mage::getStoreConfig('general/locale/code', $store->getId()));
 
-                $params = array();
+                $params = array(
+                    '_query' => array()
+                );
                 if (!$this->isStoreInUrl()) {
-                    $params['___store'] = $store->getCode();
+                    $params['_query']['___store'] = $store->getCode();
                 }
                 $baseUrl = $store->getUrl('', $params);
 
