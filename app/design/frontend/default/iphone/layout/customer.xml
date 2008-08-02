@@ -45,6 +45,9 @@ Default layout, loads most of the pages
 		<reference name="user_links">
             <action method="addLink" translate="label title" module="customer"><label>Account</label><url helper="customer/getAccountUrl"/><title>My Account</title><prepare/><urlParams/><position>2</position></action>
         </reference>
+		<reference name="user_links">
+			<action method="addLink" translate="label title" module="customer"><label>Search</label><url>javascript:void(0);</url>><title>Search</title><prepare/><urlParams/><position>0</position><li/><a>onClick="showSearchForm(1);"</a></action>
+        </reference>
     </default>
 <!--
 Load this update on every page when customer is logged in

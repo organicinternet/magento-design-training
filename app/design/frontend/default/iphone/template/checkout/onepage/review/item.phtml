@@ -22,8 +22,28 @@
 <tr>
 	<td>
 		<?php echo $this->htmlEscape($this->getProductName()) ?>
-		<?php echo $this->helper('checkout')->getQuoteItemProductDescription($item) ?>
+		<!-- item custom options -->
+        <?php if ($_options = $this->getOptionList()):?>
+        <dl class="item-options">
+            <?php foreach ($_options as $_option) : ?>
+            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
+            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?php echo $_formatedOptionValue['value'] ?>
+                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                <div class="truncated_full_value">
+                    <dl class="item-options">
+                        <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+                        <dd><?php echo $_formatedOptionValue['full_view'] ?></dd>
+                    </dl>
+                </div>
+                <?php endif; ?>
+            </dd>
+            <?php endforeach; ?>
+        </dl>
+        <?php endif;?>
+        <!-- / -->
 	</td>
+	<td class="a-center"><?php echo $_item->getQty() ?></td>
 	<td class="a-right" class="nowrap">
 		<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
 			<span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?></span>
@@ -32,7 +52,6 @@
 			<div class="nowrap" style="font-size:9px;"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?><br />(Incl.Tax)</div>
 		<?php endif; ?>
 	</td>
-	<td class="a-center"><?php echo $_item->getQty() ?></td>
 	<td class="a-right" class="nowrap">
 		<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>	
 			<span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></span>

@@ -40,7 +40,7 @@
 					<td style="padding-top:15px;">
 						<div><a href="<?php echo $item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($item, 'small_image')->resize(100, 100); ?>" alt="<?php echo $this->htmlEscape($item->getName()) ?>" width="100" /></a></div>
 						<div><a href="<?php echo $item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></div>
-						<?php echo $this->helper('catalog/product')->getPriceHtml($item) ?>
+						<?php echo $this->getPriceHtml($item) ?>
 					</td>
 					<td class="a-center">
 						<?php echo $this->getFormatedDate($item->getAddedAt()) ?>

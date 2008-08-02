@@ -1,0 +1,38 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   design_default
+ * @package    Mage_Ideal
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php $_code=$this->getMethodCode() ?>
+<?php if($_issuers = $this->getIssuerList()):?>
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $_code ?>_ideal_issuer_id"><?php echo $this->__('Issuer') ?> <span class="required">*</span></label><br/>
+                <select id="<?php echo $_code ?>_ideal_issuer_id" name="payment[ideal_issuer_id]" class="required-entry">
+                    <option value="">--<?php echo $this->__('Please Select') ?>--</option>
+                <?php foreach ($_issuers as $_id => $_name): ?>
+                    <option value="<?php echo $_id ?>"><?php echo $_name ?></option>
+                <?php endforeach ?>
+                </select>
+            </div>
+        </li>
+    </ul>
+</fieldset>
+<?php endif?>

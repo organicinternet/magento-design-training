@@ -190,6 +190,13 @@ FIXED BUGS:
     Fixed updating tier prices with webservices API
     Fixed google checkout xml tax section generation
     Fixed deleting bundle options
+    Fixed configurable product weight calculation in shopping cart and checkout
+    Fixed displaying of pure virtual orders in admin
+    Fixed fatal error when Soap extension is not installed
+    Fixed wrong SOAP content type
+    Fixed errors in invoice/packingslip PDF print-out (added missing fonts, fixed overlapping columns and text wrapping, displaying of non-latin1 texts)
+    Fixed non-working store switcher
+    
 
 CHANGES:
 
@@ -259,8 +266,9 @@ CHANGES:
     Added hiding long options on orders, invoices, etc on frontend
     Set svn:ignore on downloader/pearlib/cache
     Added N/A label in shipments for virtual products in bundle
-    Changed to use tag names instead of ids in URLs
-    Added iphone theme (in works)
+    
+    iPhone theme updated for 1.1
+    Upgraded core/helper/string for binary-safe string operations
 
 
 NOTES:

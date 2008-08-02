@@ -23,14 +23,6 @@ var payment = new Payment('co-payment-form', '<?php echo $this->getUrl('checkout
 </script>
 <form action="" id="co-payment-form">
     <?php echo $this->getChildHtml('methods') ?>
-    <!-- div class="tool-tip" id="payment-tool-tip" style="left:0;position:absolute;display:none;padding-top:15px;">
-        <a href="#" id="payment-tool-tip-close" class="btn-close">
-            <img src="<?php echo $this->getSkinUrl('images/btn_window_close.gif') ?>" alt="<?php echo $this->__('Close') ?>" />
-        </a>
-        <div class="block-content">
-        	<img src="<?php echo $this->getSkinUrl('images/cvv.gif') ?>" alt="<?php echo $this->__('Card Verification Number Visual Reference') ?>" />
-        </div>
-    </div -->
 </form>
 
 <div class="col2-alt-set button-set">

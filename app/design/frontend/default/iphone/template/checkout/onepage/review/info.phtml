@@ -22,12 +22,12 @@
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
-            <th class="a-right"><?php echo $this->__('Price') ?></th>
             <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
             <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
         </tr>
     </thead>
-	<?php echo $this->getChildHtml('totals'); ?>
+    <?php echo $this->getChildHtml('totals'); ?>
     <tbody>
     <?php foreach($this->getItems() as $_item): ?>
         <?php echo $this->getItemHtml($_item)?>
@@ -35,5 +35,6 @@
     </tbody>
 </table>
 <script type="text/javascript">
-	decorateTable('checkout-review-table')
+    decorateTable('checkout-review-table');
+    truncateOptions();
 </script>

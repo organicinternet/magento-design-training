@@ -23,6 +23,24 @@
 	<td class="a-center" style="text-align:center;"><input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" /></td>
 	<td class="attributes-col">
 		<a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a>
+		<?php if ($_options = $this->getOptionList()):?>
+        <dl class="item-options">
+            <?php foreach ($_options as $_option) : ?>
+            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
+            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?php echo $_formatedOptionValue['value'] ?>
+                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                <div class="truncated_full_value">
+                    <dl class="item-options">
+                        <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+                        <dd><?php echo $_formatedOptionValue['full_view'] ?></dd>
+                    </dl>
+                </div>
+                <?php endif; ?>
+            </dd>
+            <?php endforeach; ?>
+        </dl>
+        <?php endif;?>
 		<?php if ($messages = $this->getMessages()): ?>
 		<?php foreach ($messages as $message): ?>
 		<div class="shopping-cart-item-message <?php echo $message['type'] ?>">

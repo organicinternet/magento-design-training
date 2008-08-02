@@ -127,6 +127,24 @@ h1#logo {
 	border-top:1px solid #fff; */
 }
 
+.search-form {
+	text-align:center;
+	width:100%;
+	border:0;
+	height:35px !important;
+}
+.search-form-cont 	{ background:#d1d1d1 url(../images/search-bg.gif) repeat-x bottom left; padding:0 10px; }
+.search-form .col-1 { width:75%; }
+.search-form .col-2 { width:22%; padding:8px 0 0 0; }
+.search-st 			{ background:transparent url(../images/search-st.gif) no-repeat top left; }
+.search-end 		{ background:transparent url(../images/search-end.gif) no-repeat top right; }
+.search-md 			{ background:transparent url(../images/search-md.gif) repeat-x top right; height:35px; }
+.search-md input 	{ font-size:12px; margin:10px 0 0 10px; width:190px; border:0; background:transparent; color:#999; }
+.search-close,
+.search-go			{ background:transparent url(../images/search-close-but.gif) no-repeat top left; width:20px; height:20px; display:block; float:right; }
+.search-go			{ float:left; background-image:none; }
+
+
 ul.breadcrumbs, .user-links ul { list-style:none; margin:5px 0; padding:0; }
 ul.breadcrumbs { margin:10px 0; }
 ul.breadcrumbs li { float:left; padding-right:5px; color:#818181; }
@@ -160,7 +178,10 @@ ul.breadcrumbs li { float:left; padding-right:5px; color:#818181; }
 .c-list li div.col2-alt-set .col-2 { width:74%; }
 .c-list li .description { margin-top:5px; }
 .product-image img { border:1px solid #ccc; }
-.product-price { display:block; margin:5px 0; font:bold 12px/14px Arial; }
+.product-price, .product-bundle-price { display:block; margin:5px 0; font:bold 12px/14px Arial; }
+.product-bundle-price { font:bold 11px/14px Arial; }
+.bundle-options dd { border-bottom:1px solid #ccc; padding:5px 0; margin:0 0 10px 0; }
+.bundle-options dd select { width:290px; }
 
 ul.breadcrumbs { padding:0 5px; }
 
