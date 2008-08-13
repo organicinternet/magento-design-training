@@ -53,16 +53,25 @@ Checkout.prototype = {
      * Warning! It is different from default theme.
      **/
     _disableEnableAll: function(element, isDisabled) {
-        var onclick = function() {billing.save();};
-        if (isDisabled) {
-            onclick = function() {return false;};
-        }
         var descendants = element.descendants();
         for (var k in descendants) {
             if (typeof(descendants[k].onclick) != 'undefined') {
-                descendants[k].onclick = onclick;
+                if (isDisabled) {
+                   if (!descendants[k].disabled) {
+                        descendants[k].onclickCopy = descendants[k].onclick;
+                    }
+                    descendants[k].onclick = function() {return false;};
+                    descendants[k].disabled = true;
+                } else {
+                    if (typeof(descendants[k].onclickCopy) != 'undefined') {
+                        descendants[k].onclick = descendants[k].onclickCopy;
+                    }
+                    descendants[k].disabled = false;
+                }
             }
+            descendants[k].disabled = isDisabled;
         }
+        element.disabled = isDisabled;
     },
 
     setLoadWaiting: function(step, keepDisabled) {
@@ -191,6 +200,12 @@ Checkout.prototype = {
                 $('opc-'+e).addClassName('allow');
             });
         }
+
+        if(response.duplicateBillingInfo)
+        {
+            shipping.setSameAsBilling(true);
+        }
+
         if (response.goto_section) {
             this.reloadProgressBlock();
             this.gotoSection(response.goto_section);
@@ -570,6 +585,7 @@ ShippingMethod.prototype = {
 
         if (response.update_section) {
             $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+            response.update_section.html.evalScripts();
         }
 
         $$('.cvv-what-is-this').each(function(element){
