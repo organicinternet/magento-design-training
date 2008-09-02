@@ -2,7 +2,7 @@ This file tracks the status of Magento in the 1.1.x branch.
 
 FIXED BUGS:
 
-    #2222: Product Alerts thru Catalog Price Rules 
+    #2222: Product Alerts thru Catalog Price Rules
     #4346: make tax_class_id attribute applicable only to simple, configurable, virtual by default
     #4369: When translate-inline mode is set to yes Sales Report page shows XHTML code
     #4481: The logo image size displayed on PayPal checkout
@@ -14,8 +14,8 @@ FIXED BUGS:
     #4878: ID column should have range for search
     #4953: The 'Minimum order amount' should apply after the coupon is applied
     #5034: multiple store feature not working on the backend
-    #5050: Product Browsing / list.phtml doesnt support transparency 
-    #5076: Check for duplicate email only after "Place Order" clicked, payment goes through, and checkout does not end 
+    #5050: Product Browsing / list.phtml doesnt support transparency
+    #5076: Check for duplicate email only after "Place Order" clicked, payment goes through, and checkout does not end
     #5105: Error while removing products from websites
     #5117 - removed type hinting from setGroup()
     #5132: Grammatical error
@@ -29,7 +29,7 @@ FIXED BUGS:
     #5223: 'Read Details' hyperlink is brought to magento community site in the same window
     #5234: Some strings not working for translation / can not be translated
     #5235: Company Address and Order Date not showing in Print Order
-    #5250: Magento (or underlying software) is damaging transparent images, replacing transparency with black 
+    #5250: Magento (or underlying software) is damaging transparent images, replacing transparency with black
     #5262: First Class International is not available as an option in USPS shipping configuration
     #5265: Typo in Functionname
     #5267: Free shipping - Minimum order amount bug with multiple currency
@@ -61,7 +61,7 @@ FIXED BUGS:
     #5467: After Error tab is not marking
     #5478: Shipping address in onepage
     #5479: catalog product image placeholder failed to load, if skin had no placeholder image.
-    #5483: Shorttag <?endif;?> makes an error in admin. 
+    #5483: Shorttag <?endif;?> makes an error in admin.
     #5491: Unable to cancel coupon code.
     #5504: Cart price rules: Total Items Qty condition doesn't work
     #5506: Cannot add SKU from products list in Condition and Action subselection if pagination options were used
@@ -69,12 +69,12 @@ FIXED BUGS:
     #5516: place order button kept disabled after error
     #5517: "About Us", "Customer Service" error 404 page
     #5540: Customers addresses can't be edited in admin.
-    #5570: Backoffice : create new order , problem with payment method under Windows 
+    #5570: Backoffice : create new order , problem with payment method under Windows
     #5583: Product prices don't import properly
     #5587: IE bug in decorateGeneric()
     #5588: & encoding on Cart page
     #5595: Checkboxes Form Element
-    #5599: IE 6, one of radio buttons should be marked by default 
+    #5599: IE 6, one of radio buttons should be marked by default
     #5602: Import All Products profile throws error if store column is missing
     #5608: Trouble after double adding product to s.cart
     #5614: Short tag endif error
@@ -83,7 +83,7 @@ FIXED BUGS:
     #5666: Expiration date of CC is not marked
     #5685: Create shipment -> 'add tracking' doesn't work when creating Invoice in Admin
     #5689: Customer Export
-    #5694: Unable to use capital letters in e-mail address 
+    #5694: Unable to use capital letters in e-mail address
     #5695: Fatal error after password recovery in the admin page
     #5712: Paypal Standard Shipping and Tax Issue
     #5714: magento crash when seting wrong package name
@@ -95,7 +95,7 @@ FIXED BUGS:
     #5742: link clickable after guest checkout
     #5750: Products with required fields Custom Options should be invisible in some cases
     #5754: 404 on both sides after trying to c
-    #5755: Invalid image place on front 
+    #5755: Invalid image place on front
     #5772: add en_NZ to etc/config.xml
     #5779: Broken view of long SKU in FF 2
     #5784: Broken previewing of large picture at the front end
@@ -114,11 +114,11 @@ FIXED BUGS:
     #5875: Sitemap error
     #5833: Multistore: Call to a member function getStoreIds()
     #5881: catalogindex_reindex_all cron job fails
-    #5882: Session of Admin User persists even after user is deleted 
+    #5882: Session of Admin User persists even after user is deleted
     #5891: Cannot add Custom Options in Safari 3x
     #5911: Can't add (inch) symbol
     #6066: Configurable products not reducing when purchased
-    #6072: Virtual products and Paypal Standard 
+    #6072: Virtual products and Paypal Standard
     #6120: People can order configurable products when they are out of stock
     #6121: Payment screen does not work correctly using Modern theme
     #6147: Cannot check out shopping cart that use Check / Money Order as payment option
@@ -211,7 +211,7 @@ FIXED BUGS:
     Fixed admin order refund - base tax amount was not stored after refund
     Fixed single page checkout issues in modern theme
 
-    
+
 
 CHANGES:
 
@@ -255,7 +255,7 @@ CHANGES:
     Added hasOptions() to products view blocks of each type, updated product view container template.
     Moved product descriptions and additional data in separate blocks, moved "Add to cart" and "Add to wishlist / compare" to blocks
     Simplified decorateTable(), decorateList() and decorateDataList()
-    
+
     Added admin path (frontname) installation option
     Added additional catalog tables to optimize layered navigation performance
     Improved empty shopping cart performance for sidebar and remove shopping cart cache option
@@ -271,7 +271,7 @@ CHANGES:
     Moved tier prices to blocks
     Added clone price block for modern theme
     Design updates, themes cleanup
-    
+
     Implemented duplicating custom options when duplicating a product
     Added missing demo notice in modern theme
     Added validation "_isUrlInternal" to check all referer, redirect and success urls
@@ -281,12 +281,15 @@ CHANGES:
     Added hiding long options on orders, invoices, etc on frontend
     Set svn:ignore on downloader/pearlib/cache
     Added N/A label in shipments for virtual products in bundle
-    
+
     iPhone theme updated for 1.1
     Upgraded core/helper/string for binary-safe string operations
 
     Added html escaping in search queries in admin dashboard
     Added displaying maximum allowed dataflow upload file size according to server settings
+
+    Added admin area check function into _beforeDelete methods of some models
+    Fixed merging compare lists
 
 
 NOTES:
