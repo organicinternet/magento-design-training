@@ -11,6 +11,12 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -18,6 +24,10 @@
 /****************************************************/
 /***********[ Mage_CSS_B Common Elements ]***********/
 /****************************************************/
+
+/************************ Reset */
+ul,ol,li,dl,dt,dd,fieldset { margin:0; padding:0; }
+
 
 /********************** Columns */
 
@@ -27,53 +37,43 @@
 /* Col2 */
 .col2-set .col-1, .col2-set .col-2 { width:48.5%; }
 .col2-set .col-1 { float:left; }
-.col2-set .col-2 { float:right;}
+.col2-set .col-2 { float:right; }
 
 /* Col2-alt */
 .col2-alt-set .col-1 { width:32%; }
 .col2-alt-set .col-2 { width:65%; }
 .col2-alt-set .col-1 { float:left; }
-.col2-alt-set .col-2 { float:right;}
+.col2-alt-set .col-2 { float:right; }
 .col-main { min-height:200px; }
+
 /********************** Main */
-body {
-	margin: 0;
-	font-family: Helvetica;
-	font-size:11px;
-	color:#444;
-	overflow-x: hidden;
-	max-width:320px;
-	-webkit-user-select: none;
-	-webkit-text-size-adjust: none;
-}
-a {
-  cursor: pointer;
-  display: inline;
-  color: #0068b7;
-  text-decoration: inherit;
-}
+body { margin:0; font-family:Helvetica; font-size:11px; color:#444; overflow-x:hidden; max-width:320px; -webkit-user-select:none; -webkit-text-size-adjust:none; }
+
+a { cursor:pointer; display:inline; color:#0068b7; text-decoration:inherit; }
+a[disabled="true"] { color:#c1cee2; text-shadow:none; }
+table { font-family:Helvetica; font-size:11px; }
+ul, ol, li { list-style:none; padding:0; margin:0; }
 p { padding:0; margin:5px 0; }
+img { border:0; }
+
 fieldset { border:0; padding:0; }
 fieldset legend { display:none; }
-
-table { font-family: Helvetica; font-size:11px; }
-a[disabled="true"] {
-  color: #c1cee2;
-  text-shadow: none;
-}
-img { border:0; }
-.clear { clear:both; }
+input,select,textarea,button { vertical-align:middle; }
 select { font-size:10px; padding:0; }
-.no-display { display:none; }
-ul, ul li, ol, ol li { list-style:none; padding:0; margin:0; }
+
 .middle-container { padding:0px; }
 .footer-container { background:transparent url(../images/footer-bg.gif) repeat-x top; padding-top:1px; }
 #main { margin:0; padding:0; }
-.a-right { text-align:right; }
-.a-left { text-align:left; }
-.a-center { text-align:center; }
-.v-top { vertical-align:top; }
-.nowrap, .nobr  { white-space:nowrap; }
+
+.clear { clear:both; }
+
+.a-left { text-align:left !important; }
+.a-center { text-align:center !important; }
+.a-right { text-align:right !important; }
+.v-top { vertical-align:top !important; }
+.no-display { display:none; }
+.nowrap,
+.nobr  { white-space:nowrap; }
 
 /********************** Headings */
 h1, h2, h3, h4, h5, h6 { margin:5px 0; padding:0; }
@@ -178,16 +178,14 @@ ul.breadcrumbs li { float:left; padding-right:5px; color:#818181; }
 .c-list li div.col2-alt-set .col-2 { width:74%; }
 .c-list li .description { margin-top:5px; }
 .product-image img { border:1px solid #ccc; }
-.product-price, .product-bundle-price { display:block; margin:5px 0; font:bold 12px/14px Arial; }
-.product-bundle-price { font:bold 11px/14px Arial; }
-.bundle-options dd { border-bottom:1px solid #ccc; padding:5px 0; margin:0 0 10px 0; }
-.bundle-options dd select { width:290px; }
+.product-price,
+.product-bundle-price { margin:5px 0; font:bold 12px/14px Arial; }
 
 ul.breadcrumbs { padding:0 5px; }
 
 .category-block { padding:0 5px; }
 
-.legality { color:#818181; margin:6px 0; }
+.legality { color:#818181; margin:6px 0; text-align:center; }
 
 .pager { color:#444; margin:10px 0; }
 .pager ol { float:right; }
@@ -204,16 +202,14 @@ ul.breadcrumbs { padding:0 5px; }
 .select250inner select { width:250px; }
 .select300inner select { width:300px; }
 
-.form-button, .form-button-alt {
-	padding:2px 5px;
-}
+/*.form-button, .form-button-alt { padding:2px 5px; }*/
 .product-info-box { padding:0 10px 10px 10px; }
 .product-info-box h3 { color:#7d90ae; margin:0; }
 .qty { width:50px; }
 .data-table { width:100%; }
 .data-table td { padding:2px 3px; vertical-align:top; }
 .data-table td.label { background:#E4E4E4; text-align:right; border-top:1px solid #fff; }
-.data-table td.data { background:#ECECEC; border-top:1px solid #fff; border-left:1px solid #fff;}
+.data-table td.data { background:#ECECEC; border-top:1px solid #fff; border-left:1px solid #fff; }
 
 .shopping-cart { width:100%; }
 .shopping-cart thead { background:#ccc; }
@@ -241,18 +237,26 @@ tr.td-noborder td { border:0; }
 .small-buttons button { margin:5px 0; }
 .small-buttons button span { font-size:11px; }
 
-.product-collateral .up-sell .head { padding-bottom:8px; margin-bottom:0; }
-.product-collateral .up-sell .generic-product-grid { border:1px solid #E5DCC3; border-top:0; }
-.product-collateral .up-sell .generic-product-grid td { width:25%; border-color:#E5DCC3; background:#f6f2e7; padding-top:15px; }
-.product-collateral .up-sell .generic-product-grid td img { border:1px solid #E5DCC3; }
-.product-collateral .up-sell .generic-product-grid .product-image { text-align:center; }
-.product-collateral .up-sell .generic-product-grid td.empty-product { background:#f1ecdb; }
+.price-box .price { font-weight:bold; white-space:nowrap; }
+
+.product-collateral { margin:10px 0; }
+.product-collateral .up-sell .product-image {}
+.product-collateral .up-sell .product-image img { border:1px solid #ddd; }
+
+.product-options { margin:5px 0 0; }
+.product-options dt { padding:0; margin:0; }
+.product-options dt label { font-weight:bold; }
+.product-options dd { margin:0 0 10px; padding:0 0 10px; border-bottom:1px solid #ddd; }
+.product-options dd select { width:100%; }
+.product-options dl.last dd.last { margin:0; padding:0; border-bottom:0; }
+.product-options-bottom { margin:0 0 5px; }
 
 /********************** Messages  */
 .required { color:#df280a; }
+p.required { text-align:right; }
 .success { color:#3d6611; }
 .error, .validation-advice { color:#df280a; }
-.notice {color:#e26703;}
+.notice {color:#e26703; }
 .success, .error { font-weight:bold; }
 .messages { width:100%; overflow:hidden; }
 .error-msg, .success-msg, .notice-msg, .note-msg {
@@ -342,7 +346,7 @@ h4.legend { margin:1px 0 5px 0; }
 .one-page-checkout .active .step-count { color:#fff; border:1px solid #f19900; background:#F18200; }
 .one-page-checkout .active .box { display:block; border-color:#BBAFA0;  background:url(../images/multi_address_box_bg.gif) repeat-x #FBFAF6; }
 .one-page-checkout dd .form-list ul { margin:5px 17px 15px 17px; }
-.one-page-checkout .checkmo-mailing-address { padding-left: 20px; }
+.one-page-checkout .checkmo-mailing-address { padding-left:20px; }
 .one-page-checkout-progress .page-head { margin-bottom:1em; }
 .one-page-checkout-progress li { border:1px solid #A3AEB3; background:#eee; margin-bottom:6px; }
 .one-page-checkout-progress h4 { margin:0; color:#999; padding:2px 8px; background:#eee; text-transform:none;  }
@@ -353,14 +357,16 @@ h4.legend { margin:1px 0 5px 0; }
 #opc-review .box { border:0; padding:0; }
 #opc-review .content { border:1px solid #D9DDE3; border-top:0; }
 #opc-review .data-table{ border-top:0; }
-.opc-please-wait { padding-right:7px;}
-.one-page-checkout a.back { background:url(../images/icon_opc_back.gif) no-repeat; padding-left:16px; line-height:13px;}
+.opc-please-wait { padding-right:7px; }
+.one-page-checkout a.back { background:url(../images/icon_opc_back.gif) no-repeat; padding-left:16px; line-height:13px; }
 .one-page-checkout .payment-methods dd { padding:0; }
 .one-page-checkout .button-set { margin-top:0; padding-top:2em; }
 .one-page-checkout ul.super-product-attributes { padding-left:15px; }
 .default-box { margin-right:1px; }
+.one-page-checkout li { zoom:1; vertical-align:top; }
+.one-page-checkout .box { zoom:1; }
 
-.checkout-progress { margin:0 auto; width:290px;}
+.checkout-progress { margin:0 auto; width:290px; }
 .checkout-progress td {
     margin-right:3px;
 	text-align:center;
@@ -374,4 +380,9 @@ h4.legend { margin:1px 0 5px 0; }
     color:#e96200;
 }
 
-ul.disc li { list-style:disc; margin:2px 0 0 15px; }
+/********************* Customer */
+/* Date of Birth */
+.customer-dob .input-box { float:left; width:60px !important; }
+.customer-dob input { width:50px !important; }
+.customer-dob label.label-dob { font-weight:normal; color:#888; font-size:10px; }
+/********************************/

@@ -12,7 +12,13 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,12 +31,12 @@
  * @see Mage_Customer_Block_Form_Register
  */
 ?>
-<div class="page-head-container">
-	<h2 class="page-head"><?php echo $this->__('Create an Account') ?></h2>
+<div class="page-title">
+    <h2><?php echo $this->__('Create an Account') ?></h2>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="form-validate">
-    <fieldset class="group-select wide">
+    <fieldset class="group-select">
     <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
     <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
         <h3 class="legend"><?php echo $this->__('Personal Information') ?></h3>
@@ -40,22 +46,22 @@
             </li>
             <li>
                 <div class="input-box">
-                    <label for="email_address"><?php echo $this->__('Email Address') ?> <span class="required">*</span></label><br/>
-                    <input type="text" name="email" id="email_address" value="<?php echo $this->htmlEscape($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="validate-email required-entry input-text" />
+                    <label for="email_address"><?php echo $this->__('Email Address') ?> <span class="required">*</span></label><br />
+                    <input type="text" name="email" id="email_address" value="<?php echo $this->htmlEscape($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
                 </div>
             </li>
-			
-<?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
-<?php if ($_dob->isEnabled()): ?>
             <li>
-                <?php echo $_dob->setDate($this->getFormData()->getDob())->toHtml() ?>
-            </li>
-<?php endif ?>	
-			
-            <li>
-                <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed" <?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif ?> />
+                <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
                 <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
             </li>
+<?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+<?php if ($_dob->isEnabled()): ?>
+            <li><?php echo $_dob->setDate($this->getFormData()->getDob())->toHtml() ?></li>
+<?php endif ?>
+<?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+<?php if ($_taxvat->isEnabled()): ?>
+            <li><?php echo $_taxvat->setTaxvat($this->getFormData()->getTaxvat())->toHtml() ?></li>
+<?php endif ?>
         </ul>
     </fieldset>
 <?php if($this->getShowAddressFields()): ?>
@@ -69,13 +75,13 @@
                     <input type="text" name="company" id="company" value="<?php echo $this->htmlEscape($this->getFormData()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text" />
                 </div>
                 <div class="input-box">
-                    <label for="lastname"><?php echo $this->__('Telephone') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="telephone" id="telephone" value="<?php echo $this->htmlEscape($this->getFormData()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="required-entry input-text" />
+                    <label for="telephone"><?php echo $this->__('Telephone') ?> <span class="required">*</span></label><br />
+                    <input type="text" name="telephone" id="telephone" value="<?php echo $this->htmlEscape($this->getFormData()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" />
                 </div>
             </li>
             <li>
                 <label for="street_1"><?php echo $this->__('Street Address') ?> <span class="required">*</span></label><br />
-                <input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getFormData()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="required-entry input-text" />
+                <input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getFormData()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="input-text required-entry" />
             </li>
 <?php for ($_i=2, $_n=$this->helper('customer/address')->getStreetLines(); $_i<=$_n; $_i++): ?>
             <li>
@@ -85,26 +91,26 @@
             <li>
                 <div class="input-box">
                     <label for="city"><?php echo $this->__('City') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="city" value="<?php echo $this->htmlEscape($this->getFormData()->getCity()) ?>" title="<?php echo $this->__('City') ?>" class="required-entry input-text" id="city" />
+                    <input type="text" name="city" value="<?php echo $this->htmlEscape($this->getFormData()->getCity()) ?>" title="<?php echo $this->__('City') ?>" class="input-text required-entry" id="city" />
                 </div>
                 <div class="input-box">
                     <label for="region_id"><?php echo $this->__('State/Province') ?> <span class="required">*</span></label><br />
-                    <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none">
+                    <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
                         <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
                     </select>
                     <script type="text/javascript">
                         $('region_id').setAttribute('defaultValue',  "<?php echo $this->getFormData()->getRegionId() ?>");
                     </script>
-                    <input type="text" id="region" name="region" value="<?php echo $this->htmlEscape($this->getRegion()) ?>" title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none" />
+                    <input type="text" id="region" name="region" value="<?php echo $this->htmlEscape($this->getRegion()) ?>" title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none;" />
                 </div>
             </li>
             <li>
                 <div class="input-box">
-                    <label for="zip"><?php echo $this->__('Zip/Postal Code') ?> <span class="required">*</span></label><br/>
-                    <input type="text" name="postcode" value="<?php echo $this->htmlEscape($this->getFormData()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="validate-zip-international required-entry input-text" />
+                    <label for="zip"><?php echo $this->__('Zip/Postal Code') ?> <span class="required">*</span></label><br />
+                    <input type="text" name="postcode" value="<?php echo $this->htmlEscape($this->getFormData()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="input-text validate-zip-international required-entry" />
                 </div>
                 <div class="input-box">
-                    <label for="country"><?php echo $this->__('Country') ?> <span class="required">*</span></label><br/>
+                    <label for="country"><?php echo $this->__('Country') ?> <span class="required">*</span></label><br />
                     <?php echo $this->getCountryHtmlSelect() ?>
                 </div>
             </li>
@@ -118,25 +124,27 @@
         <ul>
             <li>
                 <div class="input-box">
-                    <label for="password"><?php echo $this->__('Password') ?> <span class="required">*</span></label><br/>
-                    <input type="password" name="password" id="password" title="<?php echo $this->__('Password') ?>" class="required-entry validate-password input-text" />
+                    <label for="password"><?php echo $this->__('Password') ?> <span class="required">*</span></label><br />
+                    <input type="password" name="password" id="password" title="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
                 </div>
                 <div class="input-box">
                     <label for="confirmation"><?php echo $this->__('Confirm Password') ?> <span class="required">*</span></label><br />
-                    <input type="password" name="confirmation" title="<?php echo $this->__('Confirm Password') ?>" id="confirmation" class="required-entry validate-cpassword input-text" />
+                    <input type="password" name="confirmation" title="<?php echo $this->__('Confirm Password') ?>" id="confirmation" class="input-text required-entry validate-cpassword" />
                 </div>
             </li>
         </ul>
     </fieldset>
-    <div class="buttons-container">
-        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <div class="buttons-set">
         <a href="<?php echo $this->getBackUrl() ?>" class="back-link">&laquo; <?php echo $this->__('Back') ?></a>
-        <button class="form-button" type="submit"><span><?php echo $this->__('Submit') ?></span></button>
+        <button class="button" type="submit"><span><?php echo $this->__('Submit') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">
+//<![CDATA[
     var dataForm = new VarienForm('form-validate', true);
     <?php if($this->getShowAddressFields()): ?>
     new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>);
-    <?php endif ?>
+    <?php endif; ?>
+//]]>
 </script>

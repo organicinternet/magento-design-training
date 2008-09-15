@@ -12,7 +12,13 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,56 +31,60 @@
  * @see Mage_CatalogSearch_Block_Advanced_Form
  */
 ?>
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->getJsUrl() ?>calendar/calendar-win2k-1.css" title="win2k-1" />
-<script type="text/javascript" src="<?php echo $this->getJsUrl() ?>calendar/calendar.js"></script>
-<script type="text/javascript" src="<?php echo $this->getJsUrl() ?>calendar/lang/calendar-en.js"></script>
-<script type="text/javascript" src="<?php echo $this->getJsUrl() ?>calendar/calendar-setup.js"></script>
-
-<div class="page-head-container">
-    <h2 class="page-head"><?php echo $this->__('Catalog Advanced Search') ?></h2>
+<div class="page-title">
+    <h2><?php echo $this->__('Catalog Advanced Search') ?></h2>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getSearchPostUrl() ?>" method="get" id="form-validate">
-<fieldset class="group-select wide">
+<fieldset class="group-select">
     <h3 class="legend"><?php echo $this->__('Search Settings') ?></h3>
     <ul id="advanced-search-list">
         <?php foreach ($this->getSearchableAttributes() as $_attribute): ?>
         <?php $_code = $_attribute->getAttributeCode() ?>
         <li>
-            <label for="<?php echo $_code ?>"><?php echo $this->getAttributeLabel($_attribute) ?></label>
+            <label for="<?php echo $_code ?>"><?php echo $this->getAttributeLabel($_attribute) ?></label><br />
             <?php switch($this->getAttributeInputType($_attribute)):
                 case 'number': ?>
-                <p>
+                <div class="range">
+                    <input type="text" name="<?php echo $_code ?>[from]" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute, 'from')) ?>" id="<?php echo $_code ?>" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>" class="input-text validate-number" />
+                    -
+                    <input type="text" name="<?php echo $_code ?>[to]" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute, 'to')) ?>" id="<?php echo $_code ?>_to" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>" class="input-text validate-number" />
+                </div>
+                <?php break;
+                case 'price': ?>
+                <div class="range field-row">
                     <input name="<?php echo $_code ?>[from]" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute, 'from')) ?>" id="<?php echo $_code ?>" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>"  class="input-text validate-number" type="text" />
                     -
                     <input name="<?php echo $_code ?>[to]" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute, 'to')) ?>" id="<?php echo $_code ?>_to" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>"  class="input-text validate-number" type="text" />
-                </p>
+
+                    (<?php echo $this->getCurrency($_attribute); ?>)
                 <?php break;
                 case 'select': ?>
-                    <p><?php echo $this->getAttributeSelectElement($_attribute) ?></p>
+                    <?php echo $this->getAttributeSelectElement($_attribute) ?>
                 <?php break;
                 case 'yesno': ?>
-                    <p><?php echo $this->getAttributeYesNoElement($_attribute) ?></p>
+                    <?php echo $this->getAttributeYesNoElement($_attribute) ?>
                 <?php break;
                 case 'date': ?>
-                    <p><?php echo $this->getDateInput($_attribute, 'from') ?>
+                    <?php echo $this->getDateInput($_attribute, 'from') ?>
                     -
-                    <?php echo $this->getDateInput($_attribute, 'to') ?></p>
+                    <?php echo $this->getDateInput($_attribute, 'to') ?>
                 <?php break;
                 default: ?>
-                <input name="<?php echo $_code ?>" id="<?php echo $_code ?>" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute)) ?>" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>"  class="input-text <?php echo $this->getAttributeValidationClass($_attribute) ?>" type="text" />
+                <input type="text" name="<?php echo $_code ?>" id="<?php echo $_code ?>" value="<?php echo $this->htmlEscape($this->getAttributeValue($_attribute)) ?>" title="<?php echo $this->htmlEscape($this->getAttributeLabel($_attribute)) ?>"  class="input-text <?php echo $this->getAttributeValidationClass($_attribute) ?>" />
             <?php endswitch; ?>
         </li>
         <?php endforeach; ?>
     </ul>
     <script type="text/javascript">decorateList('advanced-search-list')</script>
-</fieldset>
-<div class="buttons-container">
     <p class="required">* <?php echo $this->__('Required Fields') ?></p>
-    <button class="form-button" type="submit" name="search" id="search"><span><?php echo $this->__('Search') ?></span></button>
-</div>
+    <div class="buttons-set">
+        <button type="submit" class="button"><span><?php echo $this->__('Search') ?></span></button>
+    </div>
+</fieldset>
 </form>
 <script type="text/javascript">
+//<![CDATA[
     var dataForm = new VarienForm('form-validate', true);
+//]]>
 </script>
-<br />

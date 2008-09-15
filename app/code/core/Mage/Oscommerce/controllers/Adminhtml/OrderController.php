@@ -12,6 +12,12 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @category   Mage
  * @package    Mage_Oscommerce
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
@@ -20,7 +26,7 @@
 
 /**
  * osCommerce orders controller
- * 
+ *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
 
@@ -32,11 +38,14 @@ class Mage_Oscommerce_Adminhtml_OrderController extends Mage_Adminhtml_Controlle
      */
     protected function _initAction()
     {
-        $this->loadLayout();
-        $this->_setActiveMenu('oscommerce/adminhtml_order');
+        $this->loadLayout()
+            ->_setActiveMenu('sales/oscorder')
+            ->_addBreadcrumb(Mage::helper('oscommerce')->__('Sales'), Mage::helper('checkout')->__('Sales'))
+            ->_addBreadcrumb(Mage::helper('oscommerce')->__('osCommerce Orders'), Mage::helper('checkout')->__('osCommerce Orders'))
+        ;
         return $this;
     }
-    
+
 
     /**
      * Initialization of order
@@ -55,11 +64,11 @@ class Mage_Oscommerce_Adminhtml_OrderController extends Mage_Adminhtml_Controlle
             $this->setFlag('', self::FLAG_NO_DISPATCH, true);
             return false;
         }
-        
+
         Mage::register('current_oscommerce_order', $order);
         return $order;
     }
-        
+
     /**
      * Index osc action
      */
@@ -82,6 +91,11 @@ class Mage_Oscommerce_Adminhtml_OrderController extends Mage_Adminhtml_Controlle
                 ->_addBreadcrumb($this->__('View Order'), $this->__('View Order'))
                 ->_addContent($this->getLayout()->createBlock('oscommerce/adminhtml_order_view'))
                 ->renderLayout();
-        }        
-    }        
+        }
+    }
+
+    protected function _isAllowed()
+    {
+	    return Mage::getSingleton('admin/session')->isAllowed('sales/oscorder');
+    }
 }

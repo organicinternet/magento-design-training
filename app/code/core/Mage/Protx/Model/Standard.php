@@ -12,6 +12,12 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @category   Mage
  * @package    Mage_Protx
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
@@ -141,7 +147,7 @@ class Mage_Protx_Model_Standard extends Mage_Payment_Model_Method_Abstract
 
                 $totalCostPlusTax = sprintf('%.2f', $quantity * $cost + $tax);
 
-                $resultParts[] = $item->getName();
+                $resultParts[] = str_replace(':', ' ', $item->getName());
                 $resultParts[] = $quantity;
                 $resultParts[] = $cost;
                 $resultParts[] = $tax;
@@ -199,7 +205,7 @@ class Mage_Protx_Model_Standard extends Mage_Payment_Model_Method_Abstract
         $queryPairs['SuccessURL'] = $this->getSuccessURL();
         $queryPairs['FailureURL'] = $this->getFailureURL();
 
-        $queryPairs['CustomerName'] = $shipping->getFirstname().' '.$shipping->getLastname();
+        $queryPairs['CustomerName'] = $billing->getFirstname().' '.$billing->getLastname();
         $queryPairs['CustomerEMail'] = $order->getCustomerEmail();
         $queryPairs['ContactNumber'] = $billing->getTelephone();
         $queryPairs['ContactFax'] = $billing->getFax();
@@ -209,8 +215,14 @@ class Mage_Protx_Model_Standard extends Mage_Payment_Model_Method_Abstract
 
         $queryPairs['BillingAddress'] = $billing->getFormated();
         $queryPairs['BillingPostCode'] = $billing->getPostcode();
-        $queryPairs['DeliveryAddress'] = $shipping->getFormated();
-        $queryPairs['DeliveryPostCode'] = $shipping->getPostcode();
+
+        if ($shipping) {
+            $queryPairs['DeliveryAddress'] = $shipping->getFormated();
+            $queryPairs['DeliveryPostCode'] = $shipping->getPostcode();
+        } else {
+            $queryPairs['DeliveryAddress'] = '';
+            $queryPairs['DeliveryPostCode'] = '';
+        }
 
         $queryPairs['Basket'] = $this->getFormattedCart();
 

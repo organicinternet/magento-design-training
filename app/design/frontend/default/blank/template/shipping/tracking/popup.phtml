@@ -12,15 +12,21 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
 <?php  $_results = $this->getTrackingInfo() ?>
-<div class="buttons-container">
-	<button class="form-button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
+<div class="buttons-set">
+    <button class="button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
 </div>
 <?php if(sizeof($_results)>0): ?>
 <?php foreach($_results as $shipid => $_result): ?>
@@ -120,7 +126,7 @@
 
                 <?php if (is_object($track) && sizeof($track->getProgressdetail())>0): ?>
                 <br />
-                <table cellspacing="0" class="data-table" id="track-history-table-<?php echo $track->getTracking(); ?>">
+                <table class="data-table" id="track-history-table-<?php echo $track->getTracking(); ?>">
                     <thead>
                         <tr>
                             <th><?php echo $this->__('Location') ?></th>
@@ -155,6 +161,6 @@
 <?php else: ?>
     <div><?php echo $this->__('There is no tracking available.'); ?></div>
 <?php endif; ?>
-<div class="buttons-container">
-<button class="form-button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
+<div class="buttons-set">
+    <button class="button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
 </div>

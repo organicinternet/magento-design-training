@@ -11,55 +11,71 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 * { margin:0; padding:0; }
 
-body {
-    padding:10px;
-    color:#444;
-    font:11px/1.55em arial, helvetica, sans-serif;
-    }
-a img       { border:0;}
+body        { background:#fff; font:12px/1.5 Arial, Helvetica, sans-serif; color:#000; text-align:center; }
+
+img         { border:0; vertical-align:top; }
+
+a           {}
+a:hover     {}
 :focus      { outline: 0; }
 
+/* Headings */
+h1          { font-size:20px; font-weight:normal; line-height:1.3; }
+h2          { font-size:18px; font-weight:normal; line-height:1.34; }
+h3          { font-size:16px; font-weight:bold; line-height:1.375; }
+h4          { font-size:14px; font-weight:bold; }
+h5          { font-size:12px; font-weight:bold; }
+h6          { font-size:11px; font-weight:bold; }
 
-/* Heading */
-h1          { margin-bottom:.4em; font-size:1.65em; line-height:1.2em; }
-h2          { margin-bottom:.4em; font-size:1.5em; line-height:1.2em; }
-h3          { margin-bottom:.4em; font-size:1.35em; line-height:1.2em; }
-h4          { margin-bottom:.4em; font-size:1.05em; line-height:1.35em; }
-h5          { margin-bottom:.4em; font-size:1.05em; line-height:1.35em; }
-h6          { margin-bottom:.1em; font-size:1em; line-height:1.35em; }
-
+/* Forms */
+form        { display:inline; }
+fieldset    { border:0; }
+legend      { display:none; }
 
 /* Table */
-th          { vertical-align:top; font-weight:normal; text-align:left; }
+table       { border:0; border-collapse:collapse; border-spacing:0; empty-cells:show; font-size:100%; }
+th          { vertical-align:top; text-align:left; font-weight:normal; }
 td          { vertical-align:top; }
 
-/* Paragraph */
-p           { margin-bottom:.9em; }
-address     { margin-bottom:.4em; font-style:normal; line-height:1.4em; }
-cite        { font-style:normal; font-size:10px;}
+/* Content */
+address     { font-style:normal; }
+cite        { font-style:normal; }
+q,
+blockquote  { quotes:none; }
 q:before, 
-q:after     { content:'';}
-
-/* Form */
-form        { display:inline;}
-fieldset    { border:none; }
-legend      { display:none;}
-label       { color:#555; font-weight:bold; }
-input, 
-select, 
-button      { vertical-align:middle; }
+q:after     { content:''; }
+small,big   { font-size:1em; }
+sup         { font-size:1em; vertical-align:top; }
 
 /* Lists */
-dt          { display:block; font-weight:bold; }
-li          { list-style:none; }
+ul,ol       { list-style:none; }
 
-/* Size */
-small       { font-size:.85em; }
-big         { font-size:1.15em; }
-hr          { height:0; margin:8px 0; overflow:hidden; visibility:hidden; }
+/* Tools */
+.nobr       { white-space:nowrap !important; }
+.wrap       { white-space:normal !important; }
+.a-left     { text-align:left !important; }
+.a-center   { text-align:center !important; }
+.a-right    { text-align:right !important; }
+.v-middle   { vertical-align:middle; }
+.f-left,
+.left       { float:left !important; }
+.f-right,
+.right      { float:right !important; }
+.f-none     { float:none !important; }
+.f-fix      { float:left; width:100%; }
+.no-display { display:none; }
+.no-margin  { margin:0 !important; }
+.no-padding { padding:0 !important; }
+.no-bg      { background:none !important; }

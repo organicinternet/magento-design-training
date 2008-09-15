@@ -12,25 +12,32 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-
-<div class="page-head-container">
-    <h2 class="page-head"><?php echo $this->__('Your order has been received') ?></h2>
+<div class="page-title">
+    <h2><?php echo $this->__('Your order has been received') ?></h2>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<p><strong><?php echo $this->__('Thank you for your purchase!') ?></strong></p>
-<p>
-    <?php echo $this->__('Your order # is: %s', $this->getOrderId()) ?>.<br/>
-    <?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?><br/>
-    <?php if ($this->canPrint()) :?>
-    <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
-    <?php endif;?>
-</p>
-<div class="buttons-container">
-    <button class="form-button" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><?php echo $this->__('Continue Shopping') ?></span></button>
+<h3><?php echo $this->__('Thank you for your purchase!') ?></h3>
+<?php if ($this->canPrint()) :?>
+    <p><?php echo $this->__('Your order # is: <a href="%s">%s</a>', $this->getViewOrderUrl(), $this->getOrderId()) ?>.</p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s', $this->getOrderId()) ?>.</p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->canPrint()) :?>
+    <p><?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?></p>
+<?php endif;?>
+<div class="buttons-set">
+    <button type="button" class="button" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><?php echo $this->__('Continue Shopping') ?></span></button>
 </div>

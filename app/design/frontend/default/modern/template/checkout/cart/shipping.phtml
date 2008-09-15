@@ -29,7 +29,7 @@
 <form action="<?php echo $this->getUrl('checkout/cart/estimatePost') ?>" method="post" id="shipping-zip-form">
     <fieldset>
     <ul class="form-list">
-        <li><label for="country"><?php echo $this->__('Country') ?></label><br/><span><?php echo Mage::getBlockSingleton('directory/data')->getCountryHtmlSelect($this->getEstimateCountryId()) ?></span></li>
+        <li><label for="country"><?php echo $this->__('Country') ?> <span class="required">*</span></label><br/><span><?php echo Mage::getBlockSingleton('directory/data')->getCountryHtmlSelect($this->getEstimateCountryId()) ?></span></li>
         <li><label for="region_id"><?php echo $this->__('State/Province') ?><?php if ($this->isStateProvinceRequired()):?> <span class="required">*</span><?php endif;?></label><br/>
         <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" style="display:none"<?php echo ($this->isStateProvinceRequired() ? ' class="validate-select"' : '') ?>>
             <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
@@ -68,7 +68,7 @@
                             <?php echo $_rate->getErrorMessage() ?>
                        <?php else: ?>
                             <input name="estimate_method" type="radio" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?>/>
-                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodDescription() ?>
+                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
                             <strong>
                             <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                             <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>

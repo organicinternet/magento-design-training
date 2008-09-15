@@ -12,7 +12,13 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,20 +26,18 @@
 ?>
 <?php $_item = $this->getItem() ?>
 <tr>
-    <td><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="Remove item" /></a></td>
-    <td><a href="<?php echo $this->getItemUrl($_item) ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getItemProductForThumbnail($_item), 'thumbnail')->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" width="75" /></a></td>
+    <td class="a-center"><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php echo $this->__('Remove item')?>" title="<?php echo $this->__('Remove item')?>" /></a></td>
+    <td><a href="<?php echo $this->getItemUrl($_item) ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getItemProductForThumbnail($_item), 'thumbnail')->resize(75); ?>" width="75" alt="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" title="<?php echo $this->htmlEscape($this->getItemName($_item)) ?>" /></a></td>
     <td>
-        <h4 class="title"><a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $this->getItemName($_item) ?></a></h4>
+        <h3 class="product-name"><a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $this->getItemName($_item) ?></a></h3>
         <?php echo $this->getItemDescription($_item) ?>
         <?php if($_item->getMessage()): ?>
-        <div style="font-size:95%;margin-top:6px;" class="shopping-cart-item-message <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">
-            * <?php echo $_item->getMessage() ?>
-        </div>
+        <p class="item-msg <?php if($_item->getHasError()): ?>error<?php else: ?>notice<?php endif; ?>">* <?php echo $_item->getMessage() ?></p>
         <?php endif; ?>
     </td>
     <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
     <td class="a-center">
-        <input type="checkbox" value="1" name="cart[<?php echo $_item->getId() ?>][wishlist]" />
+        <input type="checkbox" value="1" name="cart[<?php echo $_item->getId() ?>][wishlist]" class="checkbox" />
     </td>
     <?php endif ?>
     <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
@@ -46,16 +50,16 @@
         <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?>
     </td>
     <?php endif; ?>
-    <td>
+    <td class="a-center">
         <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getItemQty($_item) ?>" size="4" class="input-text qty" maxlength="8" />
     </td>
     <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-    <td>
+    <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?>
     </td>
     <?php endif; ?>
     <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-    <td>
+    <td class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?>
     </td>
     <?php endif; ?>

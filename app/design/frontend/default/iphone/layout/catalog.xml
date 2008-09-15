@@ -13,6 +13,12 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @category   design_default
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
@@ -184,18 +190,18 @@ Product view
 					<block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
 					<block type="core/text_list" name="alert.urls" as="alert_urls" />
 					<block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
-					
+
 					<block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml">
 						<action method="setColumnCount"><columns>4</columns></action>
 						<action method="setItemLimit"><type>upsell</type><limit>4</limit></action>
 					</block>
-					
+
 					<block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data" />
 					<block type="catalog/product_view_description" name="product.description" as="description" template="catalog/product/view/description.phtml"/>
 					<block type="catalog/product_view_attributes" name="product.attributes" as="additional" template="catalog/product/view/attributes.phtml"/>
 					<block type="catalog/product_view" name="product.info.addto" as="addto" template="catalog/product/view/addto.phtml"/>
 					<block type="catalog/product_view" name="product.info.addtocart" as="addtocart" template="catalog/product/view/addtocart.phtml"/>
-					
+
 					<block type="catalog/product_view" name="product.info.options.wrapper" as="product_options_wrapper" template="catalog/product/view/options/wrapper.phtml">
 						<block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
 							<action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
@@ -209,7 +215,7 @@ Product view
 						<block type="catalog/product_view" name="product.clone_prices" as="prices" template="catalog/product/view/price_clone.phtml"/>
 						<action method="append"><block>product.info.addtocart</block></action>
 					</block>
-					
+
 					<block type="core/template_facade" name="product.info.container1" as="container1">
 						<action method="setDataByKey"><key>alias_in_layout</key><value>container1</value></action>
 						<action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
@@ -243,15 +249,20 @@ Additional block dependant on product type
         <reference name="product.info">
             <block type="catalog/product_view_type_configurable" name="product.info.configurable" as="product_type_data" template="catalog/product/view/type/configurable.phtml"/>
         </reference>
+        <reference name="product.info.options.wrapper">
+            <block type="catalog/product_view_type_configurable" name="product.info.options.configurable" as="options_configurable" before="-" template="catalog/product/view/type/options/configurable.phtml"/>
+        </reference>
     </PRODUCT_TYPE_configurable>
     <PRODUCT_TYPE_grouped>
         <reference name="product.info">
             <block type="catalog/product_view_type_grouped" name="product.info.grouped" as="product_type_data" template="catalog/product/view/type/grouped.phtml"/>
         </reference>
     </PRODUCT_TYPE_grouped>
-
-
-
+    <PRODUCT_TYPE_virtual>
+        <reference name="product.info">
+            <block type="catalog/product_view_type_virtual" name="product.info.virtual" as="product_type_data" template="catalog/product/view/type/virtual.phtml"/>
+        </reference>
+    </PRODUCT_TYPE_virtual>
 
 <!--
 Product send to friend

@@ -12,7 +12,13 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,6 +26,7 @@
 ?>
 <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order', $this->getOrder())): ?>
 <script type="text/javascript">
+//<![CDATA[
 function giftMessageToogle(giftMessageIdentifier)
 {
     var link = $('order-item-gift-message-link-'+giftMessageIdentifier);
@@ -29,16 +36,14 @@ function giftMessageToogle(giftMessageIdentifier)
 
     if(link.expanded) {
         link.expanded = false;
-        link.removeClassName('collapse');
-        link.addClassName('expand');
+        link.removeClassName('expanded');
         if(container.hasClassName('last')) {
             row.addClassName('last');
         }
         container.hide();
     } else {
         link.expanded = true;
-        link.addClassName('collapse');
-        link.removeClassName('expand');
+        link.addClassName('expanded');
         if(container.hasClassName('last')) {
             row.removeClassName('last');
         }
@@ -47,79 +52,10 @@ function giftMessageToogle(giftMessageIdentifier)
 
     return false;
 }
+//]]>
 </script>
 <?php endif; ?>
-<?php  $_order = $this->getOrder() ?>
-<a href="<?php echo $this->getPrintAllInvoicesUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Invoices') ?></a>
-<?php foreach ($_order->getInvoiceCollection() as $_invoice): ?>
-<br />
-<div class="head">
-    <h2><?php echo $this->__('Invoice #') ?><?php echo $_invoice->getIncrementId(); ?></h2>
-    <a href="<?php echo $this->getPrintInvoiceUrl($_invoice) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print Invoice') ?></a>
-</div>
-<h3><?php echo $this->__('Items Invoiced') ?></h3>
-<table cellspacing="0" class="data-table" id="my-orders-table-<?php echo $_invoice->getId(); ?>">
-    <col />
-    <col width="15%" />
-    <col width="10%" />
-    <col width="20%" />
-    <thead>
-        <tr>
-            <th><?php echo $this->__('Product Name') ?></th>
-            <th width="10%"><?php echo $this->__('SKU') ?></th>
-            <th width="10%"><?php echo $this->__('Price') ?></th>
-            <th width="10%"><?php echo $this->__('Qty Invoiced') ?></th>
-            <th width="15%"><?php echo $this->__('Subtotal') ?></th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php $_items = $_invoice->getAllItems(); ?>
-        <?php $_count = count($_items) ?>
-        <?php $_index = 0; ?>
-        <?php foreach ($_items as $_item): ?>
-            <tr <?php echo ($_index++ > $_count ? ' class="last"' : '') ?> id="order-item-row-<?php echo $_item->getId() ?>">
-                <td>
-                    <?php echo $this->htmlEscape($_item->getName()) ?>
-                    <?php echo $_item->getDescription() ?>
-                </td>
-                <td><?php echo $_item->getSku() ?></td>
-                <td><?php echo $_order->formatPrice($_item->getPrice()) ?> </td>
-                <td><?php echo $_item->getQty()*1 ?> </td>
-                <td><?php echo $_order->formatPrice($_item->getRowTotal()) ?> </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4"><?php echo $this->__('Order Subtotal') ?></td>
-            <td><?php echo $_order->formatPrice($_invoice->getSubtotal()) ?></td>
-        </tr>
-        <?php if ($_invoice->getDiscountAmount() > 0): ?>
-            <tr>
-                <td colspan="4"><?php echo $this->__('Discount :') ?></td>
-                <td><?php echo $_order->formatPrice(0.00 - $_invoice->getDiscountAmount()) ?></td>
-            </tr>
-        <?php endif; ?>
-        <?php if ($_invoice->getTaxAmount() > 0): ?>
-            <tr>
-                <td colspan="4"><?php echo $this->__('Tax') ?></td>
-                <td><?php echo $_order->formatPrice($_invoice->getTaxAmount()) ?></td>
-            </tr>
-        <?php endif; ?>
-        <?php if ($_invoice->getShippingAmount() || $_invoice->getShippingDescription()): ?>
-            <tr>
-                <td colspan="4"><?php echo $this->__('Shipping &amp; Handling') ?></td>
-                <td><?php echo $_order->formatPrice($_invoice->getShippingAmount()) ?></td>
-            </tr>
-        <?php endif; ?>
-        <tr>
-            <td colspan="4"><?php echo $this->__('Grand Total') ?></td>
-            <td><?php echo $_order->formatPrice($_invoice->getGrandTotal()) ?></td>
-        </tr>
-    </tfoot>
-</table>
-<script type="text/javascript">decorateTable('my-orders-table-<?php echo $_invoice->getId(); ?>')</script>
-<?php endforeach; ?>
-<div class="buttons-container">
+<?php echo $this->getChildHtml('invoice_items') ?>
+<div class="buttons-set">
     <a href="<?php echo $this->getBackUrl() ?>" class="back-link">&laquo; <?php echo $this->__('Back to My Orders') ?></a>
 </div>

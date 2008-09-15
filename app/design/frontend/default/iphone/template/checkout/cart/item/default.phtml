@@ -12,6 +12,12 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
  * @category   design_default
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
@@ -20,10 +26,10 @@
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-	<td class="a-center" style="text-align:center;"><input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" /></td>
-	<td class="attributes-col">
-		<a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a>
-		<?php if ($_options = $this->getOptionList()):?>
+    <td class="a-center" style="text-align:center;"><input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" class="input-text qty" maxlength="8" /></td>
+    <td class="attributes-col">
+        <a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a>
+        <?php if ($_options = $this->getOptionList()):?>
         <dl class="item-options">
             <?php foreach ($_options as $_option) : ?>
             <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option['value']) ?>
@@ -41,31 +47,31 @@
             <?php endforeach; ?>
         </dl>
         <?php endif;?>
-		<?php if ($messages = $this->getMessages()): ?>
-		<?php foreach ($messages as $message): ?>
-		<div class="shopping-cart-item-message <?php echo $message['type'] ?>">
-			* <?php echo $message['text'] ?>
-		</div>
-		<?php endforeach; ?>
-		<?php endif; ?>
-	</td>
-	<td class="a-center" style="text-align:center;">
-		<a href="<?php echo $this->getDeleteUrl() ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" /></a>
-	</td>
-	<td class="a-right">
-	<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-		<span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?></span>
-	<?php endif; ?>	
-	<?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-		<div class="nowrap" style="font-size:9px;"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?><br />(Incl.Tax)</div>
-	<?php endif; ?>
-	</td>
-	<td class="a-right">
-	<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>	
-		<span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></span>
-	<?php endif; ?>
-	<?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
-		<div class="nowrap" style="font-size:9px;"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?><br />(Incl.Tax)</div>
-	<?php endif; ?>	
-	</td>
+        <?php if ($messages = $this->getMessages()): ?>
+        <?php foreach ($messages as $message): ?>
+        <div class="shopping-cart-item-message <?php echo $message['type'] ?>">
+            * <?php echo $message['text'] ?>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </td>
+    <td class="a-center" style="text-align:center;">
+        <a href="<?php echo $this->getDeleteUrl() ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" /></a>
+    </td>
+    <td class="a-right">
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+        <span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?></span>
+    <?php endif; ?>    
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+        <div class="nowrap" style="font-size:9px;"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getPriceInclTax($_item)); ?><br />(Incl.Tax)</div>
+    <?php endif; ?>
+    </td>
+    <td class="a-right">
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>    
+        <span class="nowrap"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></span>
+    <?php endif; ?>
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+        <div class="nowrap" style="font-size:9px;"><?php echo $this->helper('checkout')->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?><br />(Incl.Tax)</div>
+    <?php endif; ?>    
+    </td>
 </tr>

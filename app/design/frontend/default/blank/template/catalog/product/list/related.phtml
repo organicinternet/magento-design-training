@@ -12,46 +12,51 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
 <?php if($this->getItems()->getSize()): ?>
-<div class="box">
-    <h3 class="box-head"><?php echo $this->__('Related Products') ?></h3>
-    <p><strong><?php echo $this->__('Check items to add to the cart or ') ?><a href="#" onclick="selectAllRelated(this);return false;"><?php echo $this->__('select all') ?></a></strong></p>
-    <ol>
-    <?php foreach($this->getItems() as $_item): ?>
-    <li<?php if($_item->isComposite() || !$_item->isSaleable()): ?> class="super-products"<?php endif; ?>>
-        <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
-            <span class="checkbox-container">
-            <?php if (!$_item->getRequiredOptions()): ?>
-                <input type="checkbox" class="related-checkbox" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>" />
-            <?php endif; ?>
-            </span>
-        <?php else: ?>
-            <span class="checkbox-container">&nbsp;</span>
-        <?php endif; ?>
-            <a  class="product-image" href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" width="50" height="50" /></a>
-        <div class="product-details">
-                <h4 class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></h4>
-                <?php echo $this->getPriceHtml($_item) ?>
-                <?php if($_item->isComposite()): ?>
-                    <p><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a></p>
-                <?php else: ?>
-                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                    <p><a href="<?php echo $this->getAddToWishlistUrl($_item) ?>"><?php echo $this->__('Add to Wishlist') ?></a></p>
+<div class="block block-related">
+    <div class="block-title">
+        <h2><?php echo $this->__('Related Products') ?></h2>
+    </div>
+    <div class="block-content">
+        <p><?php echo $this->__('Check items to add to the cart or ') ?><a href="#" onclick="selectAllRelated(this); return false;"><?php echo $this->__('select all') ?></a></p>
+        <ol id="block-related">
+        <?php foreach($this->getItems() as $_item): ?>
+            <li<?php if($_item->isComposite() || !$_item->isSaleable()): ?> class="super-products"<?php endif; ?>>
+                <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
+                    <?php if (!$_item->getRequiredOptions()): ?>
+                        <input type="checkbox" class="checkbox related-checkbox" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>" />
                     <?php endif; ?>
                 <?php endif; ?>
-        </div>
-    </li>
-    <?php endforeach ?>
-    </ol>
+                <div class="item">
+                    <a href="<?php echo $_item->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50) ?>" width="50" height="50" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
+                    <div class="product-details">
+                        <h3 class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></h3>
+                        <?php echo $this->getPriceHtml($_item) ?>
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <p><a href="<?php echo $this->getAddToWishlistUrl($_item) ?>"><?php echo $this->__('Add to Wishlist') ?></a></p>
+                        <?php endif; ?>
+                        </div>
+                </div>
+            </li>
+        <?php endforeach ?>
+        </ol>
+        <script type="text/javascript">decorateList('block-related', 'none-recursive')</script>
+    </div>
 </div>
 <script type="text/javascript">
-<!--
+//<![CDATA[
 $$('.related-checkbox').each(function(elem){
     Event.observe(elem, 'click', addRelatedToProduct)
 });
@@ -84,6 +89,6 @@ function addRelatedToProduct(){
         $('related-products-field').value = values.join(',');
     }
 }
-//-->
+//]]>
 </script>
 <?php endif ?>

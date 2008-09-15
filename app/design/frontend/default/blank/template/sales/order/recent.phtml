@@ -12,48 +12,63 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-<div class="box">
+<div class="recent-orders">
 <?php $_orders = $this->getOrders(); ?>
-    <h3 class="box-head"><?php echo $this->__('Recent Orders') ?></h3>
-	<?php if( sizeof($_orders->getItems()) > 0 ): ?><a href="<?php echo $this->getUrl('sales/order/history') ?>"><?php echo $this->__('View All') ?></a><?php endif; ?>
+    <div class="title-buttons">
+        <h3><?php echo $this->__('Recent Orders') ?></h3>
+        <?php if( sizeof($_orders->getItems()) > 0 ): ?><a href="<?php echo $this->getUrl('sales/order/history') ?>"><?php echo $this->__('View All') ?></a><?php endif; ?>
+    </div>
 <?php if( sizeof($_orders->getItems()) > 0 ): ?>
-    <table cellspacing="0" class="data-table" id="my-orders-table">
+    <table class="data-table" id="my-orders-table">
+    <col />
+    <col />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
         <thead>
             <tr>
                 <th><?php echo $this->__('Order #') ?></th>
                 <th><?php echo $this->__('Date') ?></th>
                 <th><?php echo $this->__('Ship to') ?></th>
-                <th><?php echo $this->__('Order Total') ?></th>
+                <th><span class="nobr"><?php echo $this->__('Order Total') ?></span></th>
                 <th><?php echo $this->__('Status') ?></th>
-                <th></th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-        <?php $_odd = ''; ?>
             <?php foreach ($_orders as $_order): ?>
-                <tr class="<?php echo ($_odd = ($_odd ? 'odd' : '')) ?>">
-                    <td><?php echo $_order->getRealOrderId() ?>&nbsp;</td>
+                <tr>
+                    <td><?php echo $_order->getRealOrderId() ?></td>
                     <td><?php echo $this->formatDate($_order->getCreatedAt()) ?> </td>
-                    <td><?php echo $this->htmlEscape($_order->getShippingAddress()->getName()) ?>&nbsp;</td>
-                    <td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?>&nbsp;</td>
-                    <td><em><?php echo $_order->getStatusLabel() ?></em>&nbsp;</td>
-                    <td><a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View Order') ?></a>
+                    <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                    <td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                    <td><em><?php echo $_order->getStatusLabel() ?></em></td>
+                    <td class="a-center">
+                        <span class="nobr">
+                        <a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View Order') ?></a>
                         <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
-                        	<span> | </span>
-                        	<a href="<?php echo $this->getReorderUrl($_order) ?>"><?php echo $this->__('Reorder') ?></a>
+                            <span class="separator">|</span> <a href="<?php echo $this->getReorderUrl($_order) ?>"><?php echo $this->__('Reorder') ?></a>
                         <?php endif ?>
+                        </span>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-<script type="text/javascript">decorateTable('my-orders-table')</script>
+    <script type="text/javascript">decorateTable('my-orders-table')</script>
 <?php else: ?>
     <p><?php echo $this->__('You have placed no orders.'); ?></p>
 <?php endif; ?>

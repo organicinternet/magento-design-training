@@ -12,7 +12,13 @@
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   design_default
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,8 +32,8 @@
  */
 ?>
 <?php if($this->getTitle()): ?>
-<div class="page-head-container">
-    <h2 class="page-head"><?php echo $this->getTitle() ?></h2>
+<div class="page-title">
+    <h2><?php echo $this->getTitle() ?></h2>
 </div>
 <?php endif; ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
@@ -47,7 +53,7 @@
             <li>
                 <div class="input-box">
                     <label for="telephone"><?php echo $this->__('Telephone') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="telephone" value="<?php echo $this->htmlEscape($this->getAddress()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="required-entry input-text" id="telephone" />
+                    <input type="text" name="telephone" value="<?php echo $this->htmlEscape($this->getAddress()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" id="telephone" />
                 </div>
                 <div class="input-box">
                     <label for="fax"><?php echo $this->__('Fax') ?></label><br />
@@ -61,7 +67,7 @@
         <ul>
             <li>
                 <label for="street_1"><?php echo $this->__('Street Address') ?> <span class="required">*</span></label><br />
-                <input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="required-entry input-text" />
+                <input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="input-text required-entry" />
             </li>
 <?php for ($_i=2, $_n=$this->helper('customer/address')->getStreetLines(); $_i<=$_n; $_i++): ?>
             <li>
@@ -71,23 +77,23 @@
             <li>
                 <div class="input-box">
                     <label for="city"><?php echo $this->__('City') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="city" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>"  title="<?php echo $this->__('City') ?>" class="required-entry input-text" id="city" />
+                    <input type="text" name="city" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>"  title="<?php echo $this->__('City') ?>" class="input-text required-entry" id="city" />
                 </div>
                 <div class="input-box">
                     <label for="region_id"><?php echo $this->__('State/Province') ?> <span class="required">*</span></label><br />
-                    <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none">
+                    <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
                        <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
                     </select>
                     <script type="text/javascript">
                         $('region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
                     </script>
-                    <input type="text" id="region" name="region" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none" />
+                    <input type="text" id="region" name="region" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none;" />
                 </div>
             </li>
             <li>
                 <div class="input-box">
                     <label for="zip"><?php echo $this->__('Zip/Postal Code') ?> <span class="required">*</span></label><br />
-                    <input type="text" name="postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="validate-zip-international required-entry input-text" />
+                    <input type="text" name="postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="input-text validate-zip-international required-entry" />
                 </div>
                 <div class="input-box">
                     <label for="country"><?php echo $this->__('Country') ?> <span class="required">*</span></label><br />
@@ -98,7 +104,7 @@
                 <?php if($this->isDefaultBilling()): ?>
                     <strong><?php echo $this->__('Default Billing Address') ?></strong>
                 <?php elseif($this->canSetAsDefaultBilling()): ?>
-                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" />&nbsp;
+                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox" />
                     <label for="primary_billing"><?php echo $this->__('Use as my default billing address') ?></label>
                 <?php else: ?>
                     <input type="hidden" name="default_billing" value="1" />
@@ -108,7 +114,7 @@
                 <?php if($this->isDefaultShipping()): ?>
                     <strong><?php echo $this->__('Default Shipping Address') ?></strong>
                 <?php elseif($this->canSetAsDefaultShipping()): ?>
-                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" />&nbsp;
+                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox" />
                     <label for="primary_shipping"><?php echo $this->__('Use as my default shipping address') ?></label>
                 <?php else: ?>
                     <input type="hidden" name="default_shipping" value="1" />
@@ -116,10 +122,10 @@
             </li>
         </ul>
     </fieldset>
-    <div class="buttons-container">
-        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <div class="buttons-set">
         <a href="<?php echo $this->getBackUrl() ?>" class="back-link">&laquo; <?php echo $this->__('Back') ?></a>
-        <button class="form-button" type="submit"><span><?php echo $this->__('Save Address') ?></span></button>
+        <button type="submit" class="button"><span><?php echo $this->__('Save Address') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">
