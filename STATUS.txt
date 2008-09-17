@@ -510,6 +510,16 @@ FIXED BUGS:
     Fixed admin order refund - base tax amount was not stored after refund
     Fixed single page checkout issues in modern theme
 
+    Fixed Google Checkout table rates issue
+    Fixed SQL error when upgrading some existing databases
+    Fixed layered navigation index refresh
+    Fixed refreshing products count in categories management page
+    Fixed wrong order status after invoice is created
+    Fixed sending background copies of sales emails
+    Fixed online customers grid filter
+    Fixed optional DOB field verification that prevented to proceed to the next step of single-page checkout
+    Fixed empty France regions names
+    Fixed translations and locale settings used in PDF print-outs
 
 
 CHANGES:
