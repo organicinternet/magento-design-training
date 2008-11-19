@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,12 +21,12 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php  $_results = $this->getTrackingInfo() ?>
 <div class="buttons-set">
-    <button class="button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
+    <button class="button" onclick="window.close(); window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
 </div>
 <?php if(sizeof($_results)>0): ?>
 <?php foreach($_results as $shipid => $_result): ?>
@@ -39,77 +39,77 @@
         <table class="data-table">
             <?php if(is_object($track)): ?>
             <tr>
-                <td class="first label"><?php echo $this->__('Tracking Number:'); ?></td>
-                <td class="data"><?php echo $track->getTracking(); ?></td>
+                <th class="label"><?php echo $this->__('Tracking Number:'); ?></th>
+                <td class="value"><?php echo $track->getTracking(); ?></td>
             </tr>
             <?php if ($track->getCarrierTitle()): ?>
             <tr>
-                <td class="first label"><?php echo $this->__('Carrier:'); ?></td>
-                <td class="data"><?php echo $track->getCarrierTitle(); ?></td>
+                <th class="label"><?php echo $this->__('Carrier:'); ?></th>
+                <td class="value"><?php echo $track->getCarrierTitle(); ?></td>
             </tr>
             <?php endif; ?>
             <?php if($track->getErrorMessage()): ?>
             <tr>
-                <td class="first label"><?php echo $this->__('Error:'); ?></td>
-                <td class="error"><?php echo $this->__('Tracking information is currently not available. Please ')."<a href='{$this->getContactUs()}' onclick="this.target='_blank'">".$this->__('contact us').'</a>'.$this->__(' for more information or email us at '); ?><a href="<?php echo $this->getStoreSupportEmail() ?>"><?php echo $this->getStoreSupportEmail() ?></a></td>
+                <th class="label"><?php echo $this->__('Error:'); ?></th>
+                <td class="error"><?php echo $this->__('Tracking information is currently not available. Please ') ?><a href="<?php echo $this->getContactUs() ?>" onclick="this.target='_blank'"><?php echo $this->__('contact us') ?></a><?php $this->__(' for more information or email us at '); ?><a href="<?php echo $this->getStoreSupportEmail() ?>"><?php echo $this->getStoreSupportEmail() ?></a></td>
             </tr>
             <?php elseif($track->getTrackSummary()): ?>
             <tr>
-                <td class="first label"><?php echo $this->__('Info:'); ?></td>
-                <td class="data"><?php echo $track->getTrackSummary(); ?></td>
+                <th class="label"><?php echo $this->__('Info:'); ?></th>
+                <td class="value"><?php echo $track->getTrackSummary(); ?></td>
             </tr>
             <?php elseif($track->getUrl()): ?>
             <tr>
-                <td class="first label"><?php echo $this->__('Track:'); ?></td>
-                <td class="data"><a href="<?php echo $track->getUrl(); ?>" onclick="this.target='_blank'"><?php echo $track->getUrl(); ?></a></td>
+                <th class="label"><?php echo $this->__('Track:'); ?></th>
+                <td class="value"><a href="<?php echo $track->getUrl(); ?>" onclick="this.target='_blank'"><?php echo $track->getUrl(); ?></a></td>
             </tr>
             <?php else: ?>
                 <?php if ($track->getStatus()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Status:'); ?></td>
-                    <td class="data"><?php echo $track->getStatus(); ?></td>
+                    <th class="label"><?php echo $this->__('Status:'); ?></th>
+                    <td class="value"><?php echo $track->getStatus(); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getDeliverydate()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Delivered on:'); ?></td>
-                    <td class="data"><?php echo $this->formatDeliveryDateTime($track->getDeliverydate(),$track->getDeliverytime()); ?></td>
+                    <th class="label"><?php echo $this->__('Delivered on:'); ?></th>
+                    <td class="value"><?php echo $this->formatDeliveryDateTime($track->getDeliverydate(),$track->getDeliverytime()); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getSignedby()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Signed by:'); ?></td>
-                    <td class="data"><?php echo $track->getSignedby(); ?></td>
+                    <th class="label"><?php echo $this->__('Signed by:'); ?></th>
+                    <td class="value"><?php echo $track->getSignedby(); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getDeliveryLocation()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Delivered to:'); ?></td>
-                    <td class="data"><?php echo $track->getDeliveryLocation(); ?></td>
+                    <th class="label"><?php echo $this->__('Delivered to:'); ?></th>
+                    <td class="value"><?php echo $track->getDeliveryLocation(); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getShippedDate()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Shipped or billed on:'); ?></td>
-                    <td class="data"><?php echo $track->getShippedDate(); ?></td>
+                    <th class="label"><?php echo $this->__('Shipped or billed on:'); ?></th>
+                    <td class="value"><?php echo $track->getShippedDate(); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getService()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Service Type:'); ?></td>
-                    <td class="data"><?php echo $track->getService(); ?></td>
+                    <th class="label"><?php echo $this->__('Service Type:'); ?></th>
+                    <td class="value"><?php echo $track->getService(); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 <?php if ($track->getWeight()): ?>
                 <tr>
-                    <td class="first label"><?php echo $this->__('Weight:'); ?></td>
-                    <td class="data"><?php echo $track->getWeight(); ?></td>
+                    <th class="label"><?php echo $this->__('Weight:'); ?></th>
+                    <td class="value"><?php echo $track->getWeight(); ?></td>
                 </tr>
                 <?php endif; ?>
 
@@ -117,13 +117,12 @@
                 <?php elseif(isset($track['title']) && isset($track['number']) && $track['number']): ?>
                 <!--if the tracking is custom value-->
                 <tr>
-                    <td class="first label"><?php echo ($track['title'] ? $track['title'] : $this->__('N/A')); ?>:</td>
-                    <td class="data"><?php echo (isset($track['number']) ? $track['number'] : ''); ?></td>
+                    <th class="label"><?php echo ($track['title'] ? $track['title'] : $this->__('N/A')); ?>:</th>
+                    <td class="value"><?php echo (isset($track['number']) ? $track['number'] : ''); ?></td>
                 </tr>
                 <?php endif; ?>
 
                 </table>
-
                 <?php if (is_object($track) && sizeof($track->getProgressdetail())>0): ?>
                 <br />
                 <table class="data-table" id="track-history-table-<?php echo $track->getTracking(); ?>">
@@ -162,5 +161,5 @@
     <div><?php echo $this->__('There is no tracking available.'); ?></div>
 <?php endif; ?>
 <div class="buttons-set">
-    <button class="button" onclick="window.close();window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
+    <button class="button" onclick="window.close(); window.opener.focus();"><span><?php echo $this->__('Close Window') ?></span></button>
 </div>

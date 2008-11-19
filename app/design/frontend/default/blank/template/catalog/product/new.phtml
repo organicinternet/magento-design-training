@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,25 +21,22 @@
  * @category   default_default
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
-<div class="up-sell">
+<div class="page-title">
     <h2><?php echo $this->__('New Products') ?></h2>
-    <table class="products-grid" id="recently-compared-list-table">
+</div>
+<table class="products-grid" id="new-products-list-table">
     <tr>
     <?php $i=0; foreach ($_products->getItems() as $_product): ?>
         <?php if ($i>5): continue; endif; ?>
         <td>
-            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
-                <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(80, 77) ?>" width="80" height="77" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" />
-            </a>
+            <a class="product-image" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(80, 77) ?>" width="80" height="77" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a>
             <h3 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>)"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3>
-
             <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
-
-            <?php echo $this->getPriceHtml($_product) ?>
+            <?php echo $this->getPriceHtml($_product, true, '-new') ?>
             <?php if($_product->isSaleable()): ?>
             <button class="button" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><?php echo $this->__('Add to Cart') ?></span></button>
             <?php else: ?>
@@ -49,16 +46,15 @@
                 <?php if ($this->helper('wishlist')->isAllow()) : ?>
                     <li><a href="<?php echo $this->getAddToWishlistUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
                 <?php endif; ?>
-                <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?><br />
+                <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
                     <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
                 <?php endif; ?>
             </ul>
         </td>
     <?php $i++; endforeach; ?>
     <?php for($i;$i%5!=0;$i++): ?>
-            <td class="empty">&nbsp;</td>
-        <?php endfor ?>
+        <td class="empty">&nbsp;</td>
+    <?php endfor; ?>
     </tr>
-    </table>
-</div>
+</table>
 <?php endif; ?>

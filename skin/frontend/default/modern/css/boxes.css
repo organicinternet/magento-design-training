@@ -3,10 +3,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -18,7 +18,7 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
 /****************************************************/
@@ -59,18 +59,20 @@ table .col-1, table .col-2, table .col-3, table .col-4 { float:none !important; 
 /* Form Elements */
 input.input-text,
 select,
-textarea                { border:1px solid #b6b6b6; font:12px arial, helvetica, sans-serif; }
-option, optgroup        { font:12px arial, helvetica, sans-serif; }
-optgroup                { font-weight:bold; }
+textarea                  { border:1px solid #b6b6b6; font:12px arial, helvetica, sans-serif; }
+select option             { padding-right:10px; }
+option, optgroup          { font:12px arial, helvetica, sans-serif; }
+optgroup                  { font-weight:bold; }
 input.input-text,
-textarea                { padding:2px; overflow:auto; }
-input.radio             { margin-right:3px; }
-input.checkbox          { margin-right:3px; }
-.v-fix                  { display:inline; }
-.qty                    { width:2.5em; }
+textarea                  { padding:2px; overflow:auto; }
+input.radio               { margin-right:3px; }
+input.checkbox            { margin-right:3px; }
+.v-fix                    { float:left; }
+.v-fix .validation-advice { display:block; margin-right:-12em; width:12em; position:relative; }
+.qty                      { width:2.5em; }
 .group-select label,
 .form-list label,
-.payment-methods label  { font-weight:bold; }
+.payment-methods label    { font-weight:bold; }
 .button-set { /* Container for form buttons*/
     clear:both;
     margin-top:4em;
@@ -100,23 +102,9 @@ input.checkbox          { margin-right:3px; }
 
 /* Form Messages */
 .validation-advice, .required { color:#EB340A; }
-.validation-advice {
-    clear:both;
-    min-height:15px;
-    margin-top:3px;
-    background:url(../images/validation_advice_bg.gif) no-repeat 2px 4px;
-    padding-left:13px;
-    font-size:.95em;
-    font-weight:bold;
-    line-height:1.25em;
-    }
-.validation-failed {
-    border:1px solid #eb340a !important;
-    background:#faebe7 !important;
-    }
-label.required {
-    font-weight:bold;
-    }
+.validation-advice { clear:both; min-height:15px; margin-top:3px; background:url(../images/validation_advice_bg.gif) no-repeat 2px 4px; padding-left:13px; font-size:10px; font-weight:bold; line-height:1.25em; }
+.validation-failed { border:1px solid #eb340a !important; background:#faebe7 !important; }
+label.required { font-weight:bold; }
 p.required { text-align:right; }
 
 
@@ -355,15 +343,9 @@ h1#logo                 { float:left; }
     }
 .mini-search .input-text { width:212px; margin-right:2px; }
 
-.search-autocomplete {
-    border:1px solid #999;
-    background:#f9f5f0;
-    position:absolute;
-    left:45px !important;
-    top:22px !important;
-    width:216px!important;
-    }
+.search-autocomplete { border:1px solid #999; background:#f9f5f0; position:absolute; left:45px !important; top:22px !important; width:216px!important; }
 .search-autocomplete li { border-bottom:1px solid #f4eee7; padding:2px 8px 1px 8px; }
+.search-autocomplete li .amount { float:right; font-weight:bold; }
 .search-autocomplete li.odd { background:#f6f6f6; }
 .search-autocomplete li.selected { background:#ecf9ea; }
 
@@ -422,9 +404,8 @@ h1#logo                 { float:left; }
 
 .mini-newsletter                    { margin:8px 0; }
 .mini-newsletter label              { float:left; }
-.mini-newsletter .input-box         { float:left; margin:0 5px; }
+.mini-newsletter .input-box         { float:left; width:186px; margin:0 5px; }
 .mini-newsletter .input-text        { width:180px; }
-.mini-newsletter .validation-advice { width:178px; }
 
 .mini-cart .head                    { background:#679100; }
 .mini-cart .head h4                 { color:#fff; }
@@ -435,15 +416,25 @@ h1#logo                 { float:left; }
 .mini-poll td.label                 { font-weight:bold; padding-right:10px; }
 .mini-poll td.item                  { white-space:nowrap; }
 
+.mini-reorder h5                    { border-bottom:1px solid #ddd; margin-bottom:10px; padding-bottom:2px; }
+
+.hp-report                          { width:683px; margin:0 auto; padding:0 0 50px; }
+.hp-report .head-alt                { margin:10px 0 15px; }
+.hp-report .product-name            { font-size:1.1em; font-weight:normal; line-height:1.35; margin-bottom:5px; color:#444; }
+.hp-report .product-name a          { color:#444; text-decoration:underline; }
+.hp-report .product-name a:hover    { text-decoration:none; }
+.hp-report .product-image img       { border-right:1px solid #ddd; border-bottom:1px solid #ddd; }
+.hp-report .generic-product-grid td.last .product-image img { border-right:0; }
+
 
 /********************** Footer */
 .footer                         { margin:15px 0 40px 0; color:#666; }
 .footer .footer-right           { float:right; width:50%; text-align:right; }
 .footer .footer-callout         { margin-top:-10px; }
 .footer .footer-links           { margin-bottom:10px; }
-.footer .footer-links a         { background:url(../images/links_separator.gif) no-repeat 100% 50%; padding:0 6px 0 5px; }
-.footer .footer-links .first a  { padding-left:0; }
-.footer .footer-links .last a   { padding-right:0; background:none; }
+.footer .footer-links li.last a { padding-right:0; margin-right:0; background:none; }
+.footer ul a                    { background:url(../images/links_separator.gif) no-repeat 100% 50%; padding-right:5px; margin-right:3px; }
+.footer ul,
 .footer li                      { display:inline; }
 .footer a,
 .footer a:hover                 { color:#444; }
@@ -457,7 +448,7 @@ h1#logo                 { float:left; }
 .product-shop                    { float:right; }
 .product-shop .form-button,
 .product-shop .form-button-alt   { margin-right:10px; }
-.out-of-stock                    { padding:0 0 5px; color:#D83820; font-weight:bold; }
+.out-of-stock                    { padding:0 0 5px; margin:0; color:#D83820; font-weight:bold; }
 .product-shop .short-description { width:100%; overflow:hidden; }
 
 
@@ -600,7 +591,7 @@ a.minimal-price-link .price { font-weight:normal; color:#444; }
 /* Generic Product Grid */
 .generic-product-grid           { width:100%; }
 .generic-product-grid td        { width:25%; }
-.generic-product-grid td.empty-product{ border-right:0; }
+.generic-product-grid td.empty-product { border-right:0; }
 
 
 /********************** Layered Navigation */
@@ -701,14 +692,7 @@ a.minimal-price-link .price { font-weight:normal; color:#444; }
 /* Grid Type */
 .listing-type-grid .product-image img { border:1px solid #dddddd; border-left:0; }
 .listing-type-grid tr.first .product-image img { border-top:none; }
-.listing-type-grid .add-to-compare {
-    display:block;
-    margin:5px 0;
-    background:url(../images/icon_add_to_compare.gif) no-repeat 0 50%;
-    padding-left:22px;
-    color:#6e6969;
-    font-weight:bold;
-    }
+.listing-type-grid .add-to-compare { display:block; margin:5px 0; background:url(../images/icon_add_to_compare.gif) no-repeat 0 50%; padding-left:22px; color:#6e6969; font-weight:bold; }
 .listing-type-grid .rating-box { float:left; margin-left:0; margin-right:5px; }
 .listing-type-grid .actions { margin:10px 0;text-align:center; }
 
@@ -737,6 +721,7 @@ a.minimal-price-link .price { font-weight:normal; color:#444; }
 .product-info-box               { float:right; width:363px; }
 .product-info-box .product-name { margin-bottom:.3em; color:#0a263c; font-size:1.2em; }
 .product-info-box .price-box    { margin:10px 0; }
+.product-info-box .data-table .price-box { margin:0; padding:0; }
 .product-info-box .ratings      { margin-bottom:1em; }
 .add-to-cart-box                { margin:10px 0; border:1px solid #eee; background-color:#f8f8f8; padding:10px; text-align:right; }
 .add-to-boxes .add-to-cart-box  { text-align:left; }

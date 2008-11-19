@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <div class="page-title">
@@ -34,13 +34,13 @@
         <h3><?php echo $this->__('Billing Information') ?></h3>
         <div class="col-1">
             <?php $_address=$this->getBillingAddress() ?>
-            <h4><?php echo $this->__('Billing Address') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditBillingAddressUrl($_address) ?>"><?php echo $this->__('Change Billing Address') ?></a></h4>
+            <h4><?php echo $this->__('Billing Address') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditBillingAddressUrl($_address) ?>"><?php echo $this->__('Edit') ?></a></h4>
             <address>
                 <?php echo $_address->format('html') ?>
             </address>
         </div>
         <div class="col-2">
-            <h4><?php echo $this->__('Payment Method') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditBillingUrl() ?>"><?php echo $this->__('Change Payment Method') ?></a></h4>
+            <h4><?php echo $this->__('Payment Method') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditBillingUrl() ?>"><?php echo $this->__('Edit') ?></a></h4>
             <input type="hidden" name="payment[cc_number]" value="<?php echo $this->htmlEscape($this->getPayment()->getCcNumber())?>" />
             <input type="hidden" name="payment[cc_cid]" value="<?php echo $this->htmlEscape($this->getPayment()->getCcCid())?>" />
             <?php echo $this->getPaymentHtml() ?>
@@ -52,11 +52,11 @@
         <div class="col2-set">
         <h4><?php echo $this->__('Address %s of %s', ($_index+1), $this->getShippingAddressCount()) ?></h4>
             <div class="col-1 narrow">
-                <h5><?php echo $this->__('Shipping to') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditShippingAddressUrl($_address) ?>"><?php echo $this->__('Change Shipping Address') ?></a></h5>
+                <h5><?php echo $this->__('Shipping to') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditShippingAddressUrl($_address) ?>"><?php echo $this->__('Edit') ?></a></h5>
                 <address>
                     <?php echo $_address->format('html') ?>
                 </address>
-                <h5><?php echo $this->__('Shipping Method') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditShippingUrl() ?>"><?php echo $this->__('Change Shipping Method') ?></a></h5>
+                <h5><?php echo $this->__('Shipping Method') ?> <span class="separator">|</span> <a href="<?php echo $this->getEditShippingUrl() ?>"><?php echo $this->__('Edit') ?></a></h5>
                 <?php if($_rate=$this->getShippingAddressRate($_address)): ?>
                 <p>
                 <?php echo $_rate->getCarrierTitle() ?> (<?php echo $_rate->getMethodTitle() ?>)

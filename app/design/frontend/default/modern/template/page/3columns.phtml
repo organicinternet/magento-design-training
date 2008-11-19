@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_default
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php
@@ -34,19 +34,17 @@
 <head>
     <?php echo $this->getChildHtml('head') ?>
 </head>
-
 <body <?php echo $this->getBodyClass()?'class="'.$this->getBodyClass().'"':'' ?>>
-	<div class="no-display">
-		<h4>Skip to Store Area:</h4>
-		<ul>
-			<li><a href="#main"><?php echo $this->__('Skip to Main Content') ?></a></li>
-			<li><a href="#col-left"><?php echo $this->__('Skip to Left Column') ?></a></li>
-			<li><a href="#footer"><?php echo $this->__('Skip to Footer') ?></a></li>
-		</ul>
-	</div>
-	<div class="container">
+    <div class="no-display">
+        <h4>Skip to Store Area:</h4>
+        <ul>
+            <li><a href="#main"><?php echo $this->__('Skip to Main Content') ?></a></li>
+            <li><a href="#col-left"><?php echo $this->__('Skip to Left Column') ?></a></li>
+            <li><a href="#footer"><?php echo $this->__('Skip to Footer') ?></a></li>
+        </ul>
+    </div>
+    <div class="container">
         <?php echo $this->getChildHtml('header') ?>
-        <!-- [end] header -->
         <div class="outline-creator">
             <div class="toplinks-bar">
                 <?php  echo $this->getChildHtml('store_language') ?>
@@ -60,20 +58,18 @@
             <div class="middle layout-2columns">
                 <div class="col-left sidebar" id="col-left">
                     <?php echo $this->getChildHtml('left') ?>&nbsp;
-                    <!-- [end] col-left -->
                 </div>
                 <div class="col-main" id="main">
                     <?php echo $this->getChildHtml('global_messages') ?>
                     <?php echo $this->getChildHtml('content') ?>
-                    <!-- [end] content -->
                 </div>
             </div>
         </div>
-		<div class="footer" id="footer">
+        <div class="footer" id="footer">
             <?php echo $this->getChildHtml('footer') ?>
-		</div>
+        </div>
     </div>
     <?php echo $this->getChildHtml('before_body_end') ?>
     <?php echo $this->getAbsoluteFooter() ?>
-    </body>
+</body>
 </html>

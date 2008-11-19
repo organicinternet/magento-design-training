@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php if ($this->helper('giftmessage/message')->getIsMessagesAvailable('items', $this->getOrder())): ?>
@@ -56,8 +56,7 @@ function giftMessageToogle(giftMessageIdentifier)
 <?php  $_order = $this->getOrder() ?>
 <h3><?php echo $this->__('Items Ordered') ?>
     <?php if ($_order->getTracksCollection()->count()) : ?>
-        <span class="separator">|</span>
-        <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopUpUrlByOrderId($_order->getId()) ?>','trackorder','top=50,left=50,width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track your order') ?>"><?php echo $this->__('Track your order') ?></a>
+        <span class="separator">|</span> <a href="#" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopUpUrlByOrderId($_order->getId()) ?>','trackorder','top=50,left=50,width=800,height=600,resizable=yes,scrollbars=yes'); return false;" title="<?php echo $this->__('Track your order') ?>"><?php echo $this->__('Track your order') ?></a>
     <?php endif; ?>
 </h3>
 
@@ -67,22 +66,20 @@ function giftMessageToogle(giftMessageIdentifier)
     <h3><?php echo $this->__('Gift Message for this Order') ?></h3>
     <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_order); ?>
     <dl class="gift-message">
-        <dt><span><?php echo $this->__('From') ?></span> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
-        <dt><span><?php echo $this->__('To') ?></span> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+        <dt><strong><?php echo $this->__('From') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+        <dt><strong><?php echo $this->__('To') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
         <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_order) ?></dd>
     </dl>
 <?php endif; ?>
 <?php $_history = $this->getOrder()->getVisibleStatusHistory() ?>
 <?php if (count($_history)): ?>
     <h3><?php echo $this->__('About Your Order') ?></h3>
-    <div>
-        <dl>
-            <?php foreach ($_history as $_historyItem): ?>
-                <dt><?php echo $this->formatDate($_historyItem->getCreatedAt(), 'medium', true) ?></dt>
-                <dd><?php echo $_historyItem->getComment() ?></dd>
-            <?php endforeach; ?>
-        </dl>
-    </div>
+    <dl>
+        <?php foreach ($_history as $_historyItem): ?>
+            <dt><?php echo $this->formatDate($_historyItem->getCreatedAt(), 'medium', true) ?></dt>
+            <dd><?php echo $_historyItem->getComment() ?></dd>
+        <?php endforeach; ?>
+    </dl>
 <?php endif; ?>
 <div class="buttons-set">
     <a href="<?php echo $this->getBackUrl() ?>" class="back-link">&laquo; <?php echo $this->__('Back to My Orders') ?></a>

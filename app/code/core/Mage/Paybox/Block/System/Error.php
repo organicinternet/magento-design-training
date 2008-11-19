@@ -34,25 +34,13 @@
  */
 class Mage_Paybox_Block_System_Error extends Mage_Core_Block_Template
 {
-    protected $_pbxErrorsDesc = array(
-        '-1' => Mage::helper('paybox')->__('Error in reading the parameters via stdin (POST method) (error in http reception)'),
-        '-2' => Mage::helper('paybox')->__('Error in memory allocation. Not enough memory available on the trader\'s server'),
-        '-3' => Mage::helper('paybox')->__('Error in reading the parameters QUERY_STRING or CONTENT_LENGTH. (http error)'),
-        '-4' => Mage::helper('paybox')->__('PBX_RETOUR, PBX_ANNULE, PBX_REFUSE or PBX_EFFECTUE are too long (<150 characters)'),
-        '-5' => Mage::helper('paybox')->__('Error in opening the file (if PBX_MODE contains 3) : local file non-existent, not found or access error'),
-        '-6' => Mage::helper('paybox')->__('Error in file format (if PBX_MODE contains 3) : local file badly formed, empty or lines are badly formatted'),
-        '-7' => Mage::helper('paybox')->__('A compulsory variable is missing (PBX_SITE, PBX_RANG, PBX_IDENTIFIANT, PBX_TOTAL, PBX_CMD, etc.)'),
-        '-8' => Mage::helper('paybox')->__('One of the numerical variables contains a non-numerical character (site, rank, identifier, amount, currency etc.)'),
-        '-9' => Mage::helper('paybox')->__('PBX_SITE contains a site number which does not consist of exactly 7 characters'),
-        '-10' => Mage::helper('paybox')->__('PBX_RANG contains a rank number which does not consist of exactly 2 characters'),
-        '-11' => Mage::helper('paybox')->__('PBX_TOTAL has more than 10 or fewer than 3 numerical characters'),
-        '-12' => Mage::helper('paybox')->__('PBX_LANGUE or PBX_DEVISE contains a code which does not contain exactly 3 characters'),
-        '-13' => Mage::helper('paybox')->__('PBX_CMD is empty or contains a reference longer than 250 characters'),
-        '-14' => '',
-        '-15' => '',
-        '-16' => Mage::helper('paybox')->__('PBX_PORTEUR does not contain a valid e-mail address'),
-        '-17' => Mage::helper('paybox')->__('Error of coherence (multi-baskets) : Reserved Future Usage'),
-    );
+
+    /**
+     * Error messages desciptions
+     *
+     * @var array
+     */
+    protected $_pbxErrorsDesc;
 
     /**
      * Enter description here...
@@ -66,16 +54,40 @@ class Mage_Paybox_Block_System_Error extends Mage_Core_Block_Template
 
     public function getErrorMessage()
     {
-        $msg = $this->_pbxErrorsDesc[$this->getCheckout()->getPayboxErrorNumber()];
+        if (empty($this->_pbxErrorsDesc)) {
+            $this->_pbxErrorsDesc = array(
+                '-1' => 'Error in reading the parameters via stdin (POST method) (error in http reception)',
+                '-2' => 'Error in memory allocation. Not enough memory available on the trader\'s server',
+                '-3' => 'Error in reading the parameters QUERY_STRING or CONTENT_LENGTH. (http error)',
+                '-4' => 'PBX_RETOUR, PBX_ANNULE, PBX_REFUSE or PBX_EFFECTUE are too long (<150 characters)',
+                '-5' => 'Error in opening the file (if PBX_MODE contains 3) : local file non-existent, not found or access error',
+                '-6' => 'Error in file format (if PBX_MODE contains 3) : local file badly formed, empty or lines are badly formatted',
+                '-7' => 'A compulsory variable is missing (PBX_SITE, PBX_RANG, PBX_IDENTIFIANT, PBX_TOTAL, PBX_CMD, etc.)',
+                '-8' => 'One of the numerical variables contains a non-numerical character (site, rank, identifier, amount, currency etc.)',
+                '-9' => 'PBX_SITE contains a site number which does not consist of exactly 7 characters',
+                '-10' => 'PBX_RANG contains a rank number which does not consist of exactly 2 characters',
+                '-11' => 'PBX_TOTAL has more than 10 or fewer than 3 numerical characters',
+                '-12' => 'PBX_LANGUE or PBX_DEVISE contains a code which does not contain exactly 3 characters',
+                '-13' => 'PBX_CMD is empty or contains a reference longer than 250 characters',
+                '-14' => '',
+                '-15' => '',
+                '-16' => 'PBX_PORTEUR does not contain a valid e-mail address',
+                '-17' => 'Error of coherence (multi-baskets) : Reserved Future Usage',
+            );
+        }
+        $msg = Mage::helper('paybox')->__($this->_pbxErrorsDesc[$this->getCheckout()->getPayboxErrorNumber()]);
         $this->getCheckout()->unsPayboxErrorNumber();
         return $msg;
     }
 
     /**
      * Get continue shopping url
+     *
+     * @return string
      */
     public function getContinueShoppingUrl()
     {
         return Mage::getUrl('checkout/cart', array('_secure' => true));
     }
+
 }

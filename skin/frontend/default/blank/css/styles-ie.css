@@ -3,10 +3,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -18,22 +18,29 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
  
 /* IE 6 only */
 .login-page .content { _height:150px; }
 .validation-advice { _height:13px; }
-.one-page-checkout li.section { vertical-align:top; }
-.product-view .product-img-box .more-views li { display:inline; }
+.error-msg,
+.success-msg,
+.note-msg,
+.notice-msg { _height:24px; }
+.opc li.section { vertical-align:top; }
+
+/* Doubled Margin Fixes */
+.product-view .product-img-box .more-views li,
+.sp-methods select.month { display:inline; }
 
 /********** < Navigation styles */
 #nav li,
 #nav li a { zoom:1; }
+#nav li { vertical-align:top; }
 /* Show Menu */
 #nav li.over ul.shown-sub { left:0; }
 #nav li.over li ul.shown-sub { left:100px; }
-#nav ul li.parent { margin-bottom:-3px; }
 /********** < Navigation styles */
 
 input.radio { width:13px; height:13px; }
@@ -52,12 +59,13 @@ input.checkbox { width:13px; height:13px; }
 .col3-set,
 .col4-set,
 .messages li,
-.sidebar .mini-products-list li,
-.sidebar .block .actions,
-.sidebar .block-poll li,
-.sidebar .block-related li,
-.sidebar .block-related .item,
-.sidebar .block-reorder li,
+.search-autocomplete li,
+.block-poll li,
+.block-related li,
+.block-related .item,
+.block-reorder li,
+.block .actions,
+.mini-products-list li,
 .title-buttons,
 .pager,
 .sorter,
@@ -68,15 +76,20 @@ input.checkbox { width:13px; height:13px; }
 .product-essential,
 .product-view .product-img-box .more-views ul,
 .product-options .options-list li,
+.product-options-bottom,
+.truncated,
+.truncated .truncated_full_value,
 .product-review,
 .cart,
-.one-page-checkout .step-title,
-.one-page-checkout .step,
+.opc .step-title,
+.opc .step,
+.sp-methods,
 .checkout-progress,
 .field-100,
 .form-list li,
 .group-select li,
 .buttons-set,
+.buttons-set2,
 .page-print .print-head { zoom:1; }
 
 /* Hover Fix */

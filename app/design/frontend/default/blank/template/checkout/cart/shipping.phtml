@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php
@@ -77,35 +77,37 @@
 
 <?php if (($_shippingRateGroups = $this->getEstimateRates())): ?>
 <form id="co-shipping-method-form" action="<?php echo $this->getUrl('checkout/cart/estimateUpdatePost') ?>">
-    <dl class="shipping-methods">
-        <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
-            <dt><?php echo $this->getCarrierName($code) ?></dt>
-            <dd>
-                <ul>
-                <?php foreach ($_rates as $_rate): ?>
-                    <li<?php if ($_rate->getErrorMessage()) echo ' class="error-msg"';?>>
-                       <?php if ($_rate->getErrorMessage()): ?>
-                            <?php echo $_rate->getErrorMessage() ?>
-                       <?php else: ?>
-                            <input name="estimate_method" type="radio" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio" />
-                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
-                            <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
-                            <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
-                            <?php echo $_excl; ?>
-                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
-                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
-                            <?php endif; ?>
-                            </label>
-                       <?php endif ?>
-                    </li>
-                <?php endforeach; ?>
-                </ul>
-            </dd>
-        <?php endforeach; ?>
-    </dl>
-    <div class="buttons-set">
-        <button type="submit" class="button" name="do" value="<?php echo $this->__('Update Total') ?>"><span><?php echo $this->__('Update Total') ?></span></button>
-    </div>
+    <fieldset>
+        <dl class="sp-methods">
+            <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
+                <dt><?php echo $this->getCarrierName($code) ?></dt>
+                <dd>
+                    <ul>
+                    <?php foreach ($_rates as $_rate): ?>
+                        <li<?php if ($_rate->getErrorMessage()) echo ' class="error-msg"';?>>
+                           <?php if ($_rate->getErrorMessage()): ?>
+                                <?php echo $_rate->getErrorMessage() ?>
+                           <?php else: ?>
+                                <input name="estimate_method" type="radio" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio" />
+                                <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                <?php echo $_excl; ?>
+                                <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                    (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                <?php endif; ?>
+                                </label>
+                           <?php endif ?>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
+                </dd>
+            <?php endforeach; ?>
+        </dl>
+        <div class="buttons-set">
+            <button type="submit" class="button" name="do" value="<?php echo $this->__('Update Total') ?>"><span><?php echo $this->__('Update Total') ?></span></button>
+        </div>
+    </fieldset>
 </form>
 <?php endif; ?>
 <script type="text/javascript">

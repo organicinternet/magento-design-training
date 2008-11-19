@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,10 +21,10 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div class="page-title-buttons">
+<div class="page-title title-buttons">
     <h2><?php echo $this->__('Compare Products') ?></h2>
     <a href="#" onclick="window.print(); return false;"><?php echo $this->__('Print This Page') ?></a>
 </div>
@@ -37,7 +37,7 @@
                 <?php $_i=0 ?>
                 <?php foreach($this->getItems() as $_item): ?>
                 <?php if($_i++%10==0): ?>
-                <td>&nbsp;</td>
+                    <th>&nbsp;</th>
                 <?php endif; ?>
                 <td class="a-center"><a href="#" onclick="setLocation('<?php echo $this->helper('catalog/product_compare')->getRemoveUrl($_item) ?>');window.opener.location.reload();"><img src="<?php echo $this->getSkinUrl('images/list_remove_btn.gif') ?>" alt="<?php echo $this->__('Remove Product') ?>" title="<?php echo $this->__('Remove Product') ?>" /></a></td>
                 <?php endforeach; ?>
@@ -49,7 +49,7 @@
             <?php $_i=0 ?>
             <?php foreach($this->getItems() as $_item): ?>
                 <?php if($_i++%10==0): ?>
-                    <td class="label">&nbsp;</td>
+                    <th class="label">&nbsp;</th>
                 <?php endif; ?>
                 <td>
                     <a class="product-image" href="#" onclick="setPLocation('<?php echo $_item->getProductUrl() ?>', true)" title="<?php echo $this->htmlEscape($_item->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->resize(125, 125); ?>" width="125" height="125" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
@@ -74,7 +74,7 @@
                 <?php $_i=0 ?>
                 <?php foreach($this->getItems() as $_item): ?>
                 <?php if($_i++%10==0): ?>
-                <td><?php echo $this->__($_attribute->getFrontendLabel()) ?></td>
+                <th class="label"><?php echo $this->__($_attribute->getFrontendLabel()) ?></th>
                 <?php endif; ?>
                 <td>
                     <?php switch ($_attribute->getAttributeCode()) {
@@ -98,7 +98,7 @@
                 <?php $_i=0 ?>
                 <?php foreach($this->getItems() as $_item): ?>
                 <?php if($_i++%10==0): ?>
-                 <td class="label">&nbsp;</td>
+                 <th class="label">&nbsp;</th>
                 <?php endif; ?>
                 <td class="data">
                     <?php echo $this->getPriceHtml($_item) ?>

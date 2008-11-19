@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <form id="co-billing-form" action="">
@@ -60,7 +60,7 @@
                         <label for="billing:city"><?php echo $this->__('City') ?> <span class="required">*</span></label><br />
                         <input type="text" title="<?php echo $this->__('City') ?>" name="billing[city]" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>" class="input-text required-entry" id="billing:city" /></div>
                     <div class="input-box">
-                        <label for="billing:region"><?php echo $this->__('State/Province') ?> <span class="required">*</span></label><br />
+                        <label for="billing:region_id"><?php echo $this->__('State/Province') ?> <span class="required">*</span></label><br />
                         <select id="billing:region_id" name="billing[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
                             <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
                         </select>
@@ -85,7 +85,7 @@
                         <label for="billing:fax"><?php echo $this->__('Fax') ?></label><br />
                         <input type="text" name="billing[fax]" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" title="<?php echo $this->__('Fax') ?>" class="input-text" id="billing:fax" /></div></li>
                 <?php if(!$this->isCustomerLoggedIn()): ?>
-    
+
     <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
     <?php if ($_dob->isEnabled()): ?>
                 <li>
@@ -93,7 +93,15 @@
                         ->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?>
                 </li>
     <?php endif; ?>
-    
+
+    <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+    <?php if ($_taxvat->isEnabled()): ?>
+                <li>
+                    <?php echo $_taxvat->setTaxvat($this->getQuote()->getCustomerTaxvat())
+                        ->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?>
+                </li>
+    <?php endif ?>
+
                 <li id="register-customer-password">
                     <div class="input-box">
                         <label for="billing:customer_password"><?php echo $this->__('Password') ?> <span class="required">*</span></label><br />

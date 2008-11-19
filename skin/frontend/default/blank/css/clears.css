@@ -3,10 +3,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -18,7 +18,7 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
 /************************************************/
@@ -33,11 +33,12 @@
 .col2-set:after,
 .col3-set:after,
 .col4-set:after,
+.search-autocomplete li:after,
+.block-poll li:after,
+.block-related li:after,
+.block-related .item:after,
+.block .actions:after,
 .mini-products-list li:after,
-.sidebar .block .actions:after,
-.sidebar .block-poll li:after,
-.sidebar .block-related li:after,
-.sidebar .block-related .item:after,
 .title-buttons:after,
 .pager:after,
 .sorter:after,
@@ -45,15 +46,17 @@
 .add-to-box:after,
 .add-to-cart:after,
 .product-essential:after,
-.products-list .item:after,
+.products-list li.item:after,
 .product-view .product-img-box .more-views ul:after,
 .product-options .options-list li:after,
+.product-options-bottom:after,
 .product-review:after,
 .cart:after,
-.one-page-checkout .step-title:after,
+.opc .step-title:after,
 .checkout-progress:after,
 .field-100:after,
 .group-select li:after,
 .form-list li:after,
 .buttons-set:after,
+.buttons-set2:after,
 .page-print .print-head:after { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }

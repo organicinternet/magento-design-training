@@ -4,10 +4,10 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * http://opensource.org/licenses/afl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
@@ -21,7 +21,7 @@
  * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
 <?php  $_order = $this->getOrder() ?>
@@ -80,13 +80,13 @@
             </tr>
         <?php endif; ?>
         <tr>
-            <td colspan="<?php echo $colspan; ?>" class="a-right"><?php echo $this->__('Grand Total') ?></td>
-            <td class="a-right"><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+            <td colspan="<?php echo $colspan; ?>" class="a-right"><strong><?php echo $this->__('Grand Total') ?></strong></td>
+            <td class="a-right"><strong><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></strong></td>
         </tr>
         <?php if ($_order->isCurrencyDifferent()): ?>
         <tr>
-            <td colspan="<?php echo $colspan; ?>" class="a-right"><?php echo $this->__('Grand Total to be charged') ?></td>
-            <td class="a-right"><?php echo $_order->formatBasePrice($_order->getBaseGrandTotal()) ?></td>
+            <td colspan="<?php echo $colspan; ?>" class="a-right"><strong><?php echo $this->__('Grand Total to be charged') ?></strong></td>
+            <td class="a-right"><strong><?php echo $_order->formatBasePrice($_order->getBaseGrandTotal()) ?></strong></td>
         </tr>
         <?php endif; ?>
     </tfoot>
@@ -101,10 +101,10 @@
             <tr class="border<?php echo ($_index++ > $_count ?' last':'') ?>" id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
                 <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); ?>
                 <td class="gift-message-row" colspan="7">
-                    <a href="#" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>');"><img src="<?php echo $this->getSkinUrl('images/gift-message-close.gif') ?>" alt="<?php echo $this->__('Close') ?>" title="<?php echo $this->__('Close') ?>" class="btn-close" /></a>
+                    <a href="#" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>');" class="btn-close"><img src="<?php echo $this->getSkinUrl('images/gift-message-close.gif') ?>" alt="<?php echo $this->__('Close') ?>" title="<?php echo $this->__('Close') ?>" /></a>
                     <dl class="gift-message">
-                        <dt><span><?php echo $this->__('From') ?></span> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
-                        <dt><span><?php echo $this->__('To') ?></span> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+                        <dt><strong><?php echo $this->__('From') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+                        <dt><strong><?php echo $this->__('To') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
                         <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) ?></dd>
                     </dl>
                 </td>
