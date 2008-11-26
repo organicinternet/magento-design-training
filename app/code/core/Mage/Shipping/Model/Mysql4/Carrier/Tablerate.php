@@ -184,10 +184,15 @@ class Mage_Shipping_Model_Mysql4_Carrier_Tablerate extends Mage_Core_Model_Mysql
                         $countryCodesIso2[] = $country->getData('iso2_code');
                     }
 
-                  $regionCollection = Mage::getResourceModel('directory/region_collection')->addRegionCodeFilter($regionCodes)->addCountryFilter($countryCodesIso2)->load();
+                    $regionCollection = Mage::getResourceModel('directory/region_collection')
+                        ->addRegionCodeFilter($regionCodes)
+                        ->addCountryFilter($countryCodesIso2)
+                        ->load();
+
                     foreach ($regionCollection->getItems() as $region) {
                         $regionCodesToIds[$countryCodesToIds[$region->getData('country_id')]][$region->getData('code')] = $region->getData('region_id');
                     }
+
                     foreach ($csvLines as $k=>$csvLine) {
                         $csvLine = $this->_getCsvValues($csvLine);
 
@@ -200,7 +205,8 @@ class Mage_Shipping_Model_Mysql4_Carrier_Tablerate extends Mage_Core_Model_Mysql
                             $countryId = $countryCodesToIds[$csvLine[0]];
                         }
 
-                        if (empty($regionCodesToIds) || !array_key_exists($csvLine[1], $regionCodesToIds[$countryCodesToIds[$csvLine[0]]])) {
+                        if (empty($regionCodesToIds[$countryCodesToIds[$csvLine[0]]])
+                            || !array_key_exists($csvLine[1], $regionCodesToIds[$countryCodesToIds[$csvLine[0]]])) {
                             $regionId = '0';
                             if ($csvLine[1] != '*' && $csvLine[1] != '') {
                                 $exceptions[] = Mage::helper('shipping')->__('Invalid Region/State "%s" in the Row #%s', $csvLine[1], ($k+1));
@@ -248,6 +254,7 @@ class Mage_Shipping_Model_Mysql4_Carrier_Tablerate extends Mage_Core_Model_Mysql
                         }
                     }
                 }
+
                 if (!empty($exceptions)) {
                     throw new Exception( "\n" . implode("\n", $exceptions) );
                 }
