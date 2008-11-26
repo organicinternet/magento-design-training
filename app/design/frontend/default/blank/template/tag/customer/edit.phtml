@@ -31,7 +31,7 @@
 <form id="addTagForm" action="<?php echo $this->getFormAction(); ?>"  method="post">
 <fieldset class="group-select">
     <h3 class="legend"><?php echo $this->__('Tag Information') ?></h3>
-    <p><input type="text" class="input-text required-entry" name="tagName" value="<?php echo $this->htmlEscape($this->getTag()->getName()) ?>" /></p>
+    <p><input type="text" class="input-text required-entry" name="productTagName" value="<?php echo $this->htmlEscape($this->getTag()->getName()) ?>" /></p>
 </fieldset>
 <div class="buttons-set">
     <a href="<?php echo $this->getUrl('*/*/view/', array('tagId' => $this->getTag()->getTagId())) ?>" class="back-link">&laquo; <?php echo $this->__('Back to view Tag') ?></a>

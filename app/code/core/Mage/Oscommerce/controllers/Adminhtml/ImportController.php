@@ -414,4 +414,9 @@ class Mage_Oscommerce_Adminhtml_ImportController extends Mage_Adminhtml_Controll
             $this->getResponse()->setBody($result);
         }
     }
+
+    protected function _isAllowed()
+    {
+	    return Mage::getSingleton('admin/session')->isAllowed('system/convert/oscimport');
+    }
 }

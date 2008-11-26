@@ -150,6 +150,18 @@
                                 </oscorder>
                             </children>
                         </sales>
+                        <system>
+                            <children>
+                                <convert>
+                                    <children>
+                                        <oscimport translate="title">
+                                            <title>osCommerce</title>
+                                            <sort_order>100</sort_order>
+                                        </oscimport>
+                                    </children>
+                                </convert>
+                            </children>
+                        </system>
                     </children>
                 </admin>
             </resources>
