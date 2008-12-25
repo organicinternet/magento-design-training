@@ -1,607 +1,147 @@
-This file tracks the status of Magento in the 1.1.x branch.
+This file tracks the status of Magento in the 1.2.x branch.
 
 FIXED BUGS:
 
-    #2222: Product Alerts thru Catalog Price Rules
-    #2229: currency for turkey
-    #3023: Falsely showing out of stock
-    #3075: Tax charged before discount in Google-checkout
-    #3112: Serach in double quotes returns wrong results
-    #4099: VAT taxes + shopping cart price rule (percent discount) wrong behavior
-    #4234: Authorize.net - invoice number not passed through
-    #4346: make tax_class_id attribute applicable only to simple, configurable, virtual by default
-    #4369: When translate-inline mode is set to yes Sales Report page shows XHTML code
-    #4430: Import Tax Rates
-    #4481: The logo image size displayed on PayPal checkout
-    #4513: Msg that product was removed from compare list is not displyed in My Account view
-    #4528: Shipping quotes in shopping cart page
-    #4637: txt change - admin forgot password
-    #4651: Google Sitemap wil not generate
-    #4703: Imported configurable products don't work
-    #4765: Ver. 1.0.19870 Turkish Lira Problem
-    #4766: Ver. 1.0.19870 Turkish Lira Problem
-    #4775: Cannot change order status to processing
-    #4857: Reports :: Records are links
-    #4875: Decrease Stock When Order is Placed Issue when order does not complete successfully on Paypal Standard
-    #4878: ID column should have range for search
-    #4888: Tax from shopping cart is carried to Google checkout
-    #4953: The 'Minimum order amount' should apply after the coupon is applied
-    #4985: Google Checkout - shipping charges not showing.
-    #5034: multiple store feature not working on the backend
-    #5050: Product Browsing / list.phtml doesnt support transparency
-    #5057: Currency sent to Paypal Standard always uses default config base currency
-    #5066: Unable to cancel order made through Google using "Cancel" button in admin
-    #5076: Check for duplicate email only after "Place Order" clicked, payment goes through, and checkout does not end
-    #5105: Error while removing products from websites
-    #5105: Error while removing products from websites
-    #5117 - removed type hinting from setGroup()
-    #5123: Prevent doubling the paid amount for custom payment modules
-    #5129: SEF URLs duplicating
-    #5132: Grammatical error
-    #5133: Poor grammar
-    #5170: separate "Use Secure URLs in Frontend" and ability to turn merchant calculation callback URL to https mode
-    #5173: Czech Republic - part of EU - have missing currency
-    #5194: back links chaos in client dashboard
-    #5202: Attribute Label doesn't change on the frontend
-    #5207: Fix template\page\switch\flags.phtml
-    #5216: Wrong interface behavior/comment when traying to delete customer group that customers are assigned to
-    #5222: single address doubles in the dropdown menu in multi-shipping page checkout
-    #5223: 'Read Details' hyperlink is brought to magento community site in the same window
-    #5234: Some strings not working for translation / can not be translated
-    #5235: Company Address and Order Date not showing in Print Order
-    #5246: PayPal IPN
-    #5250: Magento (or underlying software) is damaging transparent images, replacing transparency with black
-    #5262: First Class International is not available as an option in USPS shipping configuration
-    #5265: Typo in Functionname
-    #5267: Free shipping - Minimum order amount bug with multiple currency
-    #5271: Mage_Reports config.xml
-    #5273: Hiding button containers does not seem to work on FF2 PC
-    #5278: Error message for 'Email to a friend'
-    #5320: Price alert is not sent to someone who signed up for 'Sign up for price alert' on the frontend
-    #5322: Advanced Search - Yes/No Attribute Issue
-    #5324: Payflow Pro Proxy for Godaddy.com
-    #5356: Import All Products: prices over 1000 are saved as 1 or 10
-    #5364: Transactional Email templates
-    #5368: Global Customer Account and Cart
-    #5370: The exact amount paid can NOT be refunded
-    #5373: Paypal INVNUM field should be populated
-    #5376: Custom options are not working in IE 6
-    #5379: Shopping cart rule defective for payments
-    #5381: Invalid page view during order creation
-    #5387: Incorrect Wishlist Menu
-    #5397: Unable to reorder configurable product on front
-    #5398: Store's and store view's switcher works incorrect
-    #5419: Selecting Custom Option doesn't update product price at all
-    #5422: Keep the same size of popup window for images galery on Product Page while using Prev/Nex actions
-    #5423: Impossible to de-select non-required radio button custom option
-    #5432: Inconsistent SEO URL's
-    #5434: Undefined index error message when trying to add custom option in admin order
-    #5441: Configurable product image is always used in Cart regardless configuration
-    #5442: Adding related products to Cart doesn't work
-    #5452: Invalid data in Comment field
-    #5466: Payment method is disabled in admin checkout
-    #5467: After Error tab is not marking
-    #5478: Shipping address in onepage
-    #5479: catalog product image placeholder failed to load, if skin had no placeholder image.
-    #5483: Shorttag <?endif;?> makes an error in admin.
-    #5491: Unable to cancel coupon code.
-    #5504: Cart price rules: Total Items Qty condition doesn't work
-    #5506: Cannot add SKU from products list in Condition and Action subselection if pagination options were used
-    #5512: Order number shold be a link
-    #5516: place order button kept disabled after error
-    #5517: "About Us", "Customer Service" error 404 page
-    #5529: Apostrophe shows as ascii code for apostrophe in default welcome message
-    #5540: Customers addresses can't be edited in admin.
-    #5570: Backoffice : create new order , problem with payment method under Windows
-    #5583: Product prices don't import properly
-    #5587: IE bug in decorateGeneric()
-    #5588: & encoding on Cart page
-    #5595: Checkboxes Form Element
-    #5598: Part of Grouped product with Qty = 0 is not marking as out of stock
-    #5599: IE 6, one of radio buttons should be marked by default
-    #5602: Import All Products profile throws error if store column is missing
-    #5608: Trouble after double adding product to s.cart
-    #5614: Short tag endif error
-    #5627: "PaypalUk Direct" area in admin becomes empty after Shipping Method loaded
-    #5647: "Please select one of the options" alerts shown only for first item
-    #5652: Advanced Search listing: search form is displayed on 'Add to compare' action, when grid/list was changed
-    #5666: Expiration date of CC is not marked
-    #5683: Non-functional Shopping Cart Price Rules for Free Shipping
-    #5685: Create shipment -> 'add tracking' doesn't work when creating Invoice in Admin
-    #5689: Customer Export
-    #5694: Unable to use capital letters in e-mail address
-    #5695: Fatal error after password recovery in the admin page
-    #5712: Paypal Standard Shipping and Tax Issue
-    #5713: Sales Report reports incorrect sub/grand totals
-    #5714: magento crash when seting wrong package name
-    #5720: no product description in default theme. Also prevented bug in blank.
-    #5722: Error on Web Services -> Users
-    #5723: Text "View All" not localised in sidebar
-    #5727: Shopping cart shows "* set_data" instead of text message with backorders enabled
-    #5728: Unnecessary rows it the Admin -> Reports -> Products-> Low stock
-    #5738: Unable to specify Special price to product for specific store view
-    #5742: link clickable after guest checkout
-    #5750: Products with required fields Custom Options should be invisible in some cases
-    #5752: Fields shipping_tax_amount and base_shipping_tax_amount in sales_order table are always NULL
-    #5754: 404 on both sides after trying to c
-    #5755: Invalid image place on front
-    #5768: "Add to cart" button returns user to the wrong page--page one of a category, even if they were on page 17
-    #5772: add en_NZ to etc/config.xml
-    #5772: please add en_NZ to etc/config.cml
-    #5774: sending new password by email - selected locale
-    #5779: Broken view of long SKU in FF 2
-    #5784: Broken previewing of large picture at the front end
-    #5789: Store switch doesn't add SID parameter to url
-    #5790: Defect - if Custom Option is chossen - Related Products Up-sells Cross-sells
-    #5790: Defect - if Custom Option" is chossen - Related Products / Up-sells / Cross-sells
-    #5795: Session ID recreate for Service API
-    #5799: WSDL is not compliance with WSI
-    #5807: Need to have some validation for product.create API call
-    #5809: product.update API does not update when used product id
-    #5812: invalid api path for both getspecialprice and setspecial price
-    #5813: product.delete API returns success message for id does not exist
-    #5819: Bundle item are not showing at the front end (hasOptions attribute saving for bundles and configurable products)
-    #5825: Autogenerated URL keys issue
-    #5832: Tabs "Related Products"/"Up-sells"/"Cross-sells" for duplicated product are empty
-    #5833: Multistore: Call to a member function getStoreIds()
-    #5839: form integrity in gift messages in multicheckout
-    #5850: app/code/core/Mage/Media/Model/File/Image.php - image conversion fails with upper case image extensions
-    #5851: saveAs in app/code/core/Mage/Media/Model/File/Image.php fails to report correct error
-    #5856: Exception after in the shopping cart with 0.00 tax rate
-    #5873: Security Warning in Admin
-    #5875: Sitemap error
-    #5881: catalogindex_reindex_all cron job fails
-    #5882: Session of Admin User persists even after user is deleted
-    #5891: Cannot add Custom Options in Safari 3x
-    #5911: Can't add (inch) symbol
-    #5914: Allow Guest Checkout = NO doesn't stop all guest (non-customer account) checkouts...
-    #5915: missing taxvat value into sales report
-    #5919: Wrong shipping address validation on onepage checkout
-    #5927: Up sell box shows regular price and not special price
-    #5943: Attribute's titles :: unable to set
-    #5947: Modern design will hide your poll
-    #5963: Shopping Cart Price Rule not working for free shipping
-    #5965: Not Approved Review still affects product rating
-    #5966: Product rating is different on different pages
-    #5971: Invalid design change on Product info page
-    #5972: Broken design of compare Items pop up window
-    #5975: No tier block shown on "Product Reviews" page
-    #6006: Contact form doesn't fail on mail delivery error (missing exception)
-    #6008: Associated product popup window does not update Stock Availability
-    #6011: Associated Product Stock Availability does not update
-    #6023: Shopping cart - shipping section
-    #6026: Bundle Getting Quantities Wrong
-    #6049: Shopping Cart Sidebar shows only the price without tax.
-    #6051: Notice: Indirect modification of overloaded property Mage_Checkout_Block_Cart_Shipping
-    #6054: Shipping Quotes for Configurable Products
-    #6055: XML Import Catagories show selected on backend, dont show on front, only after manually redo
-    #6056: SOAP API - Category Create is not linking to Parent Category
-    #6057: Layerd Navigation doesn't show additional attributes (ie color, size)
-    #6058: Field parent_id not updated after a category was moved
-    #6062: Price Issue when Bundled Product is Removed from Shopping Cart
-    #6063: Template problem
-    #6064: Shipping to multiple addresses, only one payment option available.
-    #6065: Shopping Cart Side Bar - Incorrect price display when switch currency
-    #6066: Configurable products not reducing when purchased
-    #6068: French State/Province are missing - (complete list inside)
-    #6069: Transactional Email templates when sending from admin
-    #6070: After upgrade to 1.1 Catalog pages ignore the selected theme
-    #6071: the percentage is calculated on the base price
-    #6072: Virtual products and Paypal Standard
-    #6075: Wrong price viewing in the mini shopping cart
-    #6077: Category disappeared after move to new "root category"
-    #6078: Configurable Product quick add duplicate sku
-    #6080: Issue #5727
-    #6081: Tax totals not visible in Grand total when percentage is zero
-    #6086: version 1.1.1 language select keep jumping back to english
-    #6088: Onepage Checkout IE7
-    #6095: Product Attributes translation (Titles) are ignored on product page
-    #6100: Warning in the shopping cart
-    #6106: Weight of items of configurable product is being ignored during getting quote - table rates calculation
-    #6110: order comment history no ajax refresh
-    #6111: PDF Export
-    #6117: app/code/core/Mage/Core/Block/Abstract.php on line 304
-    #6120: People can order configurable products when they are out of stock
-    #6121: Payment screen does not work correctly using Modern theme
-    #6123: .png transparency issue in 1.1.1
-    #6130: Export with FILTER :: CSV contains records less then in DB
-    #6131: Export with FILTER :: unable to export data by one day
-    #6133: Discount more then 100 %!
-    #6134: SQLSTATE[23000] after saving custom options
-    #6137: Unable to share customer accounts - global value
-    #6138: "Shop by" options incorrectly translated
-    #6139: Broken view of navigation in IE 6
-    #6143: negative price for "configurable product" doesn't update the price shown
-    #6146: Session problem when using database for session storage
-    #6147: Cannot check out shopping cart that use Check / Money Order as payment option
-    #6158: Searcheble attribute values is not searchin gon Fron End
-    #6160: Empty page of order preview for virtual product in admin page
-    #6168: Order's email template :: Order without shipping :: Missing border
-    #6176: Multiple checkout with Credit Card (Payflow Pro) shows Fatal error
-    #6181: Shopping Cart Price Rules for Virtual Products
-    #6189: paypal express module set invoice paid regardless of the real payment
-    #6193: sidecart problem with multi currency
-    #6204: multiple website features broken on the back end(it was marked as solved before but it isn't,issue #5034)
-    #6205: Reorder does not work from admin - user's account
-    #6219: no setSecure() method in Mage/Core/Model/Url.php and _secure param not getting passed in getRouteUrl()
-    #6224: Duplicate Customer Accounts
-    #6232: Bundled Items: Can't add more than 4 Options with 4 selections each
-    #6234: Store inventory attack variability!
-    #6235: Product price 14,45 is changed to 14.45 even with German locale
-    #6237: multiple user role - auto logout when browsing admin
-    #6238: Attribute Labels are not translated (Additional Information and SHOP BY)
-    #6239: Configurable product SKU not shown on invoice or order
-    #6240: Transactional Emails
-    #6243: location based tax doesn't work
-    #6249: Tax Rates Import claims my file is incorrect
-    #6253: Exclude attribute from get all attributes
-    #6254: Sort order of dropdowns in the admin
-    #6255: Fatal error: Call to a member function getValueTablePrefix() on a non-object
-    #6262: [API] product_attribute.options Problem
-    #6263: Trying to add twice bundle items shows an error
-    #6266: Impossible to change search query and save
-    #6267: Admin Login Unresponsive, Unable to Login After Creation of New Role in 1.1.1, upgrade to 1.1.2 did not resolve
-    #6269: Fatal Error with Multiple Websites - getStoreIds()
-    #6271: Special price is showing on the product page, but it should not be?
-    #6274: Resend confirmation email
-    #6280: Sending Amount with 3 decimal digits to Paypal
-    #6281: Delete Item from Cart did not clear base_shipping_amount in sales_flat_quote_address table
-    #6285: Suggestion: Advanced Search by configurable attributes doesn't give any results
-    #6286: Price Range in Advanced Search doesn't use proper currency
-    #6292: Call to undefined method getStoreId in Mage_Catalog_Model_Resource_Eav_Mysql4_Category
-    #6297: missing "terms and conditions" in navigation (backend)
-    #6299: Website Store not using 3-column template.xml to pull the top menu when I create a CMS Page.
-    #6304: Products shown as both out of stock and in stock
-    #6306: Prices not changing for associated products
-    #6309: Magento forgetting login details
-    #6312: Modern theme: user log-out after attempt to add tag
-    #6314: Discount Codes only apply on Shopping Card, on checkout page this discount is discarded
-    #6315: Sales Order not changed when Place Order using other currency
-    #6323: Product Name Truncated on Invoice PDF
-    #6337: Deleted virtual products of an bundles product
-    #6346: HTML tags dont work in "Copyright" and "Welcome text" fields. Magento render "<" and ">" instead of "<" and ">".
-    #6348: Infinite Loop
-    #6352: Grouped Product Displays Wrong Price
-    #6368: Configurable Products with Promotions do not update Regular Price correctly (with solution)
-    #6371: "Add option" in Custom options functionlity doesn't add line in Admin
-    #6372: Error in calculating sum in Cart Sidebar when using not default currency
-    #6383: Checkout broken with mordern theme and terms &contidions
-    #6392: Error during checkout with enabled Terms and conditions
-    #6393: Wrong order of subcategories at front end.
-    #6394: Bundled Items: Options behave strange
-    #6395: Fatal error on previewing e-mail template
-    #6415: CSV Product Import not picking up existing custom options
-    #6417: Checkbox "Use Default Value" under the rows is not marked
-    #6418: Configurable product are in stock at the admin but out of stock at the front end
-    #6420: Custom option duplicates
-    #6427: make Shipping to multiple addresses deactivable
-    #6431: Cannot add more than 5 custom options for my simple item.
-    #6439: Fatal error: Call to a member function getTreeLevel() after saving a role
-    #6441: Bestsellers Report Empty
-    #6444: Payment method Purchase Order not displayed
-    #6448: Unit Price on Ivoices
-    #6450: Admin Category tree javascript times out with large number of categories
-    #6452: Configurable product SKU not on invoice
-    #6456: Editing orders does not prepopulate fields as it should
-    #6457: Indirect modification of overloaded property Mage_Checkout_Block_Cart_Shipping
-    #6458: Notice: Indirect modification of overloaded property Mage_Checkout_Block_Cart_Shipping::$_rates has no effect in closed
-    #6459: Editing an order prepopulates the new order with all products, even if they have already been shipped and/or invoiced
-    #6460: Attribute label Default Store View not changing...
-    #6463: Simple Product - Custom Options Feature
-    #6465: GoogleCheckout merchant calculations can be chosen only from Globally configured shipping methods
-    #6466: GoogleCheckout merchant calculations serialized methods are retrieved from stored configuration htmlspecialchars encoded
-    #6467: Products per Page on List default value - isn't updating on front end
-    #6468: Require Emails Confirmation should be changeable only for websites
-    #6474: Backorders Not Working (No notifications, cart displays * set_data)
-    #6478: Google Checkout Orders Shipping Not Charged
-    #6479: Google Checkout adds Tax to inc. shipping when pre-selected
-    #6482: Email logo always from defualt template
-    #6487: Duplicate orders showing
-    #6493: IE7 :: Grid's view :: empty cells haven't borders
-    #6494: Unable to add product through category or
-    #6501: Catalog Products list Sort By Price doesn't work
-    #6524: Huge bug with multiple addresses shipping
-    #6536: Simple Product SKU is not appearing on Invoice for Configurable Items.
-    #6557: Cannot mark orders as shipped - part of page is missing in admin
-    #6558: SQLSTATE error in the admin
-    #6562: Subtotal and Total do not update in cart after products are removed
-    #6565: new.phtml
-    #6583: Problem with Set Products as New
-    #6585: Grouped product price without TAX - Starting at
-    #6586: complete refund impossible if shipping costs are not rounded correctly
-    #6592: ' category.move' reverses Layered Navigation
-    #6593: 'product.list' with filter, inaccurate product count
-    #6601: Incorrect Number of Items in Last 5 Orders and Bestsellers in the Dashboard
-    #6602: use of getStoreIds() for a category
-    #6607: Google Checkout in Magento - does not allow worldwide shipping.
-    #6608: Products shown as both out of stock and in stock (again)
-    #6612: Mage_Sales_Model_Quote_Address_Rate, setMethodDescription uses the methodTitle
-    #6622: Bug/Issue #4234: is NOT resolved, IOHO
-    #6623: Products Review Report Analytics bug when deleting reviews
-    #6624: Configurable Product SKU Not Working Properly
-    #6628: Variables in emails are resolved incorrectly
-    #6630: Configurable products don't increase invertory qty after cancelling order.
-    #6631: Incorrect design of the Admin -> Catalog -> Manage Catecories in IE 6
-    #6633: BUG adding products to cart with "Maximum Qty Allowed in Shopping Cart"
-    #6634: Fatal error during creation virtual product
-    #6635: Bug #6557: incorrectly marked as
-    #6648: Associated Products: Copy From Configurable not working
-    #6660: Attributes not updating correctly in catalog_product_entity_varchar table
-    #6661: Javascript Not Working on Page Reload/Refresh
-    #6664: Reported issue # 4997 Footer - Copyright field
-    #6670: Cant have more than 5 custom options
-    #6674: Layared Navigation doesn't show any new attribute that wasn't part of the core attributes provide from Varien
-    #6677: IE7 :: Some buttons have incorrect position
-    #6681: No upload image button
-    #6682: zero values instead of the prices
-    #6684: In many places of admin fields have deficient size
-    #6685: Poll Information :: Poll Answers :: DELETE buttons have incorrect position
-    #6690: Address does not add during oreder creation in admin
-    #6691: I found some missing files on Modern template
-    #6694: Defatult HTML emails not sending
-    #6699: Notice on checkout page
-    #6701: If you trying to add and approve review you will see SQLSTATE[42S22] error on the front end
-    #6702: Unable edit category
-    #6706: call to sales_order.info in Magento Core API fails
-    #6708: iPhone theme :: Fatal error instead configurable product information
-    #6711: Unable to delete category
-    #6714: UPS - This shipping method is currently unavailable.
-    #6716: Name of configurable product doesn't display in order in Admin
-    #6718: Conf. products which added before and after login doesn't summation
-    #6721: "Add Root" button - invalid behaviour
-    #6726: Azerbaijan Manat Currency is not available in Magento
-    #6728: Shopping Cart Price Rules: Currency in Condition not converted correctly
-    #6731: Incorect view of google API in admin, IE 6
-    #6732: Incorrect order f shipping methods after using free shipping coupon
-    #6733: Multiple checkout does not work
-    #6734: Categories tree does not refresh after adding new (root/sub)category
-    #6735: Position numbers of values of your attribute is not working
-    #6740: Product Option - More than 5 issue
-    #6742: No sub-categories available in the Categories checkbox list in new_product_create page
-    #6743: All categories are assigned by itself
-    #6744: Manage Categories page crashed
-    #6748: When customer decides not to finish payment with paypal standard it registeres as a sale
-    #6754: Invalid redirection after "Add to compare" link pressed on homepage
-    #6755: Broken view of subcategory creation form
-    #6756: iPhone theme :: Home page :: Fatal error
-    #6757: Custom options :: Maximum number of characters should be controled by JS validation
-    #6758: Incorrect redirect from shopping cart by before click on "Continue shopping"
-    #6759: Using custom options with multiple Storeviews has urgent problem!!!
-    #6762: Catalog Price Rule % pulls wrong price
-    #6774: Mini Cart and Recently Added Item Currency Bug
-    #6779: Google Checkout-does not allow worldwide Shipping
-    #6780: Unable to add rating in admin when posting review
-    #6783: simple search vs attributes
-    #6785: Categories tree does not refresh after adding a product to a category
-    #6786: Preview of packing sleep is incorrect
-    #6789: Fatal error when adding product to S.cart
-    #6795: Impossible adding products to categories during product creation process
-    #6803: Shopping Cart Price Rules with Conditions doesn't recognize Category (so far)
-    #6806: Invalid order status after order canceled
-    #6808: Authorize.net transaction ID change requirement
-    #6816: Incorrect credit memo print view
-    #6819: The function to add a new address for a customer seems broken in the backend
-    #6837: Credit memo emails calculate totals incorrectly
-    #6840: Green button that adds SKU is not working in IE 6
-    #6845: Invalid order status after order canceled by user in Google side
-    #6857: Final multishipping success page shows Array()
-    #6866: PayPal - order ID duplicated
-    #6912: Magento admin page turned into a text-only menu that doesn't work
-    #6921: iphone theme :: hidden text on payment information part of checkout
-    #6922: URLs instead WebSite/Store/StoreView names in store switcher
-    #6925: Unable to add new urlrewrite
-    #6928: Fatal error on Google checkout
-    #6931: Shipping methods from second site not allowed in conditions of shopping cart price rules
-    #6940: Category Product Postion
-    #6948: Product > Prices > Tax Class update in Store View changes default values throughout
-    #6957: Zero price for virtual product during order creation process
-    #6958: Newsletter subscription through miniblock shows an error
-    #6960: iphone theme :: incorrect view of configurable product
-    #6963: Incorrect tax part of product price calculation
-    #6965: "Manage Tax Rates" data table not showing zip codes correctly
-    #6976: Bad path for javascript and CSS with custom admin url
-    #6981: Price as configured for bundle product is showing incorrectly
-    #6982: Credit Memo Tax Calculations
-    #6986: Special price from date is setting incorrectly
-    #6988: Wrong inputs design on bundle items selections in IE7
-    #6992: Google checkout - all Shipping & Handling = 0 when Carrier Calculated is on
-    #7011: Configuration - error after Localization - Path "/usr/local/apache/htdocs/magento/var/session/sess_beab6df0624d4ac63b76b44ae36de
-    #7012: The price infomation for each item that included in the bundle product
-    #7016: Tax Error - Division by Zero
-    #7017: Ordering virtual product through admin - invalid behaviour
-    #7019: In 1.1.4 "Base currency" option disappeared changing Configuration Scope
-    #7020: URLRewrites for product :: products tabel isn't correct
-    #7021: Bug in HTML Code
-    #7023: Shopping cart subtotal not correct when bundle gets deleted
-    #7026: Address is not displayed on the print_invoice
-    #7030: Item Status in the returned order is not changed
-    #7031: Item Status for Backorder
-    #7034: (INTERFACE) Catalog > Manage Products > {Simple Product} > Custom Options > Add New Option ---> Options do not always appear
-    #7054: Unable to create a Reorder in Admin
-    #7056: Table rate #items vs Destination are working incorrect
-    #7061: Checkout page :: during entering new billing address :: 'continue' button position is wrong
-    #7064: Deleting a store with orders will error out the admin.
-    #7090: SOAP - include(SoapServer.php) failed to open stream error....
-    Fixed dynamic SKU & weight, fixed SKU for products with custom options, multiselect options
-    Fixed admin notifications URL
-    Fixed cache management issues
-    Fixed catalogindex refreshing for all stores
-    Fixed saving out of stock product state, fixed back to stock issue for composit items
-    Fixed loading the whole categories tree for each category item
-    Fixed getting address items for billing/shipping quote addresses
-    Fixed bug in Protx controller
-    Fixed base tax amount in orders, googlecheckout taxes, applying tax after discount, full tax info issues, admin tax info
-    Fixed flat order item attribute creation
-    Fixed shopping cart reports, sales reports collection
-    Fixed quote totals for shopping cart containing virtual products
-    Fixed sales order controllers and layout
-    Fixed PDF generation
-    Fixed dymanic bundle price calculation
-    Fixed incorrect country-region pairs saving
-    Fixed attribute label translation issue (exception on attribute save)
-    Fixed tier prices in grouped products
-    Fixed Core_Block_Abstract sorted children issue
-    Fixed category RSS block cache
-    Fixed getting product ids in catalogindex indexer, fixed grouped product save issue, grouped product price indexing, grouped/bundle product sorting by price
-    Fixed giftmessage module installation and upgrade
-    Fixed problem with admin router name change
-    Fixed configurable products (with a lot of attributes) admin edit form and frontend product view, fixed setting route name for non-default module (oscommerce/adminhtml_orders)
-    Fixed links to shipments, invoices and creditmemos in admin
-    Fixed virtual products taxes
-    Fixed google checkout with virtual items, made google checkout to work with 'shipping price includes tax' settings
-    Fixed configurable product price models
-    Fixed bundle price in wishlist
-    Fixed custom options validation
-    Fixed email templates (added custom options, bundle options)
-    Fixed onepage checkout payment information
-    Fixed email and cms templates store directive
-    Fixed mixed (virtual/not virtual) order creation
-    Fixed price calculation on product view page, displaying custom options price, javascript price updating and formatting, non-required options validation
-    Fixed error in crontab backend model for Currency, Sitemap, ProductAlert
-    Fixed displayin bundle products in related block
-    Fixed catalog breadcrumbs
-    Fixed multiple addresses checkout for bundles containing virtual items
-    Fixed converting quote address item into order item
-    Fixed importing customer addresses
-    Fixed customer email confirmation
-    Fixed tier price showing for dynamic bundles
-    Fixed Magento Connect Manager "Check for Updates" button URL update
-    Fixed abandoned carts report
-    Fixed upsell block items limit
-    Fixed multiselect and select bundle options validation
-    Fixed Webservices API customer_group.list method, moved repeating product load from Api to Resource,
-    Fixed create backup (fields having NULL values)
-    Fixed flat rate and free shipping for virtual products in cart
-    Fixed custom price tax calculation, added tax configuration 'apply tax on custom/original price', fixed tax info in orders in admin
-    Fixed sales report for bundles
-    Fixed base64 urls encoding
-    Fixed shipping tracking numbers displaying
-    Fixed shipping price displaying in admin order create form
-    Fixed salesrule/address validation object
-    Fixed zip-codes validation
-    Fixed google checkout button url that broke xhtml
-    Fixed url rewrites for products in anchor category (for product not assigned to it directly)
-    Fixed date filter in abandoned cart report
-    Fixed order base_shipping_tax_amount & shipping_tax_amount saving
-    Fixed customer shopping cart not displaying child items in admin
-    Fixed click action in abandoned carts report
-    Fixed displaing select options in Safari
-    Fixed radio/checkboxes lables text wrapping
-    Fixed onepage checkout login form submit with keyboard Enter key
-    Fixed bundle price calculation on product view page
-    Fixed usaging URL rewrites for category view (pager, layered navigation)
-    Fixed creating shipment
-    Fixed parent items logic in payment methods
-    Fixed arguments for event in salesrule_validator_process
-    Fixed inventory checking for bundle products
-    Fixed updating tier prices with webservices API
-    Fixed google checkout xml tax section generation
-    Fixed deleting bundle options
-    Fixed configurable product weight calculation in shopping cart and checkout
-    Fixed displaying of pure virtual orders in admin
-    Fixed fatal error when Soap extension is not installed
-    Fixed wrong SOAP content type
-    Fixed errors in invoice/packingslip PDF print-out (added missing fonts, fixed overlapping columns and text wrapping, displaying of non-latin1 texts)
-    Fixed non-working store switcher
-    Fixed paypal direct/express/standard errors and shipping calculation when only virtual products are in cart
-    Fixed internal redirects validation for secure URLs
-    Fixed configurable products stock deduction
-    Fixed minimal MySQL version checking in installation wizard
-    Fixed admin order refund - base tax amount was not stored after refund
-    Fixed single page checkout issues in modern theme
+    #6341: Duble subject line in e-mail
+    #7162: Wrong div class used in 'mini compared products box
+    #7400: In order view (admin panel) statuses history is different in tabs 'Information' and 'Comments History'
+    #7423: Cart Rules - Condition Limit Error
+    #7472: Invoices Report
+    #7612: Products are displayed in categories they are not included in
+    #7636: Catalog Product Attribute -> Catalog Input Type -> Dropdown
+    #8020: Custom catalog attributes created as "price" not displaying correctly
+    #8159: One page checkout :: doesn't work when inline translation was enabled
+    #8366: Not possible to translate tax identifier for two store views
+    #8411: (assign users to role)
+    #8413: Mass Delete through product update screen does not work
+    #8439: The checkout-process-page has no pagetitle
+    #8452: Layout Update Problem (Mage_Core_Model_Config)
+    #8492: Custom Options percentage Price Type: price rounded off unwantedly
+    #8503: Bundle products and decimal places in options quantity
+    #8523: Analytics does not show revenue with configurable products
+    #8573: lifetime sale incorrect when refunding order with discount code applied
+    #8595: Many numeric-only searches in Admin/Autocomplete
+    #8657: Spelling mistake in error msg - "Selected currency code () is not compatabile with PayPal"
+    #8674: User doesn't subscribed to newsletter.
+    #8726: Mage_Core_Model_Resource_Setup::getAllAttributeSetIds() belongs in another class
+    #8762: Filter settings on Sales - Orders not saved
+    #8770: [MAC, Safari] Unable to create new order in the admin with new customer creating & #8771: [MAC, Safari] Unable to create new order in the admin
+    #8803: Remove "Yes, No, Any" dropdown filter on Google Base Items
+    #8893: Trace error after clicking button "Search"
+    #8896: Applying unable coupons in the empty shopping cart
+    #8898: Free Shipping: 'For matching items only' cart rule doesn't work with UPS XML type method
+    #8903: SQL error when sorting Online Customers by Type attribute
+    #8925: Locale settings not applied after installation
+    #8928: Unable to create rule for Not logged in customer.
+    #8943: Import is not working in Safari
+    #8966: Google Base API - Mass Insert / Update -> CAPTCHA challenge issued
+    #8968: Category save process is very slow for big catalog
+    #8974: Content type validation
+    #8977: Google Analytics reports wrong URL when URL has no query string OR store resides in subfolder...
+    #8980: Shopping cart discount error
+    #8992: Mage_Sitemap / Varien_Io_File Bug - Destination not writeable error
+    #8993: 'No Data Found' for Web Site
+    #8995: Search does not return correct URL key for additional store view (e.g. 2nd language)
+    #9109: Sales Report disregards currency rates
+    #9139: Admin: menu items not readable when images are disabled
+    #9166: Unable to add image to all types of product
+    #9167: AJAX will freeze during 'quick simple product creation'
+    #9171: Product's table doesn't hide after select products for adding SKU
+    #9173: Calendar's button doesn't work in rules
+    #9207: Field country is not marked as required
+    #9208: Unable to add bundle items to bundle product
+    #9228: cart error after product delete
+    #9248: On admin page, search function does not work
+    #9250: Import doesn't work
+    #9278: Peruvian Nuevo Sol Shown as PES (Peruvian Sol)
+    #9296: Customer DOB saved not correctly
+    #9324: Bad counting products
+    #9326: Verification in "Contact Us"
+    #9354: Date Format
+    #9358: Unable add products to Google Base after filtering
+    #9359: Google Analytics Revenue Not Working
+    #9375: Fatal error: Call to a member function getItemsCollection() in Address.php
+    #9389: SQL-error while creating custom option forproduct
+    #9390: In "Advanced Search" all text is not displayed
+    #9392: The field is too broad insert text
+    #9440: Error subscription to newsletter
+    #9452: Email Reply Address
+    #9468: The same group name in an attribute set can be created but it can NOT be saved
+    #9470: Gift message is not moved over on an order edit
+    #9479: Reorder / shipping method price doesn't displayed in the "Order Totals" area
+    #9481: Broken design of the Expiration Date field for CC payment method
+    #9492: Dataflow export doesn't recognize absolute path
+    #9493: Buggy Sorting in Manage Tax Rates - Mantis
+    #9505: Missing echo statement in blank/default/template/shipping/tracking/popup.phtml
+    #9517: Impossible to set custom admin theme in configuration
+    #9540: Google Base Adding SID to urls in multi domain environmnet
+    #9544: Zero tax total folding/unfolding
+    #9611: Not correct message, when you remove the product.
+    #9619: On front-end Serch is not working
+    #9622: Unable to add Configurable product to the shopping cart
+    #9639: Design crushing and SQL-error in admin Dashboard
+    #9649: Fatal error after reordering orders that contains gift message
+    #9651: Total revenu always 0 on Google Analytics
+    #9657: Email to a friend -> User can send more than 5 emails in an hour
+    #9659: Email to a Friend -> "Add Recipient" button doesn't work
+    #9665: Export action on Manage Customers and Newsletter Subscribers exports only visible page content
+    #9684: Orders: Action "Hold" leads to fatal error.
+    #9688: Incorrect update qty of the bundle product in the shopping cart
 
-    Fixed Google Checkout table rates issue
-    Fixed SQL error when upgrading some existing databases
-    Fixed layered navigation index refresh
-    Fixed refreshing products count in categories management page
-    Fixed wrong order status after invoice is created
-    Fixed sending background copies of sales emails
-    Fixed online customers grid filter
-    Fixed optional DOB field verification that prevented to proceed to the next step of single-page checkout
-    Fixed empty France regions names
-    Fixed translations and locale settings used in PDF print-outs
+    Fixed Bundle with custom options final price calculation
+    Fixed CatalogSearch events
+    Fixed EAV attribute save bug
+    Fixed EAV use joinAttribute method in conditions addAttributeToFilter method
+    Fixed MySQL 4.1 bug with NO_AUTO_VALUE_ON_ZERO mode and ALTER TABLE command
+    Fixed Online customers
+    Fixed REQUEST_URI for GA
+    Fixed Varieb_Db_Select::resetJoinLeft (find tables in conditions)
+    Fixed Varien_Data_Collection_Db::getSelectCountSql
+    Fixed _joinAttributeToSelect for abstract catalog collection (using attribute in select result and filter condition)
+    Fixed adding product to shopping cart
+    Fixed admin notification window block ACL
+    Fixed autobinding unescaped SQL variables
+    Fixed bug with categories tree interface after switching store
+    Fixed catalog price rule validation (case if rule is wrong: need to remove existing generated price changes)
+    Fixed cleanup call in catalog index
+    Fixed command line installation with index.php
+    Fixed customer and product grid performance in admin
+    Fixed cybersource payment for virtual order
+    Fixed generate xml string for config cache (0 value was ignored)
+    Fixed getting table names during installation
+    Fixed refreshing catalog rewrites after save catalog configuration and url resource model for getting static attributes value
+    Fixed reindex prices after saving catalog configuration section
+    Fixed reorder of grouped products
+    Fixed tax data joining (join tax classes just for special cases)
+    Fixed tierprice rendering for different product types
+    Fixed translations in permissions titles
+    Fixed PayPalUk Redirect url wrong type
 
 
 CHANGES:
 
-    Added bundle product options rendering to shopping cart, updated bundle products pricing model
-    Added Mage_Core_Helper_String, replaced possible unsafe substr() and strlen() usage in the whole project - with Mage_Core_Helper_String calls
-    Added parent/chlid items support in shopping cart and in multishipping checkout
-    Made accordion blocks loaded by Ajax in admin/customer/edit/view page
-    Removed item type limit from items container block
-    Added Tax/VAT number configurable attribute to customer info
-    Changed tax calculation model call to singleton, moved tax logics from template to helper
-    Created catalogindex data retreivers, added tax calculations support in layered navigation
-    Added eav-attribute getIdByCode function
-    Added shipping tax settings into configuration
-    Added tax before discount attribute into order and quote items
-    Added 'Apply Discount On Prices Including Tax' configuration option
-    Added strikeiron tax description and calculation process to display in full tax info
-    Simplified custom options displaying in shopping cart, upgraded Mage_Core_Helper_String
-    Added user-agent detection by regexps and setting custom package or theme according to it
-    Added Admin tab in Advanced system config: select admin start page, set custom admin URL
-    Added 'Add Block Names to Hints' configuration option
-    Added SQL debugging option in code
-    Replaced product reviews summary helper with block/template, removed review helper calls from all templates packs, added possibility to rewrite review summary template in layout
-    Product compare block changed to use products attributes list from configuration
-    Removed superProduct methods
-    Added 'Placed from IP' to order info
-    Added shopping cart sidebar displaying configuration settings
-    Added calculatePrice call in product collection
-    Added scope check before saving attribute, in case it is used in configurable product
-    Added full tax info into customer order view
-    Added event in addressToOrderAddress() method
-    Created containers on product view page, moved custom options, configurable options and bundle options to containers, added product attribute to define the container that should be used, moved all products types options into separate templates in all themes
-    Added filter by products with required options to collection;
-    Moved checking of selected required options to product type instance
-    Added 'non-recursive' param to js/varien/js.js/decorateList()
-    Modified catalog product edit page categories tree (to load only assigned categories by default)
-    Added taxes on options, fixed js script to update price on product view page
-    Additional items can be added to upsell list through events
-    Fixed catalog/product/image helper and model, rewritten Varien image lib, made setBaseFile() independent from heading slash in filename, fixed image __destruct() issue
-    Added configuration option to remove space between currency sign and price value
-    Added optional parameter to control if span container is included or not for price
-    Added hasOptions() to products view blocks of each type, updated product view container template.
-    Moved product descriptions and additional data in separate blocks, moved "Add to cart" and "Add to wishlist / compare" to blocks
-    Simplified decorateTable(), decorateList() and decorateDataList()
-
-    Added admin path (frontname) installation option
-    Added additional catalog tables to optimize layered navigation performance
-    Improved empty shopping cart performance for sidebar and remove shopping cart cache option
-    Improved compare list and compare list sidebar performance
-    Implemented AJAX loading for more product edit form tabs: categories, custom options, bundle items
-    Added ko_KR - "Korean (South Korea)" locale
-    Added subtotal attributes (with and without discount) to quote
-    Added option to create a shipment for fixed-price bundle with separate shipments
-    Added Content Height field to Terms & Conditions agreements
-    Created function prepareInvoice in order model, cleaned invoice creation code from duplications
-    Simplified product/view layout in all themes
-    Added unsetCallChild to block/abstract
-    Moved tier prices to blocks
-    Added clone price block for modern theme
-    Design updates, themes cleanup
-
-    Implemented duplicating custom options when duplicating a product
-    Added missing demo notice in modern theme
-    Added validation "_isUrlInternal" to check all referer, redirect and success urls
-    Added availability to reset query params for url generation
-    Added priority (sort order) to promo/quote/grid
-    Added event salesrule_validator_process
-    Added hiding long options on orders, invoices, etc on frontend
-    Set svn:ignore on downloader/pearlib/cache
-    Added N/A label in shipments for virtual products in bundle
-
-    iPhone theme updated for 1.1
-    Upgraded core/helper/string for binary-safe string operations
-
-    Added html escaping in search queries in admin dashboard
-    Added displaying maximum allowed dataflow upload file size according to server settings
-
-    Added admin area check function into _beforeDelete methods of some models
-    Fixed merging compare lists
-
-    Optimized category management interface to support large number of categories Introduced new orders status "Pending Paypal"
-    Updated Prototype.js library to version 1.6.0.2 Added new skin "blue" in default theme
+    Upgraded ZF library to version 1.7.2 (r13445 from http://framework.zend.com/svn/framework/standard/trunk/library/Zend)
+    Added downlodable product type
+    Implented fulltext search
+    Added layred navigation to search results
+    Added option to disable google checkout for selected products
+    Moved information about product visibility to catalog_product_category_index
+    Changed Mage::app()->isInstalled to Mage::isInstalled to prevent db upgrades
+    Removed session ID encryption
+    Changed catalogindex price to store prices per website
+    Changed modules dependencies: Mage_Shipment and Mage_Payment now depend on Mage_Catalog, Mage_GoogleCheckout depends on Mage_Payment, Mage_CatalogInventory doesn't depend on Mage_Sales
+    Added "Add Field with URL" option for product export
+    Added configuration field to include some additional output on the HTML page before head closing tag
+    Added Spanish - Costa Rica locale
+    Extended Mage_Adminhtml_Controller_Action->_prepareDownloadResponse() to avoid copy-pasting in admin controllers
+    Removed adding ?ft parameter in admin to prevent the issues it caused
+    Made category URL suffix to be .html by default
+    Added setting body class on <body> tag for admin pages (similar to frontend - full action name separated by dashes)
+    Added local.xml.additional file to list/explain possible additional configuration nodes/values for local.xml
+    Added currency rates into order info box in backend
+    Added ability to display form buttons on bottom in admin container widget, fixed button levels
+    Added ability to use memcached to store sessions and to be used as cache backend
+    Added additional permissions to WS api, fixed bugs with custom permissions
 
 
 NOTES:
