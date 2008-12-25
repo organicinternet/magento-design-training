@@ -577,9 +577,6 @@ class Mage_CatalogRule_Model_Mysql4_Rule extends Mage_Core_Model_Mysql4_Abstract
         if (!$rule->getIsActive()) {
             return $this;
         }
-        if (!$rule->getConditions()->validate($product)) {
-            return $this;
-        }
 
         $ruleId = $rule->getId();
         $productId = $product->getId();
@@ -591,6 +588,14 @@ class Mage_CatalogRule_Model_Mysql4_Rule extends Mage_Core_Model_Mysql4_Abstract
             $write->quoteInto('rule_id=?', $ruleId),
             $write->quoteInto('product_id=?', $productId),
         ));
+
+        if (!$rule->getConditions()->validate($product)) {
+            $write->delete($this->getTable('catalogrule/rule_product_price'), array(
+                $write->quoteInto('product_id=?', $productId),
+            ));
+            $write->commit();
+            return $this;
+        }
 
         $customerGroupIds = $rule->getCustomerGroupIds();
 

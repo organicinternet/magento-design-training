@@ -72,7 +72,7 @@ class Mage_Adminhtml_Block_Report_Sales_Tax_Grid extends Mage_Adminhtml_Block_Re
         $this->addColumn('tax', array(
             'header'    =>Mage::helper('reports')->__('Tax Amount'),
             'type'      =>'currency',
-            'currency_code'=>(string) Mage::app()->getStore((int)$this->getParam('store'))->getBaseCurrencyCode(),
+            'currency_code'=>$this->getCurrentCurrencyCode(),
             'index'     =>'tax',
             'total'     =>'sum',
             'renderer'  =>'adminhtml/report_grid_column_renderer_currency'

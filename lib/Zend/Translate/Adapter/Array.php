@@ -21,10 +21,10 @@
 
 
 /** Zend_Locale */
-#require_once 'Zend/Locale.php';
+require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
-#require_once 'Zend/Translate/Adapter.php';
+require_once 'Zend/Translate/Adapter.php';
 
 
 /**
@@ -65,16 +65,16 @@ class Zend_Translate_Adapter_Array extends Zend_Translate_Adapter {
             }
         }
         if (!is_array($data)) {
-            #require_once 'Zend/Translate/Exception.php';
+            require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception("Error including array or file '".$data."'");
         }
 
-        $options = array_merge($this->_options, $options);
+        $options = $options + $this->_options;
         if (($options['clear'] == true) ||  !isset($this->_translate[$locale])) {
             $this->_translate[$locale] = array();
         }
 
-        $this->_translate[$locale] = array_merge($this->_translate[$locale], $data);
+        $this->_translate[$locale] = $data + $this->_translate[$locale];
     }
 
     /**

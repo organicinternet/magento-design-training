@@ -258,7 +258,7 @@ class Mage_Install_Model_Installer_Console extends Mage_Install_Model_Installer_
         /**
          * Check if already installed
          */
-        if ($this->_app->isInstalled()) {
+        if (Mage::isInstalled()) {
             $this->addError('ERROR: Magento is already installed');
             return false;
         }
@@ -327,7 +327,7 @@ class Mage_Install_Model_Installer_Console extends Mage_Install_Model_Installer_
             /**
              * Check if already installed
              */
-            if ($this->_app->isInstalled()) {
+            if (Mage::isInstalled()) {
                 $this->addError('ERROR: Magento is already installed');
                 return false;
             }

@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Calendar
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,43 +23,43 @@
 /**
  * @see Zend_Gdata_Entry
  */
-#require_once 'Zend/Gdata/Entry.php';
+require_once 'Zend/Gdata/Entry.php';
 
 /**
  * @see Zend_Calendar_Extension_AccessLevel
  */
-#require_once 'Zend/Gdata/Calendar/Extension/AccessLevel.php';
+require_once 'Zend/Gdata/Calendar/Extension/AccessLevel.php';
 
 /**
  * @see Zend_Calendar_Extension_Color
  */
-#require_once 'Zend/Gdata/Calendar/Extension/Color.php';
+require_once 'Zend/Gdata/Calendar/Extension/Color.php';
 
 /**
  * @see Zend_Calendar_Extension_Hidden
  */
-#require_once 'Zend/Gdata/Calendar/Extension/Hidden.php';
+require_once 'Zend/Gdata/Calendar/Extension/Hidden.php';
 
 /**
  * @see Zend_Calendar_Extension_Selected
  */
-#require_once 'Zend/Gdata/Calendar/Extension/Selected.php';
+require_once 'Zend/Gdata/Calendar/Extension/Selected.php';
 
 /**
  * @see Zend_Gdata_Extension_EventStatus
  */
-#require_once 'Zend/Gdata/Extension/EventStatus.php';
+require_once 'Zend/Gdata/Extension/EventStatus.php';
 
 /**
  * @see Zend_Gdata_Extension_Visibility
  */
-#require_once 'Zend/Gdata/Extension/Visibility.php';
+require_once 'Zend/Gdata/Extension/Visibility.php';
 
 
 /**
  * @see Zend_Extension_Where
  */
-#require_once 'Zend/Gdata/Extension/Where.php';
+require_once 'Zend/Gdata/Extension/Where.php';
 
 /**
  * Represents a Calendar entry in the Calendar data API meta feed of a user's
@@ -66,6 +67,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Calendar
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -81,15 +83,13 @@ class Zend_Gdata_Calendar_ListEntry extends Zend_Gdata_Entry
 
     public function __construct($element = null)
     {
-        foreach (Zend_Gdata_Calendar::$namespaces as $nsPrefix => $nsUri) {
-            $this->registerNamespace($nsPrefix, $nsUri);
-        }
+        $this->registerAllNamespaces(Zend_Gdata_Calendar::$namespaces);
         parent::__construct($element);
     }
 
-    public function getDOM($doc = null)
+    public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
-        $element = parent::getDOM($doc);
+        $element = parent::getDOM($doc, $majorVersion, $minorVersion);
         if ($this->_accessLevel != null) {
             $element->appendChild($this->_accessLevel->getDOM($element->ownerDocument));
         }

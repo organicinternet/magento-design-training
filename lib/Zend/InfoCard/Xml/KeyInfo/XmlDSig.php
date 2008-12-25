@@ -16,24 +16,23 @@
  * @package    Zend_InfoCard
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: XmlDSig.php 8064 2008-02-16 10:58:39Z thomas $
- * @author     John Coggeshall <john@zend.com>
+ * @version    $Id: XmlDSig.php 9094 2008-03-30 18:36:55Z thomas $
  */
 
 /**
  * Zend_InfoCard_Xml_KeyInfo_Abstract
  */
-#require_once 'Zend/InfoCard/Xml/KeyInfo/Abstract.php';
+require_once 'Zend/InfoCard/Xml/KeyInfo/Abstract.php';
 
 /**
  * Zend_InfoCard_Xml_EncryptedKey
  */
-#require_once 'Zend/InfoCard/Xml/EncryptedKey.php';
+require_once 'Zend/InfoCard/Xml/EncryptedKey.php';
 
 /**
  * Zend_InfoCard_Xml_KeyInfo_Interface
  */
-#require_once 'Zend/InfoCard/Xml/KeyInfo/Interface.php';
+require_once 'Zend/InfoCard/Xml/KeyInfo/Interface.php';
 
 /**
  * Represents a Xml Digital Signature XML Data Block
@@ -42,7 +41,6 @@
  * @package    Zend_InfoCard
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @author     John Coggeshall <john@zend.com>
  */
 class Zend_InfoCard_Xml_KeyInfo_XmlDSig
     extends Zend_InfoCard_Xml_KeyInfo_Abstract

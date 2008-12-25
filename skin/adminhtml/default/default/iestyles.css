@@ -48,7 +48,8 @@ ul.tabs li span,
 ul.tabs li a,
 .address-list li,
 .entry-edit .entry-edit-head,
-.notification-global { zoom:1; } /* IE version of clearing */
+.notification-global,
+td.files p { zoom:1; } /* IE version of clearing */
 
 .clear { display:block; clear:both; height:0; font-size:0; line-height:0; overflow:hidden; }
 
@@ -75,6 +76,9 @@ button, .form-button            { width:auto; margin-left:5px; overflow:visible;
 .grid tr.filter th input        { margin-right: -10px; }
 .grid tr.filter th .range input { margin-right: 2px; }
 button.icon-btn                 { width:31px; }
+
+td.files input.input-file { width:135px; }
+td.files-wide input.input-file { width:350px; }
 
 .nested-content .content-header { position:relative; zoom:1; }
 dl.accordion dt a, 

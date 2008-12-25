@@ -21,10 +21,10 @@
 
 
 /** Zend_Locale */
-#require_once 'Zend/Locale.php';
+require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
-#require_once 'Zend/Translate/Adapter.php';
+require_once 'Zend/Translate/Adapter.php';
 
 
 /**
@@ -41,7 +41,6 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
     private $_tuv         = null;
     private $_seg         = null;
     private $_content     = null;
-    private $_defined     = false;
 
     /**
      * Generates the tmx adapter
@@ -69,22 +68,19 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
      */
     protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $options = array_merge($this->_options, $options);
+        $options = $this->_options + $options;
 
         if ($options['clear']) {
             $this->_translate = array();
         }
 
-        if ((in_array('defined_language', $options)) and !empty($options['defined_language'])) {
-            $this->_defined = true;
-        }
-
         if (!is_readable($filename)) {
-            #require_once 'Zend/Translate/Exception.php';
+            require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception('Translation file \'' . $filename . '\' is not readable.');
         }
 
-        $this->_file = xml_parser_create();
+        $encoding = $this->_findEncoding($filename);
+        $this->_file = xml_parser_create($encoding);
         xml_set_object($this->_file, $this);
         xml_parser_set_option($this->_file, XML_OPTION_CASE_FOLDING, 0);
         xml_set_element_handler($this->_file, "_startElement", "_endElement");
@@ -95,7 +91,7 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
                           xml_error_string(xml_get_error_code($this->_file)),
                           xml_get_current_line_number($this->_file));
             xml_parser_free($this->_file);
-            #require_once 'Zend/Translate/Exception.php';
+            require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception($ex);
         }
     }
@@ -111,14 +107,14 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         } else {
             switch(strtolower($name)) {
                 case 'tu':
-                    if (array_key_exists('tuid', $attrib)) {
+                    if (isset($attrib['tuid']) === true) {
                         $this->_tu = $attrib['tuid'];
                     }
                     break;
                 case 'tuv':
-                    if (array_key_exists('xml:lang', $attrib)) {
+                    if (isset($attrib['xml:lang']) === true) {
                         $this->_tuv = $attrib['xml:lang'];
-                        if (!array_key_exists($this->_tuv, $this->_translate)) {
+                        if (isset($this->_translate[$this->_tuv]) === false) {
                             $this->_translate[$this->_tuv] = array();
                         }
                     }
@@ -147,7 +143,7 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
                     break;
                 case 'seg':
                     $this->_seg = null;
-                    if (!empty($this->_content) or !array_key_exists($this->_tu, $this->_translate[$this->_tuv])) {
+                    if (!empty($this->_content) or (isset($this->_translate[$this->_tuv][$this->_tu]) === false)) {
                         $this->_translate[$this->_tuv][$this->_tu] = $this->_content;
                     }
                     break;
@@ -162,6 +158,17 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         if (($this->_seg !== null) and ($this->_tu !== null) and ($this->_tuv !== null)) {
             $this->_content .= $data;
         }
+    }
+
+    private function _findEncoding($filename)
+    {
+        $file = file_get_contents($filename, null, null, 0, 100);
+        if (strpos($file, "encoding") !== false) {
+            $encoding = substr($file, strpos($file, "encoding") + 9);
+            $encoding = substr($encoding, 1, strpos($encoding, $encoding[0], 1) - 1);
+            return $encoding;
+        }
+        return 'UTF-8';
     }
 
     /**

@@ -20,10 +20,10 @@
 
 
 /** Zend_Pdf_Element */
-#require_once 'Zend/Pdf/Element.php';
+require_once 'Zend/Pdf/Element.php';
 
 /** Zend_Pdf_PhpArray */
-#require_once 'Zend/Pdf/PhpArray.php';
+require_once 'Zend/Pdf/PhpArray.php';
 
 
 
@@ -131,5 +131,21 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
         $outStr .= ']';
 
         return $outStr;
+    }
+
+    /**
+     * Convert PDF element to PHP type.
+     *
+     * Dictionary is returned as an associative array
+     *
+     * @return mixed
+     */
+    public function toPhp()
+    {
+        foreach ($this->_items as $item) {
+            $phpArray[] = $item->toPhp();
+        }
+
+        return $phpArray;
     }
 }

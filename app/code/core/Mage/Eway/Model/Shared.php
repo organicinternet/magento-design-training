@@ -95,7 +95,7 @@ class Mage_Eway_Model_Shared extends Mage_Payment_Model_Method_Abstract
             $currency_code = $paymentInfo->getQuote()->getBaseCurrencyCode();
         }
         if ($currency_code != $this->getAccepteCurrency()) {
-            Mage::throwException(Mage::helper('eway')->__('Selected currency code ('.$currency_code.') is not compatabile with eWAY'));
+            Mage::throwException(Mage::helper('eway')->__('Selected currency code ('.$currency_code.') is not compatible with eWAY'));
         }
         return $this;
     }

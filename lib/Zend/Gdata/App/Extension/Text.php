@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,7 +23,7 @@
 /**
  * @see Zend_Gdata_App_Extension
  */
-#require_once 'Zend/Gdata/App/Extension.php';
+require_once 'Zend/Gdata/App/Extension.php';
 
 /**
  * Abstract class for data models that require only text and type-- such as:
@@ -30,6 +31,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -46,10 +48,10 @@ abstract class Zend_Gdata_App_Extension_Text extends Zend_Gdata_App_Extension
         $this->_type = $type;
     }
 
-    public function getDOM($doc = null)
+    public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
-        $element = parent::getDOM($doc);
-        if ($this->_type != null) {
+        $element = parent::getDOM($doc, $majorVersion, $minorVersion);
+        if ($this->_type !== null) {
             $element->setAttribute('type', $this->_type);
         }
         return $element;

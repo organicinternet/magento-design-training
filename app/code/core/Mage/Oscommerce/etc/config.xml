@@ -116,11 +116,11 @@
     </admin>
     <adminhtml>
         <menu>
-            <system translate="title" module="adminhtml">
+            <system>
                 <children>
-                    <convert translate="title" module="adminhtml">
+                    <convert>
                         <children>
-                            <osc translate="title" module="adminhtml">
+                            <osc translate="title" module="oscommerce">
                                 <title>osCommerce</title>
                                 <action>oscommerce/adminhtml_import</action>
                             </osc>
@@ -128,9 +128,9 @@
                     </convert>
                 </children>
             </system>
-            <sales translate="title" module="adminhtml">
+            <sales>
                 <children>
-                    <oscorder translate="title" module="adminhtml">
+                    <oscorder translate="title" module="oscommerce">
                         <title>osCommerce Orders</title>
                         <action>oscommerce/adminhtml_order</action>
                         <sort_order>100</sort_order>
@@ -144,7 +144,7 @@
                     <children>
                         <sales>
                             <children>
-                                <oscorder translate="title">
+                                <oscorder translate="title" module="oscommerce">
                                     <title>osCommerce Orders</title>
                                     <sort_order>100</sort_order>
                                 </oscorder>
@@ -154,7 +154,7 @@
                             <children>
                                 <convert>
                                     <children>
-                                        <oscimport translate="title">
+                                        <oscimport translate="title" module="oscommerce">
                                             <title>osCommerce</title>
                                             <sort_order>100</sort_order>
                                         </oscimport>
@@ -198,11 +198,11 @@
             </oscommerce>
         </routers>
         <layout>
-        	<updates>
-        		<oscommerce>
-        			<file>oscommerce.xml</file>
-        		</oscommerce>
-        	</updates>
+            <updates>
+                <oscommerce>
+                    <file>oscommerce.xml</file>
+                </oscommerce>
+            </updates>
         </layout>
         <!--translate>
             <modules>

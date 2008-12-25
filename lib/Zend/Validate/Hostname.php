@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -17,24 +16,23 @@
  * @package    Zend_Validate
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Hostname.php 8985 2008-03-21 21:37:24Z matthew $
+ * @version    $Id: Hostname.php 13221 2008-12-14 11:20:25Z thomas $
  */
-
 
 /**
  * @see Zend_Validate_Abstract
  */
-#require_once 'Zend/Validate/Abstract.php';
+require_once 'Zend/Validate/Abstract.php';
 
 /**
  * @see Zend_Loader
  */
-#require_once 'Zend/Loader.php';
+require_once 'Zend/Loader.php';
 
 /**
  * @see Zend_Validate_Ip
  */
-#require_once 'Zend/Validate/Ip.php';
+require_once 'Zend/Validate/Ip.php';
 
 /**
  * Please note there are two standalone test scripts for testing IDN characters due to problems
@@ -53,7 +51,6 @@
  */
 class Zend_Validate_Hostname extends Zend_Validate_Abstract
 {
-
     const IP_ADDRESS_NOT_ALLOWED  = 'hostnameIpAddressNotAllowed';
     const UNKNOWN_TLD             = 'hostnameUnknownTld';
     const INVALID_DASH            = 'hostnameDashCharacter';
@@ -361,7 +358,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                              * Regex error
                              * @see Zend_Validate_Exception
                              */
-                            #require_once 'Zend/Validate/Exception.php';
+                            require_once 'Zend/Validate/Exception.php';
                             throw new Zend_Validate_Exception('Internal error: DNS validation failed');
                         } elseif ($status === 0) {
                             $valid = false;
@@ -398,7 +395,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
              * Regex error
              * @see Zend_Validate_Exception
              */
-            #require_once 'Zend/Validate/Exception.php';
+            require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('Internal error: local network name validation failed');
         }
 
@@ -415,7 +412,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         // If local network names are not allowed, add a message
-        if (!$allowLocal) {
+        if ($status && !$allowLocal) {
             $this->_error(self::LOCAL_NAME_NOT_ALLOWED);
         }
 
@@ -433,7 +430,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     protected function _checkRegexType($type)
     {
         if (!isset($this->_regex[$type])) {
-            #require_once 'Zend/Validate/Exception.php';
+            require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception("'$type' must be one of ('" . implode(', ', array_keys($this->_regex))
                                             . "')");
         }

@@ -76,7 +76,7 @@ class Mage_Chronopay_Model_Standard extends Mage_Payment_Model_Method_Abstract
             $currency_code = $paymentInfo->getQuote()->getBaseCurrencyCode();
         }
         if ($currency_code != $this->getConfig()->getCurrency()) {
-            Mage::throwException(Mage::helper('chronopay')->__('Selected currency code ('.$currency_code.') is not compatabile with ChronoPay'));
+            Mage::throwException(Mage::helper('chronopay')->__('Selected currency code ('.$currency_code.') is not compatible with ChronoPay'));
         }
         return $this;
     }

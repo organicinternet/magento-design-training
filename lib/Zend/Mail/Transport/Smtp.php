@@ -17,29 +17,29 @@
  * @subpackage Transport
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Smtp.php 8064 2008-02-16 10:58:39Z thomas $
+ * @version    $Id: Smtp.php 12519 2008-11-10 18:41:24Z alexander $
  */
 
 
 /**
  * @see Zend_Loader
  */
-#require_once 'Zend/Loader.php';
+require_once 'Zend/Loader.php';
 
 /**
  * @see Zend_Mime
  */
-#require_once 'Zend/Mime.php';
+require_once 'Zend/Mime.php';
 
 /**
  * @see Zend_Mail_Protocol_Smtp
  */
-#require_once 'Zend/Mail/Protocol/Smtp.php';
+require_once 'Zend/Mail/Protocol/Smtp.php';
 
 /**
  * @see Zend_Mail_Transport_Abstract
  */
-#require_once 'Zend/Mail/Transport/Abstract.php';
+require_once 'Zend/Mail/Transport/Abstract.php';
 
 
 /**
@@ -145,7 +145,7 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
             try {
                 $this->_connection->quit();
             } catch (Zend_Mail_Protocol_Exception $e) {
-            	// ignore
+                // ignore
             }
             $this->_connection->disconnect();
         }
@@ -229,7 +229,7 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
             /**
              * @see Zend_Mail_Transport_Exception
              */
-            #require_once 'Zend/Mail/Transport/Exception.php';
+            require_once 'Zend/Mail/Transport/Exception.php';
             throw new Zend_Mail_Transport_Exception('_prepareHeaders requires a registered Zend_Mail object');
         }
 

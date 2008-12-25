@@ -20,14 +20,14 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Mage
- * @package    Mage_Sitemap
+ * @package    Mage_Strikeiron
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 -->
 <config>
    <sections>
-        <strikeiron translate="label" module="sitemap">
+        <strikeiron translate="label" module="strikeiron">
             <label>Strikeiron</label>
             <tab>service</tab>
             <frontend_type>text</frontend_type>
@@ -265,7 +265,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </min_max>
-                        <customer_tax_class>
+                        <customer_tax_class translate="label">
                             <label>Customer Tax Class</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>tax/class_source_customer</source_model>
@@ -274,7 +274,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customer_tax_class>
-                        <product_tax_class>
+                        <product_tax_class translate="label">
                             <label>Product Tax Class</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>tax/class_source_product</source_model>
@@ -285,9 +285,7 @@
                         </product_tax_class>
                    </fields>
                 </sales_tax>
-
             </groups>
-
         </strikeiron>
     </sections>
 </config>

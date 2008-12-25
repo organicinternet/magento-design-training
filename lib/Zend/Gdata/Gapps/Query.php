@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,12 +23,12 @@
 /**
  * Zend_Gdata_Query
  */
-#require_once('Zend/Gdata/Query.php');
+require_once('Zend/Gdata/Query.php');
 
 /**
  * Zend_Gdata_Gapps
  */
-#require_once('Zend/Gdata/Gapps.php');
+require_once('Zend/Gdata/Gapps.php');
 
 /**
  * Assists in constructing queries for Google Apps entries. This class 
@@ -38,6 +39,7 @@
   * 
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -111,7 +113,7 @@ abstract class Zend_Gdata_Gapps_Query extends Zend_Gdata_Query
              return Zend_Gdata_Gapps::APPS_BASE_FEED_URI . '/' . $this->_domain;
          }
          else {
-             #require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+             require_once 'Zend/Gdata/App/InvalidArgumentException.php';
              throw new Zend_Gdata_App_InvalidArgumentException(
                  'Domain must be specified.');
          }

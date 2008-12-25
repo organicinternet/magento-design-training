@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gbase
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,12 +23,12 @@
 /**
  * @see Zend_Gdata_Query
  */
-#require_once('Zend/Gdata/Query.php');
+require_once('Zend/Gdata/Query.php');
 
 /**
  * @see Zend_Gdata_Gbase_Query
  */
-#require_once('Zend/Gdata/Gbase/Query.php');
+require_once('Zend/Gdata/Gbase/Query.php');
 
 
 /**
@@ -37,6 +38,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gbase
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */

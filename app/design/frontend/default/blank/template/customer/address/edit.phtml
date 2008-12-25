@@ -38,10 +38,11 @@
 <?php endif; ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getSaveUrl() ?>" method="post" id="form-validate">
+    <?php echo $this->getBlockHtml('formkey')?>
     <fieldset class="group-select">
     <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
     <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
-        <h3 class="legend"><?php echo $this->__('Contact Information') ?></h3>
+        <h3><?php echo $this->__('Contact Information') ?></h3>
         <ul>
             <li>
                 <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getAddress()->getFirstname() ? $this->getAddress() : $this->getCustomer())->toHtml() ?>
@@ -63,7 +64,7 @@
         </ul>
     </fieldset>
     <fieldset class="group-select">
-        <h3 class="legend"><?php echo $this->__('Address') ?></h3>
+        <h3><?php echo $this->__('Address') ?></h3>
         <ul>
             <li>
                 <label for="street_1"><?php echo $this->__('Street Address') ?> <span class="required">*</span></label><br />

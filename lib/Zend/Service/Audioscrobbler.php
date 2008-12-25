@@ -18,14 +18,14 @@
  * @subpackage Audioscrobbler
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Audioscrobbler.php 8064 2008-02-16 10:58:39Z thomas $
+ * @version    $Id: Audioscrobbler.php 9094 2008-03-30 18:36:55Z thomas $
  */
 
 
 /**
  * @see Zend_Http_Client
  */
-#require_once 'Zend/Http/Client.php';
+require_once 'Zend/Http/Client.php';
 
 
 /**
@@ -34,8 +34,6 @@
  * @subpackage Audioscrobbler
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @author     Chris Hartjes chartjes@littlehart.net (ZCE # 901167)
- * @author     Derek Martin  derek@geekunity.com (ZCE # 901168)
  */
 class Zend_Service_Audioscrobbler
 {
@@ -162,7 +160,7 @@ class Zend_Service_Audioscrobbler
             /**
              * @see Zend_Http_Client_Adapter_Test
              */
-            #require_once 'Zend/Http/Client/Adapter/Test.php';
+            require_once 'Zend/Http/Client/Adapter/Test.php';
             $adapter = new Zend_Http_Client_Adapter_Test();
 
             $this->_client->setConfig(array('adapter' => $adapter));
@@ -177,19 +175,19 @@ class Zend_Service_Audioscrobbler
             /**
              * @see Zend_Http_Client_Exception
              */
-            #require_once 'Zend/Http/Client/Exception.php';
+            require_once 'Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('Could not find: ' . $this->_client->getUri());
         } elseif (preg_match('/No user exists with this name/', $responseBody)) {
             /**
              * @see Zend_Http_Client_Exception
              */
-            #require_once 'Zend/Http/Client/Exception.php';
+            require_once 'Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('No user exists with this name');
         } elseif (!$response->isSuccessful()) {
             /**
              * @see Zend_Http_Client_Exception
              */
-            #require_once 'Zend/Http/Client/Exception.php';
+            require_once 'Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('The web service ' . $this->_client->getUri() . ' returned the following status code: ' . $response->getStatus());
         }
 
@@ -200,7 +198,7 @@ class Zend_Service_Audioscrobbler
             /**
              * @see Zend_Service_Exception
              */
-            #require_once 'Zend/Service/Exception.php';
+            require_once 'Zend/Service/Exception.php';
             $exception = new Zend_Service_Exception('Response failed to load with SimpleXML');
             $exception->error    = $this->_error;
             $exception->response = $responseBody;

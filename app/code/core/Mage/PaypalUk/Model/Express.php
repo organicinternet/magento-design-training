@@ -200,7 +200,7 @@ class Mage_PaypalUk_Model_Express extends Mage_Payment_Model_Method_Abstract
                 if ($this->getSession()->getExpressCheckoutMethod() == 'shortcut') {
                     $this->getApi()->setRedirectUrl(Mage::getUrl('paypaluk/express/saveOrder'));
                 } else {
-                    $this->getApi()->setRedirectUrl(Mage::getUrl('paypal/express/updateOrder'));
+                    $this->getApi()->setRedirectUrl(Mage::getUrl('paypaluk/express/updateOrder'));
                 }
 
                 break;

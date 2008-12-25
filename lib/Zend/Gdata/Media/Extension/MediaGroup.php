@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Media
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,86 +23,88 @@
 /**
  * @see Zend_Gdata_Extension
  */
-#require_once 'Zend/Gdata/Extension.php';
+require_once 'Zend/Gdata/Extension.php';
 
 /**
  * @see Zend_Gdata_Entry
  */
-#require_once 'Zend/Gdata/Entry.php';
+require_once 'Zend/Gdata/Entry.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaContent
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaContent.php';
+require_once 'Zend/Gdata/Media/Extension/MediaContent.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaCategory
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaCategory.php';
+require_once 'Zend/Gdata/Media/Extension/MediaCategory.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaCopyright
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaCopyright.php';
+require_once 'Zend/Gdata/Media/Extension/MediaCopyright.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaCredit
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaCredit.php';
+require_once 'Zend/Gdata/Media/Extension/MediaCredit.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaDescription
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaDescription.php';
+require_once 'Zend/Gdata/Media/Extension/MediaDescription.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaHash
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaHash.php';
+require_once 'Zend/Gdata/Media/Extension/MediaHash.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaKeywords
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaKeywords.php';
+require_once 'Zend/Gdata/Media/Extension/MediaKeywords.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaPlayer
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaPlayer.php';
+require_once 'Zend/Gdata/Media/Extension/MediaPlayer.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaRating
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaRating.php';
+require_once 'Zend/Gdata/Media/Extension/MediaRating.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaRestriction
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaRestriction.php';
+require_once 'Zend/Gdata/Media/Extension/MediaRestriction.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaText
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaText.php';
+require_once 'Zend/Gdata/Media/Extension/MediaText.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaThumbnail
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaThumbnail.php';
+require_once 'Zend/Gdata/Media/Extension/MediaThumbnail.php';
 
 /**
  * @see Zend_Gdata_Media_Extension_MediaTitle
  */
-#require_once 'Zend/Gdata/Media/Extension/MediaTitle.php';
+require_once 'Zend/Gdata/Media/Extension/MediaTitle.php';
+
 
 /**
  * This class represents the media:group element of Media RSS.
- * It allows the grouping of media:content elements that are 
+ * It allows the grouping of media:content elements that are
  * different representations of the same content.  When it exists,
  * it is a child of an Entry (Atom) or Item (RSS).
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Media
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -114,92 +117,90 @@ class Zend_Gdata_Media_Extension_MediaGroup extends Zend_Gdata_Extension
     /**
      * @var array
      */
-    protected $_content = array(); 
+    protected $_content = array();
 
     /**
      * @var array
      */
-    protected $_category = array(); 
+    protected $_category = array();
 
     /**
      * @var Zend_Gdata_Media_Extension_MediaCopyright
      */
-    protected $_copyright = null; 
+    protected $_copyright = null;
 
     /**
      * @var array
      */
-    protected $_credit = array(); 
+    protected $_credit = array();
 
     /**
      * @var Zend_Gdata_Media_Extension_MediaDescription
      */
-    protected $_description = null; 
+    protected $_description = null;
 
     /**
      * @var array
      */
-    protected $_hash = array(); 
+    protected $_hash = array();
 
     /**
      * @var Zend_Gdata_Media_Extension_MediaKeywords
      */
-    protected $_keywords = null; 
+    protected $_keywords = null;
 
     /**
      * @var array
      */
-    protected $_player = array(); 
+    protected $_player = array();
 
     /**
      * @var array
      */
-    protected $_rating = array(); 
+    protected $_rating = array();
 
     /**
      * @var array
      */
-    protected $_restriction = array(); 
+    protected $_restriction = array();
 
     /**
      * @var array
      */
-    protected $_mediaText = array(); 
+    protected $_mediaText = array();
 
     /**
      * @var array
      */
-    protected $_thumbnail = array(); 
+    protected $_thumbnail = array();
 
     /**
      * @var string
      */
-    protected $_title = null; 
+    protected $_title = null;
 
     /**
      * Creates an individual MediaGroup object.
      */
     public function __construct($element = null)
     {
-        foreach (Zend_Gdata_Media::$namespaces as $nsPrefix => $nsUri) {
-            $this->registerNamespace($nsPrefix, $nsUri);
-        }
+        $this->registerAllNamespaces(Zend_Gdata_Media::$namespaces);
         parent::__construct($element);
     }
 
     /**
-     * Retrieves a DOMElement which corresponds to this element and all 
+     * Retrieves a DOMElement which corresponds to this element and all
      * child properties.  This is used to build an entry back into a DOM
      * and eventually XML text for sending to the server upon updates, or
-     * for application storage/persistence.   
+     * for application storage/persistence.
      *
      * @param DOMDocument $doc The DOMDocument used to construct DOMElements
-     * @return DOMElement The DOMElement representing this element and all 
-     * child properties. 
+     * @return DOMElement The DOMElement representing this element and all
+     * child properties.
      */
-    public function getDOM($doc = null)
+    public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
-        $element = parent::getDOM($doc);
+        $element = parent::getDOM($doc, $majorVersion, $minorVersion);
         foreach ($this->_content as $content) {
             $element->appendChild($content->getDOM($element->ownerDocument));
         }
@@ -256,67 +257,67 @@ class Zend_Gdata_Media_Extension_MediaGroup extends Zend_Gdata_Extension
     {
         $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
         switch ($absoluteNodeName) {
-            case $this->lookupNamespace('media') . ':' . 'content'; 
+            case $this->lookupNamespace('media') . ':' . 'content';
                 $content = new Zend_Gdata_Media_Extension_MediaContent();
                 $content->transferFromDOM($child);
                 $this->_content[] = $content;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'category'; 
+            case $this->lookupNamespace('media') . ':' . 'category';
                 $category = new Zend_Gdata_Media_Extension_MediaCategory();
                 $category->transferFromDOM($child);
                 $this->_category[] = $category;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'copyright'; 
+            case $this->lookupNamespace('media') . ':' . 'copyright';
                 $copyright = new Zend_Gdata_Media_Extension_MediaCopyright();
                 $copyright->transferFromDOM($child);
                 $this->_copyright = $copyright;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'credit'; 
+            case $this->lookupNamespace('media') . ':' . 'credit';
                 $credit = new Zend_Gdata_Media_Extension_MediaCredit();
                 $credit->transferFromDOM($child);
                 $this->_credit[] = $credit;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'description'; 
+            case $this->lookupNamespace('media') . ':' . 'description';
                 $description = new Zend_Gdata_Media_Extension_MediaDescription();
                 $description->transferFromDOM($child);
                 $this->_description = $description;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'hash'; 
+            case $this->lookupNamespace('media') . ':' . 'hash';
                 $hash = new Zend_Gdata_Media_Extension_MediaHash();
                 $hash->transferFromDOM($child);
                 $this->_hash[] = $hash;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'keywords'; 
+            case $this->lookupNamespace('media') . ':' . 'keywords';
                 $keywords = new Zend_Gdata_Media_Extension_MediaKeywords();
                 $keywords->transferFromDOM($child);
                 $this->_keywords = $keywords;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'player'; 
+            case $this->lookupNamespace('media') . ':' . 'player';
                 $player = new Zend_Gdata_Media_Extension_MediaPlayer();
                 $player->transferFromDOM($child);
                 $this->_player[] = $player;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'rating'; 
+            case $this->lookupNamespace('media') . ':' . 'rating';
                 $rating = new Zend_Gdata_Media_Extension_MediaRating();
                 $rating->transferFromDOM($child);
                 $this->_rating[] = $rating;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'restriction'; 
+            case $this->lookupNamespace('media') . ':' . 'restriction';
                 $restriction = new Zend_Gdata_Media_Extension_MediaRestriction();
                 $restriction->transferFromDOM($child);
                 $this->_restriction[] = $restriction;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'text'; 
+            case $this->lookupNamespace('media') . ':' . 'text';
                 $text = new Zend_Gdata_Media_Extension_MediaText();
                 $text->transferFromDOM($child);
                 $this->_mediaText[] = $text;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'thumbnail'; 
+            case $this->lookupNamespace('media') . ':' . 'thumbnail';
                 $thumbnail = new Zend_Gdata_Media_Extension_MediaThumbnail();
                 $thumbnail->transferFromDOM($child);
                 $this->_thumbnail[] = $thumbnail;
                 break;
-            case $this->lookupNamespace('media') . ':' . 'title'; 
+            case $this->lookupNamespace('media') . ':' . 'title';
                 $title = new Zend_Gdata_Media_Extension_MediaTitle();
                 $title->transferFromDOM($child);
                 $this->_title = $title;
@@ -401,7 +402,7 @@ class Zend_Gdata_Media_Extension_MediaGroup extends Zend_Gdata_Extension
 
     /**
      * @return Zend_Gdata_Media_Extension_MediaTitle
-     */ 
+     */
     public function getTitle()
     {
         return $this->_title;
@@ -410,7 +411,7 @@ class Zend_Gdata_Media_Extension_MediaGroup extends Zend_Gdata_Extension
     /**
      * @param Zend_Gdata_Media_Extension_MediaTitle $value
      * @return Zend_Gdata_Media_Extension_MediaGroup
-     */ 
+     */
     public function setTitle($value)
     {
         $this->_title = $value;

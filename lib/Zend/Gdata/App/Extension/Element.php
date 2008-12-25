@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,7 +23,7 @@
 /**
  * @see Zend_Gdata_App_Extension
  */
-#require_once 'Zend/Gdata/App/Extension.php';
+require_once 'Zend/Gdata/App/Extension.php';
 
 /**
  * Class that represents elements which were not handled by other parsing
@@ -30,6 +31,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */

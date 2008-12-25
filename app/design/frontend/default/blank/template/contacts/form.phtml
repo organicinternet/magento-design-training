@@ -30,7 +30,7 @@
 </div>
 <form action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post">
     <fieldset class="group-select">
-        <h3 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h3>
+        <h3><?php echo Mage::helper('contacts')->__('Contact Information') ?></h3>
         <ul>
             <li>
                 <div class="input-box">
@@ -51,7 +51,7 @@
             </li>
             <li>
                 <label for="comment"><?php echo Mage::helper('contacts')->__('Comment') ?></label><br />
-                <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="input-text" style="height:150px;" cols="5" rows="3"></textarea>
+                <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" style="height:150px;" cols="5" rows="3"></textarea>
             </li>
         </ul>
     </fieldset>

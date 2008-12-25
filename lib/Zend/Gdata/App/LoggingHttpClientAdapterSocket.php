@@ -14,14 +14,14 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Http
- * @subpackage Client_Adapter
+ * @package    Zend_Gdata
+ * @subpackage App
  * @version    $Id: Socket.php 8064 2008-02-16 10:58:39Z thomas $
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-#require_once 'Zend/Http/Client/Adapter/Socket.php';
+require_once 'Zend/Http/Client/Adapter/Socket.php';
 
 /**
  * Overrides the traditional socket-based adapter class for Zend_Http_Client to 

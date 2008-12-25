@@ -34,7 +34,7 @@
     <fieldset class="group-select">
     <input type="hidden" name="address_id" value="<?php echo $data->getAddressId() ?>" />
     <input type="hidden" name="customer_id" id="address_id" value="<?php echo $data->getCustomerId() ?>" />
-        <h3 class="legend"><?php echo $this->__('Personal Information') ?></h3>
+        <h3><?php echo $this->__('Personal Information') ?></h3>
         <ul>
             <li>
                 <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($data)->toHtml() ?>
@@ -48,7 +48,7 @@
         </ul>
     </fieldset>
     <fieldset class="group-select">
-        <h3 class="legend"><?php echo $this->__('Address') ?></h3>
+        <h3><?php echo $this->__('Address') ?></h3>
         <ul>
             <li>
                 <label for="street_1"><?php echo $this->__('Street Address') ?> <span class="required">*</span></label><br />

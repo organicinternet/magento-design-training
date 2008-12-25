@@ -21,10 +21,10 @@
 
 
 /** Zend_Locale */
-#require_once 'Zend/Locale.php';
+require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
-#require_once 'Zend/Translate/Adapter.php';
+require_once 'Zend/Translate/Adapter.php';
 
 
 /**
@@ -67,7 +67,7 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
      */
     protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $options = array_merge($this->_options, $options);
+        $options = $options + $this->_options;
         $this->_lang = $locale;
 
         if ($options['clear']  ||  !isset($this->_translate[$locale])) {
@@ -75,11 +75,12 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
         }
 
         if (!is_readable($filename)) {
-            #require_once 'Zend/Translate/Exception.php';
+            require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception('Translation file \'' . $filename . '\' is not readable.');
         }
 
-        $this->_file = xml_parser_create();
+        $encoding = $this->_findEncoding($filename);
+        $this->_file = xml_parser_create($encoding);
         xml_set_object($this->_file, $this);
         xml_parser_set_option($this->_file, XML_OPTION_CASE_FOLDING, 0);
         xml_set_element_handler($this->_file, "_startElement", "_endElement");
@@ -90,7 +91,7 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
                           xml_error_string(xml_get_error_code($this->_file)),
                           xml_get_current_line_number($this->_file));
             xml_parser_free($this->_file);
-            #require_once 'Zend/Translate/Exception.php';
+            require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception($ex);
         }
     }
@@ -112,12 +113,13 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
         switch (strtolower($name)) {
             case 'tm:tu':
                 if (!empty($this->_tag) and !empty($this->_content) or
-                    !array_key_exists($this->_tag, $this->_translate[$this->_lang])) {
+                    (isset($this->_translate[$this->_lang][$this->_tag]) === false)) {
                     $this->_translate[$this->_lang][$this->_tag] = $this->_content;
                 }
                 $this->_tag     = null;
                 $this->_content = null;
                 break;
+
             default:
                 break;
         }
@@ -128,6 +130,17 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
         if (($this->_tag !== null)) {
             $this->_content .= $data;
         }
+    }
+
+    private function _findEncoding($filename)
+    {
+        $file = file_get_contents($filename, null, null, 0, 100);
+        if (strpos($file, "encoding") !== false) {
+            $encoding = substr($file, strpos($file, "encoding") + 9);
+            $encoding = substr($encoding, 1, strpos($encoding, $encoding[0], 1) - 1);
+            return $encoding;
+        }
+        return 'UTF-8';
     }
 
     /**

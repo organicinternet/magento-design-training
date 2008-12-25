@@ -58,4 +58,17 @@ Catalog Search layout
             <block type="directory/currency" name="right_currency" before="-" template="directory/currency.phtml"/>
         </reference>
     </catalogsearch_advanced_index>
+
+    <catalogsearch_result_index>
+        <reference name="left">
+            <block type="directory/currency" name="currency" before="-" template="directory/currency.phtml"/>
+        </reference>
+    </catalogsearch_result_index>
+
+    <catalogsearch_advanced_result>
+        <reference name="left">
+            <block type="directory/currency" name="currency" before="-" template="directory/currency.phtml"/>
+        </reference>
+    </catalogsearch_advanced_result>
+
 </layout>

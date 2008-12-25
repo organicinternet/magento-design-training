@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Photos
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,7 +23,7 @@
 /**
  * @see Zend_Gdata_Photos_UserQuery
  */
-#require_once('Zend/Gdata/Photos/UserQuery.php');
+require_once('Zend/Gdata/Photos/UserQuery.php');
 
 /**
  * Assists in constructing album queries for various entries.
@@ -34,6 +35,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Photos
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -131,11 +133,11 @@ class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
         } elseif ($this->getAlbumName() === null && $this->getAlbumId() !== null) {
             $uri .= '/albumid/' . $this->getAlbumId();
         } elseif ($this->getAlbumName() !== null && $this->getAlbumId() !== null) {
-            #require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'AlbumName and AlbumId cannot both be non-null');
         } else {
-            #require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'AlbumName and AlbumId cannot both be null');
         }

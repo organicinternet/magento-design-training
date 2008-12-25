@@ -32,6 +32,7 @@
         <p class="a-right"><a href="<?php echo $this->helper('wishlist')->getRssUrl(); ?>" class="link-feed"><?php echo $this->__('RSS Feed') ?></a></p>
     <?php endif; ?>
     <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+        <?php echo $this->getBlockHtml('formkey')?>
         <table cellspacing="0" class="shopping-cart product-data" id="wishlist-table">
             <thead>
                 <tr>

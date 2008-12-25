@@ -134,7 +134,11 @@ class Mage_Sales_Model_Quote_Address_Total_Discount extends Mage_Sales_Model_Quo
         $address->setBaseDiscountAmount($baseTotalDiscountAmount);
         $address->setBaseSubtotalWithDiscount($baseSubtotalWithDiscount);
 
-        if (!$hasDiscount && !$address->getFreeShipping()) {
+        /**
+         * If we use valid coupon code it will be applied to address in validator
+         * if address coupon code is empty we should reset it for quote
+         */
+        if ((!$hasDiscount && !$address->getFreeShipping()) || !$address->hasCouponCode()) {
             $quote->setCouponCode('');
         }
         $address->setGrandTotal($address->getGrandTotal() - $address->getDiscountAmount());

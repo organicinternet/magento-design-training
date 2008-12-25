@@ -528,4 +528,16 @@ class Mage_Core_Model_Email_Template extends Varien_Object
         $this->getMail()->setReturnPath($email);
         return $this;
     }
+
+    /**
+     * Add Reply-To header
+     *
+     * @param string $email
+     * @return Mage_Core_Model_Email_Template
+     */
+    public function setReplyTo($email)
+    {
+        $this->getMail()->addHeader('Reply-To', $email);
+        return $this;
+    }
 }

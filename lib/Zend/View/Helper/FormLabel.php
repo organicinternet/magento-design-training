@@ -20,7 +20,7 @@
  */
 
 /** Zend_View_Helper_FormElement **/
-#require_once 'Zend/View/Helper/FormElement.php';
+require_once 'Zend/View/Helper/FormElement.php';
 
 /**
  * Form label helper
@@ -48,7 +48,8 @@ class Zend_View_Helper_FormLabel extends Zend_View_Helper_FormElement
 
         // build the element
         if ($disable) {
-            // disabled; do nothing
+            // disabled; display nothing
+            $xhtml = '';
         } else {
             $value = ($escape) ? $this->view->escape($value) : $value;
 

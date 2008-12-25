@@ -127,7 +127,7 @@
 /* Global Styles ========================================================================= */
 /* Form Elements */
 input,select,textarea,button { font:12px Arial, Helvetica, sans-serif; vertical-align:middle; color:#000; }
-input.input-text,select,textarea { border:1px solid #ddd; }
+input.input-text,select,textarea { background:#fff; border:1px solid #ddd; }
 input.input-text,textarea { padding:2px; }
 select { padding:1px; }
 select option { padding-right:10px; }
@@ -151,23 +151,22 @@ button.disabled span {}
 
 /* Form lists */
 .form-list li { margin:0 0 5px; }
-.form-list li .input-box {}
-.form-list li input.input-text,
-.form-list li textarea { width:250px; }
-.form-list li select { width:256px; }
+.form-list label { font-weight:bold; }
+.form-list .input-box { float:left; width:260px; }
+.form-list input.input-text,
+.form-list textarea { width:250px; }
+.form-list select { width:256px; }
 .form-list li.add-row { border-top:1px solid #ddd; margin-top:10px; }
-.form-list label {}
 
 .group-select {}
-.group-select label {}
 .group-select li { margin:0 0 5px; }
-.group-select li .input-box { float:left; width:260px; }
-.group-select li input.input-text,
-.group-select li textarea {width:510px; }
-.group-select li select { width:516px; }
-.group-select li .input-box input.input-text,
-.group-select li .input-box textarea { width:250px; }
-.group-select li .input-box select { width:256px; }
+.group-select .input-box { float:left; width:260px; }
+.group-select input.input-text,
+.group-select textarea {width:510px; }
+.group-select select { width:516px; }
+.group-select .input-box input.input-text,
+.group-select .input-box textarea { width:250px; }
+.group-select .input-box select { width:256px; }
 
 .buttons-set { clear:both; margin:5px 0 0; padding:5px; border:1px solid #ddd; }
 .buttons-set .back-link { float:left; }
@@ -622,7 +621,7 @@ a.minimal-price-link .price { font-weight:normal; }
 .truncated a.dots { cursor:help; }
 .truncated a.details { cursor:help; }
 .truncated .truncated_full_value { position:relative; z-index:999; }
-.truncated .truncated_full_value dl { position:absolute; top:-99999em; z-index:999; width:250px; padding:8px; border:1px solid #ddd; background-color:#f6f6f6; }
+.truncated .truncated_full_value dl { position:absolute; top:-99999em; left:-99999em; z-index:999; width:250px; padding:8px; border:1px solid #ddd; background-color:#f6f6f6; }
 .truncated .show dl { top:-20px; left:50%; }
 .col-left .truncated .show dl { left:30px; top:7px; }
 .col-right .truncated .show dl  { left:-240px; top:7px; }

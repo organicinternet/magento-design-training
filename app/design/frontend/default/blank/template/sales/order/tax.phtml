@@ -31,6 +31,7 @@
 <?php if ($this->helper('tax')->displayFullSummary()): ?>
 <?php $isTop = 1; ?>
     <?php if ($_fullInfo) foreach ($_fullInfo as $info): ?>
+        <?php if (isset($info['hidden']) && $info['hidden']) continue; ?>
         <?php $percent = $info['percent']; ?>
         <?php $amount = $info['amount']; ?>
         <?php $rates = $info['rates']; ?>
@@ -39,10 +40,14 @@
         <?php foreach ($rates as $rate): ?>
         <tr class="tax-details-<?php echo $taxIter; ?> tax-details<?php if ($isTop): echo ' tax-details-first'; endif; ?>" style="display:none;">
             <td class="a-right" colspan="4">
-                <?php echo $rate['title']; ?> - <?php echo $rate['percent']; ?>%
+                <?php echo $rate['title']; ?>
+                <?php if ($rate['percent']): ?>
+                    (<?php echo $rate['percent']; ?>%)
+                <?php endif; ?>
+                <br />
             </td>
             <?php if ($isFirst): ?>
-                <td rowspan="<?php echo count($rates); ?>" class="a-right">
+                <td class="a-right" rowspan="<?php echo count($rates); ?>">
                     <?php echo $_order->formatPrice($amount); ?>
                 </td>
             <?php endif; ?>

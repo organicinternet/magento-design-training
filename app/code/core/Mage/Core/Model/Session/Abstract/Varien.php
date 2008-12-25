@@ -41,18 +41,24 @@ class Mage_Core_Model_Session_Abstract_Varien extends Varien_Object
 
         Varien_Profiler::start(__METHOD__.'/setOptions');
         if (is_writable(Mage::getBaseDir('session'))) {
-            session_save_path(Mage::getBaseDir('session'));
+            session_save_path($this->getSessionSavePath());
         }
         Varien_Profiler::stop(__METHOD__.'/setOptions');
 
-        if ($this->getSessionSaveMethod() == 'files') {
-            session_module_name('files');
-        }
-        else {
-            ini_set('session.save_handler', 'user');
-            $sessionResource = Mage::getResourceSingleton('core/session');
-            /* @var $sessionResource Mage_Core_Model_Mysql4_Session */
-            $sessionResource->setSaveHandler();
+        switch($this->getSessionSaveMethod()) {
+            case 'db':
+                ini_set('session.save_handler', 'user');
+                $sessionResource = Mage::getResourceSingleton('core/session');
+                /* @var $sessionResource Mage_Core_Model_Mysql4_Session */
+                $sessionResource->setSaveHandler();
+                break;
+            case 'memcache':
+                ini_set('session.save_handler', 'memcache');
+                session_save_path($this->getSessionSavePath());
+                break;
+            default:
+                session_module_name('files');
+                break;
         }
 
         if (intval($this->getCookieLifetime()) > 0) {
@@ -174,6 +180,16 @@ class Mage_Core_Model_Session_Abstract_Varien extends Varien_Object
     public function getSessionSaveMethod()
     {
         return 'files';
+    }
+
+    /**
+     * Get sesssion save path
+     *
+     * @return string
+     */
+    public function getSessionSavePath()
+    {
+        return Mage::getBaseDir('session');
     }
 
     /**

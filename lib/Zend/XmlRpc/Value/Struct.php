@@ -17,13 +17,14 @@
  * @subpackage Value
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: Struct.php 9095 2008-03-30 18:52:31Z thomas $
  */
 
 
 /**
  * Zend_XmlRpc_Value_Collection
  */
-#require_once 'Zend/XmlRpc/Value/Collection.php';
+require_once 'Zend/XmlRpc/Value/Collection.php';
 
 
 /**

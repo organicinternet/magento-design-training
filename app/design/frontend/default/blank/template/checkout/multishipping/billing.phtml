@@ -39,7 +39,7 @@
 <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="multishipping-billing-form">
 <fieldset class="col2-set multiple-checkout">
     <div class="col-1 narrow">
-        <h3><?php echo $this->__('Billing Address') ?> <span class="separator">|</span> <a href="<?php echo $this->getSelectAddressUrl() ?>"><?php echo $this->__('Edit') ?></a></h3>
+        <h3><?php echo $this->__('Billing Address') ?> <span class="separator">|</span> <a href="<?php echo $this->getSelectAddressUrl() ?>"><?php echo $this->__('Change') ?></a></h3>
         <?php $_address=$this->getAddress() ?>
         <address><?php echo $_address->format('html') ?></address>
     </div>

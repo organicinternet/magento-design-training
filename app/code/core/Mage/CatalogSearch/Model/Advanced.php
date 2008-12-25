@@ -141,13 +141,13 @@ class Mage_CatalogSearch_Model_Advanced extends Varien_Object
                 $currencyModel = null;
             }
 
-            if ($value['from'] > 0 && $value['to'] > 0) {
+            if (strlen($value['from']) > 0 && strlen($value['to']) > 0) {
                 // -
                 $value = sprintf('%s - %s', ($currencyModel ? $from : $value['from']), ($currencyModel ? $to : $value['to']));
-            } elseif ($value['from'] > 0) {
+            } elseif (strlen($value['from']) > 0) {
                 // and more
                 $value = Mage::helper('catalogsearch')->__('%s and greater', ($currencyModel ? $from : $value['from']));
-            } elseif ($value['to'] > 0) {
+            } elseif (strlen($value['to']) > 0) {
                 // to
                 $value = Mage::helper('catalogsearch')->__('up to %s', ($currencyModel ? $to : $value['to']));
             }

@@ -19,7 +19,7 @@
  */
 
 /** Zend_Pdf_Cmap */
-#require_once 'Zend/Pdf/Cmap.php';
+require_once 'Zend/Pdf/Cmap.php';
 
 
 /**
@@ -142,7 +142,7 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
      */
     public function getCoveredCharactersGlyphs()
     {
-    	$glyphNumbers = array();
+        $glyphNumbers = array();
         for ($code = $this->_startCode; $code <= $this->_endCode; $code++) {
             $glyphNumbers[$code] = $this->_glyphIndexArray[$code - $this->_startCode];
         }

@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gbase
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,7 +23,7 @@
 /**
  * @see Zend_Gdata_Gbase_Entry
  */
-#require_once 'Zend/Gdata/Gbase/Entry.php';
+require_once 'Zend/Gdata/Gbase/Entry.php';
 
 /**
  * Concrete class for working with Snippet entries.
@@ -31,6 +32,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Gbase
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */

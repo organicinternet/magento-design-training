@@ -79,7 +79,7 @@ class Mage_Adminhtml_Block_Urlrewrite_Add extends Mage_Adminhtml_Block_Widget_Fo
                     loadProductData : function() {
 
                     	urlrewrite.categoryInfoUrl = urlrewrite.productInfoUrl.replace("jsonProductInfo","getCategoryInfo");
-                        var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.productInfoUrl, {success:urlrewrite.reqSuccess,failure:urlrewrite.reqFailure});
+                        var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.productInfoUrl, {success:urlrewrite.reqSuccess,failure:urlrewrite.reqFailure}, {form_key: FORM_KEY});
                     },
 
                     showForm : function() {
@@ -102,7 +102,7 @@ class Mage_Adminhtml_Block_Urlrewrite_Add extends Mage_Adminhtml_Block_Widget_Fo
                         if (typeDom.options[typeDom.options.selectedIndex].value == 1) {
 
                             urlrewrite.categoryInfoUrl = "' . $this->getUrl('*/urlrewrite/getCategoryInfo') . '";
-                            var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.categoryInfoUrl, {success:urlrewrite.loadCategory,failure:urlrewrite.reqFailure});
+                            var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.categoryInfoUrl, {success:urlrewrite.loadCategory,failure:urlrewrite.reqFailure}, {form_key: FORM_KEY});
                         	toggleVis("category_tree");
                         	toggleFieldsetVis("add_urlrewrite_type");
                         } else if (typeDom.options[typeDom.options.selectedIndex].value == 2) {
@@ -128,7 +128,7 @@ class Mage_Adminhtml_Block_Urlrewrite_Add extends Mage_Adminhtml_Block_Widget_Fo
                             $("id_path").value = "product/" + response.id;
                             $("request_path").value = response.url_key + ".html";
                             $("target_path").value = "catalog/product/view/id/" + response.id;
-                            var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.categoryInfoUrl, {success:urlrewrite.loadCategory,failure:urlrewrite.reqFailure});
+                            var con = new Ext.lib.Ajax.request(\'POST\', urlrewrite.categoryInfoUrl, {success:urlrewrite.loadCategory,failure:urlrewrite.reqFailure}, {form_key: FORM_KEY});
                             toggleVis("save_button");
                         	toggleVis("reset_button");
                         } else if( response.message ) {

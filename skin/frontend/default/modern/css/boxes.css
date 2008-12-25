@@ -64,7 +64,8 @@ select option             { padding-right:10px; }
 option, optgroup          { font:12px arial, helvetica, sans-serif; }
 optgroup                  { font-weight:bold; }
 input.input-text,
-textarea                  { padding:2px; overflow:auto; }
+textarea                  { padding:2px; }
+textarea                  { overflow:auto; }
 input.radio               { margin-right:3px; }
 input.checkbox            { margin-right:3px; }
 .v-fix                    { float:left; }

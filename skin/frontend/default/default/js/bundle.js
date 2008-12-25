@@ -141,8 +141,14 @@ Product.Bundle.prototype = {
         }
     },
 
-    changeOptionQty: function (element) {
-        if (Number(element.value) == 0) {
+    changeOptionQty: function (element, event) {
+    	var checkQty = true;
+    	if (typeof(event) != 'undefined') {
+	    	if (event.keyCode == 8 || event.keyCode == 46) {
+	    		checkQty = false;
+	    	}
+    	}
+    	if (checkQty && (Number(element.value) == 0 || isNaN(Number(element.value)))) {
             element.value = 1;
         }
         parts = element.id.split('-');

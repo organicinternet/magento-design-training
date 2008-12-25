@@ -20,16 +20,16 @@
 
 
 /** Zend_Pdf_Element */
-#require_once 'Zend/Pdf/Element.php';
+require_once 'Zend/Pdf/Element.php';
 
 /** Zend_Pdf_Element_Reference_Context */
-#require_once 'Zend/Pdf/Element/Reference/Context.php';
+require_once 'Zend/Pdf/Element/Reference/Context.php';
 
 /** Zend_Pdf_Element_Reference_Table */
-#require_once 'Zend/Pdf/Element/Reference/Table.php';
+require_once 'Zend/Pdf/Element/Reference/Table.php';
 
 /** Zend_Pdf_ElementFactory */
-#require_once 'Zend/Pdf/ElementFactory.php';
+require_once 'Zend/Pdf/ElementFactory.php';
 
 
 /**
@@ -262,5 +262,19 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
     public function cleanUp()
     {
         $this->_ref = null;
+    }
+
+    /**
+     * Convert PDF element to PHP type.
+     *
+     * @return mixed
+     */
+    public function toPhp()
+    {
+        if ($this->_ref === null) {
+            $this->_dereference();
+        }
+
+        return $this->_ref->toPhp();
     }
 }

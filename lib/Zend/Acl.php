@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -17,26 +16,26 @@
  * @package    Zend_Acl
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Acl.php 8245 2008-02-21 14:01:46Z darby $
+ * @version    $Id: Acl.php 9417 2008-05-08 16:28:31Z darby $
  */
 
 
 /**
  * @see Zend_Acl_Resource_Interface
  */
-#require_once 'Zend/Acl/Resource/Interface.php';
+require_once 'Zend/Acl/Resource/Interface.php';
 
 
 /**
  * @see Zend_Acl_Role_Registry
  */
-#require_once 'Zend/Acl/Role/Registry.php';
+require_once 'Zend/Acl/Role/Registry.php';
 
 
 /**
  * @see Zend_Acl_Assert_Interface
  */
-#require_once 'Zend/Acl/Assert/Interface.php';
+require_once 'Zend/Acl/Assert/Interface.php';
 
 
 /**
@@ -247,7 +246,7 @@ class Zend_Acl
         $resourceId = $resource->getResourceId();
 
         if ($this->has($resourceId)) {
-            #require_once 'Zend/Acl/Exception.php';
+            require_once 'Zend/Acl/Exception.php';
             throw new Zend_Acl_Exception("Resource id '$resourceId' already exists in the ACL");
         }
 
@@ -294,7 +293,7 @@ class Zend_Acl
         }
 
         if (!$this->has($resource)) {
-            #require_once 'Zend/Acl/Exception.php';
+            require_once 'Zend/Acl/Exception.php';
             throw new Zend_Acl_Exception("Resource '$resourceId' not found");
         }
 
@@ -540,7 +539,7 @@ class Zend_Acl
         // ensure that the rule type is valid; normalize input to uppercase
         $type = strtoupper($type);
         if (self::TYPE_ALLOW !== $type && self::TYPE_DENY !== $type) {
-            #require_once 'Zend/Acl/Exception.php';
+            require_once 'Zend/Acl/Exception.php';
             throw new Zend_Acl_Exception("Unsupported rule type; must be either '" . self::TYPE_ALLOW . "' or '"
                                        . self::TYPE_DENY . "'");
         }
@@ -646,7 +645,7 @@ class Zend_Acl
                 break;
 
             default:
-                #require_once 'Zend/Acl/Exception.php';
+                require_once 'Zend/Acl/Exception.php';
                 throw new Zend_Acl_Exception("Unsupported operation; must be either '" . self::OP_ADD . "' or '"
                                            . self::OP_REMOVE . "'");
         }
@@ -799,10 +798,19 @@ class Zend_Acl
      * @param  Zend_Acl_Resource_Interface $resource
      * @param  array                  $dfs
      * @return boolean|null
+     * @throws Zend_Acl_Exception
      */
     protected function _roleDFSVisitAllPrivileges(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
-                                                 &$dfs)
+                                                 &$dfs = null)
     {
+        if (null === $dfs) {
+            /**
+             * @see Zend_Acl_Exception
+             */
+            require_once 'Zend/Acl/Exception.php';
+            throw new Zend_Acl_Exception('$dfs parameter may not be null');
+        }
+
         if (null !== ($rules = $this->_getRules($resource, $role))) {
             foreach ($rules['byPrivilegeId'] as $privilege => $rule) {
                 if (self::TYPE_DENY === ($ruleTypeOnePrivilege = $this->_getRuleType($resource, $role, $privilege))) {
@@ -833,9 +841,19 @@ class Zend_Acl
      * @param  Zend_Acl_Resource_Interface $resource
      * @param  string                      $privilege
      * @return boolean|null
+     * @throws Zend_Acl_Exception
      */
-    protected function _roleDFSOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null, $privilege)
+    protected function _roleDFSOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
+                                            $privilege = null)
     {
+        if (null === $privilege) {
+            /**
+             * @see Zend_Acl_Exception
+             */
+            require_once 'Zend/Acl/Exception.php';
+            throw new Zend_Acl_Exception('$privilege parameter may not be null');
+        }
+
         $dfs = array(
             'visited' => array(),
             'stack'   => array()
@@ -869,10 +887,27 @@ class Zend_Acl
      * @param  string                      $privilege
      * @param  array                       $dfs
      * @return boolean|null
+     * @throws Zend_Acl_Exception
      */
     protected function _roleDFSVisitOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
-                                                $privilege, &$dfs)
+                                                $privilege = null, &$dfs = null)
     {
+        if (null === $privilege) {
+            /**
+             * @see Zend_Acl_Exception
+             */
+            require_once 'Zend/Acl/Exception.php';
+            throw new Zend_Acl_Exception('$privilege parameter may not be null');
+        }
+
+        if (null === $dfs) {
+            /**
+             * @see Zend_Acl_Exception
+             */
+            require_once 'Zend/Acl/Exception.php';
+            throw new Zend_Acl_Exception('$dfs parameter may not be null');
+        }
+
         if (null !== ($ruleTypeOnePrivilege = $this->_getRuleType($resource, $role, $privilege))) {
             return self::TYPE_ALLOW === $ruleTypeOnePrivilege;
         } else if (null !== ($ruleTypeAllPrivileges = $this->_getRuleType($resource, $role, null))) {

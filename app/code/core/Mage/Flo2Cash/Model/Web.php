@@ -102,7 +102,7 @@ class Mage_Flo2Cash_Model_Web extends Mage_Payment_Model_Method_Cc
             $currency_code = $paymentInfo->getQuote()->getBaseCurrencyCode();
         }
         if (!in_array($currency_code, $this->_allowCurrencyCode)) {
-            Mage::throwException(Mage::helper('flo2cash')->__('Selected currency code (%s) is not compatabile with Flo2Cash', $currency_code));
+            Mage::throwException(Mage::helper('flo2cash')->__('Selected currency code (%s) is not compatible with Flo2Cash', $currency_code));
         }
         return $this;
     }

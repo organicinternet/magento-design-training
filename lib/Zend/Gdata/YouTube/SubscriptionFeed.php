@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage YouTube
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,12 +23,12 @@
 /**
  * @see Zend_Gdata_Media_Feed
  */
-#require_once 'Zend/Gdata/Media/Feed.php';
+require_once 'Zend/Gdata/Media/Feed.php';
 
 /**
  * @see Zend_Gdata_YouTube_SubscriptionEntry
  */
-#require_once 'Zend/Gdata/YouTube/SubscriptionEntry.php';
+require_once 'Zend/Gdata/YouTube/SubscriptionEntry.php';
 
 /**
  * The YouTube video subscription list flavor of an Atom Feed with media support
@@ -36,6 +37,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage YouTube
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -58,9 +60,7 @@ class Zend_Gdata_YouTube_SubscriptionFeed extends Zend_Gdata_Media_Feed
      */
     public function __construct($element = null)
     {
-        foreach (Zend_Gdata_YouTube::$namespaces as $nsPrefix => $nsUri) {
-            $this->registerNamespace($nsPrefix, $nsUri);
-        }
+        $this->registerAllNamespaces(Zend_Gdata_YouTube::$namespaces);
         parent::__construct($element);
     }
 

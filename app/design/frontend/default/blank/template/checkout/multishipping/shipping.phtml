@@ -41,7 +41,7 @@
     <h3><?php echo $this->__('Address %s of %s', ($_index+1), $this->getAddressCount()) ?></h3>
     <div class="col2-set">
         <div class="col-1 narrow">
-            <h4><?php echo $this->__('Shipping to') ?> <span class="separator">|</span> <a href="<?php echo $this->getAddressEditUrl($_address) ?>"><?php echo $this->__('Edit') ?></a></h4>
+            <h4><?php echo $this->__('Shipping to') ?> <span class="separator">|</span> <a href="<?php echo $this->getAddressEditUrl($_address) ?>"><?php echo $this->__('Change') ?></a></h4>
             <address><?php echo $_address->format('html') ?></address>
             <h4><?php echo $this->__('Shipping Method') ?></h4>
             <?php if (!($_shippingRateGroups = $this->getShippingRates($_address))): ?>

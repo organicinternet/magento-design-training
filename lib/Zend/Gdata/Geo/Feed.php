@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Geo
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,23 +23,24 @@
 /**
  * @see Zend_Gdata_eed
  */
-#require_once 'Zend/Gdata/Feed.php';
+require_once 'Zend/Gdata/Feed.php';
 
 /**
  * @see Zend_Gdata_Geo
  */
-#require_once 'Zend/Gdata/Geo.php';
+require_once 'Zend/Gdata/Geo.php';
 
 /**
  * @see Zend_Gdata_Geo_Entry
  */
-#require_once 'Zend/Gdata/Geo/Entry.php';
+require_once 'Zend/Gdata/Geo/Entry.php';
 
 /**
  * Feed for Gdata Geographic data entries.
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Geo
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -54,9 +56,7 @@ class Zend_Gdata_Geo_Feed extends Zend_Gdata_Feed
 
     public function __construct($element = null)
     {
-        foreach (Zend_Gdata_Geo::$namespaces as $nsPrefix => $nsUri) {
-            $this->registerNamespace($nsPrefix, $nsUri);
-        }
+        $this->registerAllNamespaces(Zend_Gdata_Geo::$namespaces);
         parent::__construct($element);
     }
 

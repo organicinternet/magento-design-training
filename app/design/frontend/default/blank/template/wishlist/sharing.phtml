@@ -29,6 +29,7 @@
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getSendUrl() ?>" id="form-validate" method="post">
+<?php echo $this->getBlockHtml('formkey')?>
 <fieldset class="group-select">
     <h3><?php echo $this->__('Sharing Information') ?></h3>
     <ul class="form-list">
@@ -61,16 +62,16 @@ Validation.addAllThese([
     if(Validation.get('IsEmpty').test(v)) {
         return true;
     }
-    
+
     var valid_regexp = /^[a-z0-9\._-]{1,30}@([a-z0-9_-]{1,30}\.){1,5}[a-z]{2,4}$/i;
     var emails = v.split(',');
-    
+
     for (var i=0; i<emails.length; i++) {
         if(!valid_regexp.test(emails[i].strip())) {
             return false;
         }
     }
-    
+
     return true;
     }]
 ]);

@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Geo
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,23 +23,24 @@
 /**
  * @see Zend_Gdata_Entry
  */
-#require_once 'Zend/Gdata/Entry.php';
+require_once 'Zend/Gdata/Entry.php';
 
 /**
  * @see Zend_Gdata_Geo
  */
-#require_once 'Zend/Gdata/Geo.php';
+require_once 'Zend/Gdata/Geo.php';
 
 /**
  * @see Zend_Gdata_Geo_Extension_GeoRssWhere
  */
-#require_once 'Zend/Gdata/Geo/Extension/GeoRssWhere.php';
+require_once 'Zend/Gdata/Geo/Extension/GeoRssWhere.php';
 
 /**
  * An Atom entry containing Geograpic data.
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage Geo
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -51,15 +53,13 @@ class Zend_Gdata_Geo_Entry extends Zend_Gdata_Entry
 
     public function __construct($element = null)
     {
-        foreach (Zend_Gdata_Geo::$namespaces as $nsPrefix => $nsUri) {
-            $this->registerNamespace($nsPrefix, $nsUri); 
-        }
+        $this->registerAllNamespaces(Zend_Gdata_Geo::$namespaces);
         parent::__construct($element);
     }
 
-    public function getDOM($doc = null)
+    public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
-        $element = parent::getDOM($doc);
+        $element = parent::getDOM($doc, $majorVersion, $minorVersion);
         if ($this->_where != null) {
             $element->appendChild($this->_where->getDOM($element->ownerDocument));
         }
@@ -80,7 +80,7 @@ class Zend_Gdata_Geo_Entry extends Zend_Gdata_Entry
             break;
         }
     }
-    
+
     public function getWhere()
     {
         return $this->_where;
@@ -91,6 +91,6 @@ class Zend_Gdata_Geo_Entry extends Zend_Gdata_Entry
         $this->_where = $value;
         return $this;
     }
-    
+
 
 }

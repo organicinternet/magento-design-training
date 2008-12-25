@@ -20,6 +20,7 @@
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
+.form-list li,
 .narrowed-category li,
 .page-head,
 .page-head-alt,
@@ -38,6 +39,8 @@
 .middle,
 .button-set,
 .one-page-checkout,
+.one-page-checkout li.section,
+.one-page-checkout .default-box,
 .actions,
 .legend,
 .ratings,
@@ -71,6 +74,7 @@ input.checkbox { width:13px; height:13px; }
 .footer .footer-callout { position:relative; zoom:1; }
 .login-box .content     { height:180px; }
 .col-left, .col-right, .col-main { display:inline; }
+.one-page-checkout li.section { vertical-align:top; }
 
 /* Doubled Margin Fix */
 .mini-newsletter .input-box { display:inline; }

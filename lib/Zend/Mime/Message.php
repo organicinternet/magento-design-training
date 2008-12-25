@@ -22,12 +22,12 @@
 /**
  * Zend_Mime
  */
-#require_once 'Zend/Mime.php';
+require_once 'Zend/Mime.php';
 
 /**
  * Zend_Mime_Part
  */
-#require_once 'Zend/Mime/Part.php';
+require_once 'Zend/Mime/Part.php';
 
 
 /**
@@ -241,7 +241,7 @@ class Zend_Mime_Message
      */
     public static function createFromMessage($message, $boundary, $EOL = Zend_Mime::LINEEND)
     {
-        #require_once 'Zend/Mime/Decode.php';
+        require_once 'Zend/Mime/Decode.php';
         $parts = Zend_Mime_Decode::splitMessageStruct($message, $boundary, $EOL);
 
         $res = new self();
@@ -253,7 +253,7 @@ class Zend_Mime_Message
                  * @todo check for characterset and filename
                  */
                 // list($key, $value) = $header;
-                switch($key) {
+                switch(strtolower($key)) {
                     case 'content-type':
                         $newPart->type = $value;
                         break;
@@ -263,11 +263,17 @@ class Zend_Mime_Message
                     case 'content-id':
                         $newPart->id = trim($value,'<>');
                         break;
-                    case 'Content-Disposition':
+                    case 'content-disposition':
                         $newPart->disposition = $value;
                         break;
                     case 'content-description':
                         $newPart->description = $value;
+                        break;
+                    case 'content-location':
+                        $newPart->location = $value;
+                        break;
+                    case 'content-language':
+                        $newPart->language = $value;
                         break;
                     default:
                         throw new Zend_Exception('Unknown header ignored for MimePart:' . $key);

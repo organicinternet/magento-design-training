@@ -15,6 +15,7 @@
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,38 +23,39 @@
 /**
  * @see Zend_Gdata_App_Entry
  */
-#require_once 'Zend/Gdata/App/Entry.php';
+require_once 'Zend/Gdata/App/Entry.php';
 
 /**
  * @see Zend_Gdata_App_FeedSourceParent
  */
-#require_once 'Zend/Gdata/App/FeedEntryParent.php';
+require_once 'Zend/Gdata/App/FeedEntryParent.php';
 
 /**
  * @see Zend_Gdata_App_Extension_Generator
  */
-#require_once 'Zend/Gdata/App/Extension/Generator.php';
+require_once 'Zend/Gdata/App/Extension/Generator.php';
 
 /**
  * @see Zend_Gdata_App_Extension_Icon
  */
-#require_once 'Zend/Gdata/App/Extension/Icon.php';
+require_once 'Zend/Gdata/App/Extension/Icon.php';
 
 /**
  * @see Zend_Gdata_App_Extension_Logo
  */
-#require_once 'Zend/Gdata/App/Extension/Logo.php';
+require_once 'Zend/Gdata/App/Extension/Logo.php';
 
 /**
  * @see Zend_Gdata_App_Extension_Subtitle
  */
-#require_once 'Zend/Gdata/App/Extension/Subtitle.php';
+require_once 'Zend/Gdata/App/Extension/Subtitle.php';
 
 /**
  * Atom feed class
  *
  * @category   Zend
  * @package    Zend_Gdata
+ * @subpackage App
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -84,18 +86,37 @@ abstract class Zend_Gdata_App_FeedSourceParent extends Zend_Gdata_App_FeedEntryP
      *
      * Sets the HTTP client object to use for retrieving the feed.
      *
+     * @deprecated Deprecated as of Zend Framework 1.7. Use
+     *             setService() instead.
      * @param  Zend_Http_Client $httpClient
      * @return Zend_Gdata_App_FeedSourceParent Provides a fluent interface
      */
     public function setHttpClient(Zend_Http_Client $httpClient)
     {
-        $this->_httpClient = $httpClient;
+        parent::setHttpClient($httpClient);
         foreach ($this->_entry as $entry) {
             $entry->setHttpClient($httpClient);
         }
         return $this;
     }
-
+    
+    /**
+     * Set the active service instance for this feed and all enclosed entries.
+     * This will be used to perform network requests, such as when calling
+     * save() and delete().
+     *
+     * @param Zend_Gdata_App $instance The new service instance.
+     * @return Zend_Gdata_App_FeedEntryParent Provides a fluent interface.
+     */
+    public function setService($instance)
+    {
+        parent::setService($instance);
+        foreach ($this->_entry as $entry) {
+            $entry->setService($instance);
+        }
+        return $this;
+    }
+    
     /**
      * Make accessing some individual elements of the feed easier.
      *
@@ -116,9 +137,9 @@ abstract class Zend_Gdata_App_FeedSourceParent extends Zend_Gdata_App_FeedEntryP
     }
 
 
-    public function getDOM($doc = null)
+    public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
-        $element = parent::getDOM($doc);
+        $element = parent::getDOM($doc, $majorVersion, $minorVersion);
         if ($this->_generator != null) {
             $element->appendChild($this->_generator->getDOM($element->ownerDocument));
         }

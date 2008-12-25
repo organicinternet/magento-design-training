@@ -253,18 +253,21 @@ class Mage_Cybersource_Model_Soap extends Mage_Payment_Model_Method_Cc
      */
     protected function addShippingAddress($shipping)
     {
-        $shipTo = new stdClass();
-        $shipTo->firstName = $shipping->getFirstname();
-        $shipTo->lastName = $shipping->getLastname();
-        $shipTo->company = $shipping->getCompany();
-        $shipTo->street1 = $shipping->getStreet(1);
-        $shipTo->street2 = $shipping->getStreet(2);
-        $shipTo->city = $shipping->getCity();
-        $shipTo->state = $shipping->getRegion();
-        $shipTo->postalCode = $shipping->getPostcode();
-        $shipTo->country = $shipping->getCountry();
-        $shipTo->phoneNumber = $shipping->getTelephone();
-        $this->_request->shipTo = $shipTo;
+        //checking if we have shipping address, in case of virtual order we will not have it
+        if ($shipping) {
+            $shipTo = new stdClass();
+            $shipTo->firstName = $shipping->getFirstname();
+            $shipTo->lastName = $shipping->getLastname();
+            $shipTo->company = $shipping->getCompany();
+            $shipTo->street1 = $shipping->getStreet(1);
+            $shipTo->street2 = $shipping->getStreet(2);
+            $shipTo->city = $shipping->getCity();
+            $shipTo->state = $shipping->getRegion();
+            $shipTo->postalCode = $shipping->getPostcode();
+            $shipTo->country = $shipping->getCountry();
+            $shipTo->phoneNumber = $shipping->getTelephone();
+            $this->_request->shipTo = $shipTo;
+        }
     }
 
     /**

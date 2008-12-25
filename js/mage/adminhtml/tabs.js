@@ -158,9 +158,10 @@ varienTabs.prototype = {
             if ( isAjax && (isEmpty || isNotLoaded) )
             {
                 new Ajax.Updater(tabContentElement.id, tab.href, {
-                     onComplete : function () {
-                         this.showTabContentImmediately(tab)
-                     }.bind(this),
+                    parameters: {form_key: FORM_KEY},
+                    onComplete : function () {
+                        this.showTabContentImmediately(tab)
+                    }.bind(this),
                      evalScripts : true
                 });
             }
@@ -174,6 +175,7 @@ varienTabs.prototype = {
         var tabContentElement = $(this.getTabContentElementId(tab));
         if (tabContentElement && Element.hasClassName(tab, 'ajax') && Element.hasClassName(tab, 'notloaded')) {
             new Ajax.Updater(tabContentElement.id, tab.href, {
+                parameters: {form_key: FORM_KEY},
                 onComplete : function () {
                     if (!Element.hasClassName(tab, 'ajax only')) {
                         Element.removeClassName(tab, 'notloaded');

@@ -45,6 +45,7 @@
             <action method="setTemplate"><template>page/3columns.phtml</template></action>
         </reference>
         <reference name="left">
+            <block type="catalogsearch/layer" name="catalogsearch.leftnav" after="currency" template="catalog/layer/view.phtml"/>
             <block type="newsletter/subscribe" name="left.newsletter" template="newsletter/subscribe.phtml"/>
         </reference>
         <reference name="content">

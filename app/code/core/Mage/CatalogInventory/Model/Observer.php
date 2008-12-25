@@ -161,6 +161,9 @@ class Mage_CatalogInventory_Model_Observer
          * Check item for options
          */
         if (($options = $quoteItem->getQtyOptions()) && $qty > 0) {
+            $qty = $quoteItem->getProduct()->getTypeInstance()->prepareQuoteItemQty($qty);
+            $quoteItem->setData('qty', $qty);
+
             foreach ($options as $option) {
                 /* @var $option Mage_Sales_Model_Quote_Item_Option */
                 $optionQty = $qty * $option->getValue();
@@ -171,7 +174,9 @@ class Mage_CatalogInventory_Model_Observer
                 if (!$stockItem instanceof Mage_CatalogInventory_Model_Stock_Item) {
                     Mage::throwException(Mage::helper('cataloginventory')->__('Stock item for Product in option is not valid'));
                 }
+
                 $qtyForCheck = $this->_getProductQtyForCheck($option->getProduct()->getId(), $increaseOptionQty);
+
                 $result = $stockItem->checkQuoteItemQty($optionQty, $qtyForCheck);
 
                 if (!is_null($result->getItemIsQtyDecimal())) {
@@ -185,6 +190,10 @@ class Mage_CatalogInventory_Model_Observer
                 }
                 if (!is_null($result->getItemBackorders())) {
                     $option->setBackorders($result->getItemBackorders());
+                }
+
+                if ($result->getHasQtyOptionUpdate()) {
+                    $quoteItem->updateQtyOption($option, $result->getItemQty() / $qty);
                 }
 
                 if ($result->getHasError()) {
@@ -232,7 +241,10 @@ class Mage_CatalogInventory_Model_Observer
              * Just base (parent) item qty can be changed
              * qty of child products are declared just duering add process
              */
-            if (!is_null($result->getItemQty()) && !$quoteItem->getParentItem()) {
+            if (!is_null($result->getItemQty())
+                && (!$quoteItem->getParentItem()
+                    || $quoteItem->getParentItem()->getProduct()->getTypeInstance()
+                        ->getForceChildItemQtyChanges())) {
                 $quoteItem->setData('qty', $result->getItemQty());
             }
 

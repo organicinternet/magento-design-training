@@ -14,17 +14,17 @@
  *
  * @category   Zend
  * @package    Zend_Auth
- * @subpackage Zend_Ath_Adapter
+ * @subpackage Zend_Auth_Adapter
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Digest.php 8862 2008-03-16 15:36:00Z thomas $
+ * @version    $Id: Digest.php 9668 2008-06-11 08:15:02Z doctorrock83 $
  */
 
 
 /**
  * @see Zend_Auth_Adapter_Interface
  */
-#require_once 'Zend/Auth/Adapter/Interface.php';
+require_once 'Zend/Auth/Adapter/Interface.php';
 
 
 /**
@@ -186,7 +186,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
                 /**
                  * @see Zend_Auth_Adapter_Exception
                  */
-                #require_once 'Zend/Auth/Adapter/Exception.php';
+                require_once 'Zend/Auth/Adapter/Exception.php';
                 throw new Zend_Auth_Adapter_Exception("Option '$optionRequired' must be set before authentication");
             }
         }
@@ -195,7 +195,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
             /**
              * @see Zend_Auth_Adapter_Exception
              */
-            #require_once 'Zend/Auth/Adapter/Exception.php';
+            require_once 'Zend/Auth/Adapter/Exception.php';
             throw new Zend_Auth_Adapter_Exception("Cannot open '$this->_filename' for reading");
         }
 

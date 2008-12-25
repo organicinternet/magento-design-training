@@ -18,20 +18,16 @@
  */
 
 /** Zend_Memory_Exception */
-#require_once 'Zend/Memory/Manager.php';
-
-/** Zend_Memory_Exception */
-#require_once 'Zend/Memory/Exception.php';
+require_once 'Zend/Memory/Manager.php';
 
 /** Zend_Memory_Value */
-#require_once 'Zend/Memory/Value.php';
+require_once 'Zend/Memory/Value.php';
 
 /** Zend_Memory_Container */
-#require_once 'Zend/Memory/Container.php';
+require_once 'Zend/Memory/Container.php';
 
 /** Zend_Memory_Exception */
-#require_once 'Zend/Cache.php';
-
+require_once 'Zend/Cache.php';
 
 /**
  * @category   Zend
@@ -59,6 +55,7 @@ class Zend_Memory
         $backend = @ucfirst(strtolower($backend));
 
         if (!in_array($backend, Zend_Cache::$availableBackends)) {
+            require_once 'Zend/Memory/Exception.php';
             throw new Zend_Memory_Exception("Incorrect backend ($backend)");
         }
 
@@ -66,7 +63,7 @@ class Zend_Memory
 
         // For perfs reasons, we do not use the Zend_Loader::loadClass() method
         // (security controls are explicit)
-        #require_once str_replace('_', DIRECTORY_SEPARATOR, $backendClass) . '.php';
+        require_once str_replace('_', DIRECTORY_SEPARATOR, $backendClass) . '.php';
 
         $backendObject = new $backendClass($backendOptions);
 

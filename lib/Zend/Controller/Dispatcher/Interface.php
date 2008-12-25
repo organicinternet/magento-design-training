@@ -21,12 +21,12 @@
 /**
  * Zend_Controller_Request_Abstract
  */
-#require_once 'Zend/Controller/Request/Abstract.php';
+require_once 'Zend/Controller/Request/Abstract.php';
 
 /**
  * Zend_Controller_Response_Abstract
  */
-#require_once 'Zend/Controller/Response/Abstract.php';
+require_once 'Zend/Controller/Response/Abstract.php';
 
 /**
  * @package    Zend_Controller
@@ -46,6 +46,17 @@ interface Zend_Controller_Dispatcher_Interface
      * @return string
      */
     public function formatControllerName($unformatted);
+
+    /**
+     * Formats a string into a module name.  This is used to take a raw
+     * module name, such as one that would be packaged inside a request
+     * object, and reformat it to a proper directory/class name that a class extending
+     * Zend_Controller_Action would use.
+     *
+     * @param string $unformatted
+     * @return string
+     */
+    public function formatModuleName($unformatted);
 
     /**
      * Formats a string into an action name.  This is used to take a raw
@@ -158,7 +169,7 @@ interface Zend_Controller_Dispatcher_Interface
      *
      * @param  Zend_Controller_Request_Abstract $request
      * @param  Zend_Controller_Response_Abstract $response
-     * @return Zend_Controller_Request_Abstract|boolean
+     * @return void
      */
     public function dispatch(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response);
 
@@ -169,4 +180,25 @@ interface Zend_Controller_Dispatcher_Interface
      * @return boolean
      */
     public function isValidModule($module);
+
+    /**
+     * Retrieve the default module name
+     * 
+     * @return string
+     */
+    public function getDefaultModule();
+
+    /**
+     * Retrieve the default controller name
+     * 
+     * @return string
+     */
+    public function getDefaultControllerName();
+
+    /**
+     * Retrieve the default action
+     * 
+     * @return string
+     */
+    public function getDefaultAction();
 }

@@ -17,13 +17,14 @@
  * @subpackage Value
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: Double.php 9096 2008-03-30 19:04:05Z thomas $
  */
 
 
 /**
  * Zend_XmlRpc_Value_Scalar
  */
-#require_once 'Zend/XmlRpc/Value/Scalar.php';
+require_once 'Zend/XmlRpc/Value/Scalar.php';
 
 
 /**

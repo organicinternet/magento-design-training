@@ -31,7 +31,10 @@
             <active>true</active>
             <codePool>core</codePool>
             <depends>
-                <Mage_Adminhtml/>
+                <Mage_Adminhtml />
+                <Mage_Catalog />
+                <Mage_Customer />
+                <Mage_Sales />
             </depends>
         </Mage_Oscommerce>
     </modules>

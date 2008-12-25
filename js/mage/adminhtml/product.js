@@ -624,7 +624,8 @@ Product.Configurable.prototype = {
 	       $(this.idPrefix + 'simple_form').select('input','select','textarea'),
 	       true
 	    );
-        $('messages').update();
+	    params.form_key = FORM_KEY;
+	    $('messages').update();
 	    new Ajax.Request(this.createQuickUrl, {
 	           parameters: params,
 	           method:'post',

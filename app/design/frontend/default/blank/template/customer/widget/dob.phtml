@@ -50,7 +50,7 @@ NOTE: Regarding styles - if we leave it this way, we'll move it to boxes.css
         <?php echo $this->__('Date of Birth') ?>
         <?php if ($this->isRequired()):?><span class="required">*</span><?php endif; ?>
     </label>
-    
+
     <div class="input-box dob-day">
         <input type="text" id="<?php echo $this->getFieldId('day')?>" name="<?php echo $this->getFieldName('day')?>" value="<?php echo $this->getDay() ?>" title="<?php echo $this->__('Day') ?>" class="input-text validate-custom" <?php echo $this->getFieldParams() ?> />
         <label for="<?php echo $this->getFieldId('day')?>"><?php echo $this->__('DD') ?></label>
@@ -69,11 +69,11 @@ NOTE: Regarding styles - if we leave it this way, we'll move it to boxes.css
     <div class="dob-full" style="display:none;">
         <input type="hidden" id="<?php echo $this->getFieldId('dob')?>" name="<?php echo $this->getFieldName('dob')?>" />
     </div>
-    
+
     <div class="validation-advice" style="opacity: 0.999999; display:none;"></div>
 </div>
 <script type="text/javascript">
 //<![CDATA[
-    var customer_dob = new Varien.DOB('.customer-dob', <?php echo $this->isRequired() ? 'true' : 'false' ?>);
+    var customer_dob = new Varien.DOB('.customer-dob', <?php echo $this->isRequired() ? 'true' : 'false' ?>, '<?php echo $this->getDateFormat() ?>');
 //]]>
 </script>

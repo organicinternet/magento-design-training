@@ -21,17 +21,13 @@
 
 
 /** Zend_Search_Lucene_FSM */
-#require_once 'Zend/Search/Lucene/FSM.php';
+require_once 'Zend/Search/Lucene/FSM.php';
 
 /** Zend_Search_Lucene_Search_QueryToken */
-#require_once 'Zend/Search/Lucene/Search/QueryToken.php';
+require_once 'Zend/Search/Lucene/Search/QueryToken.php';
 
 /** Zend_Search_Lucene_Search_QueryParser */
-#require_once 'Zend/Search/Lucene/Search/QueryParser.php';
-
-
-/** Zend_Search_Lucene_Exception */
-#require_once 'Zend/Search/Lucene/Exception.php';
+require_once 'Zend/Search/Lucene/Search/QueryParser.php';
 
 /**
  * @category   Zend
@@ -203,6 +199,7 @@ class Zend_Search_Lucene_Search_BooleanExpressionRecognizer extends Zend_Search_
     public function finishExpression()
     {
         if ($this->getState() != self::ST_LITERAL) {
+            require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Literal expected.');
         }
 

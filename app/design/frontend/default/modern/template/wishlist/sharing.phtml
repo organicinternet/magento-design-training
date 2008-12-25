@@ -30,7 +30,7 @@
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getSendUrl() ?>" id="form-validate" method="post">
-
+    <?php echo $this->getBlockHtml('formkey')?>
     <div class="head-alt2">
     <h4 class="title"><?php echo $this->__('Sharing Information') ?></h4>
     </div>

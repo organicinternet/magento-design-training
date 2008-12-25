@@ -51,18 +51,25 @@ class Mage_CatalogSearch_Model_Mysql4_Query extends Mage_Core_Model_Mysql4_Abstr
         return $select;
     }
 
+    public function loadByQuery(Mage_Core_Model_Abstract $object, $value)
+    {
+        $select = $this->_getReadAdapter()->select()
+            ->from($this->getMainTable())
+            ->where($this->getMainTable().'.query_text=:query_text');
+        $data = $this->_getReadAdapter()->fetchRow($select, array('query_text'=>$value));
+        $object->setData($data);
+        $this->_afterLoad($object);
+
+        return $this;
+    }
+
     public function load(Mage_Core_Model_Abstract $object, $value, $field=null)
     {
         if (is_numeric($value)) {
             return parent::load($object, $value);
         }
         else {
-            $select = $this->_getReadAdapter()->select()
-                ->from($this->getMainTable())
-                ->where($this->getMainTable().'.query_text=:query_text');
-            $data = $this->_getReadAdapter()->fetchRow($select, array('query_text'=>$value));
-            $object->setData($data);
-            $this->_afterLoad($object);
+            $this->loadByQuery($object,$value);
         }
         return $this;
     }

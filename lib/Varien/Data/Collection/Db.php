@@ -126,7 +126,7 @@ class Varien_Data_Collection_Db extends Varien_Data_Collection
     /**
      * Get Zend_Db_Select instance
      *
-     * @return Zend_Db_Select
+     * @return Varien_Db_Select
      */
     public function getSelect()
     {
@@ -158,9 +158,9 @@ class Varien_Data_Collection_Db extends Varien_Data_Collection
     }
 
     /**
-     * Get sql for get record count
+     * Get SQL for get record count
      *
-     * @return  string
+     * @return Varien_Db_Select
      */
     public function getSelectCountSql()
     {
@@ -170,10 +170,11 @@ class Varien_Data_Collection_Db extends Varien_Data_Collection
         $countSelect->reset(Zend_Db_Select::ORDER);
         $countSelect->reset(Zend_Db_Select::LIMIT_COUNT);
         $countSelect->reset(Zend_Db_Select::LIMIT_OFFSET);
+        $countSelect->reset(Zend_Db_Select::COLUMNS);
 
-        $sql = $countSelect->__toString();
-        $sql = preg_replace('/^select\s+.+?\s+from\s+/is', 'select count(*) from ', $sql);
-        return $sql;
+        $countSelect->from('', 'COUNT(*)');
+
+        return $countSelect;
     }
 
     /**

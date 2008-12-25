@@ -17,23 +17,23 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Input.php 8856 2008-03-16 11:28:48Z thomas $
+ * @version    $Id: Input.php 12670 2008-11-15 19:35:19Z beberlei $
  */
 
 /**
  * @see Zend_Loader
  */
-#require_once 'Zend/Loader.php';
+require_once 'Zend/Loader.php';
 
 /**
  * @see Zend_Filter
  */
-#require_once 'Zend/Filter.php';
+require_once 'Zend/Filter.php';
 
 /**
  * @see Zend_Validate
  */
-#require_once 'Zend/Validate.php';
+require_once 'Zend/Validate.php';
 
 /**
  * @category   Zend
@@ -44,25 +44,27 @@
 class Zend_Filter_Input
 {
 
-    const ALLOW_EMPTY       = 'allowEmpty';
-    const BREAK_CHAIN       = 'breakChainOnFailure';
-    const DEFAULT_VALUE     = 'default';
-    const MESSAGES          = 'messages';
-    const ESCAPE_FILTER     = 'escapeFilter';
-    const FIELDS            = 'fields';
-    const FILTER            = 'filter';
-    const FILTER_CHAIN      = 'filterChain';
-    const MISSING_MESSAGE   = 'missingMessage';
-    const INPUT_NAMESPACE   = 'inputNamespace';
-    const NOT_EMPTY_MESSAGE = 'notEmptyMessage';
-    const PRESENCE          = 'presence';
-    const PRESENCE_OPTIONAL = 'optional';
-    const PRESENCE_REQUIRED = 'required';
-    const RULE              = 'rule';
-    const RULE_WILDCARD     = '*';
-    const VALIDATE          = 'validate';
-    const VALIDATOR         = 'validator';
-    const VALIDATOR_CHAIN   = 'validatorChain';
+    const ALLOW_EMPTY           = 'allowEmpty';
+    const BREAK_CHAIN           = 'breakChainOnFailure';
+    const DEFAULT_VALUE         = 'default';
+    const MESSAGES              = 'messages';
+    const ESCAPE_FILTER         = 'escapeFilter';
+    const FIELDS                = 'fields';
+    const FILTER                = 'filter';
+    const FILTER_CHAIN          = 'filterChain';
+    const MISSING_MESSAGE       = 'missingMessage';
+    const INPUT_NAMESPACE       = 'inputNamespace';
+    const VALIDATOR_NAMESPACE   = 'validatorNamespace';
+    const FILTER_NAMESPACE      = 'filterNamespace';
+    const NOT_EMPTY_MESSAGE     = 'notEmptyMessage';
+    const PRESENCE              = 'presence';
+    const PRESENCE_OPTIONAL     = 'optional';
+    const PRESENCE_REQUIRED     = 'required';
+    const RULE                  = 'rule';
+    const RULE_WILDCARD         = '*';
+    const VALIDATE              = 'validate';
+    const VALIDATOR             = 'validator';
+    const VALIDATOR_CHAIN       = 'validatorChain';
     const VALIDATOR_CHAIN_COUNT = 'validatorChainCount';
 
     /**
@@ -229,7 +231,7 @@ class Zend_Filter_Input
                 $this->_loaders[$type] = $loader;
                 return $this;
             default:
-                #require_once 'Zend/Filter/Exception.php';
+                require_once 'Zend/Filter/Exception.php';
                 throw new Zend_Filter_Exception(sprintf('Invalid type "%s" provided to setPluginLoader()', $type));
         }
 
@@ -264,11 +266,11 @@ class Zend_Filter_Input
                     $pathSegment   = 'Zend/Validate/';
                     break;
                 default:
-                    #require_once 'Zend/Filter/Exception.php';
+                    require_once 'Zend/Filter/Exception.php';
                     throw new Zend_Filter_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
             }
 
-            #require_once 'Zend/Loader/PluginLoader.php';
+            require_once 'Zend/Loader/PluginLoader.php';
             $this->_loaders[$type] = new Zend_Loader_PluginLoader(
                 array($prefixSegment => $pathSegment)
             );
@@ -346,6 +348,10 @@ class Zend_Filter_Input
      */
     protected function _escapeRecursive($data)
     {
+        if($data === null) {
+            return $data;
+        }
+
         if (!is_array($data)) {
             return $this->_getDefaultEscapeFilter()->filter($data);
         }
@@ -447,11 +453,11 @@ class Zend_Filter_Input
     {
         $this->_process();
         if ($this->hasInvalid()) {
-            #require_once 'Zend/Filter/Exception.php';
+            require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception("Input has invalid fields");
         }
         if ($this->hasMissing()) {
-            #require_once 'Zend/Filter/Exception.php';
+            require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception("Input has missing fields");
         }
 
@@ -490,7 +496,7 @@ class Zend_Filter_Input
             $escapeFilter = $this->_getFilter($escapeFilter);
         }
         if (!$escapeFilter instanceof Zend_Filter_Interface) {
-            #require_once 'Zend/Filter/Exception.php';
+            require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception('Escape filter specified does not implement Zend_Filter_Interface');
         }
         $this->_defaultEscapeFilter = $escapeFilter;
@@ -512,6 +518,30 @@ class Zend_Filter_Input
                 case self::INPUT_NAMESPACE:
                     $this->addNamespace($value);
                     break;
+                case self::VALIDATOR_NAMESPACE:
+                    if(is_string($value)) {
+                        $value = array($value);
+                    }
+
+                    foreach($value AS $prefix) {
+                        $this->addValidatorPrefixPath(
+                                $prefix,
+                                str_replace('_', DIRECTORY_SEPARATOR, $prefix)
+                        );
+                    }
+                    break;
+                case self::FILTER_NAMESPACE:
+                    if(is_string($value)) {
+                        $value = array($value);
+                    }
+
+                    foreach($value AS $prefix) {
+                        $this->addFilterPrefixPath(
+                                $prefix,
+                                str_replace('_', DIRECTORY_SEPARATOR, $prefix)
+                        );
+                    }
+                    break;
                 case self::ALLOW_EMPTY:
                 case self::BREAK_CHAIN:
                 case self::MISSING_MESSAGE:
@@ -520,7 +550,7 @@ class Zend_Filter_Input
                     $this->_defaults[$option] = $value;
                     break;
                 default:
-                    #require_once 'Zend/Filter/Exception.php';
+                    require_once 'Zend/Filter/Exception.php';
                     throw new Zend_Filter_Exception("Unknown option '$option'");
                     break;
             }
@@ -910,8 +940,8 @@ class Zend_Filter_Input
         $class = new ReflectionClass($className);
 
         if (!$class->implementsInterface($interfaceName)) {
-            #require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("Class based on basename '$classBaseName' must implement the '$interfaceName' interface");
+            require_once 'Zend/Filter/Exception.php';
+            throw new Zend_Filter_Exception("Class '$className' based on basename '$classBaseName' must implement the '$interfaceName' interface");
         }
 
         if ($class->hasMethod('__construct')) {

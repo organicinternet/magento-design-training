@@ -270,6 +270,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
             $result->setItemIsQtyDecimal($this->getIsQtyDecimal());
 
             if (!$this->getIsQtyDecimal()) {
+                $result->setHasQtyOptionUpdate(true);
                 $qty = intval($qty);
             }
 
@@ -341,6 +342,7 @@ class Mage_CatalogInventory_Model_Stock_Item extends Mage_Core_Model_Abstract
         $result->setItemIsQtyDecimal($this->getIsQtyDecimal());
 
         if (!$this->getIsQtyDecimal()) {
+            $result->setHasQtyOptionUpdate(true);
             $qty = intval($qty);
         }
 

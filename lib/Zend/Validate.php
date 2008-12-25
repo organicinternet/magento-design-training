@@ -17,14 +17,14 @@
  * @package    Zend_Validate
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Validate.php 8729 2008-03-10 11:44:10Z thomas $
+ * @version    $Id: Validate.php 12770 2008-11-22 16:12:23Z matthew $
  */
 
 
 /**
  * @see Zend_Validate_Interface
  */
-#require_once 'Zend/Validate/Interface.php';
+require_once 'Zend/Validate/Interface.php';
 
 
 /**
@@ -144,8 +144,8 @@ class Zend_Validate implements Zend_Validate_Interface
         foreach ($namespaces as $namespace) {
             $className = $namespace . '_' . ucfirst($classBaseName);
             try {
-                #require_once 'Zend/Loader.php';
-                @Zend_Loader::loadClass($className);
+                require_once 'Zend/Loader.php';
+                Zend_Loader::loadClass($className);
                 if (class_exists($className, false)) {
                     $class = new ReflectionClass($className);
                     if ($class->implementsInterface('Zend_Validate_Interface')) {
@@ -164,7 +164,7 @@ class Zend_Validate implements Zend_Validate_Interface
                 // fallthrough and continue for missing validation classes
             }
         }
-        #require_once 'Zend/Validate/Exception.php';
+        require_once 'Zend/Validate/Exception.php';
         throw new Zend_Validate_Exception("Validate class not found from basename '$classBaseName'");
     }
 

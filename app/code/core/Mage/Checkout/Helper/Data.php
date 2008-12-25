@@ -107,6 +107,22 @@ class Mage_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
         return $item->getRowTotal()+$tax;
     }
 
+    public function getBasePriceInclTax($item)
+    {
+        //$price = ($item->getCalculationPrice() ? $item->getCalculationPrice() : $item->getPrice());
+        $qty = ($item->getQty() ? $item->getQty() : ($item->getQtyOrdered() ? $item->getQtyOrdered() : 1));
+        //$tax = ($item->getTaxBeforeDiscount() ? $item->getTaxBeforeDiscount() : $item->getTaxAmount());
+        //$price = Mage::app()->getStore()->roundPrice($price+($tax/$qty));
+        $price = Mage::app()->getStore()->roundPrice(($item->getBaseRowTotal()+$item->getBaseTaxAmount())/$qty);
+        return $price;
+    }
+
+    public function getBaseSubtotalInclTax($item)
+    {
+        $tax = ($item->getBaseTaxBeforeDiscount() ? $item->getBaseTaxBeforeDiscount() : $item->getBaseTaxAmount());
+        return $item->getBaseRowTotal()+$tax;
+    }
+
     /**
      * Send email id payment was failed
      *

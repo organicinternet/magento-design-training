@@ -51,6 +51,7 @@ class Mage_Reports_Model_Mysql4_Tax_Collection extends Mage_Core_Model_Mysql4_Co
         $this->getSelect()->from('', array('tax'=>'SUM(base_real_amount)', 'orders'=>'COUNT(DISTINCT order_id)', 'tax_rate'=>'main_table.percent', 'tax_title'=>'main_table.code'))
             ->group('main_table.code')
             ->order(array('process', 'priority'));
+
         /*
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('created_at', array('from' => $from, 'to' => $to))
@@ -112,8 +113,8 @@ class Mage_Reports_Model_Mysql4_Tax_Collection extends Mage_Core_Model_Mysql4_Co
         } else {
             $this->addExpressionAttributeToSelect(
                     'tax',
-                    'SUM({{base_tax_amount}}/{{store_to_base_rate}})',
-                    array('base_tax_amount', 'store_to_base_rate'));
+                    'SUM({{base_tax_amount}}*{{base_to_global_rate}})',
+                    array('base_tax_amount', 'base_to_global_rate'));
         }
         */
 

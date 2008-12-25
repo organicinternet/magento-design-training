@@ -16,24 +16,24 @@
                         <td class="label"><label for="under_default_website"><?php echo Mage::helper('oscommerce')->__('Website Code') ?></label></td>
                         <td class="value"><input type="text" class=" input-text" title="Website Code" value="" name="website_code" id="website_code"/><span style="color: red;display: none" id ="error-for-website_code"></span></td>
                         <td><small/></td>
-                    </tr>   
+                    </tr>
                     <tr>
                         <td class="label"><label for="timezone"><?php echo Mage::helper('oscommerce')->__('Timezone') ?></label></td>
                         <td class="value"><?php echo $this->getTimezoneOptionHtml() ?></td>
                         <td><small/></td>
-                    </tr> 
+                    </tr>
                     <tr>
                         <td class="label"><label for="connection_charset"><?php echo Mage::helper('oscommerce')->__('Database Connection Charset') ?></label></td>
                         <td class="value"><?php echo $this->getConnectionCharsetOptionHtml(); ?></td>
                         <td><small/></td>
-                    </tr> 
+                    </tr>
                     <tr>
                         <td class="label"><label for="data_charset"><?php echo Mage::helper('oscommerce')->__('Database Data Charset') ?></label></td>
                         <td class="value"><?php echo $this->getDataCharsetOptionHtml(); ?></td>
                         <td><small/></td>
-                    </tr>    
+                    </tr>
                 </tbody>
-            </table>   
+            </table>
             <table>
             	<tr>
             		<td>
@@ -45,20 +45,20 @@
 					                </li>
 					            </ul>
 					        </li>
-					    </ul>                        
+					    </ul>
             		</td>
             	</tr>
-            </table>       
-        </fieldset>    
+            </table>
+        </fieldset>
     </div>
     <div class="entry-edit">
         <div class="entry-edit-head">
             <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('oscommerce')->__('Locale Selection') ?></h4>
         </div>
-    
+
         <fieldset>
             <div  id="store_list"></div>
-        </fieldset>  
+        </fieldset>
     </div>
     <div class="entry-edit">
         <div class="entry-edit-head">
@@ -72,14 +72,14 @@
 					</li>
 			     </ul>
 			   </li>
-			</ul>         
-            <input type="checkbox" id="import_categories" name="import_categories" class="input-checkbox" />             
+			</ul>
+            <input type="checkbox" id="import_categories" name="import_categories" class="input-checkbox" />
            	<label for="import_categories"><?php echo Mage::helper('oscommerce')->__('Categories') ?></label> <br/>
-            <input type="checkbox" id="import_products" name="import_products" class="input-checkbox" /> 
+            <input type="checkbox" id="import_products" name="import_products" class="input-checkbox" />
             <label for="import_products"><?php echo Mage::helper('oscommerce')->__('Products') ?></label> <br/>
-            <input type="checkbox" id="import_customers" name="import_customers" class="input-checkbox" /> 
+            <input type="checkbox" id="import_customers" name="import_customers" class="input-checkbox" />
             <label for="import_customers"><?php echo Mage::helper('oscommerce')->__('Customers') ?></label> <br />
-            <input type="checkbox" id="import_orders" name="import_orders" class="input-checkbox" /> 
+            <input type="checkbox" id="import_orders" name="import_orders" class="input-checkbox" />
             <label for="import_orders"><?php echo Mage::helper('oscommerce')->__('Orders') ?></label>
         </fieldset>
     </div>
@@ -142,7 +142,7 @@ Event.observe($('run_import'), 'click', function(){
     var website = $('website');
     selectedWebsite = website.options[website.options.selectedIndex].value;
 
-    if (selectedWebsite == '' 
+    if (selectedWebsite == ''
         && (websiteCode == null || websiteCode.length < 2)) {
         error += "<?php echo Mage::helper('oscommerce')->__('Please check default website or input website code in General Information\n') ?>";
     } else {
@@ -150,24 +150,24 @@ Event.observe($('run_import'), 'click', function(){
             params = '?website_id='+selectedWebsite;
         } else {
             params = '?website_code='+websiteCode;
-        }        
+        }
     }
-    
+
     if ($('timezone').value == '') {
     	error += "<?php echo Mage::helper('oscommerce')->__('Please select a timezone\n') ?>";
    	}
-   	params += '&timezone='+$('timezone').value;    
+   	params += '&timezone='+$('timezone').value;
    	params += '&data_charset='+$('data_charset').value;
-    params += '&connection_charset='+$('connection_charset').value;    
-    for (var i = 0; i < importArray.length; i++) {        
+    params += '&connection_charset='+$('connection_charset').value;
+    for (var i = 0; i < importArray.length; i++) {
         if ($('import_'+importArray[i]).checked) {
             isCheckedImportOptions = true;
             params += (params?'&':'')+'import['+importArray[i]+']='+$('import_'+importArray[i]).checked;
             checkedImport.push(importArray[i]);
         }
     }
-    
-    
+
+
     if (isCheckedImportOptions == false) {
         error += "<?php echo Mage::helper('oscommerce')->__('Please check at least an option in Import Options\n') ?>";
     } else {
@@ -175,17 +175,17 @@ Event.observe($('run_import'), 'click', function(){
             error += "<?php echo Mage::helper('oscommerce')->__('Need to check Customers for Orders') ?>"
         }
     }
-    
+
     if (error) {
         alert(error);
         return false;
     }
     // End data validation
- 
+
     if (sel.length > 0) for (var i = 0; i < sel.length; i++) {
         locale += (locale?'|':'') + sel[i].id.replace('store_locale_', '') + ':' + sel[i].value;
     }
-    
+
     params += (params?'&':'')+'store_locale='+locale;
     Element.toggle($('import_processing'));
     Element.toggle($('run_import').parentNode);
@@ -199,17 +199,18 @@ Event.observe($('check_import'), 'click', function(){
     new Ajax.Request('<?php echo $this->getUrl('*/*/checkStore', array('id'=>$this->getImportId())) ?>',
         {
             method: 'post',
+            parameters: {form_key: FORM_KEY},
             onSuccess: function(transport) {
                 var response = transport.responseText;
                 if (response) {
                     if (response.isJSON()) {
                         $('show_errors').update(transport.responseText.evalJSON()['messages']);
-                        Element.show($('error_messages'));                       
+                        Element.show($('error_messages'));
                     } else {
                         showForm(response);
                         Element.hide($('check_import').parentNode);
                         Element.show($('run_import').parentNode);
-                                    
+
                     }
                     return false;
                 }
@@ -226,7 +227,7 @@ Event.observe($('check_import'), 'click', function(){
 function showForm(o)
 {
     if (o != undefined) {
-        
+
         $('store_list').update(o);
         Element.show($('required_information'));
     }

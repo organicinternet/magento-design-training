@@ -21,10 +21,10 @@
 
 
 /** Zend_Search_Lucene_Search_Query */
-#require_once 'Zend/Search/Lucene/Search/Query.php';
+require_once 'Zend/Search/Lucene/Search/Query.php';
 
 /** Zend_Search_Lucene_Search_Weight_Empty */
-#require_once 'Zend/Search/Lucene/Search/Weight/Empty.php';
+require_once 'Zend/Search/Lucene/Search/Weight/Empty.php';
 
 
 /**
@@ -76,8 +76,9 @@ class Zend_Search_Lucene_Search_Query_Insignificant extends Zend_Search_Lucene_S
      * It also initializes necessary internal structures
      *
      * @param Zend_Search_Lucene_Interface $reader
+     * @param Zend_Search_Lucene_Index_DocsFilter|null $docsFilter
      */
-    public function execute(Zend_Search_Lucene_Interface $reader)
+    public function execute(Zend_Search_Lucene_Interface $reader, $docsFilter = null)
     {
         // Do nothing
     }

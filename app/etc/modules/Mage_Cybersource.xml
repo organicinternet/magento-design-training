@@ -31,7 +31,7 @@
       <active>true</active>
       <codePool>core</codePool>
       <depends>
-                <Mage_Adminhtml/>
+            <Mage_Payment/>
       </depends>
     </Mage_Cybersource>
   </modules>

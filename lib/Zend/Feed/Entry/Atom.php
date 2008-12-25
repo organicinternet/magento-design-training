@@ -17,14 +17,14 @@
  * @package    Zend_Feed
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Atom.php 8064 2008-02-16 10:58:39Z thomas $
+ * @version    $Id: Atom.php 10383 2008-07-24 19:46:15Z matthew $
  */
 
 
 /**
  * @see Zend_Feed_Entry_Abstract
  */
-#require_once 'Zend/Feed/Entry/Abstract.php';
+require_once 'Zend/Feed/Entry/Abstract.php';
 
 
 /**
@@ -74,7 +74,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
             /** 
              * @see Zend_Feed_Exception
              */
-            #require_once 'Zend/Feed/Exception.php';
+            require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Cannot delete entry; no link rel="edit" is present.');
         }
 
@@ -102,7 +102,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
                     /** 
                      * @see Zend_Feed_Exception
                      */
-                    #require_once 'Zend/Feed/Exception.php';
+                    require_once 'Zend/Feed/Exception.php';
                     throw new Zend_Feed_Exception("Expected response code 2xx, got $httpStatus");
             }
         } while (true);
@@ -139,7 +139,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
                 /** 
                  * @see Zend_Feed_Exception
                  */
-                #require_once 'Zend/Feed/Exception.php';
+                require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception('Cannot edit entry; no link rel="edit" is present.');
             }
 
@@ -159,7 +159,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
                 /** 
                  * @see Zend_Feed_Exception
                  */
-                #require_once 'Zend/Feed/Exception.php';
+                require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception('Expected response code 200, got ' . $response->getStatus());
             }
         } else {
@@ -167,7 +167,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
                 /** 
                  * @see Zend_Feed_Exception
                  */
-                #require_once 'Zend/Feed/Exception.php';
+                require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception('PostURI must be specified to save new entries.');
             }
             $client = Zend_Feed::getHttpClient();
@@ -179,7 +179,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
                 /** 
                  * @see Zend_Feed_Exception
                  */
-                #require_once 'Zend/Feed/Exception.php';
+                require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception('Expected response code 201, got '
                                               . $response->getStatus());
             }
@@ -187,10 +187,11 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
 
         // Update internal properties using $client->responseBody;
         @ini_set('track_errors', 1);
-        $newEntry = @DOMDocument::loadXML($response->getBody());
+        $newEntry = new DOMDocument;
+        $status = @$newEntry->loadXML($response->getBody());
         @ini_restore('track_errors');
 
-        if (!$newEntry) {
+        if (!$status) {
             // prevent the class to generate an undefined variable notice (ZF-2590)
             if (!isset($php_errormsg)) {
                 if (function_exists('xdebug_is_enabled')) {
@@ -203,7 +204,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
             /** 
              * @see Zend_Feed_Exception
              */
-            #require_once 'Zend/Feed/Exception.php';
+            require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('XML cannot be parsed: ' . $php_errormsg);
         }
 
@@ -212,7 +213,7 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
             /** 
              * @see Zend_Feed_Exception
              */
-            #require_once 'Zend/Feed/Exception.php';
+            require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('No root <feed> element found in server response:'
                                           . "\n\n" . $client->responseBody);
         }

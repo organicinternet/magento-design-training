@@ -112,7 +112,7 @@ class Mage_Ideal_Model_Advanced extends Mage_Payment_Model_Method_Abstract
         }
 
         if (!in_array($currency_code,$this->_allowCurrencyCode)) {
-            Mage::throwException(Mage::helper('ideal')->__('Selected currency code (%s) is not compatabile with iDEAL', $currency_code));
+            Mage::throwException(Mage::helper('ideal')->__('Selected currency code (%s) is not compatible with iDEAL', $currency_code));
         }
 
         return $this;

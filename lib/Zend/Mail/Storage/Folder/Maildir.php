@@ -4,37 +4,37 @@
  *
  * LICENSE
  *
- * This source file is subject to version 1.0 of the Zend Framework
- * license, that is bundled with this package in the file LICENSE.txt, and
- * is available through the world-wide-web at the following URL:
- * http://framework.zend.com/license/new-bsd. If you did not receive
- * a copy of the Zend Framework license and are unable to obtain it
- * through the world-wide-web, please send a note to license@zend.com
- * so we can mail you a copy immediately.
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
  * 
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Maildir.php 8064 2008-02-16 10:58:39Z thomas $
+ * @version    $Id: Maildir.php 9098 2008-03-30 19:29:10Z thomas $
  */
 
 
 /**
  * @see Zend_Mail_Storage_Folder
  */
-#require_once 'Zend/Mail/Storage/Folder.php';
+require_once 'Zend/Mail/Storage/Folder.php';
 
 /**
  * @see Zend_Mail_Storage_Folder_Interface
  */
-#require_once 'Zend/Mail/Storage/Folder/Interface.php';
+require_once 'Zend/Mail/Storage/Folder/Interface.php';
 
 /**
  * @see Zend_Mail_Storage_Maildir
  */
-#require_once 'Zend/Mail/Storage/Maildir.php';
+require_once 'Zend/Mail/Storage/Maildir.php';
 
 
 /**
@@ -90,7 +90,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             /**
              * @see Zend_Mail_Storage_Exception
              */
-            #require_once 'Zend/Mail/Storage/Exception.php';
+            require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception('no valid dirname given in params');
         }
 
@@ -123,7 +123,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             /**
              * @see Zend_Mail_Storage_Exception
              */
-            #require_once 'Zend/Mail/Storage/Exception.php';
+            require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("can't read folders in maildir");
         }
         $dirs = array();
@@ -152,7 +152,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
                         /**
                          * @see Zend_Mail_Storage_Exception
                          */
-                        #require_once 'Zend/Mail/Storage/Exception.php';
+                        require_once 'Zend/Mail/Storage/Exception.php';
                         throw new Zend_Mail_Storage_Exception('error while reading maildir');
                     }
                     array_push($stack, $parent);
@@ -171,7 +171,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
                 /**
                  * @see Zend_Mail_Storage_Exception
                  */
-                #require_once 'Zend/Mail/Storage/Exception.php';
+                require_once 'Zend/Mail/Storage/Exception.php';
                 throw new Zend_Mail_Storage_Exception('error while reading maildir');
             }
         }
@@ -208,7 +208,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             /**
              * @see Zend_Mail_Storage_Exception
              */
-            #require_once 'Zend/Mail/Storage/Exception.php';
+            require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("folder $rootFolder not found");
         }
         return $currentFolder;
@@ -238,7 +238,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
                 /**
                  * @see Zend_Mail_Storage_Exception
                  */
-                #require_once 'Zend/Mail/Storage/Exception.php';
+                require_once 'Zend/Mail/Storage/Exception.php';
                 throw new Zend_Mail_Storage_Exception("{$this->_currentFolder} is not selectable");
             }
             // seems like file has vanished; rebuilding folder tree - but it's still an exception
@@ -246,7 +246,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             /**
              * @see Zend_Mail_Storage_Exception
              */
-            #require_once 'Zend/Mail/Storage/Exception.php';
+            require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception('seems like the maildir has vanished, I\'ve rebuild the ' .
                                                          'folder tree, search for an other folder and try again');
         }

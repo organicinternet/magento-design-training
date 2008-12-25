@@ -19,7 +19,7 @@
  */
 
 /** Zend_Pdf_FileParser */
-#require_once 'Zend/Pdf/FileParser.php';
+require_once 'Zend/Pdf/FileParser.php';
 
 /**
  * Abstract helper class for {@link Zend_Pdf_Font} that parses font files.
@@ -172,7 +172,7 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
      * @param string $property
      * @param  mixed $value
      */
-    protected function __set($property, $value)
+    public function __set($property, $value)
     {
         if (is_null($value)) {
             unset($this->_fontProperties[$property]);

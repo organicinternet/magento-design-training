@@ -50,8 +50,8 @@
         <div class="col-1">
             <?php // Product Image ?>
             <div class="product-image">
-                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
-                    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(65, 65); ?>" width="65" height="65" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+                    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(65, 65); ?>" width="65" height="65" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
                 </a>
             </div>
         </div>

@@ -4,25 +4,25 @@
  *
  * LICENSE
  *
- * This source file is subject to version 1.0 of the Zend Framework
- * license, that is bundled with this package in the file LICENSE.txt,
- * and is available through the world-wide-web at the following URL:
- * http://framework.zend.com/license/new-bsd. If you did not
- * receive a copy of the Zend Framework license and are unable to
- * obtain it through the world-wide-web, please send a note to
- * license@zend.com so we can mail you a copy immediately.
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
  * @package    Zend_Http
  * @subpackage CookieJar
- * @version    $Id: CookieJar.php 8064 2008-02-16 10:58:39Z thomas $
+ * @version    $Id: CookieJar.php 9098 2008-03-30 19:29:10Z thomas $
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-#require_once "Zend/Uri.php";
-#require_once "Zend/Http/Cookie.php";
-#require_once "Zend/Http/Response.php";
+require_once "Zend/Uri.php";
+require_once "Zend/Http/Cookie.php";
+require_once "Zend/Http/Response.php";
 
 /**
  * A Zend_Http_CookieJar object is designed to contain and maintain HTTP cookies, and should
@@ -114,7 +114,7 @@ class Zend_Http_CookieJar
             if (! isset($this->cookies[$domain][$path])) $this->cookies[$domain][$path] = array();
             $this->cookies[$domain][$path][$cookie->getName()] = $cookie;
         } else {
-            #require_once 'Zend/Http/Exception.php';
+            require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception('Supplient argument is not a valid cookie string or object');
         }
     }
@@ -129,7 +129,7 @@ class Zend_Http_CookieJar
     public function addCookiesFromResponse($response, $ref_uri)
     {
         if (! $response instanceof Zend_Http_Response) {
-            #require_once 'Zend/Http/Exception.php';        
+            require_once 'Zend/Http/Exception.php';        
             throw new Zend_Http_Exception('$response is expected to be a Response object, ' .
                 gettype($response) . ' was passed');
         }
@@ -173,7 +173,7 @@ class Zend_Http_CookieJar
     {
         if (is_string($uri)) $uri = Zend_Uri::factory($uri);
         if (! $uri instanceof Zend_Uri_Http) {
-            #require_once 'Zend/Http/Exception.php';    
+            require_once 'Zend/Http/Exception.php';    
             throw new Zend_Http_Exception("Invalid URI string or object passed");
         }
 
@@ -214,7 +214,7 @@ class Zend_Http_CookieJar
         }
 
         if (! $uri instanceof Zend_Uri_Http) {
-            #require_once 'Zend/Http/Exception.php';
+            require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception('Invalid URI specified');
         }
 
@@ -237,7 +237,7 @@ class Zend_Http_CookieJar
                     break;
 
                 default:
-                    #require_once 'Zend/Http/Exception.php';
+                    require_once 'Zend/Http/Exception.php';
                     throw new Zend_Http_Exception("Invalid value passed for \$ret_as: {$ret_as}");
                     break;
             }

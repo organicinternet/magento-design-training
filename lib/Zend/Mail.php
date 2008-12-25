@@ -16,34 +16,29 @@
  * @package    Zend_Mail
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mail.php 8449 2008-02-28 18:27:40Z doctorrock83 $
+ * @version    $Id: Mail.php 12507 2008-11-10 16:29:09Z matthew $
  */
 
 
 /**
  * @see Zend_Mail_Transport_Abstract
  */
-#require_once 'Zend/Mail/Transport/Abstract.php';
+require_once 'Zend/Mail/Transport/Abstract.php';
 
 /**
  * @see Zend_Mime
  */
-#require_once 'Zend/Mime.php';
-
-/**
- * @see Zend_Mail_Transport_Abstract
- */
-#require_once 'Zend/Mail/Transport/Abstract.php';
+require_once 'Zend/Mime.php';
 
 /**
  * @see Zend_Mime_Message
  */
-#require_once 'Zend/Mime/Message.php';
+require_once 'Zend/Mime/Message.php';
 
 /**
  * @see Zend_Mime_Part
  */
-#require_once 'Zend/Mime/Part.php';
+require_once 'Zend/Mime/Part.php';
 
 
 /**
@@ -200,7 +195,7 @@ class Zend_Mail extends Zend_Mime_Message
             /**
              * @see Zend_Mail_Exception
              */
-            #require_once 'Zend/Mail/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Invalid content type "' . $type . '"');
         }
 
@@ -396,7 +391,7 @@ class Zend_Mail extends Zend_Mime_Message
           return $value;
       } else {
           $quotedValue = Zend_Mime::encodeQuotedPrintable($value);
-          $quotedValue = str_replace(array('?', ' '), array('=3F', '=20'), $quotedValue);
+          $quotedValue = str_replace(array('?', ' ', '_'), array('=3F', '=20', '=5F'), $quotedValue);
           return '=?' . $this->_charset . '?Q?' . $quotedValue . '?=';
       }
     }
@@ -453,11 +448,18 @@ class Zend_Mail extends Zend_Mime_Message
     {
         $email = strtr($email,"\r\n\t",'???');
         $this->_addRecipient($email, ('To' == $headerName) ? true : false);
-        if ($name != '') {
-            $name = '"' . $this->_encodeHeader($name) . '" ';
+        if ($name !== '' && $name !== null && $name !== $email) {
+            $encodedName = $this->_encodeHeader($name);
+            if ($encodedName === $name && strpos($name, ',') !== false) {
+                $format = '"%s" <%s>';
+            } else {
+                $format = '%s <%s>';
+            }
+            $destination = sprintf($format, $encodedName, $email);
+        } else {
+            $destination = $email;
         }
-
-        $this->_storeHeader($headerName, $name .'<'. $email . '>', true);
+        $this->_storeHeader($headerName, $destination, true);
     }
 
     /**
@@ -516,17 +518,28 @@ class Zend_Mail extends Zend_Mime_Message
      * @return Zend_Mail Provides fluent interface
      * @throws Zend_Mail_Exception if called subsequent times
      */
-    public function setFrom($email, $name = '')
+    public function setFrom($email, $name = null)
     {
         if ($this->_from === null) {
             $email = strtr($email,"\r\n\t",'???');
             $this->_from = $email;
-            $this->_storeHeader('From', $this->_encodeHeader('"'.$name.'"').' <'.$email.'>', true);
+            if ($name !== null && $name !== $email) {
+                $encodedName = $this->_encodeHeader($name);
+                if ($encodedName === $name && strpos($name, ',') !== false) {
+                    $format = '"%s" <%s>';
+                } else {
+                    $format = '%s <%s>';
+                }
+                $from = sprintf($format, $encodedName, $email);
+            } else {
+                $from = $email;
+            }
+            $this->_storeHeader('From', $from, true);
         } else {
             /**
              * @see Zend_Mail_Exception
              */
-            #require_once 'Zend/Mail/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('From Header set twice');
         }
         return $this;
@@ -559,7 +572,7 @@ class Zend_Mail extends Zend_Mime_Message
             /**
              * @see Zend_Mail_Exception
              */
-            #require_once 'Zend/Mail/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Return-Path Header set twice');
         }
         return $this;
@@ -598,7 +611,7 @@ class Zend_Mail extends Zend_Mime_Message
             /**
              * @see Zend_Mail_Exception
              */
-            #require_once 'Zend/Mail/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Subject set twice');
         }
         return $this;
@@ -629,7 +642,7 @@ class Zend_Mail extends Zend_Mime_Message
             } else if (is_int($date)) {
                 $date = date('r', $date);
             } else if (is_string($date)) {
-            	$date = strtotime($date);
+                $date = strtotime($date);
                 if ($date === false || $date < 0) {
                     throw new Zend_Mail_Exception('String representations of Date Header must be ' .
                                                   'strtotime()-compatible');
@@ -674,7 +687,7 @@ class Zend_Mail extends Zend_Mime_Message
             /**
              * @see Zend_Mail_Exception
              */
-            #require_once 'Zend/Mail/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Cannot set standard header from addHeader()');
         }
 
@@ -707,7 +720,7 @@ class Zend_Mail extends Zend_Mime_Message
     {
         if ($transport === null) {
             if (! self::$_defaultTransport instanceof Zend_Mail_Transport_Abstract) {
-                #require_once 'Zend/Mail/Transport/Sendmail.php';
+                require_once 'Zend/Mail/Transport/Sendmail.php';
                 $transport = new Zend_Mail_Transport_Sendmail();
             } else {
                 $transport = self::$_defaultTransport;

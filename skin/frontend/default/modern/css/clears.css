@@ -24,6 +24,7 @@
 /****************************************************/
 /****************[ Mage_CSS_B Clears ]***************/
 /****************************************************/
+.form-list li:after,
 .narrowed-category li:after,
 .page-head:after,
 .page-head-alt:after,
@@ -61,4 +62,5 @@
 .product-img-box .more-views ul:after,
 .product-options dt:after,
 .product-options dd ul.options-list li:after,
-.product-options-bottom:after { content:"."; display:block; clear:both; height:0; font-size:0; line-height:0; visibility:hidden; overflow:hidden;	}
+.product-options-bottom:after,
+.advanced-search li:after { content:"."; display:block; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }

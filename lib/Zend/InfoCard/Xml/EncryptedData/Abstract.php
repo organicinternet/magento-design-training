@@ -17,19 +17,18 @@
  * @subpackage Zend_InfoCard_Xml
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 8064 2008-02-16 10:58:39Z thomas $
- * @author     John Coggeshall <john@zend.com>
+ * @version    $Id: Abstract.php 9094 2008-03-30 18:36:55Z thomas $
  */
 
 /**
  * Zend_InfoCard_Xml_Element
  */
-#require_once 'Zend/InfoCard/Xml/Element.php';
+require_once 'Zend/InfoCard/Xml/Element.php';
 
 /**
  * Zend_InfoCard_Xml_KeyInfo
  */
-#require_once 'Zend/InfoCard/Xml/KeyInfo.php';
+require_once 'Zend/InfoCard/Xml/KeyInfo.php';
 
 /**
  * An abstract class representing a generic EncryptedData XML block. This class is extended
@@ -40,7 +39,6 @@
  * @subpackage Zend_InfoCard_Xml
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @author     John Coggeshall <john@zend.com>
  */
 abstract class Zend_InfoCard_Xml_EncryptedData_Abstract extends Zend_InfoCard_Xml_Element
 {
