@@ -82,6 +82,8 @@ class Mage_Weee_Model_Mysql4_Attribute_Backend_Weee_Tax extends Mage_Core_Model_
     public function insertProductData($product, $data)
     {
         $data['entity_id'] = $product->getId();
+        $data['entity_type_id'] = $product->getEntityTypeId();
+
         $this->_getWriteAdapter()->insert($this->getMainTable(), $data);
         return $this;
     }

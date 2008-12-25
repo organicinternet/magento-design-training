@@ -33,6 +33,8 @@
  */
 class Mage_Downloadable_Model_Observer
 {
+    const XML_PATH_DISABLE_GUEST_CHECKOUT   = 'catalog/downloadable/disable_guest_checkout';
+
     /**
      * Prepare product to save
      *
@@ -169,4 +171,32 @@ class Mage_Downloadable_Model_Observer
         return $this;
     }
 
+    /**
+     * Check is allowed guest checkuot if quote contain downloadable product(s)
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Mage_Downloadable_Model_Observer
+     */
+    public function isAllowedGuestCheckout(Varien_Event_Observer $observer)
+    {
+        $quote  = $observer->getEvent()->getQuote();
+        /* @var $quote Mage_Sales_Model_Quote */
+        $store  = $observer->getEvent()->getStore();
+        $result = $observer->getEvent()->getResult();
+
+        $isContain = false;
+
+        foreach ($quote->getAllItems() as $item) {
+            if (($product = $item->getProduct()) &&
+                $product->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE) {
+                $isContain = true;
+            }
+        }
+
+        if ($isContain && Mage::getStoreConfigFlag(self::XML_PATH_DISABLE_GUEST_CHECKOUT, $store)) {
+            $result->setIsAllowed(false);
+        }
+
+        return $this;
+    }
 }

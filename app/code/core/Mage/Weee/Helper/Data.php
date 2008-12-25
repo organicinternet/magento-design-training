@@ -165,7 +165,6 @@ class Mage_Weee_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getApplied($item)
     {
-/*
         if ($item instanceof Mage_Sales_Model_Quote_Item_Abstract) {
             if ($item->getHasChildren() && $item->isChildrenCalculated()) {
                 $result = array();
@@ -178,7 +177,7 @@ class Mage_Weee_Helper_Data extends Mage_Core_Helper_Abstract
                 return $result;
             }
         }
-*/
+
         return unserialize($item->getWeeeTaxApplied());
     }
 

@@ -48,6 +48,7 @@ FIXED BUGS:
     #9167: AJAX will freeze during 'quick simple product creation'
     #9171: Product's table doesn't hide after select products for adding SKU
     #9173: Calendar's button doesn't work in rules
+    #9195: [admin - reports - sales - tax] - no data
     #9207: Field country is not marked as required
     #9208: Unable to add bundle items to bundle product
     #9228: cart error after product delete
@@ -57,6 +58,7 @@ FIXED BUGS:
     #9296: Customer DOB saved not correctly
     #9324: Bad counting products
     #9326: Verification in "Contact Us"
+    #9348: Sales Tax Reports Give False Results (No Results)
     #9354: Date Format
     #9358: Unable add products to Google Base after filtering
     #9359: Google Analytics Revenue Not Working
@@ -84,9 +86,16 @@ FIXED BUGS:
     #9651: Total revenu always 0 on Google Analytics
     #9657: Email to a friend -> User can send more than 5 emails in an hour
     #9659: Email to a Friend -> "Add Recipient" button doesn't work
+    #9660: newsletter subscribers: "Select All" working as select visible
     #9665: Export action on Manage Customers and Newsletter Subscribers exports only visible page content
+    #9683: Orders: Function "Move to shopping cart" does not work.
     #9684: Orders: Action "Hold" leads to fatal error.
+    #9685: No tax data in Reports - Sales - Tax
     #9688: Incorrect update qty of the bundle product in the shopping cart
+    #9696: Unable to assign existing products to any web sites
+    #9697: Enable/Disable status works incorrect
+
+
 
     Fixed Bundle with custom options final price calculation
     Fixed CatalogSearch events
@@ -116,6 +125,9 @@ FIXED BUGS:
     Fixed tierprice rendering for different product types
     Fixed translations in permissions titles
     Fixed PayPalUk Redirect url wrong type
+    Fixed create unique index in install
+    Fixed catalog product index
+    Fixed session validate and re-validate sent cookie
 
 
 CHANGES:
@@ -125,6 +137,7 @@ CHANGES:
     Implented fulltext search
     Added layred navigation to search results
     Added option to disable google checkout for selected products
+    Added fixed amount product taxes
     Moved information about product visibility to catalog_product_category_index
     Changed Mage::app()->isInstalled to Mage::isInstalled to prevent db upgrades
     Removed session ID encryption
@@ -142,6 +155,8 @@ CHANGES:
     Added ability to display form buttons on bottom in admin container widget, fixed button levels
     Added ability to use memcached to store sessions and to be used as cache backend
     Added additional permissions to WS api, fixed bugs with custom permissions
+    Added option "Disable Guest Checkout if cart contains downloadable items"
+    Removed store view name from page titles on catalog pages
 
 
 NOTES:

@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Mage_Weee>
-            <version>0.11</version>
+            <version>0.12</version>
         </Mage_Weee>
     </modules>
 
@@ -145,6 +145,16 @@
                     </weee>
                 </observers>
             </catalogrule_after_apply>
+
+            <catalog_product_view_config>
+                <observers>
+                    <weee>
+                        <type>singleton</type>
+                        <class>weee/observer</class>
+                        <method>updateCofigurableProductOptions</method>
+                    </weee>
+                </observers>
+            </catalog_product_view_config>
         </events>
         <fieldsets>
             <sales_convert_quote_item>

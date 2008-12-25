@@ -107,16 +107,18 @@ class Mage_Core_Model_Session_Abstract_Varien extends Varien_Object
         }
         else {
             if ($this->_data['_cookie_revalidate'] < time()) {
-                setcookie(
-                    session_name(),
-                    session_id(),
-                    time() + ini_get('session.gc_maxlifetime'),
-                    ini_get('session.cookie_path'),
-                    ini_get('session.cookie_domain')
-                );
+                if (!headers_sent()) {
+                    setcookie(
+                        session_name(),
+                        session_id(),
+                        time() + ini_get('session.gc_maxlifetime'),
+                        ini_get('session.cookie_path'),
+                        ini_get('session.cookie_domain')
+                    );
 
-                $time = time() + round(ini_get('session.gc_maxlifetime') / 4);
-                $this->_data['_cookie_revalidate'] = $time;
+                    $time = time() + round(ini_get('session.gc_maxlifetime') / 4);
+                    $this->_data['_cookie_revalidate'] = $time;
+                }
             }
         }
     }
@@ -255,14 +257,16 @@ class Mage_Core_Model_Session_Abstract_Varien extends Varien_Object
         }
         else {
             if (!$this->_validate()) {
-                // remove session cookie
-                setcookie(
-                    session_name(),
-                    null,
-                    null,
-                    ini_get('session.cookie_path'),
-                    ini_get('session.cookie_domain')
-                );
+                if (!headers_sent()) {
+                    // remove session cookie
+                    setcookie(
+                        session_name(),
+                        null,
+                        null,
+                        ini_get('session.cookie_path'),
+                        ini_get('session.cookie_domain')
+                    );
+                }
                 // throw core session exception
                 throw new Mage_Core_Model_Session_Exception('');
             }

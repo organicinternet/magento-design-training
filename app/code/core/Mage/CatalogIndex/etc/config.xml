@@ -225,6 +225,19 @@
             </betatypes>
         </cache>
     </global>
+    <adminhtml>
+        <events>
+            <catalog_product_to_website_change>
+                <observers>
+                    <catalogindex>
+                        <type>singleton</type>
+                        <class>catalogindex/observer</class>
+                        <method>processProductsWebsitesChange</method>
+                    </catalogindex>
+                </observers>
+            </catalog_product_to_website_change>
+        </events>
+    </adminhtml>
 
     <crontab>
         <jobs>

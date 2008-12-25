@@ -81,7 +81,8 @@ class Mage_Downloadable_DownloadController extends Mage_Core_Controller_Front_Ac
         }
 
         $this->getResponse()
-            ->clearBody()
+            ->clearBody();
+        $this->getResponse()
             ->sendHeaders();
 
         $helper->output();
@@ -107,6 +108,7 @@ class Mage_Downloadable_DownloadController extends Mage_Core_Controller_Front_Ac
             }
             try {
                 $this->_processDownload($resource, $resourceType);
+                exit();
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError(Mage::helper('downloadable')->__('Sorry, there was an error getting requested content. Please contact store owner.'));
             }
@@ -188,14 +190,18 @@ class Mage_Downloadable_DownloadController extends Mage_Core_Controller_Front_Ac
                 $linkPurchasedItem->save();
             }
             catch (Exception $e) {
-                $this->_getCustomerSession()->addError(Mage::helper('downloadable')->__('Sorry, there was an error getting requested content. Please contact store owner.'));
+                $this->_getCustomerSession()->addError(
+                    Mage::helper('downloadable')->__('Sorry, there was an error getting requested content. Please contact store owner.')
+                );
             }
         } elseif ($linkPurchasedItem->getStatus() == Mage_Downloadable_Model_Link_Purchased_Item::LINK_STATUS_EXPIRED) {
             $this->_getCustomerSession()->addNotice(Mage::helper('downloadable')->__('Link is expired.'));
         } elseif ($linkPurchasedItem->getStatus() == Mage_Downloadable_Model_Link_Purchased_Item::LINK_STATUS_PENDING) {
             $this->_getCustomerSession()->addNotice(Mage::helper('downloadable')->__('Link is not available.'));
         } else {
-            $this->_getCustomerSession()->addError(Mage::helper('downloadable')->__('Sorry, there was an error getting requested content. Please contact store owner.'));
+            $this->_getCustomerSession()->addError(
+                Mage::helper('downloadable')->__('Sorry, there was an error getting requested content. Please contact store owner.')
+            );
         }
         return $this->_redirect('*/customer/products');
     }

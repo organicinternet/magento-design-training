@@ -1074,9 +1074,14 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         return $hasVirtual;
     }
 
+    /**
+     * Check is allow Guest Checkout
+     *
+     * @return bool
+     */
     public function isAllowedGuestCheckout()
     {
-        return Mage::getStoreConfig('checkout/options/guest_checkout');
+        return Mage::helper('checkout')->isAllowedGuestCheckout($this, $this->getStoreId());
     }
 
     /**

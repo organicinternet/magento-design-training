@@ -290,6 +290,6 @@ class Mage_Downloadable_Helper_Download extends Mage_Core_Helper_Abstract
      */
     public function getContentDisposition($store = null)
     {
-        return Mage::getStoreConfigFlag(self::XML_PATH_CONTENT_DISPOSITION, $store);
+        return Mage::getStoreConfig(self::XML_PATH_CONTENT_DISPOSITION, $store);
     }
 }

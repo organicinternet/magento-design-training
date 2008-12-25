@@ -90,7 +90,7 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="8" class="a-right"><p class=""><?php echo $this->getUploadButtonHtml() ?>&nbsp;<?php echo $this->getAddButtonHtml()?></p></td>
+			<td colspan="8" class="a-right"><p class=""><?php echo $this->getAddButtonHtml()?>&nbsp;<?php echo $this->getUploadButtonHtml() ?></p></td>
 		</tr>
 	</tfoot>
 	<tbody id="link_items_body">
@@ -146,7 +146,7 @@ var linkTemplate = '<tr>' +
     '<td class="files">' +
         '<div style="margin-right:5px;">' +
             '<div><label>'+
-                '<input type="radio" class="radio validate-one-required-by-name" id="downloadable_link_{{id}}_file_type" name="downloadable[link][{{id}}][type]" value="file" /> File:' +
+                '<input type="radio" class="radio validate-one-required-by-name" id="downloadable_link_{{id}}_file_type" name="downloadable[link][{{id}}][type]" value="file" checked="checked" /> File:' +
             '</label></div>'+
             '<input type="hidden" class="validate-downloadable-file" id="downloadable_link_{{id}}_file_save" name="downloadable[link][{{id}}][file]" value="{{file_save}}" />' +
             '<div id="downloadable_link_{{id}}_file" class="uploader">' +

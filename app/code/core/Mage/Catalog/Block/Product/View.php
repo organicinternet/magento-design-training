@@ -39,7 +39,7 @@ class Mage_Catalog_Block_Product_View extends Mage_Catalog_Block_Product_Abstrac
         $this->getLayout()->createBlock('catalog/breadcrumbs');
         if ($headBlock = $this->getLayout()->getBlock('head')) {
             if ($title = $this->getProduct()->getMetaTitle()) {
-                $headBlock->setTitle($title.' '.Mage::getStoreConfig('catalog/seo/title_separator').' '.Mage::getStoreConfig('system/store/name'));
+                $headBlock->setTitle($title);
             }
 
             if ($keyword = $this->getProduct()->getMetaKeyword()) {

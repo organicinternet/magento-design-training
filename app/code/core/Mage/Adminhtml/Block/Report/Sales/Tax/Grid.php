@@ -48,16 +48,17 @@ class Mage_Adminhtml_Block_Report_Sales_Tax_Grid extends Mage_Adminhtml_Block_Re
 
     protected function _prepareColumns()
     {
-        $this->addColumn('tax_title', array(
+        $this->addColumn('code', array(
             'header'    =>Mage::helper('reports')->__('Tax'),
-            'index'     =>'tax_title',
+            'index'     =>'code',
             'type'      =>'string'
         ));
 
-        $this->addColumn('tax_rate', array(
+        $this->addColumn('percent', array(
             'header'    =>Mage::helper('reports')->__('Rate'),
-            'index'     =>'tax_rate',
+            'index'     =>'percent',
             'type'      =>'number',
+            'renderer'  =>'adminhtml/report_grid_column_renderer_blanknumber',
             'width'     =>'100'
         ));
 

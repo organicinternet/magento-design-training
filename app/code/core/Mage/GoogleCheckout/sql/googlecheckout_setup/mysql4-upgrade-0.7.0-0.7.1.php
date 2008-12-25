@@ -33,7 +33,7 @@ $installer->addAttribute('catalog_product', 'disable_googlecheckout', array(
         'type'              => 'int',
         'backend'           => '',
         'frontend'          => '',
-        'label'             => 'Disable Google Checkout',
+        'label'             => 'Not available for purchase with Google Checkout',
         'input'             => 'select',
         'class'             => '',
         'source'            => 'eav/entity_attribute_source_boolean',

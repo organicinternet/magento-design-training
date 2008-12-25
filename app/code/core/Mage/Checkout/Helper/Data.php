@@ -31,6 +31,8 @@
  */
 class Mage_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const XML_PATH_GUEST_CHECKOUT           = 'checkout/options/guest_checkout';
+
     protected $_agreements = null;
 
     /**
@@ -240,5 +242,32 @@ class Mage_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
             && (($quote->getItemsSummaryQty() - $quote->getItemVirtualQty()) > 0)
             && ($quote->getItemsSummaryQty() <= $maximunQty)
         ;
+    }
+
+    /**
+     * Check is allowed Guest Checkout
+     * Use config settings and observer
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @param int|Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function isAllowedGuestCheckout(Mage_Sales_Model_Quote $quote, $store = null)
+    {
+        $guestCheckout = Mage::getStoreConfigFlag(self::XML_PATH_GUEST_CHECKOUT, $store);
+
+        if ($guestCheckout == true) {
+            $result = new Varien_Object();
+            $result->setIsAllowed($guestCheckout);
+            Mage::dispatchEvent('checkout_allow_guest', array(
+                'quote'  => $quote,
+                'store'  => $store,
+                'result' => $result
+            ));
+
+            $guestCheckout = $result->getIsAllowed();
+        }
+
+        return $guestCheckout;
     }
 }

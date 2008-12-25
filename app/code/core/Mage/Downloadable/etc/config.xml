@@ -135,6 +135,14 @@
                 </type>
             </product>
         </catalog>
+        <pdf>
+            <invoice>
+                <downloadable>downloadable/sales_order_pdf_items_invoice</downloadable>
+            </invoice>
+            <creditmemo>
+                <downloadable>downloadable/sales_order_pdf_items_creditmemo</downloadable>
+            </creditmemo>
+        </pdf>
     </global>
     <adminhtml>
         <translate>
@@ -259,6 +267,15 @@
                     </checkout_type_multishipping_create_orders_single>
                 </observers>
             </checkout_type_multishipping_create_orders_single>
+            <checkout_allow_guest>
+                <observers>
+                    <checkout_allow_guest>
+                        <type>singleton</type>
+                        <class>downloadable/observer</class>
+                        <method>isAllowedGuestCheckout</method>
+                    </checkout_allow_guest>
+                </observers>
+            </checkout_allow_guest>
         </events>
     </frontend>
     <admin>
@@ -281,6 +298,7 @@
                 <links_title>Links</links_title>
                 <links_target_new_window>1</links_target_new_window>
                 <content_disposition>inline</content_disposition>
+                <disable_guest_checkout>1</disable_guest_checkout>
             </downloadable>
         </catalog>
     </default>

@@ -43,11 +43,7 @@ class Mage_Downloadable_Model_System_Config_Source_Contentdisposition
             array(
                 'value' => 'inline',
                 'label' => Mage::helper('downloadable')->__('inline')
-            ),
-            array(
-                'value' => '',
-                'label' => Mage::helper('downloadable')->__('None')
-            ),
+            )
         );
     }
 }

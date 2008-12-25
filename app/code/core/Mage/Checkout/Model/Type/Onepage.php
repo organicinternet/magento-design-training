@@ -584,6 +584,10 @@ class Mage_Checkout_Model_Type_Onepage
             }
         }
 
+        //Setting this one more time like control flag that we haves saved order
+        //Must be checkout on success page to show it or not.
+        $this->getCheckout()->setLastSuccessQuoteId($this->getQuote()->getId());
+
         $this->getQuote()->setIsActive(false);
         $this->getQuote()->save();
 

@@ -498,6 +498,11 @@ class Mage_CatalogSearch_Model_Mysql4_Fulltext extends Mage_Core_Model_Mysql4_Ab
             $attribute->setStoreId($storeId);
             $value = $attribute->getSource()->getOptionText($value);
         }
+
+        if (is_array($value)) {
+            $value = implode($this->_separator, $value);
+        }
+
         return preg_replace("#\s+#si", " ", trim(strip_tags($value)));
     }
 

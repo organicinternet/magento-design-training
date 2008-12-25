@@ -112,12 +112,12 @@ class Mage_Downloadable_Block_Customer_Products_List extends Mage_Core_Block_Tem
     /**
      * Return url to download link
      *
-     * @param Mage_Downloadable_Model_Link_Purchased $item
+     * @param Mage_Downloadable_Model_Link_Purchased_Item $item
      * @return string
      */
     public function getDownloadUrl($item)
     {
-        return $this->getUrl('*/download/link', array('id' => $item->getItemId()));
+        return $this->getUrl('*/download/link', array('id' => $item->getId()));
     }
 
     /**

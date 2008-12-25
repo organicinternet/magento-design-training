@@ -166,7 +166,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
 
     public function successAction()
     {
-        if (!$this->getOnepage()->getQuote()->hasItems()) {
+        if (!$this->getOnepage()->getCheckout()->getLastSuccessQuoteId()) {
             $this->_redirect('checkout/cart');
             return;
         }

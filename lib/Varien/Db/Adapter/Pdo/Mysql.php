@@ -568,9 +568,10 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
      * @param string $tableName
      * @param string $indexName
      * @param string|array $fields
+     * @param string $indexType
      * @return
      */
-    public function addKey($tableName, $indexName, $fields)
+    public function addKey($tableName, $indexName, $fields, $indexType = 'index')
     {
         $keyList = $this->getKeyList($tableName);
 
@@ -590,7 +591,22 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
             $fieldSql = $this->quoteIdentifier($fields);
         }
 
-        $sql .= ' ADD INDEX ' . $this->quoteIdentifier($indexName) . ' (' . $fieldSql . ')';
+        switch (strtolower($indexType)) {
+            case 'primary':
+                $condition = 'PRIMARY KEY';
+                break;
+            case 'unique':
+                $condition = 'UNIQUE ' . $this->quoteIdentifier($indexName);
+                break;
+            case 'fulltext':
+                $condition = 'FULLTEXT ' . $this->quoteIdentifier($indexName);
+                break;
+            default:
+                $condition = 'INDEX ' . $this->quoteIdentifier($indexName);
+                break;
+        }
+
+        $sql .= ' ADD ' . $condition . ' (' . $fieldSql . ')';
 
         return $this->raw_query($sql);
     }

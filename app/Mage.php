@@ -458,7 +458,14 @@ final class Mage {
         }
         catch (Mage_Core_Model_Store_Exception $e) {
             $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-            header('Location: ' . $baseUrl.'/404/');
+            if (!headers_sent()) {
+                header('Location: ' . $baseUrl.'/404/');
+            }
+            else {
+                print '<script type="text/javascript">';
+                print "window.location.href = '{$baseUrl}';";
+                print '</script>';
+            }
             die();
         }
         catch (Exception $e) {

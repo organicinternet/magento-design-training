@@ -317,4 +317,18 @@ class Mage_CatalogIndex_Model_Observer extends Mage_Core_Model_Abstract
         $this->_getAggregator()->clearProductData($productIds);
         return $this;
     }
+
+    /**
+     * Reindex producs after change websites associations
+     *
+     * @param   Varien_Event_Observer $observer
+     * @return  Mage_CatalogIndex_Model_Observer
+     */
+    public function processProductsWebsitesChange(Varien_Event_Observer $observer)
+    {
+        $productIds = $observer->getEvent()->getProducts();
+        $this->_getIndexer()->plainReindex($productIds);
+        $this->_getAggregator()->clearProductData($productIds);
+        return $this;
+    }
 }
