@@ -19,7 +19,7 @@
  * @version    $Id: Parser.php 12080 2008-10-22 16:40:33Z beberlei $
  */
 
-require_once 'Zend/Soap/Wsdl/Parser/Result.php';
+#require_once 'Zend/Soap/Wsdl/Parser/Result.php';
 
 /**
  * Zend_Soap_Wsdl_Parser

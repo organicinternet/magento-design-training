@@ -19,13 +19,13 @@
  */
 
 /** Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
+#require_once 'Zend/Amf/Constants.php';
 
 /** Zend_Amf_Parse_OutputStream */
-require_once 'Zend/Amf/Parse/OutputStream.php';
+#require_once 'Zend/Amf/Parse/OutputStream.php';
 
 /** Zend_Amf_Parse_Amf0_Serializer */
-require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
+#require_once 'Zend/Amf/Parse/Amf0/Serializer.php';
 
 /**
  * Handles converting the PHP object ready for response back into AMF

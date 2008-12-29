@@ -31,7 +31,7 @@
         <?php elseif($this->getLinkUrl()): ?>
             <a href="<?php echo $this->getUrl($this->getLinkUrl()) ?>">
         <?php endif; ?>
-        <img src="<?php echo $this->getSkinUrl($this->getImgSrc()) ?>" width="195" alt="<?php echo $this->__($this->getImgAlt()) ?>" title="<?php echo $this->__($this->getImgAlt()) ?>" />
+        <img src="<?php echo $this->getSkinUrl($this->getImgSrc()) ?>" alt="<?php echo $this->__($this->getImgAlt()) ?>" title="<?php echo $this->__($this->getImgAlt()) ?>" />
         <?php if ($this->getLinkUrl()): ?>
         </a>
         <?php endif ?>

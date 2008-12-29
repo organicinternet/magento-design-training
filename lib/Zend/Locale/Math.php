@@ -150,5 +150,5 @@ class Zend_Locale_Math
 
 if ((defined('TESTS_ZEND_LOCALE_BCMATH_ENABLED') && !TESTS_ZEND_LOCALE_BCMATH_ENABLED)
     || !extension_loaded('bcmath')) {
-    require_once 'Zend/Locale/Math/PhpMath.php';
+    #require_once 'Zend/Locale/Math/PhpMath.php';
 }

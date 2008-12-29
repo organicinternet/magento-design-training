@@ -152,7 +152,7 @@ class Zend_Http_Response
     {
         // Make sure the response code is valid and set it
         if (self::responseCodeAsText($code) === null) {
-            require_once 'Zend/Http/Exception.php';
+            #require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception("{$code} is not a valid HTTP response code");
         }
 
@@ -160,7 +160,7 @@ class Zend_Http_Response
 
         // Make sure we got valid headers and set them
         if (! is_array($headers)) {
-            require_once 'Zend/Http/Exception.php';
+            #require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception('No valid headers were passed');
     }
 
@@ -176,7 +176,7 @@ class Zend_Http_Response
 
         // Set the HTTP version
         if (! preg_match('|^\d\.\d$|', $version)) {
-            require_once 'Zend/Http/Exception.php';
+            #require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception("Invalid HTTP response version: $version");
         }
 
@@ -573,7 +573,7 @@ class Zend_Http_Response
     public static function decodeGzip($body)
     {
         if (! function_exists('gzinflate')) {
-            require_once 'Zend/Http/Exception.php';
+            #require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception('Unable to decode gzipped response ' .
                 'body: perhaps the zlib extension is not loaded?');
         }
@@ -592,7 +592,7 @@ class Zend_Http_Response
     public static function decodeDeflate($body)
     {
         if (! function_exists('gzuncompress')) {
-            require_once 'Zend/Http/Exception.php';
+            #require_once 'Zend/Http/Exception.php';
             throw new Zend_Http_Exception('Unable to decode deflated response ' .
                 'body: perhaps the zlib extension is not loaded?');
         }

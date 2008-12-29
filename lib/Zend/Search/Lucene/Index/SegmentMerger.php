@@ -20,13 +20,13 @@
  */
 
 /** Zend_Search_Lucene_Index_SegmentInfo */
-require_once 'Zend/Search/Lucene/Index/SegmentInfo.php';
+#require_once 'Zend/Search/Lucene/Index/SegmentInfo.php';
 
 /** Zend_Search_Lucene_Index_SegmentWriter_StreamWriter */
-require_once 'Zend/Search/Lucene/Index/SegmentWriter/StreamWriter.php';
+#require_once 'Zend/Search/Lucene/Index/SegmentWriter/StreamWriter.php';
 
 /** Zend_Search_Lucene_Index_SegmentInfoPriorityQueue */
-require_once 'Zend/Search/Lucene/Index/SegmentInfoPriorityQueue.php';
+#require_once 'Zend/Search/Lucene/Index/SegmentInfoPriorityQueue.php';
 
 /**
  * @category   Zend
@@ -112,12 +112,12 @@ class Zend_Search_Lucene_Index_SegmentMerger
     public function merge()
     {
         if ($this->_mergeDone) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Merge is already done.');
         }
 
         if (count($this->_segmentInfos) < 1) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Wrong number of segments to be merged ('
                                                  . count($this->_segmentInfos)
                                                  . ').');

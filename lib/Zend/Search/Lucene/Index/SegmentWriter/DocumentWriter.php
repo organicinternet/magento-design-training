@@ -20,10 +20,10 @@
  */
 
 /** Zend_Search_Lucene_Analysis_Analyzer */
-require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
+#require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
 
 /** Zend_Search_Lucene_Index_SegmentWriter */
-require_once 'Zend/Search/Lucene/Index/SegmentWriter.php';
+#require_once 'Zend/Search/Lucene/Index/SegmentWriter.php';
 
 /**
  * @category   Zend
@@ -85,7 +85,7 @@ class Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter extends Zend_Search_
                 /**
                  * @todo term vector storing support
                  */
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Store term vector functionality is not supported yet.');
             }
 

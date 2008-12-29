@@ -21,6 +21,7 @@
 class Mage_Weee_Model_Tax extends Mage_Core_Model_Abstract
 {
     protected $_allAttributes = null;
+    protected $_productDiscounts = array();
 
     protected function _construct()
     {
@@ -37,13 +38,17 @@ class Mage_Weee_Model_Tax extends Mage_Core_Model_Abstract
         return $amount;
     }
 
-    public function getWeeeAttributeCodes()
+    public function getWeeeAttributeCodes($forceEnabled = false)
     {
-        return $this->getWeeeTaxAttributeCodes();
+        return $this->getWeeeTaxAttributeCodes($forceEnabled);
     }
 
-    public function getWeeeTaxAttributeCodes()
+    public function getWeeeTaxAttributeCodes($forceEnabled = false)
     {
+        if (!$forceEnabled && !Mage::helper('weee')->isEnabled()) {
+            return array();
+        }
+
         if (is_null($this->_allAttributes)) {
             $this->_allAttributes = Mage::getModel('eav/entity_attribute')->getAttributeCodesByFrontendType('weee');
         }
@@ -134,22 +139,17 @@ class Mage_Weee_Model_Tax extends Mage_Core_Model_Abstract
 
     protected function _getDiscountPercentForProduct($product)
     {
-        $result = null;
-        $rules = $this->getResource()->getProductAppliedPriceRules($product);
-        foreach ($rules as $rule) {
-            if ($rule['action_operator'] == 'by_percent') {
-                if (is_null($result)) {
-                    $result = 100-$rule['action_amount'];
-                } else {
-                    $result += $result*$rule['action_amount']/100;
-                }
-            }
-
-            if ($rule['action_stop']) {
-                return min(100, max(0, $result));
-            }
+        $website = Mage::app()->getStore()->getWebsiteId();
+        $group = Mage::getSingleton('customer/session')->getCustomerGroupId();
+        $key = implode('-', array($website, $group, $product->getId()));
+        if (!isset($this->_productDiscounts[$key])) {
+            $this->_productDiscounts[$key] = (int) $this->getResource()->getProductDiscountPercent($product->getId(), $website, $group);
         }
-        return min(100, max(0, $result));
+        if ($value = $this->_productDiscounts[$key]) {
+            return 100-min(100, max(0, $value));
+        } else {
+            return 0;
+        }
     }
 
     public function updateDiscountPercents()

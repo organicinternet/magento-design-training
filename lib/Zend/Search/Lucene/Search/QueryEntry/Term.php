@@ -20,13 +20,13 @@
  */
 
 /** Zend_Search_Lucene_Index_Term */
-require_once 'Zend/Search/Lucene/Index/Term.php';
+#require_once 'Zend/Search/Lucene/Index/Term.php';
 
 /** Zend_Search_Lucene_Search_QueryEntry */
-require_once 'Zend/Search/Lucene/Search/QueryEntry.php';
+#require_once 'Zend/Search/Lucene/Search/QueryEntry.php';
 
 /** Zend_Search_Lucene_Analysis_Analyzer */
-require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
+#require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
 
 /**
  * @category   Zend
@@ -106,7 +106,7 @@ class Zend_Search_Lucene_Search_QueryEntry_Term extends Zend_Search_Lucene_Searc
     {
         if (strpos($this->_term, '?') !== false || strpos($this->_term, '*') !== false) {
             if ($this->_fuzzyQuery) {
-                require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
+                #require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
                 throw new Zend_Search_Lucene_Search_QueryParserException('Fuzzy search is not supported for terms with wildcards.');
             }
 
@@ -134,7 +134,7 @@ class Zend_Search_Lucene_Search_QueryEntry_Term extends Zend_Search_Lucene_Searc
 
                     $tokens = Zend_Search_Lucene_Analysis_Analyzer::getDefault()->tokenize($subPatternL2, $encoding);
                     if (count($tokens) > 1) {
-                        require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
+                        #require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
                         throw new Zend_Search_Lucene_Search_QueryParserException('Wildcard search is supported only for non-multiple word terms');
                     }
 
@@ -174,7 +174,7 @@ class Zend_Search_Lucene_Search_QueryEntry_Term extends Zend_Search_Lucene_Searc
         }
 
         if ($this->_fuzzyQuery) {
-            require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
+            #require_once 'Zend/Search/Lucene/Search/QueryParserException.php';
             throw new Zend_Search_Lucene_Search_QueryParserException('Fuzzy search is supported only for non-multiple word terms');
         }
 

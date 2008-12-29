@@ -134,7 +134,7 @@ class Mage_CatalogSearch_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Retrieve suggest collection for query
      *
-     * @return unknown
+     * @return Mage_CatalogSearch_Model_Mysql4_Query_Collection
      */
     public function getSuggestCollection()
     {

@@ -197,6 +197,6 @@ class Mage_Adminhtml_Catalog_Product_Action_AttributeController extends Mage_Adm
 
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/attributes');
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/update_attributes');
     }
 }

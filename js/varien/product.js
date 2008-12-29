@@ -496,6 +496,12 @@ Product.OptionsPrice.prototype = {
         this.skipCalculate      = config.skipCalculate;
         this.duplicateIdSuffix  = config.idSuffix;
 
+		this.oldPlusDisposition = config.oldPlusDisposition;
+        this.plusDisposition    = config.plusDisposition;
+		
+		this.oldMinusDisposition = config.oldMinusDisposition;
+        this.minusDisposition    = config.minusDisposition;
+
         this.optionPrices = {};
         this.containers = {};
 
@@ -532,11 +538,17 @@ Product.OptionsPrice.prototype = {
         var optionPrices = this.getOptionPrices();
         $H(this.containers).each(function(pair) {
             var _productPrice;
+			var _plusDisposition;
+			var _minusDisposition;
             if ($(pair.value)) {
                 if (pair.value == 'old-price-'+this.productId && this.productOldPrice != this.productPrice) {
                     _productPrice = this.productOldPrice;
+					_plusDisposition = this.oldPlusDisposition;
+					_minusDisposition = this.oldMinusDisposition;
                 } else {
                     _productPrice = this.productPrice;
+					_plusDisposition = this.plusDisposition;
+					_minusDisposition = this.minusDisposition;
                 }
 
                 var price = optionPrices+parseFloat(_productPrice)
@@ -550,6 +562,11 @@ Product.OptionsPrice.prototype = {
                     var excl = price;
                     var incl = excl + tax;
                 }
+				
+				excl += parseFloat(_plusDisposition);
+				incl += parseFloat(_plusDisposition);
+				excl -= parseFloat(_minusDisposition);
+				incl -= parseFloat(_minusDisposition);
 
                 if (pair.value == 'price-including-tax-'+this.productId) {
                     price = incl;
@@ -570,7 +587,7 @@ Product.OptionsPrice.prototype = {
                         }
                     }
                 }
-
+				
                 if (price < 0) price = 0;
                 formattedPrice = this.formatPrice(price);
                 if ($(pair.value).select('.price')[0]) {

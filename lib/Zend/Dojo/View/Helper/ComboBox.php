@@ -21,7 +21,7 @@
  */
 
 /** Zend_Dojo_View_Helper_Dijit */
-require_once 'Zend/Dojo/View/Helper/Dijit.php';
+#require_once 'Zend/Dojo/View/Helper/Dijit.php';
 
 /**
  * Dojo ComboBox dijit
@@ -135,7 +135,7 @@ class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
         if ($this->_useProgrammatic()) {
             if (!$this->_useProgrammaticNoScript()) {
                 $this->dojo->addJavascript('var ' . $storeParams['jsId'] . ';');
-                require_once 'Zend/Json.php';
+                #require_once 'Zend/Json.php';
                 $js = "function() {\n"
                     . '    ' . $storeParams['jsId'] . ' = '
                     . 'new ' . $storeParams['dojoType'] . '('

@@ -373,6 +373,9 @@
                                 <products translate="title">
                                     <title>Manage Products</title>
                                 </products>
+                                <update_attributes translate="title">
+                                    <title>Update Attributes</title>
+                                </update_attributes>
                                 <search translate="title">
                                     <title>Search</title>
                                 </search>

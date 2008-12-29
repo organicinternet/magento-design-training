@@ -36,6 +36,10 @@ class Mage_CatalogSearch_Model_Query extends Mage_Core_Model_Abstract
     const XML_PATH_MAX_QUERY_LENGTH     = 'catalog/search/max_query_length';
     const XML_PATH_MAX_QUERY_WORDS      = 'catalog/search/max_query_words';
 
+    /**
+     * Init resource model
+     *
+     */
     protected function _construct()
     {
         $this->_init('catalogsearch/query');
@@ -69,25 +73,56 @@ class Mage_CatalogSearch_Model_Query extends Mage_Core_Model_Abstract
     /**
      * Retrieve collection of suggest queries
      *
-     * @return Varien_Data_Collection_Db
+     * @return Mage_CatalogSearch_Model_Mysql4_Query_Collection
      */
     public function getSuggestCollection()
     {
         $collection = $this->getData('suggest_collection');
         if (is_null($collection)) {
             $collection = Mage::getResourceModel('catalogsearch/query_collection')
+                ->setStoreId($this->getStoreId())
                 ->setQueryFilter($this->getQueryText());
             $this->setData('suggest_collection', $collection);
         }
         return $collection;
     }
 
+    /**
+     * Load Query object by query string
+     *
+     * @param string $text
+     * @return Mage_CatalogSearch_Model_Query
+     */
     public function loadByQuery($text)
     {
-        $this->_getResource()->loadByQuery($this,$text);
+        $this->_getResource()->loadByQuery($this, $text);
         $this->_afterLoad();
         $this->setOrigData();
         return $this;
+    }
+
+    /**
+     * Set Store Id
+     *
+     * @param int $storeId
+     * @return Mage_CatalogSearch_Model_Query
+     */
+    public function setStoreId($storeId)
+    {
+        $this->setData('store_id', $storeId);
+    }
+
+    /**
+     * Retrieve store Id
+     *
+     * @return int
+     */
+    public function getStoreId()
+    {
+        if (!$storeId = $this->getData('store_id')) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
+        return $storeId;
     }
 
     /**
@@ -105,16 +140,6 @@ class Mage_CatalogSearch_Model_Query extends Mage_Core_Model_Abstract
         }
 
         return $this;
-    }
-
-    /**
-     * Retrieve Store Id
-     *
-     * @return int
-     */
-    public function getStoreId()
-    {
-        return $this->getData('store_id');
     }
 
     /**

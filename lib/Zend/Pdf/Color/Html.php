@@ -19,13 +19,13 @@
  */
 
 /** Zend_Pdf_Color */
-require_once 'Zend/Pdf/Color.php';
+#require_once 'Zend/Pdf/Color.php';
 
 /** Zend_Pdf_Color_Rgb */
-require_once 'Zend/Pdf/Color/Rgb.php';
+#require_once 'Zend/Pdf/Color/Rgb.php';
 
 /** Zend_Pdf_GrayScale */
-require_once 'Zend/Pdf/Color/GrayScale.php';
+#require_once 'Zend/Pdf/Color/GrayScale.php';
 
 /**
  * HTML color implementation
@@ -390,7 +390,7 @@ class Zend_Pdf_Color_Html extends Zend_Pdf_Color
                 $r = 0.604; $g = 0.804; $b = 0.196; break;
 
             default:
-                require_once 'Zend/Pdf/Exception.php';
+                #require_once 'Zend/Pdf/Exception.php';
                 throw new Zend_Pdf_Exception('Unknown color name: ' . $color);
         }
         if (($r == $g) && ($g == $b)) {

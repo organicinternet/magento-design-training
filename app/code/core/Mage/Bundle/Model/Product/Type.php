@@ -205,7 +205,10 @@ class Mage_Bundle_Model_Product_Type extends Mage_Catalog_Model_Product_Type_Abs
                         $selectionModel->save();
 
                         $selection['selection_id'] = $selectionModel->getSelectionId();
-                        $excludeSelectionIds[] = $selectionModel->getSelectionId();
+
+                        if ($selectionModel->getSelectionId()) {
+                            $excludeSelectionIds[] = $selectionModel->getSelectionId();
+                        }
                     }
                 }
                 Mage::getResourceModel('bundle/bundle')->dropAllUnneededSelections($this->getProduct()->getId(), $excludeSelectionIds);

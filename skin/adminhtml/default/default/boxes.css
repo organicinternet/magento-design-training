@@ -336,6 +336,7 @@ input.price                     { width:50px !important; text-align:right; }
 select optgroup                 { font-style:normal; }
 select optgroup option          { padding-left:10px; }
 select optgroup option.even     { background:#f6f6f6; } /* Zebra even-row */
+select.multiselect option       { padding:3px 4px; border-bottom:1px solid #ddd; }
 .field-100 { background-color:#fff; border-width:1px; border-style:solid; border-color:#aaa #c8c8c8 #c8c8c8 #aaa; padding:2px; }
 .field-100 textarea,
 .field-100 input.input-text { float:left; width:100% !important; border:0 !important; padding:0 !important; }
@@ -877,7 +878,8 @@ ul.item-options li { padding-left:.7em; }
 .rule-param .label:hover        { font-weight:bold; color:blue; }
 .rule-param .element            { display:none; }
 .rule-param input,
-.rule-param select              { width:auto !important; }
+.rule-param select              { width:auto !important; min-width:170px; }
+.rule-param select.multiselect  { vertical-align:top; }
 .rule-param-edit .label         { display:none; }
 .rule-param-edit .element       { display:inline; }
 .rule-param-add                 { font-weight:normal; color:green; text-decoration:none; }
@@ -935,12 +937,30 @@ ul.item-options li { padding-left:.7em; }
 .bundle .border .last {width:33px; }
 
 /* Downloadable Product */
-td.files input.input-text { width:135px !important; }
-td.files label { float:left; width:50px; }
-td.files-wide input.input-text { width:350px !important; }
+.files { width:195px; }
+.files input.input-text { float:left; width:134px !important; }
+.files-wide { width:355px;}
+.files-wide input.input-text { float:left; width:294px !important; }
+.files label,
+.files-wide label { float:left; width:55px; }
+.files .row,
+.files-wide .row { margin-bottom:5px; }
+/* Files Uploader */
+.files .flex,
+.files-wide .flex { float:right !important; position:static !important; }
+.files .uploader,
+.files-wide .uploader { float:left; overflow:hidden; }
+.files .uploader { width:100px; }
+.files-wide .uploader { width:260px; }
+.files .uploader .file-row-info,
+.files-wide .uploader .file-row-info,
+.files .uploader .file-row-narrow,
+.files-wide .uploader .file-row-narrow { margin:0 !important; }
+
 td.input-price { white-space:nowrap; }
 td.input-price .validation-advice { white-space:normal; }
 td.input-price input.input-text { width:4em !important; }
+
 input.sort { width:4em !important; }
 input.downloads { width:6.5em !important; }
 
@@ -1023,7 +1043,7 @@ ul.config-tabs a.last span  { background-image:none; }
 ul.super-product-attributes { padding-left:15px; }
 
 /** Media Library **/
-.uploader .file-row { width:600px; padding:0.5em 0.6em; margin:0.5em 0.6em; border:1px solid #ccc; background-color:#f9f9f9; vertical-align:middle; }
+.uploader .file-row { width:600px; padding:0.5em 0.6em; margin:0.5em 0.6em; border:1px solid #ccc; background-color:#f9f9f9; /*vertical-align:middle;*/ }
 .uploader .file-row-narrow { width: auto; margin: 0 0 2px 40px; }
 .uploader .file-row .file-info { float:left; }
 /*.uploader .file-row .file-info-name { with: 80%; overflow: hidden; }
@@ -1177,4 +1197,5 @@ div.actions:after,
 .tier-container:after,
 .clear:after,
 .notification-global:after,
-td.files p:after { display:block; clear:both; content:"."; font-size:0; line-height:0; height:0; overflow:hidden; }
+.files .row:after,
+.files-wide .row:after { display:block; clear:both; content:"."; font-size:0; line-height:0; height:0; overflow:hidden; }

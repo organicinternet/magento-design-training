@@ -22,7 +22,7 @@
 /**
  * @see Zend_Config
  */
-require_once 'Zend/Config.php';
+#require_once 'Zend/Config.php';
 
 /**
  * XML Adapter for Zend_Config
@@ -56,7 +56,7 @@ class Zend_Config_Xml extends Zend_Config
     public function __construct($filename, $section = null, $allowModifications = false)
     {
         if (empty($filename)) {
-            require_once 'Zend/Config/Exception.php';
+            #require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception('Filename is not set');
         }
 
@@ -65,7 +65,7 @@ class Zend_Config_Xml extends Zend_Config
         restore_error_handler();
         // Check if there was a error while loading file
         if ($this->_loadFileErrorStr !== null) {
-            require_once 'Zend/Config/Exception.php';
+            #require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception($this->_loadFileErrorStr);
         }
 
@@ -80,7 +80,7 @@ class Zend_Config_Xml extends Zend_Config
             $dataArray = array();
             foreach ($section as $sectionName) {
                 if (!isset($config->$sectionName)) {
-                    require_once 'Zend/Config/Exception.php';
+                    #require_once 'Zend/Config/Exception.php';
                     throw new Zend_Config_Exception("Section '$sectionName' cannot be found in $filename");
                 }
 
@@ -90,7 +90,7 @@ class Zend_Config_Xml extends Zend_Config
             parent::__construct($dataArray, $allowModifications);
         } else {
             if (!isset($config->$section)) {
-                require_once 'Zend/Config/Exception.php';
+                #require_once 'Zend/Config/Exception.php';
                 throw new Zend_Config_Exception("Section '$section' cannot be found in $filename");
             }
 
@@ -119,7 +119,7 @@ class Zend_Config_Xml extends Zend_Config
     protected function _processExtends(SimpleXMLElement $element, $section, array $config = array())
     {
         if (!isset($element->$section)) {
-            require_once 'Zend/Config/Exception.php';
+            #require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception("Section '$section' cannot be found");
         }
 

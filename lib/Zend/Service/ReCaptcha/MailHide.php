@@ -20,7 +20,7 @@
  */
 
 /** @see Zend_Service_ReCaptcha */
-require_once 'Zend/Service/ReCaptcha.php';
+#require_once 'Zend/Service/ReCaptcha.php';
 
 /**
  * Zend_Service_ReCaptcha_MailHide
@@ -119,7 +119,7 @@ class Zend_Service_ReCaptcha_MailHide extends Zend_Service_ReCaptcha
     {
         if (!extension_loaded('mcrypt')) {
             /** @see Zend_Service_ReCaptcha_MailHide_Exception */
-            require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
+            #require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
 
             throw new Zend_Service_ReCaptcha_MailHide_Exception('Use of the Zend_Service_ReCaptcha_MailHide component requires the mcrypt extension to be enabled in PHP');
         }
@@ -250,21 +250,21 @@ class Zend_Service_ReCaptcha_MailHide extends Zend_Service_ReCaptcha
             $this->setEmail($email);
         } else if ($this->_email === null) {
             /** @see Zend_Service_ReCaptcha_MailHide_Exception */
-            require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
+            #require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
 
             throw new Zend_Service_ReCaptcha_MailHide_Exception('Missing email address');
         }
 
         if ($this->_publicKey === null) {
             /** @see Zend_Service_ReCaptcha_MailHide_Exception */
-            require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
+            #require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
 
             throw new Zend_Service_ReCaptcha_MailHide_Exception('Missing public key');
         }
 
         if ($this->_privateKey === null) {
             /** @see Zend_Service_ReCaptcha_MailHide_Exception */
-            require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
+            #require_once 'Zend/Service/ReCaptcha/MailHide/Exception.php';
 
             throw new Zend_Service_ReCaptcha_MailHide_Exception('Missing private key');
         }

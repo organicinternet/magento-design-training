@@ -21,7 +21,7 @@
 /**
  * Zend_Mime
  */
-require_once 'Zend/Mime.php';
+#require_once 'Zend/Mime.php';
 
 /**
  * Class representing a MIME part.
@@ -91,7 +91,7 @@ class Zend_Mime_Part {
     public function getEncodedStream()
     {
         if (!$this->_isStream) {
-            require_once 'Zend/Mime/Exception.php';
+            #require_once 'Zend/Mime/Exception.php';
             throw new Zend_Mime_Exception('Attempt to get a stream from a string part');
         }
 
@@ -108,7 +108,7 @@ class Zend_Mime_Part {
                     )
                 );
                 if (!is_resource($filter)) {
-                    require_once 'Zend/Mime/Exception.php';
+                    #require_once 'Zend/Mime/Exception.php';
                     throw new Zend_Mime_Exception('Failed to append quoted-printable filter');
                 }
                 break;
@@ -123,7 +123,7 @@ class Zend_Mime_Part {
                     )
                 );
                 if (!is_resource($filter)) {
-                    require_once 'Zend/Mime/Exception.php';
+                    #require_once 'Zend/Mime/Exception.php';
                     throw new Zend_Mime_Exception('Failed to append base64 filter');
                 }
                 break;

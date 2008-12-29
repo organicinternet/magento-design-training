@@ -150,6 +150,13 @@ varienTabs.prototype = {
     showTabContent : function(tab) {
         var tabContentElement = $(this.getTabContentElementId(tab));
         if (tabContentElement) {
+            if (this.activeTab != tab) {
+                if (varienGlobalEvents) {
+                    if (varienGlobalEvents.fireEvent('tabChangeBefore', $(this.getTabContentElementId(this.activeTab))).indexOf('cannotchange') != -1) {
+                        return;
+                    };
+                }
+            }
             // wait for ajax request, if defined
             var isAjax = Element.hasClassName(tab, 'ajax');
             var isEmpty = tabContentElement.innerHTML=='' && tab.href.indexOf('#')!=tab.href.length-1;

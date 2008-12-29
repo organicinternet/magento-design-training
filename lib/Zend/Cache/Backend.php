@@ -186,7 +186,7 @@ class Zend_Cache_Backend
             /**
              * @see Zend_Log
              */
-            require_once 'Zend/Log.php';
+            #require_once 'Zend/Log.php';
         } catch (Zend_Exception $e) {
             Zend_Cache::throwException('Logging feature is enabled but the Zend_Log class is not available');
         }
@@ -194,7 +194,7 @@ class Zend_Cache_Backend
             return;
         }
         // Create a default logger to the standard output stream
-        require_once 'Zend/Log/Writer/Stream.php';
+        #require_once 'Zend/Log/Writer/Stream.php';
         $logger = new Zend_Log(new Zend_Log_Writer_Stream('php://output'));
         $this->_directives['logger'] = $logger;
     }

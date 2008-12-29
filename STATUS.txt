@@ -26,6 +26,7 @@ FIXED BUGS:
     #8726: Mage_Core_Model_Resource_Setup::getAllAttributeSetIds() belongs in another class
     #8762: Filter settings on Sales - Orders not saved
     #8770: [MAC, Safari] Unable to create new order in the admin with new customer creating & #8771: [MAC, Safari] Unable to create new order in the admin
+    #8784: Send product to a friend not under store configuration
     #8803: Remove "Yes, No, Any" dropdown filter on Google Base Items
     #8893: Trace error after clicking button "Search"
     #8896: Applying unable coupons in the empty shopping cart
@@ -43,10 +44,12 @@ FIXED BUGS:
     #8993: 'No Data Found' for Web Site
     #8995: Search does not return correct URL key for additional store view (e.g. 2nd language)
     #9109: Sales Report disregards currency rates
+    #9135: Advanced search by price doesn't work at all
     #9139: Admin: menu items not readable when images are disabled
     #9166: Unable to add image to all types of product
     #9167: AJAX will freeze during 'quick simple product creation'
     #9171: Product's table doesn't hide after select products for adding SKU
+    #9172: Free Shipping: 'For matching items only' cart rule doesn't work with DHL type method
     #9173: Calendar's button doesn't work in rules
     #9195: [admin - reports - sales - tax] - no data
     #9207: Field country is not marked as required
@@ -55,6 +58,7 @@ FIXED BUGS:
     #9248: On admin page, search function does not work
     #9250: Import doesn't work
     #9278: Peruvian Nuevo Sol Shown as PES (Peruvian Sol)
+    #9279: Catalog price rules do not apply when attribute selected has Catalog Input Type for Store Owner ='Multiple Select'
     #9296: Customer DOB saved not correctly
     #9324: Bad counting products
     #9326: Verification in "Contact Us"
@@ -76,8 +80,12 @@ FIXED BUGS:
     #9493: Buggy Sorting in Manage Tax Rates - Mantis
     #9505: Missing echo statement in blank/default/template/shipping/tracking/popup.phtml
     #9517: Impossible to set custom admin theme in configuration
+    #9536: User permissions - Manage Attributes setup
     #9540: Google Base Adding SID to urls in multi domain environmnet
     #9544: Zero tax total folding/unfolding
+    #9556: Fatal error during Store View creating
+    #9566: table rate shipping uploading csv broken
+    #9596: Store-specific payment method name not in order email
     #9611: Not correct message, when you remove the product.
     #9619: On front-end Serch is not working
     #9622: Unable to add Configurable product to the shopping cart
@@ -92,10 +100,20 @@ FIXED BUGS:
     #9684: Orders: Action "Hold" leads to fatal error.
     #9685: No tax data in Reports - Sales - Tax
     #9688: Incorrect update qty of the bundle product in the shopping cart
+    #9695: Manage Attribute Sets: Does not create new group
     #9696: Unable to assign existing products to any web sites
     #9697: Enable/Disable status works incorrect
-
-
+    #9699: Blank theme :: Pay Pal's Review page :: button doesn't work + products names doesn't shows
+    #9700: Search synonym does not work
+    #9707: Customers->Manage Customers->*user* - orders with DP doesn't displayed
+    #9708: Manage Attribute Sets: Error when creating and deleting groups
+    #9711: Google checkout are returning Comments History with HTML tags
+    #9712: Parameter "Maximum Package Weight ", leads to error 404.
+    #9716: Creating of Bundle Product -> SQLSTATE error
+    #9717: "Shipment email not sent" status does not change when you send a letter.
+    #9738: Downloadable product + Tax Rules = error 404
+    #9742: Notice on products sitemap
+    #9743: Wrong count of related products, upsells and crosssells in admin
 
     Fixed Bundle with custom options final price calculation
     Fixed CatalogSearch events
@@ -128,6 +146,32 @@ FIXED BUGS:
     Fixed create unique index in install
     Fixed catalog product index
     Fixed session validate and re-validate sent cookie
+    Added customer group id for price condition in advanced search, replaced 'or' on 'in' for price layered navigation condition
+    Fixed Google Checkout displaying of button when it is disabled
+    Fixed PayPal css/html
+    Fixed USPS Express Mail free shipping
+    Fixed applying catalog price rule with empty from date
+    Fixed catalog search in multistore setup
+    Fixed checkout crosssell block: when there are no products in cart, the filter was working incorrect
+    Fixed displaying of shipping name in orders history (if there are only downloadable or virtual products in orders)
+    Fixed displaying of uploaded files; changed redirecting after log in action while trying to download is not shearable link
+    Fixed downloadable products renderers for multishipping checkout
+    Fixed fixed amount product taxes
+    Fixed foreign key upgrade in core DB upgrade 0.8.10-0.8.11
+    Fixed getting massaction_key from POST
+    Fixed issues with applying coupon codes
+    Fixed js error in manage rules interface
+    Fixed downlodable products admin interface in IE
+    Updated Flex-Javascript bridge, fixed IE/Safari issues
+    Added applying frontend translation when sending emails from admin
+    Fixed recreating new instances of Flex-Ajax bridges on hide/display flash objects
+    Fixed category selection in URL-rewrites management form
+    Fixed fatal error in downloader
+    Fixed command line installer
+    Fixed fixed amount product taxes for products without discounts
+    Fixed hiding of flex uploader after removing row of downloadbale sample|link
+    Fixed FPT editing for bundle products
+    Fixed generatting filenames for create custom extensions interface in Windows
 
 
 CHANGES:
@@ -157,6 +201,20 @@ CHANGES:
     Added additional permissions to WS api, fixed bugs with custom permissions
     Added option "Disable Guest Checkout if cart contains downloadable items"
     Removed store view name from page titles on catalog pages
+    Commented out required_once in lib/Zend
+    Added permanent redirect option for URL Rewrites
+    Added ability to display custom child blocks on success page
+    Added collecting results of non-asynchronous event handlers in adminhtml/events.js
+    Added confirmation dialog before switching from 'Images' and 'Downloadable Information' tabs in product edit form to prevent losing selected files
+    Added firing 'tabChangeBefore' event before switching tab in adminhtml/tabs.js (event handler can return 'cannotchange' to prevent switching)
+    Rewritten URL Rewrite Management interface
+    Added checking of file size before uploading
+    Added downloadable order items pdf renderers
+    Added downloadable products templates to blank, iphone, modern theme
+    Added flex uploader source code
+    Added support of allowed tags into Mage_Core_Helper_Abstract->htmlEscape() method
+    Added unquoting autobinded quoted values in SQL adapter
+    Added validation for selected, but not uploaded files
 
 
 NOTES:

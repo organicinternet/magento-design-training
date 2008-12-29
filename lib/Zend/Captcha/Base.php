@@ -20,10 +20,10 @@
  */
 
 /** Zend_Captcha_Adapter */
-require_once 'Zend/Captcha/Adapter.php';
+#require_once 'Zend/Captcha/Adapter.php';
 
 /** Zend_Validate_Abstract */
-require_once 'Zend/Validate/Abstract.php';
+#require_once 'Zend/Validate/Abstract.php';
 
 /**
  * Base class for Captcha adapters

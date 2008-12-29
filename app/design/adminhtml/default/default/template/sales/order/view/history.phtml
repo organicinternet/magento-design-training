@@ -67,7 +67,7 @@
                 <?php endif; ?>
             </strong></small>
             <?php if ($_history->getComment()): ?>
-                <br/><?php echo $this->htmlEscape($_history->getComment()) ?>
+                <br/><?php echo $this->htmlEscape($_history->getComment(), array('b','br','strong','i','u')) ?>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>

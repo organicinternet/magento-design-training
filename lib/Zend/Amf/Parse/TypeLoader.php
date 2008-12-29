@@ -19,11 +19,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
-require_once 'Zend/Amf/Value/Messaging/AsyncMessage.php';
-require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
-require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
-require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/AsyncMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
 
 /**
  * Loads a local class and executes the instantiation of that class.
@@ -75,7 +75,7 @@ final class Zend_Amf_Parse_TypeLoader
         $callBack = false;
         $class    = self::getMappedClassName($className);
         if (!class_exists($class)) {
-            require_once 'Zend/Amf/Exception.php';
+            #require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception($className .' mapped class '. $class . ' is not defined');
         }
 

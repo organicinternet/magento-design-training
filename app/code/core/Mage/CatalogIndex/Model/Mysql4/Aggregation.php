@@ -102,7 +102,9 @@ class Mage_CatalogIndex_Model_Mysql4_Aggregation extends Mage_Core_Model_Mysql4_
     public function clearCacheData($tags, $storeId)
     {
         $conditions = array();
-        $write = $this->_getWriteAdapter();
+        if (!$write = $this->_getWriteAdapter()) {
+            return $this;
+        }
         if (!empty($tags)) {
             $tagIds = $this->_getTagIds($tags);
             $select = $write->select()

@@ -586,6 +586,8 @@ class Mage_Sales_Model_Order extends Mage_Core_Model_Abstract
         $paymentBlock = Mage::helper('payment')->getInfoBlock($this->getPayment())
             ->setIsSecureMode(true);
 
+        $paymentBlock->getMethod()->setStore($this->getStore()->getId());
+
         $mailTemplate = Mage::getModel('core/email_template');
         /* @var $mailTemplate Mage_Core_Model_Email_Template */
         $copyTo = $this->_getEmails(self::XML_PATH_EMAIL_COPY_TO);

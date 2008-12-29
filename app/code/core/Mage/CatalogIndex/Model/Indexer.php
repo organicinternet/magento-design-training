@@ -182,6 +182,14 @@ class Mage_CatalogIndex_Model_Indexer extends Mage_Core_Model_Abstract
                                 }
                             }
                             $filter[$code]->where("$table.website_id = ?", $website);
+
+                            if ($code == 'price') {
+                                $filter[$code]->where(
+                                    $table . '.customer_group_id = ?',
+                                    Mage::getSingleton('customer/session')->getCustomerGroupId()
+                                );
+                            }
+
                             $filteredAttributes[]=$code;
                         }
                     }

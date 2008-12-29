@@ -58,7 +58,7 @@ class Zend_Search_Lucene_Index_DictionaryLoader
         $pos += 4;
         if ($tiVersion != (int)0xFFFFFFFE /* pre-2.1 format */ &&
             $tiVersion != (int)0xFFFFFFFD /* 2.1+ format    */) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Wrong TermInfoIndexFile file format');
         }
 
@@ -78,7 +78,7 @@ class Zend_Search_Lucene_Index_DictionaryLoader
                 (ord($data[$pos+2])          != 0) ||
                 (ord($data[$pos+3])          != 0) ||
                 ((ord($data[$pos+4]) & 0x80) != 0)) {
-                    require_once 'Zend/Search/Lucene/Exception.php';
+                    #require_once 'Zend/Search/Lucene/Exception.php';
                     throw new Zend_Search_Lucene_Exception('Largest supported segment size (for 32-bit mode) is 2Gb');
                  }
 
@@ -96,7 +96,7 @@ class Zend_Search_Lucene_Index_DictionaryLoader
         $skipInterval = ord($data[$pos]) << 24 | ord($data[$pos+1]) << 16 | ord($data[$pos+2]) << 8  | ord($data[$pos+3]);
         $pos += 4;
         if ($indexTermCount < 1) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Wrong number of terms in a term dictionary index');
         }
 
@@ -252,7 +252,7 @@ class Zend_Search_Lucene_Index_DictionaryLoader
 
         // Check special index entry mark
         if ($termDictionary[0][0] != (int)0xFFFFFFFF) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Wrong TermInfoIndexFile file format');
         } else if (PHP_INT_SIZE > 4){
             // Treat 64-bit 0xFFFFFFFF as -1

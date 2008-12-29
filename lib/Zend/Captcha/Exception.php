@@ -19,7 +19,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once ('Zend/Exception.php');
+#require_once ('Zend/Exception.php');
 
 /**
  * Exception for Zend_Form component.

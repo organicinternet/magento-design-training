@@ -19,7 +19,7 @@
  * @version    $Id: CodeGenerator.php 11560 2008-10-01 10:09:10Z yoshida@zend.co.jp $
  */
 
-require_once 'Zend/Soap/Wsdl/Parser.php';
+#require_once 'Zend/Soap/Wsdl/Parser.php';
 
 /**
  * Zend_Soap_Wsdl_CodeGenerator

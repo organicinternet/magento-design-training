@@ -198,6 +198,8 @@ class Mage_Adminhtml_System_StoreController extends Mage_Adminhtml_Controller_Ac
                         $storeModel->setWebsiteId($groupModel->getWebsiteId());
                         $storeModel->save();
 
+                        Mage::app()->reinitStores();
+
                         Mage::dispatchEvent($eventName, array('store'=>$storeModel));
 
                         $session->addSuccess(Mage::helper('core')->__('Store View was successfully saved'));

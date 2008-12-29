@@ -24,12 +24,12 @@
 /**
  * @see Zend_Rest_Client
  */
-require_once 'Zend/Rest/Client.php';
+#require_once 'Zend/Rest/Client.php';
 
 /**
  * @see Zend_Rest_Client_Result
  */
-require_once 'Zend/Rest/Client/Result.php';
+#require_once 'Zend/Rest/Client/Result.php';
 
 /**
  * @category   Zend

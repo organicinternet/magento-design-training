@@ -216,12 +216,6 @@ class Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Link_Product_Collection
                 );
             }
         }
-
-        /**
-         * same products must not repeat in collection (see #4835)
-         */
-        $this->getSelect()->group('e.entity_id');
-
         return $this;
     }
 

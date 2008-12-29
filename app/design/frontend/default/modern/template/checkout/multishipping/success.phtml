@@ -46,6 +46,7 @@
     <p>
         <a href="<?php echo $this->getUrl('customer/account/') ?>"><?php echo $this->__('My Account') ?></a>
     </p>
+    <?php echo $this->getChildHtml() ?>
 </div>
 <div class="button-set">
     <a href="<?php echo $this->getContinueUrl() ?>"><img src="<?php echo $this->getSkinUrl('images/btn_continue_shopping.gif')?>" alt="<?php echo $this->__('Continue Shopping') ?>"/></a>

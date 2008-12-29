@@ -22,7 +22,7 @@
 /**
  * @see Zend_Validate_File_MimeType
  */
-require_once 'Zend/Validate/File/MimeType.php';
+#require_once 'Zend/Validate/File/MimeType.php';
 
 /**
  * Validator which checks if the file already exists in the directory
@@ -98,7 +98,7 @@ class Zend_Validate_File_IsImage extends Zend_Validate_File_MimeType
     public function isValid($value, $file = null)
     {
         // Is file readable ?
-        require_once 'Zend/Loader.php';
+        #require_once 'Zend/Loader.php';
         if (!Zend_Loader::isReadable($value)) {
             return $this->_throw($file, self::NOT_READABLE);
         }

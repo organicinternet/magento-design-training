@@ -20,13 +20,13 @@
  */
 
 /** Zend_Search_Lucene_Index_DictionaryLoader */
-require_once 'Zend/Search/Lucene/Index/DictionaryLoader.php';
+#require_once 'Zend/Search/Lucene/Index/DictionaryLoader.php';
 
 /** Zend_Search_Lucene_LockManager */
-require_once 'Zend/Search/Lucene/LockManager.php';
+#require_once 'Zend/Search/Lucene/LockManager.php';
 
 /** Zend_Search_Lucene_Index_DocsFilter */
-require_once 'Zend/Search/Lucene/Index/DocsFilter.php';
+#require_once 'Zend/Search/Lucene/Index/DocsFilter.php';
 
 /**
  * @category   Zend
@@ -256,7 +256,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         } else {
             // It's a pre-2.1 segment or isCompound is set to 'unknown'
             // Detect if segment uses compound file
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             try {
                 // Try to open compound file
                 $this->_directory->getFileObject($name . '.cfs');
@@ -326,7 +326,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         } else if ($this->_delGen == 0) {
             // It's a segment with pre-2.1 format delete file
             // Try to find delete file
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             try {
                 // '.del' files always stored in a separate file
                 // Segment compound is not used
@@ -459,12 +459,12 @@ class Zend_Search_Lucene_Index_SegmentInfo
             }
 
             if( !isset($this->_sharedDocStoreOptions['files'][$fdxFName]) ) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Shared doc storage segment compound file doesn\'t contain '
                                        . $fdxFName . ' file.' );
             }
             if( !isset($this->_sharedDocStoreOptions['files'][$fdtFName]) ) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Shared doc storage segment compound file doesn\'t contain '
                                        . $fdtFName . ' file.' );
             }
@@ -499,7 +499,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         }
 
         if( !isset($this->_segFiles[$filename]) ) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Segment compound file doesn\'t contain '
                                        . $filename . ' file.' );
         }
@@ -525,7 +525,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
             }
 
             if( !isset($this->_sharedDocStoreOptions['fileSizes'][$filename]) ) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Shared doc store compound file doesn\'t contain '
                                            . $filename . ' file.' );
             }
@@ -542,7 +542,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         }
 
         if( !isset($this->_segFileSizes[$filename]) ) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Index compound file doesn\'t contain '
                                        . $filename . ' file.' );
         }
@@ -813,7 +813,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         $tiVersion = $tisFile->readInt();
         if ($tiVersion != (int)0xFFFFFFFE /* pre-2.1 format */  &&
             $tiVersion != (int)0xFFFFFFFD /* 2.1+ format    */) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Wrong TermInfoFile file format');
         }
 
@@ -893,7 +893,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
 
         if ($docsFilter !== null) {
             if (!$docsFilter instanceof Zend_Search_Lucene_Index_DocsFilter) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Documents filter must be an instance of Zend_Search_Lucene_Index_DocsFilter or null.');
             }
 
@@ -1016,7 +1016,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
 
         if ($docsFilter !== null) {
             if (!$docsFilter instanceof Zend_Search_Lucene_Index_DocsFilter) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Documents filter must be an instance of Zend_Search_Lucene_Index_DocsFilter or null.');
             }
 
@@ -1141,7 +1141,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
 
         if ($docsFilter !== null) {
             if (!$docsFilter instanceof Zend_Search_Lucene_Index_DocsFilter) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Documents filter must be an instance of Zend_Search_Lucene_Index_DocsFilter or null.');
             }
 
@@ -1310,7 +1310,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
             $headerFormatVersion = $normfFile->readByte();
 
             if ($header != 'NRM'  ||  $headerFormatVersion != (int)0xFF) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new  Zend_Search_Lucene_Exception('Wrong norms file format.');
             }
 
@@ -1683,7 +1683,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
         $tiVersion = $this->_tisFile->readInt();
         if ($tiVersion != (int)0xFFFFFFFE /* pre-2.1 format */  &&
             $tiVersion != (int)0xFFFFFFFD /* 2.1+ format    */) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Wrong TermInfoFile file format');
         }
 
@@ -1731,7 +1731,7 @@ class Zend_Search_Lucene_Index_SegmentInfo
                 break;
 
             default:
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Wrong terms scaning mode specified.');
                 break;
         }

@@ -87,6 +87,7 @@ class Mage_Downloadable_Block_Adminhtml_Catalog_Product_Edit_Tab_Downloadable_Sa
                 $tmpSampleItem['file_save'] = array(
                     array(
                         'file' => $item->getSampleFile(),
+                        'name' => Mage::helper('downloadable/file')->getFileFromPathFile($item->getSampleFile()),
                         'size' => filesize($file),
                         'status' => 'old'
                     ));

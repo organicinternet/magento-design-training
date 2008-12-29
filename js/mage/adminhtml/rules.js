@@ -56,7 +56,9 @@ VarienRulesForm.prototype = {
                 Event.observe(apply, 'click', this.hideParamInputField.bind(this, container));
             } else {
                 elem = elem.down();
-                Event.observe(elem, 'change', this.hideParamInputField.bind(this, container));
+                if (!elem.multiple) {
+                    Event.observe(elem, 'change', this.hideParamInputField.bind(this, container));
+                }
                 Event.observe(elem, 'blur', this.hideParamInputField.bind(this, container));
             }
         }
@@ -155,17 +157,17 @@ VarienRulesForm.prototype = {
         if (elem) {
            elem.focus();
            // trying to emulate enter to open dropdown
-//    	   if (document.createEventObject) {
-//        	   var event = document.createEventObject();
-//        	   event.altKey = true;
-//    	       event.keyCode = 40;
-//    	       elem.fireEvent("onkeydown", evt);
-//    	   } else {
-//    	       var event = document.createEvent("Events");
-//    	       event.altKey = true;
-//    	       event.keyCode = 40;
-//    	       elem.dispatchEvent(event);
-//    	   }
+//         if (document.createEventObject) {
+//             var event = document.createEventObject();
+//             event.altKey = true;
+//             event.keyCode = 40;
+//             elem.fireEvent("onkeydown", evt);
+//         } else {
+//             var event = document.createEvent("Events");
+//             event.altKey = true;
+//             event.keyCode = 40;
+//             elem.dispatchEvent(event);
+//         }
         }
 
         this.shownElement = container;
@@ -177,9 +179,20 @@ VarienRulesForm.prototype = {
 
         if (!container.hasClassName('rule-param-new-child')) {
             elem = Element.down(container, 'select');
-            if (elem && elem.selectedIndex>=0) {
-                var str = elem.options[elem.selectedIndex].text;
+            if (elem && elem.options) {
+                var selectedOptions = [];
+                for (i=0; i<elem.options.length; i++) {
+                    if (elem.options[i].selected) {
+                        selectedOptions.push(elem.options[i].text);
+                    }
+                }
+
+                var str = selectedOptions.join(', ');
                 label.innerHTML = str!='' ? str : '...';
+//              if (elem && elem.selectedIndex>=0) {
+//                  var str = elem.options[elem.selectedIndex].text;
+//                  label.innerHTML = str!='' ? str : '...';
+//              }
             }
 
             elem = Element.down(container, 'input.input-text');

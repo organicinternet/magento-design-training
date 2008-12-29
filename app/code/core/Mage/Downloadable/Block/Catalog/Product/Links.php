@@ -100,7 +100,7 @@ class Mage_Downloadable_Block_Catalog_Product_Links extends Mage_Catalog_Block_P
             $priceStr .= $this->helper('core')->currency($_priceExclTax, true, true);
             if ($_priceInclTax != $_priceExclTax) {
                 $priceStr .= ' (+'.$this->helper('core')
-                    ->currency($_priceInclTax, true, $flag).' '.$this->__('Incl. Tax').')';
+                    ->currency($_priceInclTax, true, true).' '.$this->__('Incl. Tax').')';
             }
         }
         $priceStr .= '</span>';

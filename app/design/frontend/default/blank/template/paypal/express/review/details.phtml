@@ -26,9 +26,9 @@
 ?>
 <table id="details-table" class="data-table">
     <col />
-    <col width="70" />
-    <col width="30" />
-    <col width="70" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
     <thead>
         <tr>
             <th><?php echo $this->__('Product Name') ?></th>
@@ -37,12 +37,20 @@
             <th><?php echo $this->__('Subtotal') ?></th>
         </tr>
     </thead>
+    <tfoot>
+    <?php foreach ($this->getTotals() as $_total): ?>
+        <tr>
+            <th colspan="3"><?php echo $_total->getTitle() ?></th>
+            <td><?php echo $this->helper('checkout')->formatPrice($_total->getValue()) ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tfoot>
     <tbody>
     <?php foreach ($this->getItems() as $_item): ?>
         <?php if ($_item->getParentItem()) continue ?>
         <tr>
             <td>
-                <<?php echo $_item->getProduct()->getName() ?>
+                <?php echo $_item->getProduct()->getName() ?>
                 <?php echo $_item->getProduct()->getDescription() ?>
             </td>
             <td><?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()); ?></td>
@@ -51,12 +59,4 @@
         </tr>
     <?php endforeach; ?>
     </tbody>
-    <tfoot>
-    <?php foreach ($this->getTotals() as $_total): ?>
-        <tr>
-            <td colspan="3"><?php echo $_total->getTitle() ?></td>
-            <td><?php echo $this->helper('checkout')->formatPrice($_total->getValue()) ?></td>
-        </tr>
-    <?php endforeach; ?>
-    </tfoot>
 </table>

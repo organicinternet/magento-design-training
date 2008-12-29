@@ -272,10 +272,30 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
             strpos($matches[6], ":") !== false ||
             strpos($matches[6], "?") !== false)) {
             $bindName = ':_mage_bind_var_' . ( ++ $this->_bindIncrement );
-            $this->_bindParams[$bindName] = $matches[6];
+            $this->_bindParams[$bindName] = $this->_unQuote($matches[6]);
             return ' ' . $bindName;
         }
         return $matches[0];
+    }
+
+    /**
+     * Unquote raw string (use for auto-bind)
+     *
+     * @param string $string
+     * @return string
+     */
+    protected function _unQuote($string)
+    {
+        $translate = array(
+            "\\000" => "\000",
+            "\\n"   => "\n",
+            "\\r"   => "\r",
+            "\\\\"  => "\\",
+            "\'"    => "'",
+            "\\\""  => "\"",
+            "\\032" => "\032"
+        );
+        return strtr($string, $translate);
     }
 
     public function multi_query($sql)

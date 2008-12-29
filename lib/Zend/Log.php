@@ -20,7 +20,7 @@
  */
 
 /** Zend_Log_Filter_Priority */
-require_once 'Zend/Log/Filter/Priority.php';
+#require_once 'Zend/Log/Filter/Priority.php';
 
 /**
  * @category   Zend
@@ -106,7 +106,7 @@ class Zend_Log
             $this->log(array_shift($params), $priority);
         } else {
             /** @see Zend_Log_Exception */
-            require_once 'Zend/Log/Exception.php';
+            #require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Bad log priority');
         }
     }
@@ -124,13 +124,13 @@ class Zend_Log
         // sanity checks
         if (empty($this->_writers)) {
             /** @see Zend_Log_Exception */
-            require_once 'Zend/Log/Exception.php';
+            #require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('No writers were added');
         }
 
         if (! isset($this->_priorities[$priority])) {
             /** @see Zend_Log_Exception */
-            require_once 'Zend/Log/Exception.php';
+            #require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Bad log priority');
         }
 
@@ -169,7 +169,7 @@ class Zend_Log
         if (isset($this->_priorities[$priority])
             || array_search($name, $this->_priorities)) {
             /** @see Zend_Log_Exception */
-            require_once 'Zend/Log/Exception.php';
+            #require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Existing priorities cannot be overwritten');
         }
 
@@ -190,7 +190,7 @@ class Zend_Log
             $filter = new Zend_Log_Filter_Priority($filter);
         } elseif(!is_object($filter) || ! $filter instanceof Zend_Log_Filter_Interface) {
             /** @see Zend_Log_Exception */
-            require_once 'Zend/Log/Exception.php';
+            #require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Invalid filter provided');
         }
 

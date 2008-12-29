@@ -20,7 +20,7 @@
  * @version    $Id$
  */
 
-require_once "Zend/Soap/Wsdl/Strategy/DefaultComplexType.php";
+#require_once "Zend/Soap/Wsdl/Strategy/DefaultComplexType.php";
 
 class Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex extends Zend_Soap_Wsdl_Strategy_DefaultComplexType
 {
@@ -35,7 +35,7 @@ class Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex extends Zend_Soap_Wsdl_Strategy
         $nestingLevel = $this->_getNestedCount($type);
 
         if($nestingLevel > 1) {
-            require_once "Zend/Soap/Wsdl/Exception.php";
+            #require_once "Zend/Soap/Wsdl/Exception.php";
             throw new Zend_Soap_Wsdl_Exception(
                 "ArrayOfTypeComplex cannot return nested ArrayOfObject deeper than ".
                 "one level. Use array object properties to return deep nested data.
@@ -45,7 +45,7 @@ class Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex extends Zend_Soap_Wsdl_Strategy
         $singularType = $this->_getSingularPhpType($type);
 
         if(!class_exists($singularType)) {
-            require_once "Zend/Soap/Wsdl/Exception.php";
+            #require_once "Zend/Soap/Wsdl/Exception.php";
             throw new Zend_Soap_Wsdl_Exception(sprintf(
                 "Cannot add a complex type %s that is not an object or where ".
                 "class could not be found in 'DefaultComplexType' strategy.", $type

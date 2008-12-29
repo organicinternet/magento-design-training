@@ -19,7 +19,7 @@
  * @version   $Id: $
  */
 
-require_once 'Zend/File/Transfer/Adapter/Abstract.php';
+#require_once 'Zend/File/Transfer/Adapter/Abstract.php';
 
 /**
  * File transfer adapter class for the HTTP protocol
@@ -39,7 +39,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     public function __construct($options = array())
     {
         if (ini_get('file_uploads') == false) {
-            require_once 'Zend/File/Transfer/Exception.php';
+            #require_once 'Zend/File/Transfer/Exception.php';
             throw new Zend_File_Transfer_Exception('File uploads are not allowed in your php config!');
         }
 
@@ -74,7 +74,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
      */
     public function send($options = null)
     {
-        require_once 'Zend/File/Transfer/Exception.php';
+        #require_once 'Zend/File/Transfer/Exception.php';
         throw new Zend_File_Transfer_Exception('Method not implemented');
     }
 
@@ -136,7 +136,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
      */
     public function isSent($files = null)
     {
-        require_once 'Zend/File/Transfer/Exception.php';
+        #require_once 'Zend/File/Transfer/Exception.php';
         throw new Zend_File_Transfer_Exception('Method not implemented');
     }
 
@@ -203,7 +203,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
      */
     public function getProgress()
     {
-        require_once 'Zend/File/Transfer/Exception.php';
+        #require_once 'Zend/File/Transfer/Exception.php';
         throw new Zend_File_Transfer_Exception('Method not implemented');
     }
 

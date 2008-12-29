@@ -924,7 +924,7 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
         }
 
         $this->setData('trigger_recollect', 0);
-
+        $this->_validateCouponCode();
         return $this;
     }
 
@@ -1117,6 +1117,23 @@ class Mage_Sales_Model_Quote extends Mage_Core_Model_Abstract
 
         if ($quote->getCouponCode()) {
             $this->setCouponCode($quote->getCouponCode());
+        }
+        return $this;
+    }
+
+    protected function _validateCouponCode()
+    {
+        $code = $this->_getData('coupon_code');
+        if ($code) {
+            $addressHasCoupon = false;
+            foreach ($this->getAllAddresses() as $address) {
+            	if ($address->hasCouponCode()) {
+            	    $addressHasCoupon = true;
+            	}
+            }
+            if (!$addressHasCoupon) {
+                $this->setCouponCode('');
+            }
         }
         return $this;
     }

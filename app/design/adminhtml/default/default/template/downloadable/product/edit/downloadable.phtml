@@ -49,7 +49,7 @@ var uploaderTemplate = '<div class="no-display" id="[[idName]]-template">' +
                             '</div>';
 
 var fileListTemplate = '<span class="file-info">' +
-                            '<span class="file-info-name">{{file}}</span>' +
+                            '<span class="file-info-name">{{name}}</span>' +
                             ' ' +
                             '<span class="file-info-size">({{size}})</span>' +
                         '</span>';
@@ -67,7 +67,11 @@ var Downloadable = {
         try {
             return this.uploaderObj.get(type).get(key);
         } catch (e) {
-
+            try {
+                console.log(e);
+            } catch (e2) {
+                alert(e.name + '\n' + e.message);
+            }
         }
     },
     massUploadByType : function(type){
@@ -76,7 +80,11 @@ var Downloadable = {
                 item.value.upload();
             });
         } catch (e) {
-            console.log(e);
+            try {
+                console.log(e);
+            } catch (e2) {
+                alert(e.name + '\n' + e.message);
+            }
         }
     }
 };
@@ -117,8 +125,11 @@ Downloadable.FileUploader.prototype = {
         Downloadable.setUploaderObj(
             this.type,
             this.key,
-            new Flex.Uploader(this.idName, '<?php echo $this->getSkinUrl('media/uploader.swf') ?>', this.config)
+            new Flex.Uploader(this.idName, '<?php echo $this->getSkinUrl('media/uploaderSingle.swf') ?>', this.config)
         );
+        if (varienGlobalEvents) {
+            varienGlobalEvents.attachEventHandler('tabChangeBefore', Downloadable.getUploaderObj(type, key).onContainerHideBefore);
+        }
         new Downloadable.FileList(this.idName, Downloadable.getUploaderObj(type, key));
     }
 }
@@ -148,7 +159,6 @@ Downloadable.FileList.prototype = {
         $(this.containerId+'-old').show();
     },
     handleFileSelect: function() {
-//        alert(this.containerId+'_type');
         $(this.containerId+'_type').checked = true;
     },
     getElement: function (name) {
@@ -157,9 +167,11 @@ Downloadable.FileList.prototype = {
     handleUploadComplete: function (files) {
         files.each(function(item) {
            if (!item.response.isJSON()) {
-               if (console) {
-                   console.log(item.response);
-               }
+                try {
+                    console.log(item.response);
+                } catch (e2) {
+                    alert(item.response);
+                }
                return;
            }
            var response = item.response.evalJSON();
@@ -168,6 +180,7 @@ Downloadable.FileList.prototype = {
            }
            var newFile = {};
            newFile.file = response.file;
+           newFile.name = response.name;
            newFile.size = response.size;
            newFile.status = 'new';
            this.file[0] = newFile;
@@ -186,16 +199,23 @@ Downloadable.FileList.prototype = {
     }
 }
 
+var alertAlreadyDisplayed = false;
 
 Validation.addAllThese([
-    ['validate-downloadable-file', 'Please specify File.', function(v,element) {
+    ['validate-downloadable-file', 'Please upload a file.', function(v,element) {
             linkType = element.up(0).down('input[value="file"]');
             if (linkType.checked && (v == '' || v == '[]')) {
+                newFileContainer = element.up(0).down('div.new-file');
+                if (!alertAlreadyDisplayed && (newFileContainer.empty() || newFileContainer.style.display != 'none')) {
+                    alertAlreadyDisplayed = true;
+                    alert('There are files that were selected but not uploaded yet. Please upload or remove them first');
+                }
                 return false;
             }
             return true;
         }]
     ]);
+
 Validation.addAllThese([
     ['validate-downloadable-url', 'Please specify Url.', function(v,element) {
             linkType = element.up(0).down('input[value="url"]');
@@ -212,6 +232,9 @@ Validation.addAllThese([
 
 <div class="entry-edit">
 <?php echo $this->getChildHtml('accordion') ?>
+</div>
+<div style="display:none">
+    <div id="custom-advice-container"></div>
 </div>
 <!--
 <div><input type="hidden" name="affect_downloadable_information" value="1" /></div>

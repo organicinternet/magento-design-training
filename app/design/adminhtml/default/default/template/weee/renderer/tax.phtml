@@ -31,7 +31,7 @@
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid weee">
-    <table cellspacing="0" class="data border" id="weee_taxes_table">
+    <table cellspacing="0" class="data border" id="<?php echo $_htmlId; ?>_table">
         <?php if ($_multiWebsite): ?>
         <col width="135" />
         <?php endif; ?>
@@ -67,7 +67,10 @@
                 <td>
                     <input disabled="no-template" class="<?php echo $_htmlClass ?> required-entry validate-greater-than-zero" type="text" name="<?php echo $_htmlName ?>[__index__][price]" value="'#{price}'" />
                 </td>
-                <td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value="" /><button title="Delete WEEE Tax" class="scalable delete icon-btn delete-product-option" onclick="weeeTaxControl.deleteItem('<?php echo $_htmlId ?>', event);return false"><span>Delete</span></button></td>
+                <td class="last">
+                    <input type="hidden" name="<?php echo $_htmlName ?>[__index__][delete]" class="delete" disabled="no-template" value=""  id="#{prefix}_weee_tax_row___index___delete" />
+                    <button title="Delete WEEE Tax" class="scalable delete icon-btn delete-product-option" onclick="weeeTaxControl.deleteItem('<?php echo $_htmlId ?>', event);return false"><span>Delete</span></button>
+                </td>
             </tr>
         </thead>
         <tfoot>
@@ -86,9 +89,8 @@
         var itemsCount = 0;
     }
     var weeeTaxControl = {
-//        itemsCount : 0,
-        deleteButton: false,
-        addItem  : function () {
+            deleteButton: false,
+            addItem  : function () {
             var data = {};
             data.prefix = '';
             data.website_id = 0;
@@ -117,6 +119,7 @@
 
             $(data.prefix + '_weee_tax_row_'+data.index+'_state').value   = data.state;
         },
+
         deleteItem : function(prefix, event) {
             var tr = Event.findElement(event, 'tr');
             if (tr) {
@@ -125,12 +128,69 @@
                 Element.hide(tr);
                 Element.addClassName(tr, 'no-display template');
             }
-        }
+        },
+
+        priceTypeChangeEventObserver : function() {
+            val = $('price_type').options[$('price_type').selectedIndex].value;
+            for (i=0;i<weeeEditorPrefixes.length;i++) {
+                elem = $(weeeEditorPrefixes[i] + '_table');
+
+                if (val != 1) {
+                    elem.parentNode.parentNode.hide();
+                    weeeTaxControl.disableEditElements(weeeEditorPrefixes[i]);
+                } else {
+                    weeeTaxControl.enableEditElements(weeeEditorPrefixes[i]);
+                    elem.parentNode.parentNode.show();
+                }
+            }
+        },
+
+        bindPriceTypeChangeObserver : function() {
+            if ($('price_type')) {
+                Event.observe($('price_type'), 'change', weeeTaxControl.priceTypeChangeEventObserver);
+                weeeTaxControl.priceTypeChangeEventObserver();
+            }
+        },
+
+        enableEditElements : function (prefix) {
+            nodes = $(prefix + '_container').childNodes;
+            for (a=0;a<nodes.length;a++) {
+                tr = nodes[a];
+                Element.select(tr, ['input', 'select']).each(function(elem){
+                    elem.disabled=weeeEditorState[elem.id];
+                    if (elem.id.indexOf('delete') != -1) {
+                        elem.value = ((typeof weeeEditorDeleted[elem.id] == undefined || !weeeEditorDeleted[elem.id]) ? 0 : 1);
+                    }
+                });
+            }
+        },
+
+        disableEditElements : function (prefix) {
+            nodes = $(prefix + '_container').childNodes;
+            for (b=0;b<nodes.length;b++) {
+                tr = nodes[b];
+                Element.select(tr, ['input', 'select']).each(function(elem){
+                    if (elem.id.indexOf('delete') != -1) {
+                        weeeEditorDeleted[elem.id]=(elem.value?elem.value:0);
+                        elem.value = 1;
+                    }
+                    weeeEditorState[elem.id]=elem.disabled;elem.disabled=true;
+                });
+            }
+        },
+
     }
     <?php foreach ($this->getValues() as $_item): ?>
     weeeTaxControl.addItem('<?php echo $_htmlId ?>', '<?php echo $_item['website_id'] ?>', '<?php echo $_item['country'] ?>', '<?php echo $_item['state'] ?>', '<?php echo sprintf('%.2f', $_item['value']) ?>');
     <?php endforeach; ?>
 
+    if (typeof weeeEditorPrefixes == 'undefined') {
+        var weeeEditorPrefixes = new Array();
+        var weeeEditorState = new Array();
+        var weeeEditorDeleted = new Array();
+        Event.observe(window, 'load', weeeTaxControl.bindPriceTypeChangeObserver);
+    }
+    weeeEditorPrefixes.push('<?php echo $_htmlId ?>');
 //]]>
 </script>
 </td>

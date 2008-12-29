@@ -19,19 +19,19 @@
  */
 
 /** Zend_Server_Interface */
-require_once 'Zend/Server/Interface.php';
+#require_once 'Zend/Server/Interface.php';
 
 /** Zend_Server_Reflection */
-require_once 'Zend/Server/Reflection.php';
+#require_once 'Zend/Server/Reflection.php';
 
 /** Zend_Amf_Constants */
-require_once 'Zend/Amf/Constants.php';
+#require_once 'Zend/Amf/Constants.php';
 
 /** Zend_Amf_Value_MessageBody */
-require_once 'Zend/Amf/Value/MessageBody.php';
+#require_once 'Zend/Amf/Value/MessageBody.php';
 
 /** Zend_Amf_Value_Messaging_CommandMessage */
-require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
+#require_once 'Zend/Amf/Value/Messaging/CommandMessage.php';
 
 /**
  * An AMF gateway server implementation to allow the connection of the Adobe Flash Player to
@@ -127,17 +127,17 @@ class Zend_Amf_Server implements Zend_Server_Interface
                     $classPath[] = $dir . $uriclasspath;
                 }
 
-                require_once('Zend/Loader.php');
+                #require_once('Zend/Loader.php');
                 try {
                     Zend_Loader::loadClass($className, $classPath);
                 } catch (Exception $e) {
-                    require_once 'Zend/Amf/Server/Exception.php';
+                    #require_once 'Zend/Amf/Server/Exception.php';
                     throw new Zend_Amf_Server_Exception('Class "' . $className . '" does not exist');
                 }
                 // Add the new loaded class to the server.
                 $this->setClass($className);
             } else {
-                require_once 'Zend/Amf/Server/Exception.php';
+                #require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('Method "' . $method . '" does not exist');
             }
         }
@@ -164,13 +164,13 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 try {
                     $object = $info->getDeclaringClass()->newInstance();
                 } catch (Exception $e) {
-                    require_once 'Zend/Amf/Server/Exception.php';
+                    #require_once 'Zend/Amf/Server/Exception.php';
                     throw new Zend_Amf_Server_Exception('Error instantiating class ' . $class . ' to invoke method ' . $info->getName(), 621);
                 }
                 $return = $info->invokeArgs($object, $params);
             }
         } else {
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Method missing implementation ' . get_class($info));
         }
 
@@ -190,11 +190,11 @@ class Zend_Amf_Server implements Zend_Server_Interface
     {
         switch($message->operation) {
             case Zend_Amf_Value_Messaging_CommandMessage::CLIENT_PING_OPERATION :
-                require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
+                #require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
                 $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
                 break;
             default :
-                require_once 'Zend/Amf/Server/Exception.php';
+                #require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('CommandMessage::' . $message->operation . ' not implemented');
                 break;
         }
@@ -249,7 +249,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                         // async call with command message
                         $return = $this->_loadCommandMessage($message);
                     } elseif ($message instanceof Zend_Amf_Value_Messaging_RemotingMessage) {
-                        require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
+                        #require_once 'Zend/Amf/Value/Messaging/AcknowledgeMessage.php';
                         $return = new Zend_Amf_Value_Messaging_AcknowledgeMessage($message);
                         $return->body = $this->_dispatch($message->operation, $message->body, $message->source);
                     } else {
@@ -281,7 +281,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                         );
                         break;
                     case Zend_Amf_Constants::AMF3_OBJECT_ENCODING :
-                        require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
+                        #require_once 'Zend/Amf/Value/Messaging/ErrorMessage.php';
                         $return = new Zend_Amf_Value_Messaging_ErrorMessage($message);
                         $return->faultString = $this->isProduction() ? '' : $e->getMessage();
                         $return->faultCode   = $e->getCode();
@@ -323,7 +323,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
             $response = $this->getResponse();
         } catch (Exception $e) {
             // Handle any errors in the serialization and service  calls.
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Handle error: ' . $e->getMessage() . ' ' . $e->getLine());
         }
 
@@ -342,11 +342,11 @@ class Zend_Amf_Server implements Zend_Server_Interface
         if (is_string($request) && class_exists($request)) {
             $request = new $request();
             if (!$request instanceof Zend_Amf_Request) {
-                require_once 'Zend/Amf/Server/Exception.php';
+                #require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('Invalid request class');
             }
         } elseif (!$request instanceof Zend_Amf_Request) {
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Invalid request object');
         }
         $this->_request = $request;
@@ -361,7 +361,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     public function getRequest()
     {
         if (null === $this->_request) {
-            require_once 'Zend/Amf/Request/Http.php';
+            #require_once 'Zend/Amf/Request/Http.php';
             $this->setRequest(new Zend_Amf_Request_Http());
         }
 
@@ -379,11 +379,11 @@ class Zend_Amf_Server implements Zend_Server_Interface
         if (is_string($response) && class_exists($response)) {
             $response = new $response();
             if (!$response instanceof Zend_Amf_Response) {
-                require_once 'Zend/Amf/Server/Exception.php';
+                #require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('Invalid response class');
             }
         } elseif (!$response instanceof Zend_Amf_Response) {
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Invalid response object');
         }
         $this->_response = $response;
@@ -398,7 +398,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     public function getResponse()
     {
         if (null === ($response = $this->_response)) {
-            require_once 'Zend/Amf/Response/Http.php';
+            #require_once 'Zend/Amf/Response/Http.php';
             $this->setResponse(new Zend_Amf_Response_Http());
         }
         return $this->_response;
@@ -422,10 +422,10 @@ class Zend_Amf_Server implements Zend_Server_Interface
     public function setClass($class, $namespace = '', $argv = null)
     {
         if (is_string($class) && !class_exists($class)){
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Invalid method or class');
         } elseif (!is_string($class) && !is_object($class)) {
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Invalid method or class; must be a classname or object');
         }
 
@@ -459,7 +459,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     public function addFunction($function, $namespace = '')
     {
         if (!is_string($function) && !is_array($function)) {
-            require_once 'Zend/Amf/Server/Exception.php';
+            #require_once 'Zend/Amf/Server/Exception.php';
             throw new Zend_Amf_Server_Exception('Unable to attach function');
         }
 
@@ -471,7 +471,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
         $function = (array) $function;
         foreach ($function as $func) {
             if (!is_string($func) || !function_exists($func)) {
-                require_once 'Zend/Amf/Server/Exception.php';
+                #require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('Unable to attach function');
             }
             $this->_methods[] = Zend_Server_Reflection::reflectFunction($func, $argv, $namespace);
@@ -520,7 +520,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                 $name = empty($ns) ? $name : $ns . '.' . $name;
 
                 if (isset($table[$name])) {
-                    require_once 'Zend/Amf/Server/Exception.php';
+                    #require_once 'Zend/Amf/Server/Exception.php';
                     throw new Zend_Amf_Server_Exception('Duplicate method registered: ' . $name);
                 }
                 $table[$name] = $dispatchable;
@@ -534,7 +534,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
                     $name = empty($ns) ? $name : $ns . '.' . $name;
 
                     if (isset($table[$name])) {
-                        require_once 'Zend/Amf/Server/Exception.php';
+                        #require_once 'Zend/Amf/Server/Exception.php';
                         throw new Zend_Amf_Server_Exception('Duplicate method registered: ' . $name);
                     }
                     $table[$name] = $method;
@@ -603,7 +603,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      */
     public function setClassMap($asClass, $phpClass)
     {
-        require_once 'Zend/Amf/Parse/TypeLoader.php';
+        #require_once 'Zend/Amf/Parse/TypeLoader.php';
         Zend_Amf_Parse_TypeLoader::setMapping($asClass, $phpClass);
         return $this;
     }

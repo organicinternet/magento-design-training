@@ -596,6 +596,7 @@ class Mage_Core_Model_Locale
         if ($storeId) {
             $this->_emulatedLocales[] = clone $this->getLocale();
             $this->_locale = new Zend_Locale(Mage::getStoreConfig(self::XML_PATH_DEFAULT_LOCALE, $storeId));
+            Mage::getSingleton('core/translate')->setLocale($this->_locale)->init('frontend', true);
         }
         else {
             $this->_emulatedLocales[] = false;
@@ -610,6 +611,7 @@ class Mage_Core_Model_Locale
     {
         if ($locale = array_pop($this->_emulatedLocales)) {
             $this->_locale = $locale;
+            Mage::getSingleton('core/translate')->setLocale($this->_locale)->init('adminhtml', true);
         }
     }
 

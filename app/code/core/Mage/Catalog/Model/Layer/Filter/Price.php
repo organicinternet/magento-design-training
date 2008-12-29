@@ -204,7 +204,7 @@ class Mage_Catalog_Model_Layer_Filter_Price extends Mage_Catalog_Model_Layer_Fil
 
             if ($entityIds) {
                 $this->getLayer()->getProductCollection()
-                    ->addFieldToFilter('entity_id', $entityIds);
+                    ->addFieldToFilter('entity_id', array('in'=>$entityIds));
 
                 $this->getLayer()->getState()->addFilter(
                     $this->_createItem($this->_renderItemLabel($range, $index), $filter)

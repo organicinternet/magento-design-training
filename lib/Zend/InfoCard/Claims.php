@@ -132,7 +132,7 @@ class Zend_InfoCard_Claims
             }
 
             if(empty($leader)) {
-                require_once 'Zend/InfoCard/Exception.php';
+                #require_once 'Zend/InfoCard/Exception.php';
                 throw new Zend_InfoCard_Exception("Failed to determine default namespace");
             }
 
@@ -159,7 +159,7 @@ class Zend_InfoCard_Claims
             }
         }
 
-        require_once 'Zend/InfoCard/Exception.php';
+        #require_once 'Zend/InfoCard/Exception.php';
         throw new Zend_InfoCard_Exception("At least one claim must exist in specified namespace to make it the default namespace");
     }
 
@@ -207,7 +207,7 @@ class Zend_InfoCard_Claims
     public function setClaims(Array $claims)
     {
         if(!is_null($this->_claims)) {
-            require_once 'Zend/InfoCard/Exception.php';
+            #require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Claim objects are read-only");
         }
 
@@ -232,7 +232,7 @@ class Zend_InfoCard_Claims
                 return $this;
         }
 
-        require_once 'Zend/InfoCard/Exception.php';
+        #require_once 'Zend/InfoCard/Exception.php';
         throw new Zend_InfoCard_Exception("Attempted to set unknown error code");
     }
 
@@ -278,7 +278,7 @@ class Zend_InfoCard_Claims
      */
     public function __unset($k)
     {
-        require_once 'Zend/InfoCard/Exception.php';
+        #require_once 'Zend/InfoCard/Exception.php';
         throw new Zend_InfoCard_Exception("Claim objects are read-only");
     }
 
@@ -304,7 +304,7 @@ class Zend_InfoCard_Claims
      */
     public function __set($k, $v)
     {
-        require_once 'Zend/InfoCard/Exception.php';
+        #require_once 'Zend/InfoCard/Exception.php';
         throw new Zend_InfoCard_Exception("Claim objects are read-only");
     }
 }

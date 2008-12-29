@@ -24,11 +24,11 @@
 /**
  * @see Zend_Filter_Interface
  */
-require_once 'Zend/Filter/Interface.php';
+#require_once 'Zend/Filter/Interface.php';
 /**
  * @see Zend_Locale
  */
-require_once 'Zend/Locale.php';
+#require_once 'Zend/Locale.php';
 
 /**
  * @category   Zend

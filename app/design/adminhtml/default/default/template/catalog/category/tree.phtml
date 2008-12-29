@@ -441,9 +441,9 @@ function categoryMove(obj)
         }
     };
     var failure = function(o) {
-        if (console) {
+        try {
             console.log(o.statusText);
-        } else {
+        } catch (e2) {
             alert(o.statusText);
         }
         location.reload();

@@ -204,7 +204,7 @@ abstract class Zend_Search_Lucene_Storage_File
                 (ord($str[2])          != 0) ||
                 (ord($str[3])          != 0) ||
                 ((ord($str[0]) & 0x80) != 0)) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Largest supported segment size (for 32-bit mode) is 2Gb');
             }
 
@@ -239,7 +239,7 @@ abstract class Zend_Search_Lucene_Storage_File
                             chr($value     & 0xFF),   8  );
         } else {
             if ($value > 0x7FFFFFFF) {
-                require_once 'Zend/Search/Lucene/Exception.php';
+                #require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Largest supported segment size (for 32-bit mode) is 2Gb');
             }
 
@@ -398,7 +398,7 @@ abstract class Zend_Search_Lucene_Storage_File
         }
 
         if ($chars < 0) {
-            require_once 'Zend/Search/Lucene/Exception.php';
+            #require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('Invalid UTF-8 string');
         }
 

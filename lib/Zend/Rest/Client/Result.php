@@ -62,7 +62,7 @@ class Zend_Rest_Client_Result implements IteratorAggregate {
     public function handleXmlErrors($errno, $errstr, $errfile = null, $errline = null, array $errcontext = null)
     {
         restore_error_handler();
-        require_once "Zend/Rest/Client/Result/Exception.php";
+        #require_once "Zend/Rest/Client/Result/Exception.php";
         throw new Zend_Rest_Client_Result_Exception("REST Response Error: ".$errstr);
     }
 

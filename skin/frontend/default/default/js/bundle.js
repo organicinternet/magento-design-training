@@ -115,6 +115,8 @@ Product.Bundle.prototype = {
                 price = (this.config.basePrice*selection.priceValue)/100;
             }
         }
+        price += this.config.options[optionId].selections[selectionId].plusDisposition;
+        price -= this.config.options[optionId].selections[selectionId].minusDisposition;
         return price*qty;
     },
 

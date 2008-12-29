@@ -20,10 +20,10 @@
  */
 
 /** Zend_View_Helper_Placeholder_Registry */
-require_once 'Zend/View/Helper/Placeholder/Registry.php';
+#require_once 'Zend/View/Helper/Placeholder/Registry.php';
 
 /** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+#require_once 'Zend/View/Helper/Abstract.php';
 
 /**
  * Base class for targetted placeholder helpers
@@ -226,7 +226,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
             return $return;
         }
 
-        require_once 'Zend/View/Exception.php';
+        #require_once 'Zend/View/Exception.php';
         throw new Zend_View_Exception('Method "' . $method . '" does not exist');
     }
 

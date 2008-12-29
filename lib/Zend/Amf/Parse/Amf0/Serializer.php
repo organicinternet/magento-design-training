@@ -20,7 +20,7 @@
  */
 
 /** Zend_Amf_Parse_Serializer */
-require_once 'Zend/Amf/Parse/Serializer.php';
+#require_once 'Zend/Amf/Parse/Serializer.php';
 
 /**
  * Serializer php misc types back to there corresponding AMF0 Type Marker.
@@ -91,7 +91,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
                     $this->writeAmf3TypeMarker($data);
                     break;
                 default:
-                    require_once 'Zend/Amf/Exception.php';
+                    #require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception("Unknown Type Marker: " . $markerType);
             }
         } else {
@@ -149,7 +149,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
                     }
                     break;
                 default:
-                    require_once 'Zend/Amf/Exception.php';
+                    #require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception('Unsupported data type: ' . gettype($data));
             }
 
@@ -215,7 +215,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
         } elseif ($data instanceof Zend_Date) {
             $dateString = $data->toString('U');
         } else {
-            require_once 'Zend/Amf/Exception.php';
+            #require_once 'Zend/Amf/Exception.php';
             throw new Zend_Amf_Exception('Invalid date specified; must be a DateTime or Zend_Date object');
         }
         $dateString *= 1000;
@@ -251,7 +251,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
      */
     public function writeAmf3TypeMarker($data)
     {
-        require_once 'Zend/Amf/Parse/Amf3/Serializer.php';
+        #require_once 'Zend/Amf/Parse/Amf3/Serializer.php';
         $serializer = new Zend_Amf_Parse_Amf3_Serializer($this->_stream);
         $serializer->writeTypeMarker($data);
         return $this;
@@ -266,7 +266,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
      */
     protected function getClassName($object)
     {
-        require_once 'Zend/Amf/Parse/TypeLoader.php';
+        #require_once 'Zend/Amf/Parse/TypeLoader.php';
         //Check to see if the object is a typed object and we need to change
         $className = '';
         switch (true) {

@@ -23,22 +23,22 @@
 /**
  * @see Zend_Http_Client
  */
-require_once 'Zend/Http/Client.php';
+#require_once 'Zend/Http/Client.php';
 
 /**
  * @see Zend_Uri_Http
  */
-require_once 'Zend/Uri/Http.php';
+#require_once 'Zend/Uri/Http.php';
 
 /**
  * @see Zend_Json
  */
-require_once 'Zend/Json.php';
+#require_once 'Zend/Json.php';
 
 /**
  * @see Zend_Feed
  */
-require_once 'Zend/Feed.php';
+#require_once 'Zend/Feed.php';
 
 /**
  * @category   Zend

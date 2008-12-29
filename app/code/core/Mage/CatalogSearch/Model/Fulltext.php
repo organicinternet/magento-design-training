@@ -95,17 +95,17 @@ class Mage_CatalogSearch_Model_Fulltext extends Mage_Core_Model_Abstract
     /**
      * Prepare results for query
      *
-     * @param string $queryText
      * @param Mage_CatalogSearch_Model_Query $query
      * @return Mage_CatalogSearch_Model_Fulltext
      */
-    public function prepareResult($queryText = null, $query = null)
+    public function prepareResult($query = null)
     {
-        if (is_null($queryText)) {
-            $queryText = Mage::helper('catalogSearch')->getEscapedQueryText();
-        }
         if (!$query instanceof Mage_CatalogSearch_Model_Query) {
             $query = Mage::helper('catalogSearch')->getQuery();
+        }
+        $queryText = Mage::helper('catalogSearch')->getQueryText();
+        if ($query->getSynonimFor()) {
+            $queryText = $query->getSynonimFor();
         }
         $this->getResource()->prepareResult($this, $queryText, $query);
         return $this;

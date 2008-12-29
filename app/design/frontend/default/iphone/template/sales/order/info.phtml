@@ -63,7 +63,7 @@
             </table>
         </div>
     </div>
-
+<?php if (!$_order->getIsVirtual()): ?>
     <div class="col2-set generic-box">
         <div class="col-1">
             <h4><?php echo $this->__('Shipping Address') ?></h4>
@@ -78,6 +78,7 @@
             <?php endif; ?>
         </div>
     </div>
+<?php endif; ?>
     <div class="col2-set generic-box">
         <div class="col-1">
             <h4><?php echo $this->__('Billing Address') ?></h4>

@@ -39,6 +39,7 @@ if(!window.Flex) {
         onFilesComplete: false,
         onFileProgress: true,
         onFileRemove: false,
+        onContainerHideBefore:null,
         initialize: function(containerId, uploaderSrc, config) {
             this.containerId = containerId;
             this.container   = $(containerId);
@@ -85,7 +86,7 @@ if(!window.Flex) {
                 // this.getInnerElement('upload').hide();
                 this.getInnerElement('install-flash').show();
             }
-
+            this.onContainerHideBefore = this.handleContainerHideBefore.bind(this);
         },
         getInnerElement: function(elementName) {
             return $(this.containerId + '-' + elementName);
@@ -118,10 +119,6 @@ if(!window.Flex) {
             this.uploader.addEventListener('progress',  this.handleProgress.bind(this));
             this.uploader.addEventListener('error',     this.handleError.bind(this));
             this.uploader.addEventListener('removeall', this.handleRemoveAll.bind(this));
-            if (this.config.hide_upload_button) {
-                this.flex.getBridge().setType(2);
-                this.flex.getBridge().hideButton('upload');
-            }
             // this.getInnerElement('browse').disabled = false;
             // this.getInnerElement('upload').disabled = false;
         },
@@ -139,9 +136,19 @@ if(!window.Flex) {
             if (this.onFileRemove) {
                 this.onFileRemove(id);
             }
+            this.files = this.uploader.getFilesInfo();
+            this.updateFiles();
+        },
+        removeAllFiles: function() {
+            this.files.each(function(file) {
+                this.removeFile(file.id);
+            }.bind(this));
+            this.files = this.uploader.getFilesInfo();
+            this.updateFiles();
         },
         handleSelect: function (event) {
             this.files = event.getData().files;
+            this.checkFileSize();
             this.updateFiles();
             this.getInnerElement('upload').show();
             if (this.onFileSelect) {
@@ -190,13 +197,10 @@ if(!window.Flex) {
                     $(this.containerId+'-new').show();
                     $(this.containerId+'-new').innerHTML = this.fileRowTemplate.evaluate(this.getFileVars(file));
                     $(this.containerId+'-old').hide();
-                    this.flex.getBridge().hideButton('browse');
-                    this.flex.getBridge().showButton('remove');
-                    $(this.flexContainerId).style.width = '32px';
+                    this.flex.getBridge().hideBrowseButton();
                 } else {
                     Element.insert(this.container, {bottom: this.fileRowTemplate.evaluate(this.getFileVars(file))});
                 }
-//                Element.insert(this.container, {bottom: this.fileRowTemplate.evaluate(this.getFileVars(file))});
             }
             if (file.status == 'full_complete' && file.response.isJSON()) {
                 var response = file.response.evalJSON();
@@ -217,6 +221,10 @@ if(!window.Flex) {
                     }
                 }
             }
+            
+            if (file.status == 'full_complete' && !file.response.isJSON()) {
+                file.status = 'error';
+            }
 
             var progress = $(this.getFileId(file)).getElementsByClassName('progress-text')[0];
             if ((file.status=='progress') || (file.status=='complete')) {
@@ -228,10 +236,7 @@ if(!window.Flex) {
                 } else {
                     progress.update('');
                 }
-                if (this.config.replace_browse_with_remove) {
-//                    $(this.flexContainerId).style.width = '0px';
-//                    this.flex.getBridge().hideButton('remove');
-                } else {
+                if (! this.config.replace_browse_with_remove) {
                     this.getDeleteButton(file).hide();
                 }
             } else if (file.status=='error') {
@@ -240,23 +245,19 @@ if(!window.Flex) {
                 $(this.getFileId(file)).removeClassName('new');
                 var errorText = file.errorText ? file.errorText : this.errorText(file);
                 if (this.config.replace_browse_with_remove) {
-                    $(this.flexContainerId).style.width = '32px';
-                    this.flex.getBridge().showButton('browse');
-                    this.flex.getBridge().hideButton('remove');
+                    this.flex.getBridge().hideBrowseButton();
                 } else {
                     this.getDeleteButton(file).show();
                 }
-                
+
                 progress.update(errorText);
-                
+
             } else if (file.status=='full_complete') {
                 $(this.getFileId(file)).addClassName('complete');
                 $(this.getFileId(file)).removeClassName('progress');
                 $(this.getFileId(file)).removeClassName('error');
                 if (this.config.replace_browse_with_remove) {
-                    $(this.flexContainerId).style.width = '32px';
-                    this.flex.getBridge().showButton('browse');
-                    this.flex.getBridge().hideButton('remove');
+                    this.flex.getBridge().hideRemoveButton();
                 }
                 progress.update(this.translate('Complete'));
             }
@@ -294,6 +295,24 @@ if(!window.Flex) {
         round: function(number) {
             return Math.round(number*100)/100;
         },
+        checkFileSize: function() {
+            newFiles = [];
+            hasTooBigFiles = false;
+            this.files.each(function(file){
+                if (file.size > maxUploadFileSizeInBytes) {
+                    hasTooBigFiles = true;
+                    this.uploader.removeFile(file.id)
+                } else {
+                    newFiles.push(file)
+                }
+            }.bind(this));
+            this.files = newFiles;
+            if (hasTooBigFiles) {
+                alert(
+                    this.translate('Maximum allowed file size for upload is')+' '+maxUploadFileSize+".\n"+this.translate('Please check your server PHP settings.')
+                );
+            }
+        },
         translate: function(text) {
             try {
                 if(Translator){
@@ -329,6 +348,23 @@ if(!window.Flex) {
             }
 
             return error;
+        },
+        handleContainerHideBefore: function(container) {
+            if (container && Element.descendantOf(this.container, container) && !this.checkAllComplete()) {
+                if (! confirm('There are files that were selected but not uploaded yet. After switching to another tab your selections will be lost. Do you wish to continue ?')) {
+                    return 'cannotchange';
+                } else {
+                    this.removeAllFiles();
+                }
+            }
+        },
+        checkAllComplete: function() {
+            if (this.files) {
+                return !this.files.any(function(file) {
+                    return (file.status !== 'full_complete')
+                });
+            }
+            return true;
         }
     }
 }

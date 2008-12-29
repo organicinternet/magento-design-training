@@ -162,7 +162,9 @@ class Mage_Usa_Model_Shipping_Carrier_Usps
     protected function _setFreeMethodRequest($freeMethod)
     {
         $r = $this->_rawRequest;
-
+        if ($freeMethod == 'Express Mail') {
+            $r->setContainer('FLAT RATE ENVELOPE');
+        }
         $weight = $this->getTotalNumOfBoxes($r->getFreeMethodWeight());
         $r->setWeightPounds(floor($weight));
         $r->setWeightOunces(floor(($weight-floor($weight))*16));
@@ -172,7 +174,6 @@ class Mage_Usa_Model_Shipping_Carrier_Usps
     protected function _getXmlQuotes()
     {
         $r = $this->_rawRequest;
-
         if ($r->getDestCountryId() == self::USA_COUNTRY_ID || $r->getDestCountryId() == self::PUERTORICO_COUNTRY_ID) {
             $xml = new SimpleXMLElement('<RateV3Request/>');
 
@@ -232,7 +233,8 @@ class Mage_Usa_Model_Shipping_Carrier_Usps
         } catch (Exception $e) {
             $responseBody = '';
         }
-        return $this->_parseXmlResponse($responseBody);
+
+        return $this->_parseXmlResponse($responseBody);;
     }
 
     protected function _parseXmlResponse($response)

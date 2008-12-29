@@ -20,7 +20,7 @@
  */
 
 /** Zend_Captcha_Base */
-require_once 'Zend/Captcha/Base.php';
+#require_once 'Zend/Captcha/Base.php';
 
 /**
  * Word-based captcha adapter

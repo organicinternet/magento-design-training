@@ -155,6 +155,15 @@
                     </weee>
                 </observers>
             </catalog_product_view_config>
+            <bundle_product_view_config>
+                <observers>
+                    <weee>
+                        <type>singleton</type>
+                        <class>weee/observer</class>
+                        <method>updateBundleProductOptions</method>
+                    </weee>
+                </observers>
+            </bundle_product_view_config>
         </events>
         <fieldsets>
             <sales_convert_quote_item>

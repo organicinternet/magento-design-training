@@ -15,38 +15,13 @@ class Mage_Weee_Model_Mysql4_Tax extends Mage_Core_Model_Mysql4_Abstract {
         return $this->_getReadAdapter()->fetchCol($select);
     }
 
-    public function getProductAppliedPriceRules($product)
-    {
-        $now = strtotime(now());
-        $table = $this->getTable('catalogrule/rule_product');
-        $select = $this->_getReadAdapter()->select();
-        $select->from($table)
-            ->where('product_id = ?', $product->getId())
-            ->where('website_id = ?', Mage::app()->getStore()->getWebsiteId())
-            ->where('customer_group_id = ?', Mage::getSingleton('customer/session')->getCustomerGroupId())
-            ->where('(from_time <= ? OR from_time = 0)', $now)
-            ->where('(to_time >= ? OR to_time = 0)', $now);
-
-        $select->order('sort_order');
-        $result = $this->_getReadAdapter()->fetchAll($select);
-
-        if ($result) {
-            return $result;
-        } else {
-            return array();
-        }
-    }
-
     public function updateDiscountPercents()
     {
-//        $all = $this->_getReadAdapter()->select()->from($this->getTable('catalogrule/affected_product'), 'product_id');
-//        $this->_getWriteAdapter()->delete($this->getTable('weee/discount'), array($this->_getWriteAdapter()->quoteInto('entity_id IN (?)', $all)));
         $this->_getWriteAdapter()->delete($this->getTable('weee/discount'));
         $now = strtotime(now());
 
         $select = $this->_getReadAdapter()->select();
         $select->from(array('data'=>$this->getTable('catalogrule/rule_product')))
-//            ->join(array('filter'=>$this->getTable('catalogrule/affected_product')), 'data.product_id = filter.product_id', array())
             ->where('(from_time <= ? OR from_time = 0)', $now)
             ->where('(to_time >= ? OR to_time = 0)', $now)
             ->order(array('data.website_id', 'data.customer_group_id', 'data.product_id', 'data.sort_order'));
@@ -81,5 +56,16 @@ class Mage_Weee_Model_Mysql4_Tax extends Mage_Core_Model_Mysql4_Abstract {
         foreach ($productData as $product) {
             $this->_getWriteAdapter()->insert($this->getTable('weee/discount'), $product);
         }
+    }
+
+    public function getProductDiscountPercent($product, $website, $group)
+    {
+        $select = $this->_getReadAdapter()->select();
+        $select->from($this->getTable('weee/discount'), 'value')
+            ->where('website_id = ?', $website)
+            ->where('entity_id = ?', $product)
+            ->where('customer_group_id = ?', $group);
+
+        return $this->_getReadAdapter()->fetchOne($select);
     }
 }
