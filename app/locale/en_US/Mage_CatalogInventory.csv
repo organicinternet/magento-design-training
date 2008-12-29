@@ -18,6 +18,7 @@
 "Notify for Quantity Below","Notify for Quantity Below"
 "Product Stock Options","Product Stock Options"
 "Qty for Items' Status to become Out of Stock","Qty for Items' Status to become Out of Stock"
+"Retrieve stock data","Retrieve stock data"
 "Retrieve stock data by product ids","Retrieve stock data by product ids"
 "Rule price","Rule price"
 "Set Items' Status to be In Stock When Order is Cancelled","Set Items' Status to be In Stock When Order is Cancelled"
