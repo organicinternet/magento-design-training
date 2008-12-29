@@ -111,7 +111,8 @@ class Mage_Downloadable_Model_Sales_Order_Pdf_Items_Invoice extends Mage_Downloa
         $this->_setFontRegular();
         foreach ($_purchasedItems as $_link) {
             $pdf->y -= 10;
-            $text = $_link->getLinkTitle() . ' ('.$_link->getNumberOfDownloadsUsed() . ' / ' . ($_link->getNumberOfDownloadsBought()?$_link->getNumberOfDownloadsBought():'U').')';
+//            $text = $_link->getLinkTitle() . ' ('.$_link->getNumberOfDownloadsUsed() . ' / ' . ($_link->getNumberOfDownloadsBought()?$_link->getNumberOfDownloadsBought():'U').')';
+            $text = $_link->getLinkTitle();
             $page->drawText($text, $x+10, $pdf->y, 'UTF-8');
         }
         $pdf->y -= 15;
