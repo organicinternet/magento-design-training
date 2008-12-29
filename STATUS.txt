@@ -114,6 +114,7 @@ FIXED BUGS:
     #9738: Downloadable product + Tax Rules = error 404
     #9742: Notice on products sitemap
     #9743: Wrong count of related products, upsells and crosssells in admin
+    #9760: Free Shipping : 'For matching items only' incorrect works with USPS + FedEx method
 
     Fixed Bundle with custom options final price calculation
     Fixed CatalogSearch events
@@ -175,6 +176,7 @@ FIXED BUGS:
     Fixed calling final step of dataflow import
     Fixed bundle js for calculating children with FPT
     Fixed grid to select products SKU in price rules in IE6/7
+    Fixed duplicate diplaying prices in bundle product price ranges
 
 
 CHANGES:

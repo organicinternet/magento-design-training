@@ -96,7 +96,7 @@ if ($_product->getPriceType() == 1) {
                         <?php endforeach; ?>
                     </small>)</span>
                 <?php endif; ?>
-                <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2)): ?>
+                <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
                     <?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?>
                 <?php endif; ?>
             <?php endif; ?>
@@ -146,7 +146,7 @@ if ($_product->getPriceType() == 1) {
                             <?php endforeach; ?>
                         </small>)</span>
                     <?php endif; ?>
-                    <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2)): ?>
+                    <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
                         <?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -207,7 +207,7 @@ if ($_product->getPriceType() == 1) {
                                 <?php endforeach; ?>
                             </small>)</span>
                         <?php endif; ?>
-                        <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2)): ?>
+                        <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
                             <?php echo Mage::helper('core')->currency($_maximalPriceInclTax) ?>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -254,7 +254,7 @@ if ($_product->getPriceType() == 1) {
                             <?php endforeach; ?>
                         </small>)</span>
                     <?php endif; ?>
-                    <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2)): ?>
+                    <?php if (Mage::helper('weee')->typeOfDisplay($_product, 2) && $_weeeTaxAmount): ?>
                         <?php echo Mage::helper('core')->currency($_minimalPriceInclTax) ?>
                     <?php endif; ?>
                 <?php endif; ?>

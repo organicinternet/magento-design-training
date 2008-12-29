@@ -148,7 +148,7 @@ abstract class Mage_Shipping_Model_Carrier_Abstract extends Varien_Object
         if ($freeRateId===false) {
             return;
         }
-        $price = 0;
+        $price = null;
         if ($request->getFreeMethodWeight()>0) {
             $this->_setFreeMethodRequest($freeMethod);
 
@@ -166,7 +166,12 @@ abstract class Mage_Shipping_Model_Carrier_Abstract extends Varien_Object
                 }
             }
         }
-        $this->_result->getRateById($freeRateId)->setPrice($price);
+        /**
+         * if we did not get our free shipping method in response we must use its old price
+         */
+        if (!is_null($price)) {
+            $this->_result->getRateById($freeRateId)->setPrice($price);
+        }
     }
 
     public function getMethodPrice($cost, $method='')

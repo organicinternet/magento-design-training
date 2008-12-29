@@ -162,9 +162,7 @@ class Mage_Usa_Model_Shipping_Carrier_Usps
     protected function _setFreeMethodRequest($freeMethod)
     {
         $r = $this->_rawRequest;
-        if ($freeMethod == 'Express Mail') {
-            $r->setContainer('FLAT RATE ENVELOPE');
-        }
+
         $weight = $this->getTotalNumOfBoxes($r->getFreeMethodWeight());
         $r->setWeightPounds(floor($weight));
         $r->setWeightOunces(floor(($weight-floor($weight))*16));
