@@ -174,7 +174,7 @@ function execImportData() {
         })});
         new Ajax.Request("' . $this->getUrl('*/*/batchFinish', array('id' => $batchModel->getId())) .'", {
             method: "post",
-            parameters: {form_key: "'.$this.'"},
+            parameters: {form_key: FORM_KEY},
             onComplete: function(transport) {
                 if (transport.responseText.isJSON()) {
                     var response = transport.responseText.evalJSON();

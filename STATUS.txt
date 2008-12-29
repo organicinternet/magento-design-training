@@ -172,6 +172,8 @@ FIXED BUGS:
     Fixed hiding of flex uploader after removing row of downloadbale sample|link
     Fixed FPT editing for bundle products
     Fixed generatting filenames for create custom extensions interface in Windows
+    Fixed calling final step of dataflow import
+    Fixed bundle js for calculating children with FPT
 
 
 CHANGES:
