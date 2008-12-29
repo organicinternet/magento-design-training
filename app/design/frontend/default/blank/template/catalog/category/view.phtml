@@ -84,7 +84,7 @@
     <h2><?php echo $_helper->categoryAttribute($_category, $this->htmlEscape($this->getCurrentCategory()->getName()), 'name') ?></h2>
     </div>
     <?php if($_imgUrl): ?>
-        <?php echo $_imgUrl ?>
+        <?php echo $_imgHtml ?>
     <?php endif; ?>
     <?php if($_description=$this->getCurrentCategory()->getDescription()): ?>
         <p class="category-description"><?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?></p>
