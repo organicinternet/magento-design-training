@@ -151,10 +151,8 @@ class Mage_Downloadable_Model_Observer
         } elseif ($order->getState() == Mage_Sales_Model_Order::STATE_CANCELED
             || $order->getState() == Mage_Sales_Model_Order::STATE_CLOSED) {
             $status = Mage_Downloadable_Model_Link_Purchased_Item::LINK_STATUS_EXPIRED;
-        } elseif ($order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE) {
-            if ($order->getStatus() == $orderStatusToEnable) {
-                $status = Mage_Downloadable_Model_Link_Purchased_Item::LINK_STATUS_AVAILABLE;
-            }
+        } elseif ($order->getStatus() == $orderStatusToEnable) {
+            $status = Mage_Downloadable_Model_Link_Purchased_Item::LINK_STATUS_AVAILABLE;
         }
         if ($status) {
             $orderItemsIds = array();

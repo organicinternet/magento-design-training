@@ -178,6 +178,10 @@ FIXED BUGS:
     Fixed grid to select products SKU in price rules in IE6/7
     Fixed duplicate diplaying prices in bundle product price ranges
     Fixed displaying category image in blank theme
+    Fixed cross sells issues on frontend
+    Fixed serialized data checking when reading FPT data from order item
+    Fixed checking order status for downloadable products to become available
+    Fixed #9757: Paypal Payment Pro Direct not visible
 
 
 CHANGES:
@@ -221,6 +225,9 @@ CHANGES:
     Added support of allowed tags into Mage_Core_Helper_Abstract->htmlEscape() method
     Added unquoting autobinded quoted values in SQL adapter
     Added validation for selected, but not uploaded files
+    Updated downloader version to 1.2.0
+    Changed app/etc/local.xml* license to AFL
+    Added autoguessing mime type of a file if mimemagic extension is not installed
 
 
 NOTES:

@@ -70,6 +70,7 @@ class Mage_Checkout_Block_Cart_Crosssell extends Mage_Catalog_Block_Product_Abst
                         ->addProductFilter($this->_getCartProductIds())
                         ->addExcludeProductFilter($ninProductIds)
                         ->setPageSize($this->_maxItemCount-count($items))
+                        ->setGroupBy()
                         ->setRandomOrder()
                         ->load();
                     foreach ($collection as $item) {

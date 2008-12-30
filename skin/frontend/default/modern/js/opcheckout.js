@@ -199,7 +199,7 @@ Checkout.prototype = {
 
     setStepResponse: function(response){
         if (response.update_section) {
-            $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+            $('checkout-'+response.update_section.name+'-load').update(response.update_section.html);
         }
         if (response.allow_sections) {
             response.allow_sections.each(function(e){
@@ -589,7 +589,7 @@ ShippingMethod.prototype = {
         }
 
         if (response.update_section) {
-            $('checkout-'+response.update_section.name+'-load').innerHTML = response.update_section.html;
+            $('checkout-'+response.update_section.name+'-load').update(response.update_section.html);
             response.update_section.html.evalScripts();
         }
 

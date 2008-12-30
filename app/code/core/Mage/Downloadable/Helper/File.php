@@ -108,4 +108,19 @@ class Mage_Downloadable_Helper_File extends Mage_Core_Helper_Abstract
 
         return $file;
     }
+
+    public function getFileType($filePath)
+    {
+        $ext = substr($filePath, strrpos($filePath, '.')+1);
+        return $this->_getFileTypeByExt($ext);
+    }
+
+    protected function _getFileTypeByExt($ext)
+    {
+        $type = Mage::getConfig()->getNode('global/mime/types/x' . $ext);
+        if ($type) {
+            return $type;
+        }
+        return 'application/octet-stream';
+    }
 }
