@@ -34,7 +34,7 @@
 <?php if($_order = $this->getLastOrder()): ?>
 <div class="block block-reorder">
     <div class="block-title">
-        <h2><?php echo $this->__('My Orders') ?> <span class="separator">|</span> <a href="<?php echo $this->getUrl('customer/account') ?>">View All</a></h2>
+        <h2><?php echo $this->__('My Orders') ?> <span class="separator">|</span> <a href="<?php echo $this->getUrl('customer/account') ?>"><?php echo $this->__('View All'); ?></a></h2>
     </div>
     <div class="block-content">
     <h3><?php echo $this->__('Last ordered items') ?></h3>

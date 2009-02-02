@@ -137,7 +137,7 @@ input.radio { margin-right:3px; }
 input.checkbox { margin-right:3px; }
 input.qty { width:2.5em !important; }
 /*button::-moz-focus-inner { padding:0; border:0; }*/
-button.button { overflow:visible; width:auto; background:#f6f6f6; border:1px solid #717171; cursor:pointer; }
+button.button { overflow:visible; width:auto; background:#f6f6f6; border:1px solid #717171; cursor:pointer; /*-webkit-border-fit:lines;*/ }
 button.button span { display:block; margin:0; padding:0 8px 1px; font:bold 12px/16px Arial, Helvetica, sans-serif; text-align:center; white-space:nowrap; color:#000; }
 button.disabled {}
 button.disabled span {}
@@ -260,6 +260,13 @@ tr.show-details td {}
 tr.tax-details td { background-color:#f6f6f6; }
 tr.tax-details-first td {}
 
+/* Shopping cart tax info */
+.cart-tax-info,
+.cart-price { padding-right:20px; }
+.cart-tax-total { cursor:pointer; }
+.cart-tax-total { padding-right:20px; background:url(../images/bg_collapse.gif) 100% 4px no-repeat; cursor:pointer; }
+.cart-tax-total-expanded { background-position:100% -52px; }
+
 /* Lists Decoration */
 li.odd {}
 li.even { background-color:#f6f6f6; }
@@ -365,7 +372,6 @@ dd.even { background-color:#f6f6f6; }
 .block-reorder .label { display:block; margin-left:20px; }
 
 /* Block: Banner */
-.block-banner {}
 .block-banner {}
 .block-banner .block-content { text-align:center; }
 
@@ -584,6 +590,9 @@ a.minimal-price-link .price { font-weight:normal; }
 
 /* CMS Home Page */
 .cms-home .products-grid td { width:20%; }
+
+/* Sitemap */
+.sitemap {}
 /* ======================================================================================= */
 
 

@@ -25,12 +25,10 @@
  */
 ?>
 <?php  $_order = $this->getOrder() ?>
-<p><a href="<?php echo $this->getPrintAllInvoicesUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Invoices') ?></a></p>
+<p class="a-right"><a href="<?php echo $this->getPrintAllInvoicesUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Invoices') ?></a></p>
 <?php foreach ($_order->getInvoiceCollection() as $_invoice): ?>
-<div class="page-title">
-    <h3><?php echo $this->__('Invoice #') ?><?php echo $_invoice->getIncrementId(); ?></h3>
-    <a href="<?php echo $this->getPrintInvoiceUrl($_invoice) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print Invoice') ?></a>
-</div>
+<a href="<?php echo $this->getPrintInvoiceUrl($_invoice) ?>" onclick="this.target='_blank'" class="f-right"><?php echo $this->__('Print Invoice') ?></a>
+<h3><?php echo $this->__('Invoice #') ?><?php echo $_invoice->getIncrementId(); ?></h3>
 <h4><?php echo $this->__('Items Invoiced') ?></h4>
 <table cellspacing="0" class="data-table" id="my-invoice-table-<?php echo $_invoice->getId(); ?>">
     <col />

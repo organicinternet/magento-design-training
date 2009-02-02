@@ -25,13 +25,11 @@
  */
 ?>
 <?php  $_order = $this->getOrder() ?>
-<p><a href="<?php echo $this->getPrintAllCreditmemosUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Refunds') ?></a></p>
+<p class="a-right"><a href="<?php echo $this->getPrintAllCreditmemosUrl($_order) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print All Refunds') ?></a></p>
 <?php foreach ($_order->getCreditmemosCollection() as $_creditmemo): ?>
-<div class="page-title">
-    <h2><?php echo $this->__('Refund #') ?><?php echo $_creditmemo->getIncrementId(); ?></h2>
-    <a href="<?php echo $this->getPrintCreditmemoUrl($_creditmemo) ?>" onclick="this.target='_blank'"><?php echo $this->__('Print Refund') ?></a>
-</div>
-<h3><?php echo $this->__('Items Refunded') ?></h3>
+<a href="<?php echo $this->getPrintCreditmemoUrl($_creditmemo) ?>" onclick="this.target='_blank'" class="f-right"><?php echo $this->__('Print Refund') ?></a>
+<h3><?php echo $this->__('Refund #') ?><?php echo $_creditmemo->getIncrementId(); ?></h3>
+<h4><?php echo $this->__('Items Refunded') ?></h4>
 <table class="data-table" id="my-refund-table-<?php echo $_creditmemo->getId(); ?>">
     <col />
     <col width="20%" />

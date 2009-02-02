@@ -53,7 +53,7 @@
 <?php endif; ?>
 <tr<?php echo (++$_index==$_count && !$_showlastRow)?' class="border"':'' ?> id="order-item-row-<?php echo $_item->getId() ?>">
     <?php if (!$_item->getParentItem()): ?>
-    <td><h4 class="product-name"><?php echo $this->htmlEscape($_item->getName()) ?></h4></td>
+    <td><h5 class="product-name"><?php echo $this->htmlEscape($_item->getName()) ?></h5></td>
     <?php else: ?>
     <td><div class="option-value"><?php echo $this->getValueHtml($_item) ?></div></td>
     <?php endif; ?>

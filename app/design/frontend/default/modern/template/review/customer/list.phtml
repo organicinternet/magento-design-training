@@ -50,6 +50,8 @@
                         <div class="rating-box">
                             <div class="rating" style="width:<?php echo ( $_review->getSum() / $_review->getCount() ) ?>%;"></div>
                         </div>
+                    <?php else: ?>
+                        &nbsp;
                     <?php endif; ?>
                     </td>
                     <td><?php echo $this->htmlEscape($this->helper('review')->getDetail($_review->getDetail())) ?></td>

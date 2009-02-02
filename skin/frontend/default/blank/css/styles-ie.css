@@ -90,7 +90,8 @@ input.checkbox { width:13px; height:13px; }
 .group-select li,
 .buttons-set,
 .buttons-set2,
-.page-print .print-head { zoom:1; }
+.page-print .print-head,
+.cart-tax-total { zoom:1; }
 
 /* Hover Fix */
 iframe.hover-fix { position:absolute; left:-1px; top:-1px; z-index:-1; background:transparent; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0); }

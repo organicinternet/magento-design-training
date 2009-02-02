@@ -63,9 +63,9 @@
             <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
             <?php echo $this->getChildHtml('alert_urls') ?>
             <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php echo $this->getChildHtml('tierprices') ?>
 
             <?php if (!$this->hasOptions()):?>
-                <?php echo $this->getChildHtml('tierprices') ?>
                 <div class="add-to-box">
                     <?php if($_product->isSaleable()): ?>
                         <?php echo $this->getChildHtml('addtocart') ?>

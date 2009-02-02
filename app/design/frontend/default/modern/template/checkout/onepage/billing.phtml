@@ -114,12 +114,12 @@
 </form>
 <div class="button-set">
     <p class="required"><?php echo $this->__('* Required Fields') ?></p>
-    <span id="billing-buttons-container" >
+    <div id="billing-buttons-container" >
         <span id="billing-please-wait" style="display:none;" class="opc-please-wait">
             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt=""/> &nbsp; <?php echo $this->__('Loading next step...') ?> &nbsp;
         </span>
         <a href="#" onclick="billing.save(); return false;"><img src="<?php echo $this->getSkinUrl('images/btn_continue.gif');?>" alt="<?php echo $this->__('Continue') ?>" class="v-middle"/></a>
-    </span>
+    </div>
 </div>
 
 <script type="text/javascript">

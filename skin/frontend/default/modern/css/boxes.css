@@ -866,7 +866,7 @@ td.attributes-col h4.title a        { font-weight:bold; }
 .checkout-types li              { clear:both;  margin-bottom:5px; }
 .cart-shipping-block h4         { margin:0; float:none; }
 .cart-collateral .input-text    { width:264px; }
-.cart-collateral select         { width:270px; }
+.cart-collateral select         { width:270px; vertical-align:top; }
 .grand_total {
     width:auto;
     margin-top:15px;
@@ -885,6 +885,12 @@ tr.grand_total td, p.grand_total { padding-top:5px; padding-bottom:5px; }
 .show-details .tax-collapse { background-position:0 -55px; }
 .tax-details td { font-size:0.91em; color:#626465; background-color:#dae1e4; }
 .tax-details-first td { border-top:1px solid #d2d8db; }
+
+/* Shopping cart tax info */
+.cart-tax-info, .cart-price { padding-right:20px; }
+.cart-tax-total { cursor:pointer; }
+.cart-tax-total { padding-right:20px; background:url(../images/bg_collapse.gif) 100% 5px no-repeat; cursor:pointer; }
+.cart-tax-total-expanded { background-position:100% -52px; }
 
 
 /* One-Page checkout */

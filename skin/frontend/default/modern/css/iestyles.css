@@ -65,7 +65,8 @@
 .product-options dd ul.options-list .label,
 .product-options-bottom,
 .truncated_full_value,
-.error-msg, .success-msg, .notice-msg, .note-msg { zoom:1; }
+.error-msg, .success-msg, .notice-msg, .note-msg,
+.cart-tax-total { zoom:1; }
 
 input.radio,
 input.checkbox { width:13px; height:13px; }

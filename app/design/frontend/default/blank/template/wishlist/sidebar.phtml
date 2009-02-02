@@ -38,7 +38,7 @@
     <?php if($this->helper('wishlist')->getItemCount()>0): ?>
     <ol class="mini-products-list" id="wishlist-sidebar">
      <?php foreach($this->getWishlistItems() as $_item): ?>
-        <li>
+        <li class="item">
             <a href="<?php echo $_item->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(50); ?>" width="50" height="50" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
             <div class="product-details">
                 <a href="<?php echo $this->helper('wishlist')->getRemoveUrl($_item) ?>" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove this item from the wishlist?') ?>');" class="btn-remove"><img src="<?php echo $this->getSkinUrl('images/list_remove_btn.gif') ?>" alt="<?php echo $this->__('Remove Item') ?>" title="<?php echo $this->__('Remove Item') ?>" /></a>

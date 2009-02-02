@@ -319,7 +319,7 @@
     <?php if ($this->getDisplayMinimalPrice() && $_minimalPriceValue): ?>
         <div class="price-box">
         <p class="minimal-price">
-            <span class="label"><?php echo $this->__('Starting at:') ?></span>
+            <span class="price-label"><?php echo $this->__('Starting at:') ?></span>
             <?php if ($this->helper('tax')->displayBothPrices() && ($_exclTax !== $_inclTax)): ?>
                 <span class="price-excluding-tax">
                     <span class="label"><?php echo Mage::helper('tax')->__('Excl. Tax:') ?></span>

@@ -37,9 +37,9 @@
     <thead>
         <tr>
             <th rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Product Name') ?></th>
-            <th colspan="<?php echo $colspan ?>" width="10%" class="a-center"><?php echo $this->__('Price') ?></th>
-            <th rowspan="<?php echo $rowspan ?>" width="5%"><?php echo $this->__('Qty') ?></th>
-            <th colspan="<?php echo $colspan ?>" width="10%" class="a-center"><?php echo $this->__('Subtotal') ?></th>
+            <th colspan="<?php echo $colspan ?>" class="a-center"><?php echo $this->__('Price') ?></th>
+            <th rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Qty') ?></th>
+            <th colspan="<?php echo $colspan ?>" class="a-right"><?php echo $this->__('Subtotal') ?></th>
         </tr>
         <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
             <tr>

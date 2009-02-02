@@ -18,12 +18,11 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category   design_default
+ * @category   design_blank
  * @package    Mage
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-
 
 /**
  * Downloadable product type
@@ -31,15 +30,12 @@
  * @see Mage_Downloadable_Block_Catalog_Product_View_Type
  */
 ?>
-
 <?php $_product = $this->getProduct() ?>
 
 <?php if($_product->isSaleable()): ?>
-    <p class="availability"><?php echo $this->__('Availability: In stock.') ?></p>
+    <p class="availability"><?php echo $this->__('Availability') ?>: <span class="in-stock"><?php echo $this->__('In stock') ?></span></p>
 <?php else: ?>
-    <p class="availability"><?php echo $this->__('Availability: Out of stock.') ?></p>
+    <p class="availability"><?php echo $this->__('Availability') ?>: <span class="out-of-stock"><?php echo $this->__('Out of stock') ?></span></p>
 <?php endif; ?>
-
 <?php echo $this->getPriceHtml($_product) ?>
-
 <?php echo $this->getChildHtml('samples') ?>

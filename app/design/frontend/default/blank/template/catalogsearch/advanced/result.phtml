@@ -43,7 +43,7 @@
         <?php if(@$searchCriterias[$side]): ?>
             <ul>
                 <?php foreach($searchCriterias[$side] as $criteria): ?>
-                    <li><strong><?php echo $this->htmlEscape($this->helper('catalogsearch')->__($criteria['name'])); ?>:</strong> <?php echo $this->htmlEscape($criteria['value']); ?></li>
+                    <li><strong><?php echo $this->htmlEscape($this->helper('catalog')->__($criteria['name'])); ?>:</strong> <?php echo $this->htmlEscape($criteria['value']); ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>

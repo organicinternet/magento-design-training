@@ -31,7 +31,7 @@
 ?>
 <?php $_items = $this->getCollection(); ?>
 <?php if($_items->getSize()): ?>
-    <ul>
+    <ul class="sitemap">
         <?php foreach ($_items as $_item): ?>
             <li><a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $_item->name ?></a></li>
         <?php endforeach; ?>

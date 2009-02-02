@@ -26,7 +26,7 @@
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-    <td class="a-center"><a href="<?php echo $this->getDeleteUrl() ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php $this->__('Remove item')?>" /></a></td>
+    <td class="a-center"><a href="<?php echo $this->getDeleteUrl() ?>" alt="<?php echo $this->__('Remove item')?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" alt="<?php echo $this->__('Remove item')?>" /></a></td>
     <td><a href="<?php echo $this->getProductUrl() ?>"><img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" width="75" /></a></td>
     <td class="attributes-col">
         <h4 class="title"><a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->getProductName() ?></a></h4>
@@ -51,7 +51,6 @@
         </dl>
         <?php endif;?>
         <!-- / -->
-
 
         <!-- downloadable -->
         <?php if ($links = $this->getLinks()): ?>

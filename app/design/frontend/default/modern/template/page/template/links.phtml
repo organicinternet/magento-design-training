@@ -31,7 +31,7 @@
 ?>
 <?php $_links = $this->getLinks(); ?>
 <?php if(count($_links)>0): ?>
-        <ul<?php if($this->getName()): ?>):?> id="<?php echo $this->getName() ?>"<?php endif;?> class="top-links">
+        <ul<?php if($this->getName()): ?> id="<?php echo $this->getName() ?>"<?php endif;?> class="top-links">
             <?php foreach($_links as $_link): ?>
                 <li <?php if($_link->getIsFirst()): ?> class="first"<?php elseif($_link->getIsLast()): ?> class="last"<?php endif; ?><?php echo $_link->getLiParams() ?>><?php echo $_link->getBeforeText() ?><a href="<?php echo $_link->getUrl() ?>" title="<?php echo $_link->getTitle() ?>" <?php echo $_link->getAParams() ?>><?php echo $_link->getLabel() ?><?php echo $_link->getAfterText() ?></a></li>
             <?php endforeach; ?>

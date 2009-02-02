@@ -26,7 +26,7 @@
 ?>
 <?php $_item = $this->getItem() ?>
 <tr class="border" id="order-item-row-<?php echo $_item->getId() ?>">
-    <td><h5 class="title"><?php echo $this->htmlEscape($_item->getName()) ?></h5>
+    <td><h4 class="title"><?php echo $this->htmlEscape($_item->getName()) ?></h4>
         <?php if($_options = $this->getItemOptions()): ?>
         <dl class="item-options">
         <?php foreach ($_options as $_option) : ?>
@@ -58,7 +58,6 @@
                 <?php foreach ($links->getPurchasedItems() as $link): ?>
                     <dd><?php echo $link->getLinkTitle() ?></dd>
                 <?php endforeach; ?>
-                </dt>
             </dl>
         <?php endif; ?>
         <!-- EOF downloadable -->

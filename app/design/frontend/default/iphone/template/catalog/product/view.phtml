@@ -70,8 +70,9 @@
                     </script>
                     <div class="clear"></div>
 
+                   <?php echo $this->getChildHtml('tierprices') ?>
+
                    <?php if (!$this->hasOptions()):?>
-                        <?php echo $this->getChildHtml('tierprices') ?>
                         <?php if($_product->isSaleable()): ?>
                             <?php echo $this->getChildHtml('addtocart') ?>
                         <?php endif; ?>
@@ -99,7 +100,7 @@
                 <?php echo $_description ?>
             </div>
         <?php endif; ?>
-        
+
         <?php if($_additional = $this->getAdditionalData()): ?>
         <div class="attribute-specs">
             <h4><?php echo $this->__('Additional Information') ?></h4>

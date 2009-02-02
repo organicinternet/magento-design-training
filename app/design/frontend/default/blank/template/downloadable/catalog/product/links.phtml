@@ -57,8 +57,10 @@
                     </span>
                     <?php if ($_isRequired): ?>
                         <script type="text/javascript">
+                        //<![CDATA[
                             $('links_<?php echo $_link->getId() ?>').advaiceContainer = 'links-advice-container';
                             $('links_<?php echo $_link->getId() ?>').callbackFunction = 'validateDownloadableCallback';
+                        //]]>
                         </script>
                     <?php endif; ?>
                 </li>
@@ -71,6 +73,7 @@
         </dd>
     </dl>
     <script type="text/javascript">
+    //<![CDATA[
         Product.Downloadable = Class.create();
         Product.Downloadable.prototype = {
             config : {},
@@ -107,5 +110,6 @@
         }
 
         var dConfig = new Product.Downloadable(<?php echo $this->getJsonConfig() ?>);
+    //]]>
     </script>
 <?php endif;?>

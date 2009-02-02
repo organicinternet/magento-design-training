@@ -34,7 +34,7 @@
                     <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-cart"><?php echo $this->__('Reorder') ?></a>
                 <?php endif ?>
             </div>
-            <div class="col-2 a-right"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAt(), 'long')) ?></div><div class="clear"></div>
+            <div class="col-2 a-right"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></div><div class="clear"></div>
         </div>
     </div>
     <?php echo $this->getStatusHistoryRssUrl($_order) ?>

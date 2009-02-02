@@ -36,7 +36,7 @@
 <form method="post" action="<?php echo $this->getUrl('checkout/cart/addgroup') ?>" id="reorder-validate-detail">
     <div class="head">
         <h4 class="title"><?php echo $this->__('My Orders') ?></h4>
-        <a href="<?php echo $this->getUrl('customer/account') ?>">View All</a>
+        <a href="<?php echo $this->getUrl('customer/account') ?>"><?php echo $this->__('View All'); ?></a>
     </div>
     <div class="content">
         <h5><?php echo $this->__('Last ordered items') ?></h5>
@@ -48,7 +48,7 @@
                         <div class="product-checkbox">
                             <?php if ($_item->getProduct()->getStockItem()->getIsInStock()): ?>
                                 <?php $_showAddButtonFlag = true ?>
-                                <input type="checkbox" name="order_items[]" id="reorder-item-<?php echo $_item->getId() ?>" value="<?php echo $_item->getId() ?>" class="validate-one-required-by-name" />
+                                <input type="checkbox" name="order_items[]" id="reorder-item-<?php echo $_item->getId() ?>" value="<?php echo $_item->getId() ?>" class="checkbox validate-one-required-by-name" />
                                 <script type="text/javascript">
                                 //<![CDATA[
                                     $('reorder-item-<?php echo $_item->getId() ?>').advaiceContainer = 'cart-sidebar-reorder-advice-container';

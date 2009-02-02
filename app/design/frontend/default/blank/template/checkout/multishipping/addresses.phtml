@@ -65,7 +65,7 @@
                 <td><?php echo $this->getItemHtml($_item->getQuoteItem())?></td>
                 <td><input type="text" name="ship[<?php echo $_index ?>][<?php echo $_item->getQuoteItemId() ?>][qty]" value="<?php echo $this->htmlEscape($_item->getQty()) ?>" size="2" class="input-text qty" /></td>
                 <td><?php if ($_item->getProduct()->getIsVirtual()): echo $this->__('Shipping selection is not applicable'); else: echo $this->getAddressesHtmlSelect($_item, $_index); endif; ?></td>
-                <td class="a-center"><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" width="16" height="16" alt="<?php echo $this->__('Remove Item') ?>" title="<?php echo $this->__('Remove Item') ?>" /></a></td>
+                <td class="a-center"><a href="<?php echo $this->getItemDeleteUrl($_item) ?>"><img src="<?php echo $this->getSkinUrl('images/btn_trash.gif') ?>" alt="<?php echo $this->__('Remove Item') ?>" title="<?php echo $this->__('Remove Item') ?>" /></a></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

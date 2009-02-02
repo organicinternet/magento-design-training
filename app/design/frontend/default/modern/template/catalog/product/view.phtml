@@ -60,9 +60,9 @@
             </fieldset>
             <?php echo $this->getChildHtml('alert_urls') ?>
             <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php echo $this->getChildHtml('tierprices') ?>
 
             <?php if (!$this->hasOptions()):?>
-                <?php echo $this->getChildHtml('tierprices') ?>
                 <div class="add-to-boxes">
                 <?php if($_product->isSaleable()): ?>
                     <?php echo $this->getChildHtml('addtocart') ?>

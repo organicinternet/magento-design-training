@@ -67,6 +67,7 @@ ul,ol         { list-style:none; }
 .a-left       { text-align:left !important; }
 .a-center     { text-align:center !important; }
 .a-right      { text-align:right !important; }
+.v-top        { vertical-align:middle; }
 .v-middle     { vertical-align:middle; }
 .f-left,
 .left         { float:left !important; }
