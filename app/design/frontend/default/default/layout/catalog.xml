@@ -100,8 +100,8 @@ Category layered navigation layout
 -->
 
     <catalog_category_layered>
-        <reference name="left">
-            <block type="catalog/layer_view" name="catalog.leftnav" after="currency" template="catalog/layer/view.phtml"/>
+        <reference name="right">
+            <block type="catalog/layer_view" name="catalog.leftnav" before="cart" template="catalog/layer/view.phtml"/>
         </reference>
         <reference name="content">
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
