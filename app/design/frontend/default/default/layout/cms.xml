@@ -46,6 +46,10 @@ Default layout, loads most of the pages
         <reference name="content">
             <block type="cms/page" name="cms_page"/>
         </reference>
+        <reference name="head">
+          <action method="addJs"><script>training/training.js</script></action>
+          <action method="addCss"><stylesheet>css/training.css</stylesheet></action>
+        </reference>
     </cms_page>
     
 
