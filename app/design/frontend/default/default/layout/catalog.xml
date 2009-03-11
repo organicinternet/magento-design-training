@@ -105,6 +105,7 @@ Category layered navigation layout
         </reference>
         <reference name="right">
             <block type="catalog/layer_view" name="catalog.leftnav" before="cart" template="catalog/layer/view.phtml"/>
+            <action method="unsetChild"><name>right.permanent.callout</name></action>
         </reference>
         <reference name="content">
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
