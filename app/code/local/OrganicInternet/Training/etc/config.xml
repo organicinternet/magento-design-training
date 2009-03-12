@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <OrganicInternet_Training>
+            <version>0.0.1</version>
+        </OrganicInternet_Training>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <organicinternet_training>
+                    <file>organicinternet_training.xml</file>
+                </organicinternet_training>
+            </updates>
+        </layout>
+    </frontend>
+    <default>
+        <advanced>
+            <organicinternet_training>
+                <active>1</active>
+            </organicinternet_training>
+        </advanced>
+    </default>
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <default>
+    <reference name="footer">
+     <block type="core/template" name="left.permanent.callout" template="callouts/left_col.phtml" before="related">
+      <action method="setImgSrc"><src>images/media/col_left_callout.jpg</src></action>
+      <action method="setImgAlt" translate="alt" module="catalog"><alt>Our customer service is available 24/7</alt></action>
+      <action method="setLinkUrl"><url>checkout/cart</url></action>
+     </block>
+    </reference>
+  </default>
+</layout>

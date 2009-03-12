@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <OrganicInternet_Training>
+            <active>true</active>
+            <codePool>local</codePool>
+        </OrganicInternet_Training>
+    </modules>
+</config>
